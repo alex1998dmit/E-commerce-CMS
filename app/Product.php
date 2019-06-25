@@ -18,6 +18,12 @@ class Product extends Model
 
     public function wishList()
     {
-        return $this->hasMany('App\WishList');
+        // 'user_id', 'id'
+        return $this->hasMany('App\WishList', 'product_id', 'id');
+    }
+
+    public function shoppingCart()
+    {
+        return $this->hasMany('App\ShoppingCart');
     }
 }
