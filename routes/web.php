@@ -18,3 +18,8 @@ Route::get('/', function () {
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
+
+Route::group(['prefix' => 'admin', 'middleware' => 'auth'], function(){
+    Route::get('/dashboard', 'AdminController@index')->name('index');
+    Route::get('/fromcarts', 'AdminController@fromCarts')->name('carts');
+});

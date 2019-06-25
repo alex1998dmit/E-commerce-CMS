@@ -19,14 +19,14 @@ Route::post("register", 'Auth\RegisterController@register');
 //-- React's actions without auth
 
     //---- Categories
-Route::get('/categories/{category}', 'CategoriesController@show');
-Route::get('categories', 'CategoriesController@index');
+Route::get('/categories/{category}', 'APICategoriesController@show');
+Route::get('categories', 'APICategoriesController@index');
 // Route::delete('/categories/{category}', 'CategoriesController@delete');
 
     //---- Products
-Route::get('/products/{product}', 'ProductsController@show');
-Route::get('products', 'ProductsController@index');
-Route::get('user/removefromwishlist/{wishList}', 'WishListController@delete')->middleware('auth:api');
+Route::get('/products/{product}', 'APIProductsController@show');
+Route::get('products', 'APIProductsController@index');
+Route::get('user/removefromwishlist/{wishList}', 'APIWishListController@delete')->middleware('auth:api');
 
 
 //-- Auth's actions
@@ -34,15 +34,15 @@ Route::group(['middleware' => 'auth:api'], function() {
     //-- Admin's actions
     Route::group(['prefix' => 'admin'], function() {
         //-- Products
-        Route::post('products', 'ProductsController@store');
-        Route::put('products/{product}', 'ProductsController@update');
+        Route::post('products', 'APIProductsController@store');
+        Route::put('products/{product}', 'APIProductsController@update');
 
         //-- Categories
-        Route::post('categories', 'CategoriesController@store');
-        Route::put('/categories/{category}', 'CategoriesController@update');
+        Route::post('categories', 'APICategoriesController@store');
+        Route::put('/categories/{category}', 'APICategoriesController@update');
 
         // -- Users
-        Route::get('/users/index', 'UserController@index');
+        Route::get('/users/index', 'APIUserController@index');
     });
 
     //-- User's info
