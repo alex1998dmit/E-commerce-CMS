@@ -6,7 +6,7 @@ use Auth;
 use Illuminate\Http\Request;
 use App\ShoppingCart;
 use App\Http\Resources\ShoppingCartCollection;
-
+use App\Events\AddProductToShoppingCart;
 
 class ShoppingCartController extends Controller
 {
@@ -35,6 +35,7 @@ class ShoppingCartController extends Controller
                 'amount' => 1,
             ]);
         }
+        event(new AddProductToShoppingCart($productFromCart));
         return response()->json($productFromCart, 200);
     }
 

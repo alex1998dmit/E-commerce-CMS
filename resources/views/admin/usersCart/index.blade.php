@@ -6,7 +6,7 @@
         <div class="col-md-12">
             <div class="card">
                 <div class="card-header">User's Carts</div>
-                <div class="card-body">
+                <div class="card-body" id="fromCartsContent">
                    @foreach($carts as $cart)
                     <div class="row">
                         <div class="col-md-3">
@@ -23,6 +23,14 @@
                         </div>
                     </div>
                     <div class="row">
+                        <div class="col-md-6">
+                            {{ $cart->product->category->name }}
+                        </div>
+                        <div class="col-md-6">
+                            {{-- {{ }} --}}
+                        </div>
+                    </div>
+                    <div class="row">
                         <div class="col-md-12 text-right">
                             <h5>{{ $cart->product->price * $cart->amount }}</h5>
                         </div>
@@ -34,4 +42,5 @@
         </div>
     </div>
 </div>
+
 @endsection

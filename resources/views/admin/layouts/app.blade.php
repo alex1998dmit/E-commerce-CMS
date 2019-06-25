@@ -79,5 +79,44 @@
             @yield('content')
         </main>
     </div>
+<script src="{{ asset('/js/app.js') }}"></script>
+<script>
+    console.log('show result');
+    Echo.channel('home')
+        .listen('AddProductToShoppingCart', (e) => {
+            let cart = JSON.parse(e.product);
+            console.log(cart);
+            $("#fromCartsContent").append(`
+                    <div class="row">
+                        <div class="col-md-3">
+                            ${cart.username}
+                        </div>
+                        <div class="col-md-3">
+                            ${cart.email}
+                        </div>
+                        <div class="col-md-3">
+                            ${cart.productName}
+                        </div>
+                        <div class="col-md-3">
+                            ${cart.amount}
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            ${cart.category}
+                        </div>
+                        <div class="col-md-6">
+
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12 text-right">
+                            <h5>${cart.price * cart.amount}</h5>
+                        </div>
+                    </div>
+                    <br>
+            `);
+        })
+</script>
 </body>
 </html>
