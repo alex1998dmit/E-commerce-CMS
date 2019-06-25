@@ -8,13 +8,15 @@ use App\Http\Resources\Category as CategoryResource;
 use App\Http\Resources\CategoryCollection;
 use App\Http\Resources\CategoryWithProducts;
 
+use App\Events\NewMessage;
+
 class CategoriesController extends Controller
 {
     public function index()
     {
         $categories = Category::all();
+        event(new NewMessage("Hello"));
         return new CategoryCollection($categories);
-        return $categories;
     }
 
     public function store(Request $request)

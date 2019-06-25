@@ -6,6 +6,7 @@
 
         <title>Laravel</title>
 
+        <meta name="csrf-token" content="{{ csrf_token() }}">
         <!-- Fonts -->
         <link href="https://fonts.googleapis.com/css?family=Nunito:200,600" rel="stylesheet">
 
@@ -95,5 +96,12 @@
                 </div>
             </div>
         </div>
+        <script src="{{ asset('js/app.js') }}"></script>
+        <script>
+            Echo.channel('home')
+                .listen('NewMessage', (e) => {
+                    console.log(e.message);
+                })
+        </script>
     </body>
 </html>
