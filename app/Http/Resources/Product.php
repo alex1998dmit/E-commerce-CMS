@@ -14,6 +14,12 @@ class Product extends JsonResource
      */
     public function toArray($request)
     {
+        // TODO заменить на пример с использованием моделей а не простой перебор
+        $photos = [];
+        foreach($this->photo as $photo) {
+            $photos[$photo->id] = $photo->path;
+        }
+
         return [
             'id' => $this->id,
             'name' => $this->name,
@@ -23,6 +29,7 @@ class Product extends JsonResource
             ],
             'price' => $this->price,
             'desc' => $this->description,
+            'photos' => $photos,
         ];
     }
 

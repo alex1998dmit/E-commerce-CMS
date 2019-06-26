@@ -28,6 +28,7 @@ class ProductsController extends Controller
 
     public function store(Request $request)
     {
+        $photos= $request->file('photo');
         $product = Product::create([
             'name' => $request->name,
             'category_id' => $request->category_id,
@@ -35,16 +36,16 @@ class ProductsController extends Controller
             'description' => $request->description,
         ]);
 
-        $photo= $request->file('photo');
-        $fileName =  time() .  '.' . $photo->getClientOriginalExtension();
-        $path = $photo->move(public_path('/upload/products'), $fileName);
-        $photoUrl = url('/upload/products/' . $fileName);
+        foreach($photos as $key => $photo){
+            $fileName =  $key . time() .  '.' . $photo->getClientOriginalExtension();
+            $path = $photo->move(public_path('/upload/products'), $fileName);
+            $photoUrl = url('/upload/products/' . $fileName);
 
-        $photo = Photo::create([
-            'product_id' => $product->id,
-            'path' => $photoUrl,
-        ]);
-
-        return response()->json($product, 201);
+            $photo = Photo::create([
+                'product_id' => $product->id,
+                'path' => $photoUrl,
+            ]);
+        }
+        return new ProductResource($product);
     }
 }
