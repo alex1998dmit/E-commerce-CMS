@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Product;
+use App\Photo;
 use App\Http\Resources\Product as ProductResource;
 use App\Http\Resources\ProductsCollection;
 
@@ -27,7 +28,23 @@ class ProductsController extends Controller
 
     public function store(Request $request)
     {
-        $product = Product::create($request->all());
+        $product = Product::create([
+            'name' => $request->name,
+            'category_id' => $request->category_id,
+            'price' => $request->price,
+            'description' => $request->description,
+        ]);
+
+        $photo= $request->file('photo');
+        $fileName =  time() .  '.' . $photo->getClientOriginalExtension();
+        $path = $photo->move(public_path('/upload/products'), $fileName);
+        $photoUrl = url('/upload/products/' . $fileName);
+
+        $photo = Photo::create([
+            'product_id' => $product->id,
+            'path' => $photoUrl,
+        ]);
+
         return response()->json($product, 201);
     }
 }

@@ -56,4 +56,5 @@ class CategoriesController extends Controller
         ]);
         return back()->with('success', 'Новая категория добавлена');
     }
+    
 }
