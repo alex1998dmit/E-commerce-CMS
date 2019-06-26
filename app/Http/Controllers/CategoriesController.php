@@ -44,12 +44,16 @@ class CategoriesController extends Controller
 
     public function addCategory(Request $request)
     {
+        $request->validate([
+            'name' => 'required',
+        ]);
+
         $input = $request->all();
         $parent_id = empty($input['parent_id']) ? 0 : $input['parent_id'];
         $category = Category::create([
             'name' => $request->name,
             'parent_id' => $parent_id
         ]);
-        return back()->with('success', 'New Category added successfully.');
+        return back()->with('success', 'Новая категория добавлена');
     }
 }
