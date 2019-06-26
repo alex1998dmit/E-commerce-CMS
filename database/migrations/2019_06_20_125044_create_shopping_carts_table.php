@@ -18,7 +18,7 @@ class CreateShoppingCartsTable extends Migration
                 $table->bigIncrements('id');
                 $table->bigInteger('user_id')->unsigned();
                 $table->bigInteger('product_id')->unsigned();
-                $table->float('amount');
+                $table->integer('amount');
                 $table->timestamps();
             });
         }

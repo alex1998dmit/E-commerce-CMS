@@ -41,4 +41,15 @@ class CategoriesController extends Controller
         $category->delete();
         return response()->json(null, 204);
     }
+
+    public function addCategory(Request $request)
+    {
+        $input = $request->all();
+        $parent_id = empty($input['parent_id']) ? 0 : $input['parent_id'];
+        $category = Category::create([
+            'name' => $request->name,
+            'parent_id' => $parent_id
+        ]);
+        return back()->with('success', 'New Category added successfully.');
+    }
 }
