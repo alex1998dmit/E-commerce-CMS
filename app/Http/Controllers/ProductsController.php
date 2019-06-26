@@ -39,11 +39,10 @@ class ProductsController extends Controller
         foreach($photos as $key => $photo){
             $fileName =  $key . time() .  '.' . $photo->getClientOriginalExtension();
             $path = $photo->move(public_path('/upload/products'), $fileName);
-            $photoUrl = url('/upload/products/' . $fileName);
 
             $photo = Photo::create([
                 'product_id' => $product->id,
-                'path' => $photoUrl,
+                'path' => url('/upload/products/' . $fileName),
             ]);
         }
         return new ProductResource($product);
