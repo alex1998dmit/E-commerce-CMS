@@ -24,4 +24,5 @@ Route::group(['prefix' => 'admin', 'middleware' => 'auth'], function(){
     Route::get('/fromcarts', 'AdminController@fromCarts')->name('carts');
     Route::get('/categories', 'AdminController@categories')->name('categories');
     Route::post('/categories', 'CategoriesController@addCategory')->name('add.category');
+    Route::get('/orders', 'AdminController@orders');
 });

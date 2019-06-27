@@ -18,7 +18,6 @@ class Product extends Model
 
     public function wishList()
     {
-        // 'user_id', 'id'
         return $this->hasMany('App\WishList', 'product_id', 'id');
     }
 
@@ -27,8 +26,14 @@ class Product extends Model
         return $this->hasMany('App\ShoppingCart');
     }
 
+    public function order()
+    {
+        return $this->hasMany('App\Order');
+    }
+
     public function photo()
     {
         return $this->hasMany('App\Photo');
     }
+
 }
