@@ -60,6 +60,11 @@ Route::group(['middleware' => 'auth:api'], function() {
         Route::get('/removefromcart/{shoppingCart}', 'ShoppingCartController@delete');
         Route::post('/cart', 'ShoppingCartController@store');
         Route::put('/cart/{shoppingCart}', 'ShoppingCartController@update');
+
+    //---- Order
+        Route::get('/order', 'OrdersController@index');
+        Route::post('/order', 'OrdersController@store');
+        Route::get('/order/{order}', 'OrdersController@show');
     });
 
     // For react app
