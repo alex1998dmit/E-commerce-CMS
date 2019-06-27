@@ -19,8 +19,6 @@ class OrdersController extends Controller
             return response()->json(['message' => 'you need to login'], 403);
         }
         $orders = $user->order;
-        // $user_orders = $user->order->pluck('product_id')->toArray();
-        // $products = Product::whereIn('id', $user_orders)->paginate(5);
         return new OrdersCollection($orders);
     }
 
