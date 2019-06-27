@@ -26,7 +26,7 @@ class OrdersController extends Controller
     public function store(Request $request)
     {
         // TODO обдумать систему скидок, как реализовать на сервере
-        $price = Product::find($request->product_id)->first()->price;
+        $price = Product::find($request->product_id)->price;
         $order = Order::create([
             'product_id' => $request->product_id,
             'user_id' => Auth::id(),

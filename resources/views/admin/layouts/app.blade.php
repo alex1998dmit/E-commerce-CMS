@@ -86,50 +86,37 @@
 <script src="{{ asset('/js/app.js') }}"></script>
 <script>
     console.log('show result');
-    Echo.channel('home')
+    Echo.channel('carts')
         .listen('AddProductToShoppingCart', (e) => {
-            // TODO без JSON.parse с помощью ресурсов
-            // TODO раскидать по файлам
-            let cart = JSON.parse(e.product);
-            console.log(cart);
-            $("#fromCartsContent").append(`
-                    <div class="row">
-                        <div class="col-md-3">
-                            ${cart.username}
-                        </div>
-                        <div class="col-md-3">
-                            ${cart.email}
-                        </div>
-                        <div class="col-md-3">
-                            ${cart.productName}
-                        </div>
-                        <div class="col-md-3">
-                            ${cart.amount}
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-6">
-                            ${cart.category}
-                        </div>
-                        <div class="col-md-6">
-
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-12 text-right">
-                            <h5>${cart.price * cart.amount}</h5>
-                        </div>
-                    </div>
-                    <br>
+            let cart = e.cart;
+            $("#carts_list").append(`
+                <th>${cart.username}</th>
+                <th>${cart.email}</th>
+                <th>${cart.product}</th>
+                <th>${cart.category}</th>
+                <th>${cart.amount}</th>
+                <th>${cart.product_price * cart.amount}</th>
+                <th>${cart.created_at}</th>
+                <td><a href="" class="btn btn-xs btn-info">Edit</a></td></td>
+                <td><a href="" class="btn btn-xs btn-danger">Trash</a></td>
             `);
         })
 
         Echo.channel('orders')
         .listen('NewOrder', (e) => {
+            let order = e.order;
             console.log(e.order);
             $("#orders_list").append(`
                 <tr>
-                    <td>Hello</td>
+                    // TODO пофисить время
+                    <td>${order.created_at}</td>
+                    <td>${order.customer}</td>
+                    <td>${order.product_name}</td>
+                    <td>${order.category}</td>
+                    <td>${order.amount}</td>
+                    <td>${order.sum}</td>
+                    <td><a href="" class="btn btn-xs btn-info">Edit</a></td></td>
+                    <td><a href="" class="btn btn-xs btn-danger">Trash</a></td>
                 </tr>
             `);
         })

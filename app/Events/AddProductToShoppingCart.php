@@ -2,6 +2,7 @@
 
 namespace App\Events;
 
+use App\Http\Resources\ShoppingCartResource;
 use Illuminate\Broadcasting\Channel;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Broadcasting\PrivateChannel;
@@ -14,7 +15,7 @@ class AddProductToShoppingCart implements ShouldBroadcast
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
-    public $product;
+    public $cart;
     /**
      * Create a new event instance.
      *
@@ -22,15 +23,7 @@ class AddProductToShoppingCart implements ShouldBroadcast
      */
     public function __construct($cart)
     {
-        $arr = [
-            'username' => $cart->user->name,
-            'email' => $cart->user->email,
-            'productName' => $cart->product->name,
-            'amount' => $cart->amount,
-            'category' => $cart->product->category->name,
-            'price' => $cart->product->price,
-        ];
-        $this->product = json_encode($arr);
+        $this->cart = new ShoppingCartResource($cart);
     }
 
     /**
@@ -40,6 +33,6 @@ class AddProductToShoppingCart implements ShouldBroadcast
      */
     public function broadcastOn()
     {
-        return new Channel('home');
+        return new Channel('carts');
     }
 }
