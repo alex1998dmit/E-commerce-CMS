@@ -6,11 +6,12 @@ use Auth;
 use App\Product;
 use App\Order;
 use App\Http\Resources\OrdersCollection;
+use App\Http\Resources\OrderResource;
 use Illuminate\Http\Request;
+
 
 class OrdersController extends Controller
 {
-    //
     public function index()
     {
         $user = Auth::user();
@@ -34,5 +35,13 @@ class OrdersController extends Controller
             'sum' => $price * $request->amount,
         ]);
         return response()->json($order, 201);
+    }
+
+    public function show(Order $order)
+    {
+        if (Auth::id() !== $order->user_id) {
+            return response()->json(['message' => 'not you order'], 403);
+        }
+        return new OrderResource($order);
     }
 }
