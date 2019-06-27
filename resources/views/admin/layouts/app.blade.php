@@ -88,6 +88,8 @@
     console.log('show result');
     Echo.channel('home')
         .listen('AddProductToShoppingCart', (e) => {
+            // TODO без JSON.parse с помощью ресурсов
+            // TODO раскидать по файлам
             let cart = JSON.parse(e.product);
             console.log(cart);
             $("#fromCartsContent").append(`
@@ -119,6 +121,16 @@
                         </div>
                     </div>
                     <br>
+            `);
+        })
+
+        Echo.channel('orders')
+        .listen('NewOrder', (e) => {
+            console.log(e.order);
+            $("#orders_list").append(`
+                <tr>
+                    <td>Hello</td>
+                </tr>
             `);
         })
 </script>

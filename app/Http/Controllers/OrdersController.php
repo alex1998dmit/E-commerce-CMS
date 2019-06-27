@@ -7,6 +7,7 @@ use App\Product;
 use App\Order;
 use App\Http\Resources\OrdersCollection;
 use App\Http\Resources\OrderResource;
+use App\Events\NewOrder;
 use Illuminate\Http\Request;
 
 
@@ -32,6 +33,7 @@ class OrdersController extends Controller
             'amount' => $request->amount,
             'sum' => $price * $request->amount,
         ]);
+        event(new NewOrder($order));
         return response()->json($order, 201);
     }
 

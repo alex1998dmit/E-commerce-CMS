@@ -19,16 +19,16 @@
                                         <th scope="col">Удалить</th>
                                     </tr>
                                 </thead>
-                                <tbody class="categories_list" id="categories_list">
+                                <tbody class="orders_list" id="orders_list">
                                     @foreach($orders as $order)
-                                    <tr>
-                                        <td>{{ $order->created_at }}</td>
-                                        <td>{{ $order->user->name }}</td>
-                                        <td>{{ $order->product->name }}</td>
-                                        <td>{{ $order->product->category->name }}</td>
-                                        <td><a href="" class="btn btn-xs btn-info">Edit</a></td></td>
-                                        <td><a href="" class="btn btn-xs btn-danger">Trash</a></td>
-                                    </tr>
+                                        <tr>
+                                            <td>{{ $order->created_at }}</td>
+                                            <td>{{ $order->user->name }}</td>
+                                            <td>{{ $order->product->name }}</td>
+                                            <td>{{ $order->product->category->name }}</td>
+                                            <td><a href="" class="btn btn-xs btn-info">Edit</a></td></td>
+                                            <td><a href="" class="btn btn-xs btn-danger">Trash</a></td>
+                                        </tr>
                                     @endforeach
                                 </tbody>
                             </table>
