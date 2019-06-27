@@ -62,9 +62,9 @@ Route::group(['middleware' => 'auth:api'], function() {
         Route::put('/cart/{shoppingCart}', 'ShoppingCartController@update');
 
     //---- Order
-        Route::get('/order', 'OrdersController@index');
-        Route::post('/order', 'OrdersController@store');
-        Route::get('/order/{order}', 'OrdersController@show');
+        Route::get('/orders', 'OrdersController@index');
+        Route::post('/orders', 'OrdersController@store');
+        Route::get('/orders/{order}', 'OrdersController@show');
     });
 
     // For react app
