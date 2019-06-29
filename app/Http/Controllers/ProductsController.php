@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Validator;
 use Illuminate\Http\Request;
 use App\Product;
 use App\Photo;
@@ -28,6 +29,19 @@ class ProductsController extends Controller
 
     public function store(Request $request)
     {
+        // TODO Добавить валидацию для файлов
+        $rules = [
+            'name' => 'required|string|max:255',
+            'category_id' => 'required|integer|min:1',
+            'price' => 'required|numeric|min:1',
+            'description' => 'required|string',
+        ];
+        $validator = Validator::make($request->all(), $rules);
+        if ($validator->fails()) {
+            $response['data'] = $validator->messages();
+            return $response;
+        }
+
         $photos= $request->file('photo');
         $product = Product::create([
             'name' => $request->name,

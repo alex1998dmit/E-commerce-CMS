@@ -2,10 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use Auth;
+use Validator;
 use App\User;
 use App\Product;
 use App\WishList;
-use Auth;
 use Illuminate\Http\Request;
 use App\Http\Resources\WishListCollection;
 
@@ -26,6 +27,15 @@ class WishListController extends Controller
 
     public function store(Request $request)
     {
+        $rules = [
+            'product_id' => 'required|integer|min:1',
+        ];
+        $validator = Validator::make($request->all(), $rules);
+        if ($validator->fails()) {
+            $response['data'] = $validator->messages();
+            return $response;
+        }
+
         $wishList = WishList::where('product_id', $request->product_id)->first();
         if ($wishList) {
             return response()->json(['message' => 'you already have this product at your wishList'], 403);

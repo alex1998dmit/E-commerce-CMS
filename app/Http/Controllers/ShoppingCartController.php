@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Auth;
+use Validator;
 use Illuminate\Http\Request;
 use App\ShoppingCart;
 use App\Http\Resources\ShoppingCartCollection;
@@ -22,6 +23,15 @@ class ShoppingCartController extends Controller
 
     public function store(Request $request)
     {
+        $rules = [
+            'product_id' => 'required|integer|min:1',
+        ];
+        $validator = Validator::make($request->all(), $rules);
+        if ($validator->fails()) {
+            $response['data'] = $validator->messages();
+            return $response;
+        }
+
         // TODO remove to construct user_id ?
         $user_id = Auth::id();
         $productFromCart = ShoppingCart::where('product_id', $request->product_id)->first();

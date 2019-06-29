@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Auth;
+use Validator;
 use App\Product;
 use App\Order;
 use App\Http\Resources\OrdersCollection;
@@ -25,6 +26,15 @@ class OrdersController extends Controller
 
     public function store(Request $request)
     {
+        $rules = [
+            'product_id' => 'required|integer',
+            'amount' => 'required|integer|min:1'
+        ];
+        $validator = Validator::make($request->all(), $rules);
+        if ($validator->fails()) {
+            $response['data'] = $validator->messages();
+            return $response;
+        }
         // TODO обдумать систему скидок, как реализовать на сервере
         $price = Product::find($request->product_id)->price;
         $order = Order::create([
