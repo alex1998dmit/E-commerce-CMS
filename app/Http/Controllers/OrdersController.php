@@ -54,4 +54,14 @@ class OrdersController extends Controller
         }
         return new OrderResource($order);
     }
+
+    public function permanentDelete($id)
+    {
+        $order = Order::destroy($id);
+        if ($order) {
+            return redirect()->back();
+        } else {
+            abort(500);
+        }
+    }
 }

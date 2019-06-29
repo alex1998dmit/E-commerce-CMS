@@ -31,7 +31,7 @@
                                             <td>{{ $order->amount }}</td>
                                             <td>{{ $order->sum }}</td>
                                             <td><a href="" class="btn btn-xs btn-info">Edit</a></td></td>
-                                            <td><a href="" class="btn btn-xs btn-danger">Trash</a></td>
+                                            <td><a href="{{ route('order.delete', ['id'=> $order->id]) }}" class="btn btn-xs btn-danger">Trash</a></td>
                                         </tr>
                                     @endforeach
                                 </tbody>

@@ -18,11 +18,18 @@ Route::get('/', function () {
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
+Route::get('orders/permanentDelete/{id}', 'OrdersController@permanentDelete')->name('order.delete');
 
 Route::group(['prefix' => 'admin', 'middleware' => 'auth'], function(){
     Route::get('/dashboard', 'AdminController@index')->name('index');
     Route::get('/fromcarts', 'AdminController@fromCarts')->name('carts');
     Route::get('/categories', 'AdminController@categories')->name('categories');
     Route::post('/categories', 'CategoriesController@addCategory')->name('add.category');
-    Route::get('/orders', 'AdminController@orders');
+    Route::prefix('orders')->group(function() {
+        Route::get('/', 'AdminController@orders');
+        // Route::delete('permanentDelete/{id}', 'OrdersController@permanentDelete');
+        // Route::delete('permanentDelete/{id}', function() {
+        //     dd("here");
+        // });
+    });
 });
