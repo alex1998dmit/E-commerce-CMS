@@ -18,7 +18,10 @@ Route::get('/', function () {
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
-Route::get('orders/permanentDelete/{id}', 'OrdersController@permanentDelete')->name('order.delete');
+// TODO middleware, метод Делит
+Route::get('orders/permanentDelete/{id}', 'OrdersController@permanentDelete')->name('order.permanentDelete');
+Route::get('orders/delete/{id}', 'OrdersController@delete')->name('order.delete');
+// Route::get('v2/notes/{id}', 'NotesController@softdelete');
 
 Route::group(['prefix' => 'admin', 'middleware' => 'auth'], function(){
     Route::get('/dashboard', 'AdminController@index')->name('index');

@@ -64,4 +64,14 @@ class OrdersController extends Controller
             abort(500);
         }
     }
+
+    public function delete($id)
+    {
+        $order = Order::destroy($id);
+        if ($order) {
+            return redirect()->back();
+        } else {
+            abort(500);
+        }
+    }
 }
