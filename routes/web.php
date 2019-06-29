@@ -34,5 +34,6 @@ Route::group(['prefix' => 'admin', 'middleware' => 'auth'], function(){
         // Route::delete('permanentDelete/{id}', function() {
         //     dd("here");
         // });
+        Route::get('/trashed', 'AdminController@trashedOrders')->name('orders.trashed');
     });
 });

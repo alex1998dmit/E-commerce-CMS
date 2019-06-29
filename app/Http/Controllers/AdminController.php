@@ -32,4 +32,10 @@ class AdminController extends Controller
         $orders = Order::all();
         return view('admin.orders.index')->with('orders', $orders);
     }
+
+    public function trashedOrders()
+    {
+        $orders = Order::onlyTrashed()->get();
+        return view('admin.orders.trashed')->with('orders', $orders);
+    }
 }
