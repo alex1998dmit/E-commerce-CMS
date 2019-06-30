@@ -35,11 +35,15 @@
                     <ul class="navbar-nav mr-auto">
                         <a class="nav-link" href="{{ route('carts') }}">From user's cart</a>
                     </ul>
-
                     <ul class="navbar-nav mr-auto">
                         <a class="nav-link" href="{{ route('categories') }}">Categories</a>
                     </ul>
-
+                    <ul class="navbar-nav mr-auto">
+                        <a class="nav-link" href="{{ route('orders') }}">Orders</a>
+                    </ul>
+                    <ul class="navbar-nav mr-auto">
+                        <a class="nav-link" href="{{ route('orders.trashed') }}">Trashed Orders</a>
+                    </ul>
                     <!-- Right Side Of Navbar -->
                     <ul class="navbar-nav ml-auto">
                         <!-- Authentication Links -->
@@ -48,8 +52,8 @@
                                 <a class="nav-link" href="{{ route('login') }}">{{ __('Login') }}</a>
                             </li>
                             <li class="nav-item">
-                                    <a class="nav-link" href="{{ route('login') }}">{{ __('Login') }}</a>
-                                </li>
+                                <a class="nav-link" href="{{ route('login') }}">{{ __('Login') }}</a>
+                            </li>
                             @if (Route::has('register'))
                                 <li class="nav-item">
                                     <a class="nav-link" href="{{ route('register') }}">{{ __('Register') }}</a>
