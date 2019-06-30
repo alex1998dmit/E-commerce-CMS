@@ -74,4 +74,15 @@ class OrdersController extends Controller
             abort(500);
         }
     }
+
+    public function restore($id)
+    {
+        $order = Order::onlyTrashed()->find($id);
+        if (!is_null($order)) {
+            $order->restore();
+            return redirect()->route('orders');
+        } else {
+            return abort(500, 'Nothing to restore');
+        }
+    }
 }

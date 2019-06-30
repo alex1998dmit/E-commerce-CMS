@@ -21,6 +21,7 @@ Route::get('/home', 'HomeController@index')->name('home');
 // TODO middleware, метод Делит
 Route::get('orders/permanentDelete/{id}', 'OrdersController@permanentDelete')->name('order.permanentDelete');
 Route::get('orders/delete/{id}', 'OrdersController@delete')->name('order.delete');
+Route::get('orders/restore/{id}', 'OrdersController@restore')->name('order.restore');
 // Route::get('v2/notes/{id}', 'NotesController@softdelete');
 
 Route::group(['prefix' => 'admin', 'middleware' => 'auth'], function(){
@@ -29,11 +30,7 @@ Route::group(['prefix' => 'admin', 'middleware' => 'auth'], function(){
     Route::get('/categories', 'AdminController@categories')->name('categories');
     Route::post('/categories', 'CategoriesController@addCategory')->name('add.category');
     Route::prefix('orders')->group(function() {
-        Route::get('/', 'AdminController@orders');
-        // Route::delete('permanentDelete/{id}', 'OrdersController@permanentDelete');
-        // Route::delete('permanentDelete/{id}', function() {
-        //     dd("here");
-        // });
+        Route::get('/', 'AdminController@orders')->name('orders');
         Route::get('/trashed', 'AdminController@trashedOrders')->name('orders.trashed');
     });
 });
