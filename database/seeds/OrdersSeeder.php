@@ -11,7 +11,7 @@ class OrdersSeeder extends Seeder
      */
     public function run()
     {
-        $user = App\User::where('email', 'sasha1998dmitalex@gmail.com')->first();
+        $user = App\User::first();
         $products = App\Product::all();
         $amount = 10;
         //
