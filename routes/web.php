@@ -24,10 +24,10 @@ Route::get('/home', 'HomeController@index')->name('home');
 Route::get('orders/permanentDelete/{id}', 'OrdersController@permanentDelete')->name('order.permanentDelete');
 Route::get('orders/delete/{id}', 'OrdersController@delete')->name('order.delete');
 Route::get('orders/restore/{id}', 'OrdersController@restore')->name('order.restore');
-// Route::get('v2/notes/{id}', 'NotesController@softdelete');
+Route::get('admin/categories/trashed', 'AdminController@trashedCategories')->name('category.trashed');
 
-Route::get('admin/categories/trashed', 'AdminController@trashedCategories');
-Route::get('admin/categories/restore/{id}', 'CategoriesController@restore')->name('category.restore');
+
+Route::get('categories/restore/{id}', 'CategoriesController@restore')->name('category.restore');
 
 Route::group(['prefix' => 'admin', 'middleware' => 'auth'], function() {
     Route::get('/dashboard', 'AdminController@index')->name('index');

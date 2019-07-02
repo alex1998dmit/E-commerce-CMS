@@ -46,15 +46,18 @@
                             <table class="table">
                                 <thead>
                                     <tr>
-                                    <th scope="col">Название</th>
-                                    <th scope="col">Подкатегории</th>
-                                    <th scope="col">Delete</th>
-                                    <th scope="col">Edit</th>
+                                        <th scope="col">ID</th>
+                                        <th scope="col">Название</th>
+                                        <th scope="col">Подкатегории</th>
+                                        <th scope="col">Удалить</th>
+                                        <th scope="col">Редактировать</th>
+                                        <th scope="col">Добавить товар</th>
                                     </tr>
                                 </thead>
                                 <tbody class="categories_list" id="categories_list">
                                     @foreach ($allCategories  as $category)
                                     <tr>
+                                        <td>{{ $category->id }}</td>
                                         <td>{{ $category->name }}</td>
                                         <td>
                                             @foreach($category->childs as $sub_category)
@@ -63,6 +66,7 @@
                                         </td>
                                         <td><a href="{{ route('category.edit', ['id' => $category->id]) }}" class="btn btn-xs btn-info">Edit</a></td></td>
                                         <td><a href="{{ route('category.trash', ['id' => $category->id]) }}" class="btn btn-xs btn-danger">Trash</a></td>
+                                        <td><a href="" class="btn btn-xs btn-info">Добавить продукт</a></td>
                                     </tr>
                                     @endforeach
                                 </tbody>

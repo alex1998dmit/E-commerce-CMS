@@ -24,5 +24,5 @@ php artisan passport:install
 ## TODO:
 - [x] Email Confirmation
 - [ ] CRUD Orders
-- [ ] CRUD Categories
+- [x] CRUD Categories
 - [ ] CRUD Requisites
