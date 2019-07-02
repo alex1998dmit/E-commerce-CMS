@@ -17,15 +17,14 @@ use Illuminate\Http\Request;
 
 Auth::routes(['verify' => true]);
 
-
 // User's action
 Route::post("register", 'Auth\RegisterController@register');
 
 //-- React's actions without auth
 
     //---- Categories
-Route::get('/categories/{category}', 'CategoriesController@show');
-Route::get('categories', 'CategoriesController@index');
+Route::get('/categories/{category}', 'API\CategoriesController@show');
+Route::get('categories', 'API\CategoriesController@index');
 
     //---- Products
 Route::get('/products/{product}', 'ProductsController@show');
