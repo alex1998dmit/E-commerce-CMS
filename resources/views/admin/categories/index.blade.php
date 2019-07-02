@@ -10,7 +10,7 @@
                         <div class="row  text-center">
                             <div class="col-md-6">
                                 <div class="create-form">
-                                    <form action="{{ route('add.category') }}" method="POST" enctype="multipart/form-data">
+                                    <form action="{{ route('category.add') }}" method="POST" enctype="multipart/form-data">
                                         {{ csrf_field() }}
                                         <input type="hidden" name="_token" value="{{ csrf_token()}}">
                                         <div class="form-group">

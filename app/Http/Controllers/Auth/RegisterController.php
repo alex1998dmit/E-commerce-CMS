@@ -88,7 +88,7 @@ class RegisterController extends Controller
         ]);
 
         $user->sendEmailVerificationNotification();
-
+        $user->role()->attach(Role::where('name', 'user')->first());
         return response("success", 200);
     }
 }

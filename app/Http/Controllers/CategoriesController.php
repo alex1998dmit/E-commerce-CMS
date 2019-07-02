@@ -41,10 +41,19 @@ class CategoriesController extends Controller
         return new CategoryWithProducts($category);
     }
 
-    public function update(Request $request, Category $category)
+    public function update(Request $request, $id)
     {
-        $category->update($request->all());
-        return response()->json($category, 200);
+        $this->validate($request,  [
+            'name' => 'required',
+            'parent_id' => 'required',
+         ]);
+
+         $category = Category::find($id);
+
+         $category->name = $request->name;
+         $category->parent_id = $request->parent_id;
+         $category->save();
+         return redirect()->route('categories');
     }
 
     public function delete(Category $category)
@@ -53,7 +62,7 @@ class CategoriesController extends Controller
         return response()->json(null, 204);
     }
 
-    public function addCategory(Request $request)
+    public function create(Request $request)
     {
         $request->validate([
             'name' => 'required',

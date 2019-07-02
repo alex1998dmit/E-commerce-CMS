@@ -48,4 +48,15 @@ class AdminController extends Controller
         $orders = Order::onlyTrashed()->get();
         return view('admin.orders.trashed')->with('orders', $orders);
     }
+
+    public function editCategory($id)
+    {
+        $category = Category::find($id);
+        // TODO заменить через отношения, но никак не так
+        $parent_category = Category::find($category->parent_id);
+        $all_categories = Category::all();
+        return view('admin.categories.edit')->with('category', $category)
+                                            ->with('all_categories', $all_categories)
+                                            ->with('parent_category', $parent_category);
+    }
 }

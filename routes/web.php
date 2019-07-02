@@ -29,11 +29,16 @@ Route::get('orders/delete/{id}', 'OrdersController@delete')->name('order.delete'
 Route::get('orders/restore/{id}', 'OrdersController@restore')->name('order.restore');
 // Route::get('v2/notes/{id}', 'NotesController@softdelete');
 
-Route::group(['prefix' => 'admin', 'middleware' => 'auth'], function(){
+Route::group(['prefix' => 'admin', 'middleware' => 'auth'], function() {
     Route::get('/dashboard', 'AdminController@index')->name('index');
-    Route::get('/fromcarts', 'AdminController@fromCarts')->name('carts');
+
     Route::get('/categories', 'AdminController@categories')->name('categories');
-    Route::post('/categories', 'CategoriesController@addCategory')->name('add.category');
+    Route::post('/categories', 'CategoriesController@create')->name('category.add');
+    Route::get('/categories/{id}', 'AdminController@editCategory')->name('category.edit');
+    Route::put('/categories/{id}', 'CategoriesController@update')->name('category.update');
+
+    Route::get('/fromcarts', 'AdminController@fromCarts')->name('carts');
+
     Route::prefix('orders')->group(function() {
         Route::get('/', 'AdminController@orders')->name('orders');
         Route::get('/trashed', 'AdminController@trashedOrders')->name('orders.trashed');

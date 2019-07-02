@@ -22,7 +22,7 @@ php artisan passport:install
 ```
 
 ## TODO:
-- [ ] Email Confirmation
+- [x] Email Confirmation
 - [ ] CRUD Orders
 - [ ] CRUD Categories
 - [ ] CRUD Requisites
