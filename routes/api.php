@@ -42,8 +42,8 @@ Route::group(['middleware' => 'auth:api'], function() {
         Route::put('products/{product}', 'ProductsController@update');
 
         //-- Categories
-        Route::post('categories', 'CategoriesController@store');
-        Route::put('/categories/{category}', 'CategoriesController@update');
+        // Route::post('categories', 'CategoriesController@store');
+        // Route::put('/categories/{category}', 'CategoriesController@update');
 
         // -- Users
         Route::get('/users/index', 'UserController@index');

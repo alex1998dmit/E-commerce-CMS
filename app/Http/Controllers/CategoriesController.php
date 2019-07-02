@@ -56,12 +56,6 @@ class CategoriesController extends Controller
          return redirect()->route('categories');
     }
 
-    public function delete(Category $category)
-    {
-        $category->delete();
-        return response()->json(null, 204);
-    }
-
     public function create(Request $request)
     {
         $request->validate([
@@ -77,4 +71,13 @@ class CategoriesController extends Controller
         return back()->with('success', 'Новая категория добавлена');
     }
 
+    public function trash($id)
+    {
+        $category = Category::destroy($id);
+        if ($category) {
+            return redirect()->back();
+        } else {
+            abort(500);
+        }
+    }
 }

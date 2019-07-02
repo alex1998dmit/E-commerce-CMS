@@ -36,6 +36,7 @@ Route::group(['prefix' => 'admin', 'middleware' => 'auth'], function() {
     Route::post('/categories', 'CategoriesController@create')->name('category.add');
     Route::get('/categories/{id}', 'AdminController@editCategory')->name('category.edit');
     Route::put('/categories/{id}', 'CategoriesController@update')->name('category.update');
+    Route::get('/categories/trash/{id}', 'CategoriesController@trash')->name('category.trash');
 
     Route::get('/fromcarts', 'AdminController@fromCarts')->name('carts');
 
