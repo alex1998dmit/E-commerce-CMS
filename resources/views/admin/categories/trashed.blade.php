@@ -13,8 +13,7 @@
                                     <tr>
                                     <th scope="col">Название</th>
                                     <th scope="col">Подкатегории</th>
-                                    <th scope="col">Delete</th>
-                                    <th scope="col">Edit</th>
+                                    <th scope="col">Восстановить</th>
                                     </tr>
                                 </thead>
                                 <tbody class="categories_list" id="categories_list">
