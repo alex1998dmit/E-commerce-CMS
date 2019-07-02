@@ -59,4 +59,11 @@ class AdminController extends Controller
                                             ->with('all_categories', $all_categories)
                                             ->with('parent_category', $parent_category);
     }
+
+    public function trashedCategories()
+    {
+        $categories = Category::onlyTrashed()->get();
+        $allCategories = Category::onlyTrashed()->get();
+        return view('admin.categories.trashed',compact('categories','allCategories'));
+    }
 }

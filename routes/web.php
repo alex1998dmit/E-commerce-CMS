@@ -18,9 +18,6 @@ Route::get('/', function () {
 Auth::routes();
 Auth::routes(['verify' => true]);
 
-Route::get('profile', function () {
-    // Only verified users may enter...
-})->middleware('verified');
 
 Route::get('/home', 'HomeController@index')->name('home');
 // TODO middleware, метод Делит
@@ -29,6 +26,9 @@ Route::get('orders/delete/{id}', 'OrdersController@delete')->name('order.delete'
 Route::get('orders/restore/{id}', 'OrdersController@restore')->name('order.restore');
 // Route::get('v2/notes/{id}', 'NotesController@softdelete');
 
+Route::get('admin/categories/trashed', 'AdminController@trashedCategories');
+Route::get('admin/categories/restore/{id}', 'CategoriesController@restore')->name('category.restore');
+
 Route::group(['prefix' => 'admin', 'middleware' => 'auth'], function() {
     Route::get('/dashboard', 'AdminController@index')->name('index');
 
@@ -36,6 +36,8 @@ Route::group(['prefix' => 'admin', 'middleware' => 'auth'], function() {
     Route::post('/categories', 'CategoriesController@create')->name('category.add');
     Route::get('/categories/{id}', 'AdminController@editCategory')->name('category.edit');
     Route::put('/categories/{id}', 'CategoriesController@update')->name('category.update');
+    // Route::get('/categories/trashed', 'AdminController@trashedCategories')->name('category.trashed');
+
     Route::get('/categories/trash/{id}', 'CategoriesController@trash')->name('category.trash');
 
     Route::get('/fromcarts', 'AdminController@fromCarts')->name('carts');

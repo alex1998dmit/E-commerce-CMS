@@ -57,8 +57,8 @@
                                     <tr>
                                         <td>{{ $category->name }}</td>
                                         <td>
-                                            @foreach($category->childs as $category)
-                                                {{ $category->name }}
+                                            @foreach($category->childs as $sub_category)
+                                                {{ $sub_category->name }}
                                             @endforeach
                                         </td>
                                         <td><a href="{{ route('category.edit', ['id' => $category->id]) }}" class="btn btn-xs btn-info">Edit</a></td></td>

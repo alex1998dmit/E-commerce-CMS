@@ -73,11 +73,26 @@ class CategoriesController extends Controller
 
     public function trash($id)
     {
+        $category = Category::find($id);
+        dd($category);
+        dd($category->childs);
         $category = Category::destroy($id);
+
         if ($category) {
             return redirect()->back();
         } else {
             abort(500);
+        }
+    }
+
+    public function restore($id)
+    {
+        $category = Category::onlyTrashed()->find($id);
+        if (!is_null($category)) {
+            $category->restore();
+            return redirect()->route('categories');
+        } else {
+            return abort(500, 'Nothing to restore');
         }
     }
 }
