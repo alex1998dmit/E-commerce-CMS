@@ -74,11 +74,12 @@ class CategoriesController extends Controller
     public function trash($id)
     {
         $category = Category::find($id);
-        dd($category);
-        dd($category->childs);
-        $category = Category::destroy($id);
+        $category->delete();
 
         if ($category) {
+            foreach($category->childs as $subcategory) {
+                $subcategory->delete();
+            }
             return redirect()->back();
         } else {
             abort(500);
