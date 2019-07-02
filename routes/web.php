@@ -10,13 +10,13 @@
 | contains the "web" middleware group. Now create something great!
 |
 */
-Auth::routes(['verify' => true]);
 
 Route::get('/', function () {
     return view('welcome');
 });
 
 Auth::routes();
+Auth::routes(['verify' => true]);
 
 Route::get('profile', function () {
     // Only verified users may enter...

@@ -14,10 +14,12 @@ class UserResource extends JsonResource
      */
     public function toArray($request)
     {
+        $is_confirm = ($this->email_verified_at) ? true : false;
         return [
             'id' => $this->id,
             'name' => $this->name,
             'email' => $this->email,
+            'confirm' => $is_confirm
         ];
     }
 
