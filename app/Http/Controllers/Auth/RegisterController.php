@@ -86,6 +86,9 @@ class RegisterController extends Controller
             'email' => $request['email'],
             'password' => Hash::make($request['password']),
         ]);
+
+        $user->sendEmailVerificationNotification();
+
         return response("success", 200);
     }
 }

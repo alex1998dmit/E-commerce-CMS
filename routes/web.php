@@ -10,12 +10,17 @@
 | contains the "web" middleware group. Now create something great!
 |
 */
+Auth::routes(['verify' => true]);
 
 Route::get('/', function () {
     return view('welcome');
 });
 
 Auth::routes();
+
+Route::get('profile', function () {
+    // Only verified users may enter...
+})->middleware('verified');
 
 Route::get('/home', 'HomeController@index')->name('home');
 // TODO middleware, метод Делит

@@ -13,6 +13,10 @@ use Illuminate\Http\Request;
 | is assigned the "api" middleware group. Enjoy building your API!
 |
 */
+
+Auth::routes(['verify' => true]);
+
+
 // User's action
 Route::post("register", 'Auth\RegisterController@register');
 
@@ -21,7 +25,6 @@ Route::post("register", 'Auth\RegisterController@register');
     //---- Categories
 Route::get('/categories/{category}', 'CategoriesController@show');
 Route::get('categories', 'CategoriesController@index');
-// Route::delete('/categories/{category}', 'CategoriesController@delete');
 
     //---- Products
 Route::get('/products/{product}', 'ProductsController@show');
