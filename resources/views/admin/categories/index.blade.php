@@ -61,7 +61,7 @@
                                                 {{ $category->name }}
                                             @endforeach
                                         </td>
-                                        <td><a href="" class="btn btn-xs btn-info">Edit</a></td></td>
+                                        <td><a href="{{ route('category.edit', ['id' => $category->id]) }}" class="btn btn-xs btn-info">Edit</a></td></td>
                                         <td><a href="" class="btn btn-xs btn-danger">Trash</a></td>
                                     </tr>
                                     @endforeach
