@@ -25,4 +25,4 @@ php artisan passport:install
 - [x] Email Confirmation
 - [ ] CRUD Orders
 - [x] CRUD Categories
-- [ ] CRUD Requisites
+- [x] CRUD Requisites
