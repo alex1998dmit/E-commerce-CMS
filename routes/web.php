@@ -32,7 +32,7 @@ Route::get('categories/restore/{id}', 'CategoriesController@restore')->name('cat
 Route::group(['prefix' => 'admin', 'middleware' => 'auth'], function() {
     Route::get('/dashboard', 'AdminController@index')->name('index');
 
-    Route::get('/categories', 'CategoriesController@index')->name('categories');
+    Route::get('/categories', 'CategoriesController@index')->name('categories')->middleware('admin');
     Route::post('/categories', 'CategoriesController@create')->name('category.add');
     Route::get('/categories/{id}', 'CategoriesController@edit')->name('category.edit');
     Route::put('/categories/{id}', 'CategoriesController@update')->name('category.update');

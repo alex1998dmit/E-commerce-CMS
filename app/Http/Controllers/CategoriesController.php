@@ -14,7 +14,7 @@ class CategoriesController extends Controller
 {
     public function index(Request $request)
     {
-        $request->user()->authorizeRoles(['opertor', 'admin']);
+        // $request->user()->authorizeRoles(['opertor', 'admin']);
         $categories = Category::where('parent_id', '=', 0)->get();
         $allCategories = Category::all();
         return view('admin.categories.index',compact('categories','allCategories'));
