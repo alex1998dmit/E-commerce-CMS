@@ -47,6 +47,10 @@
                     <ul class="navbar-nav mr-auto">
                         <a class="nav-link" href="{{ route('orders.trashed') }}">Trashed Orders</a>
                     </ul>
+
+                    <ul class="navbar-nav mr-auto">
+                        <a class="nav-link" href="{{ route('requisites') }}">Requisites</a>
+                    </ul>
                     <!-- Right Side Of Navbar -->
                     <ul class="navbar-nav ml-auto">
                         <!-- Authentication Links -->

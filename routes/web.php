@@ -37,13 +37,16 @@ Route::group(['prefix' => 'admin', 'middleware' => 'auth'], function() {
     Route::get('/categories/{id}', 'CategoriesController@edit')->name('category.edit');
     Route::put('/categories/{id}', 'CategoriesController@update')->name('category.update');
     // Route::get('/categories/trashed', 'AdminController@trashedCategories')->name('category.trashed');
-
     Route::get('/categories/trash/{id}', 'CategoriesController@trash')->name('category.trash');
 
     Route::get('/fromcarts', 'ShoppingCartController@index')->name('carts');
 
-    Route::prefix('orders')->group(function() {
-        Route::get('/', 'AdminController@orders')->name('orders');
-        Route::get('/trashed', 'AdminController@trashedOrders')->name('orders.trashed');
-    });
+    Route::get('/orders', 'AdminController@orders')->name('orders');
+    Route::get('orders/trashed', 'AdminController@trashedOrders')->name('orders.trashed');
+
+    Route::get('/requisites', 'RequisitesController@index')->name('requisites');
+    Route::post('/requisites', 'RequisitesController@store')->name('requisite.store');
+    Route::get('/requisites/{id}', 'RequisitesController@edit')->name('requisite.edit');
+    Route::put('/requisites/{id}', 'RequisitesController@update')->name('requisite.update');
+    Route::get('/requisites/destroy/{id}', 'RequisitesController@destroy')->name('requisite.trash');
 });
