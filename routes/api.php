@@ -34,20 +34,6 @@ Route::get('user/removefromwishlist/{wishList}', 'WishListController@delete')->m
 
 //-- Auth's actions
 Route::group(['middleware' => 'auth:api'], function() {
-    //-- Admin's actions
-    Route::group(['prefix' => 'admin'], function() {
-        //-- Products
-        Route::post('products', 'ProductsController@store');
-        Route::put('products/{product}', 'ProductsController@update');
-
-        //-- Categories
-        // Route::post('categories', 'CategoriesController@store');
-        // Route::put('/categories/{category}', 'CategoriesController@update');
-
-        // -- Users
-        Route::get('/users/index', 'UserController@index');
-    });
-
     //-- User's info
     // Route::post('user/wishlist', 'WishListController@store');
     Route::group(['prefix' => 'user'], function() {
@@ -59,10 +45,11 @@ Route::group(['middleware' => 'auth:api'], function() {
         Route::post('/wishlist', 'WishListController@store');
 
     //---- Product Cart
-        Route::get('/cart', 'ShoppingCartController@index');
-        Route::get('/removefromcart/{shoppingCart}', 'ShoppingCartController@delete');
-        Route::post('/cart', 'ShoppingCartController@store');
-        Route::put('/cart/{shoppingCart}', 'ShoppingCartController@update');
+        Route::get('/cart', 'API\ShoppingCartController@index');
+        Route::get('/removefromcart/{shoppingCart}', 'API\ShoppingCartController@delete');
+        Route::post('/cart', 'API\ShoppingCartController@store');
+        Route::post('/cart', 'API\ShoppingCartController@store');
+        Route::put('/cart/{shoppingCart}', 'API\ShoppingCartController@update');
 
     //---- Order
         Route::get('/orders', 'OrdersController@index');

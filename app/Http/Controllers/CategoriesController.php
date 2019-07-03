@@ -12,19 +12,19 @@ use App\Events\NewMessage;
 
 class CategoriesController extends Controller
 {
-    public function update(Request $request, $id)
+    public function index(Request $request)
     {
-        $this->validate($request,  [
-            'name' => 'required',
-            'parent_id' => 'required',
-         ]);
+        $request->user()->authorizeRoles(['opertor', 'admin']);
+        $categories = Category::where('parent_id', '=', 0)->get();
+        $allCategories = Category::all();
+        return view('admin.categories.index',compact('categories','allCategories'));
+    }
 
-         $category = Category::find($id);
-
-         $category->name = $request->name;
-         $category->parent_id = $request->parent_id;
-         $category->save();
-         return redirect()->route('categories');
+    public function trashed()
+    {
+        $categories = Category::onlyTrashed()->get();
+        $allCategories = Category::onlyTrashed()->get();
+        return view('admin.categories.trashed',compact('categories','allCategories'));
     }
 
     public function create(Request $request)
@@ -40,6 +40,32 @@ class CategoriesController extends Controller
             'parent_id' => $parent_id
         ]);
         return back()->with('success', 'Новая категория добавлена');
+    }
+
+    public function edit($id)
+    {
+        $category = Category::find($id);
+        // TODO заменить через отношения, но никак не так
+        $parent_category = Category::find($category->parent_id);
+        $all_categories = Category::all();
+        return view('admin.categories.edit')->with('category', $category)
+                                            ->with('all_categories', $all_categories)
+                                            ->with('parent_category', $parent_category);
+    }
+
+    public function update(Request $request, $id)
+    {
+        $this->validate($request,  [
+            'name' => 'required',
+            'parent_id' => 'required',
+         ]);
+
+         $category = Category::find($id);
+
+         $category->name = $request->name;
+         $category->parent_id = $request->parent_id;
+         $category->save();
+         return redirect()->route('categories');
     }
 
     public function trash($id)
