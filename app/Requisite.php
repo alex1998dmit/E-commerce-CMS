@@ -7,4 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class Requisite extends Model
 {
     //
+    protected $fillable = [
+        'title', 'requisite', 'description'
+    ];
 }

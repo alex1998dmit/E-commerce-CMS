@@ -41,10 +41,11 @@ class RequisitesController extends Controller
         ]);
 
         $requisite = Requisite::create([
-            'title' => $request->name,
-            'requisite' => $request->requisite
+            'title' => $request->title,
+            'requisite' => $request->requisite,
+            'description' => $request->description,
         ]);
-        return redirect()->view('admin.requisites.index');
+        return redirect()->route('requisites');
     }
 
     /**

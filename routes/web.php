@@ -45,6 +45,7 @@ Route::group(['prefix' => 'admin', 'middleware' => 'auth'], function() {
     Route::get('orders/trashed', 'AdminController@trashedOrders')->name('orders.trashed');
 
     Route::get('/requisites', 'RequisitesController@index')->name('requisites');
+    Route::get('/requisites/create', 'RequisitesController@create')->name('requisite.create');
     Route::post('/requisites', 'RequisitesController@store')->name('requisite.store');
     Route::get('/requisites/{id}', 'RequisitesController@edit')->name('requisite.edit');
     Route::put('/requisites/{id}', 'RequisitesController@update')->name('requisite.update');

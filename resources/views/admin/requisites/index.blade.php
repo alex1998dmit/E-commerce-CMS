@@ -8,6 +8,12 @@
                 <div class="card-header">Requisites</div>
                     <div class="card-body" id="fromCartsContent">
                         <br>
+                        <div class="row">
+                            <div class="col-md-12 text-right">
+                                <a href="{{ route('requisite.create') }}" class="btn btn-xs btn-success">Добавить реквизит</a>
+                            </div>
+                        </div>
+                        <br>
                         <div class="category-table">
                             <table class="table">
                                 <thead>
