@@ -37,7 +37,7 @@ Route::group(['middleware' => 'auth:api'], function() {
     //-- User's info
     // Route::post('user/wishlist', 'WishListController@store');
     Route::group(['prefix' => 'user'], function() {
-        Route::get('show/{id}', 'UserController@show');
+        Route::get('show/{id}', 'API\UserController@show');
         Route::post('logout', 'AuthenticationController@logoutAPI');
 
     //---- WishList

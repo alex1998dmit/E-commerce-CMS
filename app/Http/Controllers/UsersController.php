@@ -7,7 +7,7 @@ use App\Http\Resources\UserResource;
 use App\User;
 use Illuminate\Http\Request;
 
-class UserController extends Controller
+class UsersController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -17,7 +17,7 @@ class UserController extends Controller
     public function index()
     {
         $users = User::paginate(5);
-        return UserResource::collection($users);
+        return view('admin.users.index', ['users' => $users]);
     }
 
     /**

@@ -29,10 +29,10 @@ Route::get('admin/categories/trashed', 'CategoriesController@trashed')->name('ca
 
 Route::get('categories/restore/{id}', 'CategoriesController@restore')->name('category.restore');
 
-Route::group(['prefix' => 'admin', 'middleware' => 'auth'], function() {
-    Route::get('/dashboard', 'AdminController@index')->name('index');
+Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'admin']], function() {
+    Route::get('/dashboard', 'AdminController@index')->name('admin.index');
 
-    Route::get('/categories', 'CategoriesController@index')->name('categories')->middleware('admin');
+    Route::get('/categories', 'CategoriesController@index')->name('categories');
     Route::post('/categories', 'CategoriesController@create')->name('category.add');
     Route::get('/categories/{id}', 'CategoriesController@edit')->name('category.edit');
     Route::put('/categories/{id}', 'CategoriesController@update')->name('category.update');
@@ -50,4 +50,6 @@ Route::group(['prefix' => 'admin', 'middleware' => 'auth'], function() {
     Route::get('/requisites/{id}', 'RequisitesController@edit')->name('requisite.edit');
     Route::put('/requisites/{id}', 'RequisitesController@update')->name('requisite.update');
     Route::get('/requisites/destroy/{id}', 'RequisitesController@destroy')->name('requisite.trash');
+
+    Route::get('/users', 'UsersController@index')->name('users');
 });
