@@ -23,4 +23,30 @@ class UsersController extends Controller
         $user = User::find($id);
         return new UserResource($user);
     }
+
+    // Soft delete
+    public function trash()
+    {
+
+    }
+
+    public function edit($id)
+    {
+
+    }
+
+    public function update()
+    {
+        
+    }
+
+    public function trash($id)
+    {
+
+    }
+
+    public function delete()
+    {
+
+    }
 }

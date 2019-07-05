@@ -52,4 +52,6 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'admin']], function(
     Route::get('/requisites/destroy/{id}', 'RequisitesController@destroy')->name('requisite.trash');
 
     Route::get('/users', 'UsersController@index')->name('users');
+    Route::get('/users/{id}', 'UsersController@show')->name('user');
+    Route::get('/users/trash/{id}', 'UsersController@trash')->name('user.trash');
 });
