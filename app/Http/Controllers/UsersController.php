@@ -52,7 +52,7 @@ class UsersController extends Controller
     {
         $user = User::find($id);
         // TODO поискать как это сделать используя отношения
-        $orders = Order::where('user_id', $user->id)->paginate(10);
+        $orders = Order::where('user_id', $id)->paginate(10);
         return view('admin.users.show')->with('user', $user)
                                        ->with('orders', $orders);
     }
@@ -102,6 +102,6 @@ class UsersController extends Controller
     public function trashed()
     {
         $users = User::onlyTrashed()->get();
-        return view('admin.categories.trashed',compact('users'));
+        return view('admin.users.trashed')->with('users', $users);
     }
 }

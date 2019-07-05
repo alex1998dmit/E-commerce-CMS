@@ -16,7 +16,7 @@
                                                 <small>
                                                     <cite title="San Francisco, USA">
                                                         @foreach($user->role as $role)
-                                                            {{ $role->name, }}
+                                                            {{ $role->name }}
                                                         @endforeach
                                                     </cite>
                                                 </small>

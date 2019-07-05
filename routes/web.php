@@ -24,10 +24,14 @@ Route::get('/home', 'HomeController@index')->name('home');
 Route::get('orders/permanentDelete/{id}', 'OrdersController@permanentDelete')->name('order.permanentDelete');
 Route::get('orders/delete/{id}', 'OrdersController@delete')->name('order.delete');
 Route::get('orders/restore/{id}', 'OrdersController@restore')->name('order.restore');
-Route::get('admin/categories/trashed', 'CategoriesController@trashed')->name('category.trashed');
 
+// TODO вопрос тот же почему не работает когда в префиксе админа
+Route::get('admin/users/trashed/', 'UsersController@trashed')->name('users.trashed')->middleware(['auth', 'admin']);
 
-Route::get('categories/restore/{id}', 'CategoriesController@restore')->name('category.restore');
+// TODO Почему ларавел вызывает ненужные методы ?
+Route::get('admin/categories/trashed', 'CategoriesController@trashed')->name('category.trashed')->middleware(['auth', 'admin']);
+
+Route::get('categories/restore/{id}', 'CategoriesController@restore')->name('category.restore')->middleware(['auth', 'admin']);
 
 Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'admin']], function() {
     Route::get('/dashboard', 'AdminController@index')->name('admin.index');
