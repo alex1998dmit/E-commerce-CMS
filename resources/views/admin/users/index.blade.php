@@ -10,7 +10,7 @@
                         <br>
                         <div class="row">
                             <div class="col-md-12 text-right">
-                                {{-- <a href="{{ route('requisite.create') }}" class="btn btn-xs btn-success">Добавить реквизит</a> --}}
+                                <a href="{{ route('users.trashed') }}" class="btn btn-xs btn-info">Удаленные пользователи</a>
                             </div>
                         </div>
                         <br>
