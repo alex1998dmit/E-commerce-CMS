@@ -23,7 +23,7 @@ Route::post("register", 'Auth\RegisterController@register');
 //-- React's actions without auth
 
     //---- Categories
-Route::get('/categories/{category}', 'API\CategoriesController@show');
+Route::get('/categories/{id}', 'API\CategoriesController@show');
 Route::get('categories', 'API\CategoriesController@index');
 
     //---- Products
