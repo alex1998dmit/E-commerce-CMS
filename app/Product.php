@@ -8,8 +8,14 @@ class Product extends Model
 {
     //
     protected $fillable = [
-        'category_id', 'name', 'price', 'description'
+        'category_id', 'name', 'price', 'description',
     ];
+
+    // TODO заменить на что-то более лучшее, по-моему использовать так методы нельзя
+    protected $photos = [];
+
+    // TODO Проверить семантическую верность приема
+    // protected $appends = ['photos'];
 
     public function category()
     {
@@ -36,4 +42,15 @@ class Product extends Model
         return $this->hasMany('App\Photo');
     }
 
+    public function addPhotosAttribute($photos)
+    {
+        foreach ($photos as $photo) {
+            $this->photos = $photo;
+        }
+    }
+
+    public function getPhotosAttribute()
+    {
+        return $this->photos;
+    }
 }

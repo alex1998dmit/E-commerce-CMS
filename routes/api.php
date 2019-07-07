@@ -28,7 +28,7 @@ Route::get('categories', 'API\CategoriesController@index');
 
     //---- Products
 Route::get('/products/{product}', 'ProductsController@show');
-Route::get('products', 'ProductsController@index');
+Route::get('products', 'API\ProductsController@index');
 Route::get('user/removefromwishlist/{wishList}', 'WishListController@delete')->middleware('auth:api');
 
 
