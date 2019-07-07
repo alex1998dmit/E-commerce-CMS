@@ -20,8 +20,12 @@ class ProductsController extends Controller
         return new ProductsCollection($products);
     }
 
-    public function show(Product $product)
+    public function show($id)
     {
+        $product = Product::find($id);
+        if (!$product) {
+            return response()->json(["message" => "Product doesn't exits"], 400);
+        }
         return new ProductResource($product);
     }
 
