@@ -20,7 +20,7 @@ class CategoryWithProducts extends JsonResource
             'id' => $this->id,
             'name' => $this->name,
             // TODO Заменить на более правильый вариант, без использования моделей
-            'products' => new ProductWithoutCategoryCollection(Product::where('category_id', $this->id)->paginate(3)),
+            'products' => Product::where('category_id', $this->id)->paginate(3),
         ];
     }
 
