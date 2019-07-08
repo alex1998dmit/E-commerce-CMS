@@ -7,6 +7,13 @@
             <div class="card">
                 <div class="card-header">Products</div>
                     <div class="card-body" id="fromCartsContent">
+                        <div class="row">
+                            <div class="col-md-12 text-right">
+                                <a href="{{ route('product.create') }}" class="btn btn-success">Добавить продукт</a>
+                                <a href="{{ route('products.trashed') }}" class="btn btn-warning">Удаленные продукты</a>
+                            </div>
+                        </div>
+                        <br>
                         <div class="category-table">
                             <table class="table">
                                 <thead>

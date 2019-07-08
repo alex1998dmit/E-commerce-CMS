@@ -48,41 +48,61 @@ class ProductsController extends Controller
             'description' => $request->description,
         ]);
 
-        foreach($request->file('photos') as $photo) {
-            $name = $photo->getClientOriginalName();
+        foreach($request->file('photos') as $key => $photo) {
+            $name = $key . time() .  '.' . $photo->getClientOriginalName();
             $photo->move(public_path().'/upload/products/', $name);
             $product_photos[] = Photo::create([
                 'product_id' => $product->id,
                 'path' => $name,
             ]);
         }
-
-        return back()->with('success', 'Новый продукт добавлен');
+        
+        return redirect()->route('products');
     }
 
     public function edit($id)
     {
         $product = Product::find($id);
-        return view('admin.products.edit',compact('product'));
+        $categories = Category::all();
+        return view('admin.products.edit',compact('product', 'categories'));
     }
 
     public function update(Request $request, $id)
     {
-        $this->validate($request,  [
+
+        $validator = $request->validate([
             'name' => 'required|min:3',
             'category_id' => 'required|numeric',
             'price' => 'required|numeric',
             'description' => 'required|min:3|max:1000',
-         ]);
+        ]);
 
-         $product = Product::find($id);
+        $product = Product::find($id);
+        $product_photos = $product->photo;
 
-         $product->name = $product->name;
-         $product->category_id = $product->category_id;
-         $product->price = $product->price;
-         $product->description = $product->description;
-         $product->save();
-         return redirect()->route('products');
+        $product->name = $product->name;
+        $product->category_id = $product->category_id;
+        $product->price = $product->price;
+        $product->description = $product->description;
+        $product->save();
+
+        foreach($product_photos as $photo) {
+            if (!in_array($photo->id, $request->uploaded_images)) {
+                $photo->delete();
+            }
+        }
+
+        if ($request->file('photos')) {
+            foreach($request->file('photos') as $key => $photo) {
+                $name = $key . time() .  '.' . $photo->getClientOriginalName();
+                $photo->move(public_path().'/upload/products/', $name);
+                $product_photos[] = Photo::create([
+                    'product_id' => $product->id,
+                    'path' => $name,
+                ]);
+            }
+        }
+        return redirect()->route('products');
     }
 
     public function trash($id)
