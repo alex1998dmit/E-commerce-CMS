@@ -11,7 +11,13 @@
                             <div class="col-md-12">
                                 <div class="create-form">
                                     @if ($errors->any())
-                                        {{ implode('', $errors->all('<div>:message</div>')) }}
+                                        <div class="alert alert-danger">
+                                            <ul>
+                                                @foreach ($errors->all() as $error)
+                                                    <li>{{ $error }}</li>
+                                                @endforeach
+                                            </ul>
+                                        </div>
                                     @endif
                                     <form action="{{ route('product.store') }}" method="POST" enctype="multipart/form-data">
                                         <input type="hidden" name="_token" value="{{ csrf_token()}}">
