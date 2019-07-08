@@ -23,13 +23,16 @@ php artisan passport:install
 
 ## TODO:
 - [x] Email Confirmation
-- [ ] CRUD Orders
+- [x] CRUD Products
+- [x] CRUD Orders
 - [x] CRUD Categories
 - [x] CRUD Requisites
 - [ ] CRUD Users
-- [ ] API errors status
+- [x] API errors status
 - [ ] Order status
 - [ ] Search logic
+- [ ] Validation error
+- [ ] Cascade delete
+
 - [ ] Factories instead seeders
 - [ ] Unit tests
-- [ ] Validation error

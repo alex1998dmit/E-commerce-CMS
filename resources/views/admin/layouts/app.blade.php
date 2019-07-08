@@ -41,6 +41,9 @@
                         <a class="nav-link" href="{{ route('category.trashed') }}">Trashed Categories</a>
                     </ul>
                     <ul class="navbar-nav mr-auto">
+                        <a class="nav-link" href="{{ route('products') }}">Products</a>
+                    </ul>
+                    <ul class="navbar-nav mr-auto">
                         <a class="nav-link" href="{{ route('carts') }}">From user's cart</a>
                     </ul>
                     <ul class="navbar-nav mr-auto">

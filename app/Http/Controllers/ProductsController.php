@@ -21,7 +21,7 @@ class ProductsController extends Controller
     public function trashed()
     {
         $products = Product::onlyTrashed()->get();
-        return view('admin.categories.trashed',compact('products'));
+        return view('admin.products.trashed',compact('products'));
     }
 
     public function create()
@@ -56,7 +56,7 @@ class ProductsController extends Controller
                 'path' => $name,
             ]);
         }
-        
+
         return redirect()->route('products');
     }
 
@@ -107,28 +107,19 @@ class ProductsController extends Controller
 
     public function trash($id)
     {
-        $category = Category::find($id);
-        $category->delete();
-
-        if ($category) {
-            foreach($category->childs as $subcategory) {
-                $subcategory->delete();
-            }
-            return redirect()->back();
-        } else {
-            abort(500);
-        }
+        $product = Product::find($id);
+        $product->delete();
+        return redirect()->route('products');
     }
 
     public function restore($id)
     {
-        $category = Category::onlyTrashed()->find($id);
-        if (!is_null($category)) {
-            $category->restore();
-            return redirect()->route('categories');
+        $product = Product::onlyTrashed()->find($id);
+        if (!is_null($product)) {
+            $product->restore();
+            return redirect()->route('products');
         } else {
             return abort(500, 'Nothing to restore');
         }
     }
-
 }
