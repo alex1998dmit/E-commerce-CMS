@@ -36,6 +36,7 @@ Route::get('categories/restore/{id}', 'CategoriesController@restore')->name('cat
 Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'admin']], function() {
     Route::get('/dashboard', 'AdminController@index')->name('admin.index');
 
+    // Categories
     Route::get('/categories', 'CategoriesController@index')->name('categories');
     Route::post('/categories', 'CategoriesController@create')->name('category.add');
     Route::get('/categories/{id}', 'CategoriesController@edit')->name('category.edit');
@@ -43,11 +44,23 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'admin']], function(
     // Route::get('/categories/trashed', 'AdminController@trashedCategories')->name('category.trashed');
     Route::get('/categories/trash/{id}', 'CategoriesController@trash')->name('category.trash');
 
+    // Products
+    Route::get('/products', 'ProductsController@index')->name('products');
+    Route::get('/products/trashed', 'ProductsController@trashed')->name('products.trashed');
+    Route::get('/products/{product}', 'ProductsController@show')->name('product');
+    Route::get('/products/edit/{product}', 'ProductsController@edit')->name('product.edit');
+    Route::get('/products/trash/{product}', 'ProductsController@trash')->name('product.trash');
+    Route::post('/products', 'ProductsController@store')->name('product.store');
+    Route::put('/products/{product}', 'ProductsController@update')->name('product.update');
+
+    // Fromcarts
     Route::get('/fromcarts', 'ShoppingCartController@index')->name('carts');
 
+    // Orders
     Route::get('/orders', 'AdminController@orders')->name('orders');
     Route::get('orders/trashed', 'AdminController@trashedOrders')->name('orders.trashed');
 
+    // Requisites
     Route::get('/requisites', 'RequisitesController@index')->name('requisites');
     Route::get('/requisites/create', 'RequisitesController@create')->name('requisite.create');
     Route::post('/requisites', 'RequisitesController@store')->name('requisite.store');
@@ -55,6 +68,7 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'admin']], function(
     Route::put('/requisites/{id}', 'RequisitesController@update')->name('requisite.update');
     Route::get('/requisites/destroy/{id}', 'RequisitesController@destroy')->name('requisite.trash');
 
+    // Users
     Route::get('/users', 'UsersController@index')->name('users');
     Route::get('/users/{id}', 'UsersController@show')->name('user');
     Route::get('/users/trash/{id}', 'UsersController@trash')->name('user.trash');
