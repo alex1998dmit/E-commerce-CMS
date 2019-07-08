@@ -33,7 +33,8 @@
                                             <td>{{ $product->description }}</td>
                                             <td>
                                                 @foreach($product->photo as $photo)
-                                                    {{-- <img src="{{ }}" alt="" widht="30px"> --}}
+                                                    <img src="{{ url('/upload/products/' . $photo->path )}}" alt="" width="" height="90px">
+
                                                 @endforeach
                                             </td>
 

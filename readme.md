@@ -30,3 +30,5 @@ php artisan passport:install
 - [ ] API errors status
 - [ ] Order status
 - [ ] Search logic
+- [ ] Factories instead seeders
+- [ ] Unit tests
