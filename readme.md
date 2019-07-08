@@ -32,3 +32,4 @@ php artisan passport:install
 - [ ] Search logic
 - [ ] Factories instead seeders
 - [ ] Unit tests
+- [ ] Validation error

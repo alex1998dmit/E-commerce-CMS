@@ -47,6 +47,7 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'admin']], function(
     // Products
     Route::get('/products', 'ProductsController@index')->name('products');
     Route::get('/products/trashed', 'ProductsController@trashed')->name('products.trashed');
+    Route::get('/products/create', 'ProductsController@create')->name('product.create');
     Route::get('/products/{product}', 'ProductsController@show')->name('product');
     Route::get('/products/edit/{product}', 'ProductsController@edit')->name('product.edit');
     Route::get('/products/trash/{product}', 'ProductsController@trash')->name('product.trash');

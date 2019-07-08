@@ -3,9 +3,10 @@
 namespace App\Http\Controllers;
 
 use Validator;
-use Illuminate\Http\Request;
 use App\Product;
 use App\Photo;
+use App\Category;
+use Illuminate\Http\Request;
 use App\Http\Resources\Product as ProductResource;
 use App\Http\Resources\ProductsCollection;
 
@@ -23,13 +24,21 @@ class ProductsController extends Controller
         return view('admin.categories.trashed',compact('products'));
     }
 
-    public function create(Request $request)
+    public function create()
     {
-        $request->validate([
+        $categories = Category::all();
+        return view('admin.products.create', compact('categories'));
+    }
+
+    public function store(Request $request)
+    {
+        $validator = $request->validate([
             'name' => 'required|min:3',
             'category_id' => 'required|numeric',
             'price' => 'required|numeric',
             'description' => 'required|min:3|max:1000',
+            'photos' => 'required',
+            'photos.*' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048'
         ]);
 
         $product = Product::create([
@@ -38,6 +47,15 @@ class ProductsController extends Controller
             'price' => $request->price,
             'description' => $request->description,
         ]);
+
+        foreach($request->file('photos') as $photo) {
+            $name = $photo->getClientOriginalName();
+            $photo->move(public_path().'/upload/products/', $name);
+            $product_photos[] = Photo::create([
+                'product_id' => $product->id,
+                'path' => $name,
+            ]);
+        }
 
         return back()->with('success', 'Новый продукт добавлен');
     }
