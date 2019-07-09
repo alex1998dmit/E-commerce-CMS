@@ -20,10 +20,17 @@
                                 </div>
                                 <div class="col-md-6 text-right">
                                     <a href="{{ route('product.create') }}" class="btn btn-success">Добавить продукт</a>
+                                    <a href="{{ route('products') }}" class="btn btn-info">Все продукты</a>
                                     <a href="{{ route('products.trashed') }}" class="btn btn-warning">Удаленные продукты</a>
                                 </div>
                             </div>
+                        </div>
                         <br>
+                        <div class="row">
+                            <div class="col-md-12 text-center">
+                                <h5> Результаты поиска по запросу <u>{{ $param }}</u>  :</h5>
+                            </div>
+                        </div>
                         <div class="category-table">
                             <table class="table">
                                 <thead>
@@ -41,26 +48,34 @@
                                     </tr>
                                 </thead>
                                 <tbody class="orders_list" id="orders_list">
-                                    @foreach($products as $product)
-                                        <tr>
-                                            <td>{{ $product->id }}</td>
-                                            <td>{{ $product->name }}</td>
-                                            <td>{{ $product->category->name }}</td>
-                                            <td>{{ $product->price }}</td>
-                                            <td>{{ $product->description }}</td>
-                                            <td>
-                                                @foreach($product->photo as $photo)
-                                                    <img src="{{ url('/upload/products/' . $photo->path )}}" alt="" width="" height="90px">
+                                    @if($products->count() > 0)
+                                        @foreach($products as $product)
+                                            <tr>
+                                                <td>{{ $product->id }}</td>
+                                                <td>{{ $product->name }}</td>
+                                                <td>{{ $product->category->name }}</td>
+                                                <td>{{ $product->price }}</td>
+                                                <td>{{ $product->description }}</td>
+                                                <td>
+                                                    @foreach($product->photo as $photo)
+                                                        <img src="{{ url('/upload/products/' . $photo->path )}}" alt="" width="" height="90px">
 
-                                                @endforeach
-                                            </td>
+                                                    @endforeach
+                                                </td>
 
-                                            <td>{{ $product->created_at ?? "-" }}</td>
-                                            <td>{{ $product->updated_at ?? "-" }}</td>
-                                            <td><a href="{{ route('product.edit', ['id' => $product->id])}}" class="btn btn-xs btn-info">Edit</a></td></td>
-                                            <td><a href="{{ route('product.trash', ['id' => $product->id])}}" class="btn btn-xs btn-danger">Trash</a></td>
-                                        </tr>
-                                    @endforeach
+                                                <td>{{ $product->created_at ?? "-" }}</td>
+                                                <td>{{ $product->updated_at ?? "-" }}</td>
+                                                <td><a href="{{ route('product.edit', ['id' => $product->id])}}" class="btn btn-xs btn-info">Edit</a></td></td>
+                                                <td><a href="{{ route('product.trash', ['id' => $product->id])}}" class="btn btn-xs btn-danger">Trash</a></td>
+                                            </tr>
+                                            @endforeach
+                                        @else
+                                            <div class="row">
+                                                <div class="col-md-12 text-center">
+                                                    <h5>Запрос не дал никаких результатов</h5>
+                                                </div>
+                                            </div>
+                                        @endif
                                 </tbody>
                             </table>
                         </div>

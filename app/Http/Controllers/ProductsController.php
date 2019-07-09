@@ -122,4 +122,12 @@ class ProductsController extends Controller
             return abort(500, 'Nothing to restore');
         }
     }
+
+    public function search(Request $request)
+    {
+        $param = $request->param;
+        $products = Product::where('name', 'LIKE', '%'.$param.'%')->orWhere('description','LIKE','%'.$param.'%')->get();
+        // $param = Illuminate\Support\Facades\Input::get ('param');
+        return view('admin.products.search', compact('param', 'products'));
+    }
 }

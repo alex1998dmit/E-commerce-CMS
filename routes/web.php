@@ -55,6 +55,7 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'admin']], function(
     Route::post('/products', 'ProductsController@store')->name('product.store');
     Route::put('/products/{product}', 'ProductsController@update')->name('product.update');
     Route::get('products/restore/{id}', 'ProductsController@restore')->name('product.restore');
+    Route::post('/products/search', 'ProductsController@search')->name('products.search');
 
     // Fromcarts
     Route::get('/fromcarts', 'ShoppingCartController@index')->name('carts');
