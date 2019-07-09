@@ -17,6 +17,9 @@ use Illuminate\Http\Request;
 
 Auth::routes(['verify' => true]);
 
+// Search actions
+Route::get('/search', 'Api\SearchController@search')->name('api.search');
+
 // User's action
 Route::post("register", 'Auth\RegisterController@register');
 
