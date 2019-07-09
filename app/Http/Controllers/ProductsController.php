@@ -127,7 +127,6 @@ class ProductsController extends Controller
     {
         $param = $request->param;
         $products = Product::where('name', 'LIKE', '%'.$param.'%')->orWhere('description','LIKE','%'.$param.'%')->get();
-        // $param = Illuminate\Support\Facades\Input::get ('param');
         return view('admin.products.search', compact('param', 'products'));
     }
 }

@@ -104,4 +104,11 @@ class UsersController extends Controller
         $users = User::onlyTrashed()->get();
         return view('admin.users.trashed')->with('users', $users);
     }
+
+    public function search(Request $request)
+    {
+        $param = $request->param;
+        $users = User::where('name', 'LIKE', '%'.$param.'%')->orWhere('email','LIKE','%'.$param.'%')->get();
+        return view('admin.users.search', compact('param', 'users'));
+    }
 }

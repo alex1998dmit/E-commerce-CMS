@@ -23,6 +23,7 @@
                                     <a href="{{ route('products.trashed') }}" class="btn btn-warning">Удаленные продукты</a>
                                 </div>
                             </div>
+                        </div>
                         <br>
                         <div class="category-table">
                             <table class="table">
@@ -54,7 +55,6 @@
 
                                                 @endforeach
                                             </td>
-
                                             <td>{{ $product->created_at ?? "-" }}</td>
                                             <td>{{ $product->updated_at ?? "-" }}</td>
                                             <td><a href="{{ route('product.edit', ['id' => $product->id])}}" class="btn btn-xs btn-info">Edit</a></td></td>

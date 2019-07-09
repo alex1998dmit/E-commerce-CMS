@@ -9,8 +9,19 @@
                     <div class="card-body" id="fromCartsContent">
                         <br>
                         <div class="row">
-                            <div class="col-md-12 text-right">
-                                <a href="{{ route('users.trashed') }}" class="btn btn-xs btn-info">Удаленные пользователи</a>
+                            <div class="col-md-6 text-center">
+                                {{-- TODO: search what method should i use --}}
+                                <form action="{{ route('users.search') }}" method="POST" class="form-inline">
+                                    {{ csrf_field() }}
+                                    <div class="form-group mx-sm-3">
+                                        <input class="form-control" id="user_param" name="param" type="text" placeholder="Поиск..">
+                                    </div>
+                                    <input type="submit" class="btn btn-info" value="Найти">
+                                </form>
+                                </div>
+                                <div class="col-md-6 text-right">
+                                    <a href="{{ route('users.trashed') }}" class="btn btn-xs btn-warning">Удаленные пользователи</a>
+                                </div>
                             </div>
                         </div>
                         <br>
