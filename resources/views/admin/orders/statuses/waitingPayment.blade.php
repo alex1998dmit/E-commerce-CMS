@@ -17,7 +17,6 @@
                                         <th scope="col">Категория товара</th>
                                         <th scope="col">Количества товара</th>
                                         <th scope="col">Сумма за товар</th>
-                                        <th scope="col">Статус заказа</th>
                                         <th scope="col">Изменить</th>
                                         <th scope="col">Удалить</th>
                                     </tr>
@@ -31,7 +30,6 @@
                                             <td>{{ $order->product->category->name }}</td>
                                             <td>{{ $order->amount }}</td>
                                             <td>{{ $order->sum }}</td>
-                                            <td>{{ $order->status->name }}</td>
                                             <td><a href="" class="btn btn-xs btn-info">Edit</a></td></td>
                                             <td><a href="{{ route('order.delete', ['id'=> $order->id]) }}" class="btn btn-xs btn-danger">Trash</a></td>
                                         </tr>

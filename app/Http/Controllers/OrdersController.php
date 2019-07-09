@@ -6,6 +6,7 @@ use Auth;
 use Validator;
 use App\Product;
 use App\Order;
+use App\OrderStatus;
 use App\Http\Resources\OrdersCollection;
 use App\Http\Resources\OrderResource;
 use App\Events\NewOrder;
@@ -30,7 +31,9 @@ class OrdersController extends Controller
             'product_id' => 'required|integer',
             'amount' => 'required|integer|min:1'
         ];
+
         $validator = Validator::make($request->all(), $rules);
+
         if ($validator->fails()) {
             $response['data'] = $validator->messages();
             return $response;
@@ -84,5 +87,57 @@ class OrdersController extends Controller
         } else {
             return abort(500, 'Nothing to restore');
         }
+    }
+
+    // Change order statuses
+    public function changeStatus($status, $order_id)
+    {
+        $user = Auth::user();
+        $order = Order::find($order_id);
+
+        if ($user->id === $order->user->id) {
+            $order->status_id = OrderStatus::where('name', '=', $status)->first()->id;
+            $order->save();
+            // TODO добавить ивент на обновление
+            return response()->json(['message' => 'Status changed to ' . $order->status->name], 202);
+        }
+
+        return response()->json(['message' => 'Not your order'], 403);
+    }
+
+    // TODO сделать через объект Order ... public function paymentWaiting(Order $order)
+    public function paymentWaiting($id)
+    {
+        return $this->changeStatus('waiting for payment', $id);
+    }
+
+    public function paymentSent($id)
+    {
+        return $this->changeStatus('payment sent', $id);
+    }
+
+    public function paymentReceived($id)
+    {
+        return $this->changeStatus('payment received', $id);
+    }
+
+    public function waintingToSent($id)
+    {
+        return $this->changeStatus('waiting to be sent', $id);
+    }
+
+    public function orderSent($id)
+    {
+        return $this->changeStatus('payment sent', $id);
+    }
+
+    public function waitReceived($id)
+    {
+        return $this->changeStatus('waiting to receive', $id);
+    }
+
+    public function orderReceived($id)
+    {
+        return $this->changeStatus('order received', $id);
     }
 }

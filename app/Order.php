@@ -13,7 +13,6 @@ class Order extends Model
         'product_id', 'user_id', 'amount', 'sum',
     ];
 
-
     public function user()
     {
         return $this->belongsTo('App\User');
@@ -22,5 +21,16 @@ class Order extends Model
     public function product()
     {
         return $this->belongsTo('App\Product');
+    }
+
+    public function status()
+    {
+        return $this->belongsTo('App\OrderStatus', 'status_id');
+    }
+
+    public function changeStatus($status)
+    {
+        $status_id = OrderStatus::where('name', '=', $status)->first()->id;
+        $this->status_id = $status_id;
     }
 }

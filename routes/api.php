@@ -57,6 +57,8 @@ Route::group(['middleware' => 'auth:api'], function() {
         Route::get('/orders', 'OrdersController@index');
         Route::post('/orders', 'OrdersController@store');
         Route::get('/orders/{order}', 'OrdersController@show');
+        Route::get('/orders/waitPayment/{id}', 'OrdersController@paymentWaiting');
+        Route::get('/orders/paymentSent/{id}', 'OrdersController@paymentSent');
     });
 
     // For react app
