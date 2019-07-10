@@ -15,6 +15,17 @@ use Illuminate\Http\Request;
 
 class OrdersController extends Controller
 {
+
+    public $statuses = [
+        'waiting for payment',
+        'payment sent',
+        'payment received',
+        'waiting to be sent',
+        'order sent',
+        'waiting to receive',
+        'order received'
+    ];
+
     public function index()
     {
         $user = Auth::user();
@@ -108,36 +119,43 @@ class OrdersController extends Controller
     // TODO сделать через объект Order ... public function paymentWaiting(Order $order)
     public function paymentWaiting($id)
     {
-        return $this->changeStatus('waiting for payment', $id);
+        return $this->changeStatus($this->statuses[0], $id);
     }
 
     public function paymentSent($id)
     {
-        return $this->changeStatus('payment sent', $id);
+        return $this->changeStatus($this->statuses[1], $id);
     }
 
     public function paymentReceived($id)
     {
-        return $this->changeStatus('payment received', $id);
+        return $this->changeStatus($this->statuses[2], $id);
     }
 
     public function waintingToSent($id)
     {
-        return $this->changeStatus('waiting to be sent', $id);
+        return $this->changeStatus($this->statuses[3], $id);
     }
 
     public function orderSent($id)
     {
-        return $this->changeStatus('payment sent', $id);
+        return $this->changeStatus($this->statuses[4], $id);
     }
 
     public function waitReceived($id)
     {
-        return $this->changeStatus('waiting to receive', $id);
+        return $this->changeStatus($this->statuses[5], $id);
     }
 
     public function orderReceived($id)
     {
-        return $this->changeStatus('order received', $id);
+        return $this->changeStatus($this->statuses[6], $id);
+    }
+
+    public function showWithStatus($status_id)
+    {
+        $status_name = OrderStatus::find($status_id)->name;
+        $orders = Order::where('status_id', '=', $status_id)->get();
+        return view('admin.orders.byStatus', compact('orders', 'status_name'));
     }
 }

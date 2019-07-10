@@ -7,6 +7,28 @@
             <div class="card">
                 <div class="card-header">Orders</div>
                     <div class="card-body" id="fromCartsContent">
+                        <div class="row">
+                            <div class="col-md-6 text-center">
+                                {{-- TODO: search what method should i use --}}
+                                <form action="{{ route('products.search') }}" method="POST" class="form-inline">
+                                    {{ csrf_field() }}
+                                    <div class="form-group mx-sm-3">
+                                        <input class="form-control" id="product_param" name="param" type="text" placeholder="Поиск..">
+                                    </div>
+                                    <input type="submit" class="btn btn-info" value="Найти">
+                                </form>
+                                </div>
+                                <div class="col-md-6 text-right">
+                                    <a href="{{ route('orders.waitingPayment') }}" class="btn btn-primary">Ожидающие оплату</a>
+                                    <a href="" class="btn btn-secondary">Оплата отправленна</a>
+                                    <a href="" class="btn btn-warning">Оплата подтверждена</a>
+                                    <a href="" class="btn btn-info">Заказ отправлен</a>
+                                    <a href="" class="btn btn-dark">Ожидается получение</a>
+                                    <a href="" class="btn btn-success">Заказ получен</a>
+                                </div>
+                            </div>
+                        </div>
+                        <br>
                         <div class="category-table">
                             <table class="table">
                                 <thead>
