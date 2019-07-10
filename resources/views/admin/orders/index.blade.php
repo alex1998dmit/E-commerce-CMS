@@ -11,6 +11,12 @@
                             @include('admin.orders.includes.search')
                             @include('admin.orders.includes.navigation')
                         </div>
+                        <div class="row">
+                            <div class="col-md-12 text-center">
+                                <a href="{{ route('product.create') }}" class="btn btn-success">Добавить заказы</a>
+                                <a href="{{ route('orders.trashed') }}" class="btn btn-warning">Удаленные заказы</a>
+                            </div>
+                        </div>
                         <br>
                         <div class="category-table">
                             <table class="table">

@@ -27,12 +27,14 @@ php artisan passport:install
 - [x] CRUD Orders
 - [x] CRUD Categories
 - [x] CRUD Requisites
-- [ ] CRUD Users
+- [x] CRUD Users
 - [x] API errors status
-- [ ] Order status
-- [ ] Search logic
+- [x] Order status
+- [x] Simple Search logic
+- [ ] Search logic with vue
 - [ ] Validation error
 - [ ] Cascade delete
 
 - [ ] Factories instead seeders
 - [ ] Unit tests
+- [ ] Includes views
