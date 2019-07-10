@@ -64,13 +64,6 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'admin']], function(
     Route::get('/orders', 'AdminController@orders')->name('orders');
     Route::get('orders/trashed', 'AdminController@trashedOrders')->name('orders.trashed');
         // statuses
-    Route::get('/orders/waitingPayment', 'OrdersController@waitingPaymenyOrders')->name('orders.waitingPayment');
-    Route::get('/orders/paymentSent', 'OrdersController@paymentSentOrders')->name('orders.paymentSent');
-    Route::get('/orders/paymentReceived', 'OrdersController@paymentReceivedOrders')->name('orders.paymentReceived');
-    Route::get('/orders/waitingToSent', 'OrdersController@waitingToBeSentOrders')->name('orders.waitingToSent');
-    Route::get('/orders/orderSent', 'OrdersController@ordersSent')->name('orders.orderSent');
-    Route::get('/orders/waitingToReceive', 'OrdersController@waitingToReceiveOrders')->name('orders.waitingToReceive');
-    Route::get('/orders/orderReceived', 'OrdersController@orderReceivedOrders')->name('orders.orderReceived');
 
     Route::get('/orders/status/{statusName}', 'OrdersController@showWithStatus')->name('orders.withStatus');
     // Requisites
