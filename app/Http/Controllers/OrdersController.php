@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Auth;
 use Validator;
+use App\User;
+Use App\Category;
 use App\Product;
 use App\Order;
 use App\OrderStatus;
@@ -98,6 +100,28 @@ class OrdersController extends Controller
         } else {
             return abort(500, 'Nothing to restore');
         }
+    }
+
+    public function search(Request $request)
+    {
+        $users_id = [];
+        $products_id = [];
+        $param = $request->param;
+
+        $users = User::where('name', 'LIKE', '%' . $param . '%')->get();
+        foreach($users as $user) {
+            $users_id[] = $user->id;
+        }
+
+        $products = Product::where('name', 'LIKE', '%' . $param . '%')->get();
+        foreach($products as $product) {
+            $products_id[] = $product->id;
+        }
+
+        $order_users = Order::whereIn('user_id', $users_id)->get();
+        $order_products = Order::whereIn('product_id', $products_id)->get();
+        $orders = (is_int($param)) ? Order::find($param) : [];
+        return view('admin.orders.search', compact('orders', 'order_products', 'order_users', 'param'));
     }
 
     // Change order statuses

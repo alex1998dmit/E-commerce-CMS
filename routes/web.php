@@ -63,9 +63,9 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'admin']], function(
     // Orders
     Route::get('/orders', 'AdminController@orders')->name('orders');
     Route::get('orders/trashed', 'AdminController@trashedOrders')->name('orders.trashed');
-        // statuses
-
     Route::get('/orders/status/{statusName}', 'OrdersController@showWithStatus')->name('orders.withStatus');
+    Route::post('/orders/search', 'OrdersController@search')->name('orders.search');
+
     // Requisites
     Route::get('/requisites', 'RequisitesController@index')->name('requisites');
     Route::get('/requisites/create', 'RequisitesController@create')->name('requisite.create');
