@@ -35,7 +35,7 @@
                                         <td>{{ discount.discount }}</td>
                                         <td>
                                             <!-- <b-button v-b-modal.modal-1 v-on:click="openModal(discount)">Открыть модалку</b-button> -->
-                                            <b-button id="show-btn" @click="$bvModal.show('bv-modal-example'); openModal(discount, index)">Редактировать</b-button>
+                                            <b-button id="show-btn" variant="outline-info" @click="$bvModal.show('bv-modal-example'); openModal(discount, index)">Редактировать</b-button>
                                         </td>
                                         <td>
                                             <a href="#"
@@ -98,12 +98,6 @@
                 this.updating_data = user;
                 this.index = index;
             },
-            updateData(data) {
-
-            },
-            hideModal(){
-
-            }
         },
         watch: {
 
