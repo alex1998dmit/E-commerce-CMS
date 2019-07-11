@@ -28,6 +28,7 @@ php artisan passport:install
 - [x] CRUD Categories
 - [x] CRUD Requisites
 - [x] CRUD Users
+- [ ] Users discounts
 - [x] API errors status
 - [x] Order status
 - [x] Simple Search logic

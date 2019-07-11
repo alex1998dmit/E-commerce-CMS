@@ -65,6 +65,11 @@
                                 </tbody>
                             </table>
                         </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <?php echo $users->render(); ?>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
