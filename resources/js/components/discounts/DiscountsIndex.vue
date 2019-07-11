@@ -3,13 +3,19 @@
         <div class="row justify-content-center">
             <div class="col-md-12">
                 <div class="card">
-                    <div class="card-herader">Скидки</div>
+                    <div class="row">
+                        <div class="col-md-12 text-center">
+                            <br>
+                            <h5>Скидки</h5>
+                        </div>
+                    </div>
                     <div class="card-body" id="fromCartsContent">
                         <div class="row">
                             <div class="col-md-12 text-right">
                                 <router-link :to="{name: 'createDiscount'}" class="btn btn-success">Создать новую скидку</router-link>
                             </div>
                         </div>
+                        <br>
                         <div class="category-table">
                             <table class="table table-bordered table-striped">
                                 <thead>

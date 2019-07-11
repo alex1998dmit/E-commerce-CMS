@@ -8,7 +8,7 @@ class Discount extends Model
 {
     //
     protected $fillable = [
-        'product_id', 'user_id', 'amount', 'sum',
+        'name', 'discount', 
     ];
 
     public function user()

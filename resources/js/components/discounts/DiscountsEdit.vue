@@ -36,12 +36,12 @@
             let app = this;
             let id = app.$route.params.id;
             app.discountId = id;
-            axios.get('/api/v1/companies/' + id)
+            axios.get('/api/v1/discounts/' + id)
                 .then(function (resp) {
                     app.duscount = resp.data;
                 })
                 .catch(function () {
-                    alert("Could not load your company")
+                    alert("Could not load your discount")
                 });
         },
         data: function () {

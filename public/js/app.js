@@ -1885,6 +1885,7 @@ __webpack_require__.r(__webpack_exports__);
       event.preventDefault();
       var app = this;
       var newDiscount = app.discount;
+      console.log(newDiscount);
       axios.post('/api/v1/discounts', newDiscount).then(function (resp) {
         app.$router.push({
           path: '/'
@@ -1945,10 +1946,10 @@ __webpack_require__.r(__webpack_exports__);
     var app = this;
     var id = app.$route.params.id;
     app.discountId = id;
-    axios.get('/api/v1/companies/' + id).then(function (resp) {
+    axios.get('/api/v1/discounts/' + id).then(function (resp) {
       app.duscount = resp.data;
     })["catch"](function () {
-      alert("Could not load your company");
+      alert("Could not load your discount");
     });
   },
   data: function data() {
@@ -1986,6 +1987,12 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -47769,7 +47776,7 @@ var render = function() {
     _c("div", { staticClass: "row justify-content-center" }, [
       _c("div", { staticClass: "col-md-12" }, [
         _c("div", { staticClass: "card" }, [
-          _c("div", { staticClass: "card-herader" }, [_vm._v("Скидки")]),
+          _vm._m(0),
           _vm._v(" "),
           _c(
             "div",
@@ -47793,12 +47800,14 @@ var render = function() {
                 )
               ]),
               _vm._v(" "),
+              _c("br"),
+              _vm._v(" "),
               _c("div", { staticClass: "category-table" }, [
                 _c(
                   "table",
                   { staticClass: "table table-bordered table-striped" },
                   [
-                    _vm._m(0),
+                    _vm._m(1),
                     _vm._v(" "),
                     _c(
                       "tbody",
@@ -47868,6 +47877,18 @@ var render = function() {
   ])
 }
 var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "row" }, [
+      _c("div", { staticClass: "col-md-12 text-center" }, [
+        _c("br"),
+        _vm._v(" "),
+        _c("h5", [_vm._v("Скидки")])
+      ])
+    ])
+  },
   function() {
     var _vm = this
     var _h = _vm.$createElement
@@ -62725,20 +62746,13 @@ module.exports = function(module) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var vue_router__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vue-router */ "./node_modules/vue-router/dist/vue-router.esm.js");
-/* harmony import */ var _components_discounts_DiscountsIndex_vue__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./components/discounts/DiscountsIndex.vue */ "./resources/js/components/discounts/DiscountsIndex.vue");
-/* harmony import */ var _components_discounts_DiscountsCreate_vue__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./components/discounts/DiscountsCreate.vue */ "./resources/js/components/discounts/DiscountsCreate.vue");
-/* harmony import */ var _components_discounts_DiscountsEdit_vue__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./components/discounts/DiscountsEdit.vue */ "./resources/js/components/discounts/DiscountsEdit.vue");
+/* harmony import */ var _router__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./router */ "./resources/js/router.js");
 /**
  * First we will load all of this project's JavaScript dependencies which
  * includes Vue and other libraries. It is a great starting point when
  * building robust, powerful web applications using Vue and Laravel.
  */
 __webpack_require__(/*! ./bootstrap */ "./resources/js/bootstrap.js");
-
-window.Vue = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.common.js");
-
-window.Vue.use(vue_router__WEBPACK_IMPORTED_MODULE_0__["default"]);
 /**
  * The following block of code may be used to automatically register your
  * Vue components. It will recursively scan this directory for the Vue
@@ -62751,26 +62765,9 @@ window.Vue.use(vue_router__WEBPACK_IMPORTED_MODULE_0__["default"]);
 
 
 
-
-var routes = [{
-  path: '/',
-  components: {
-    DiscountsIndex: _components_discounts_DiscountsIndex_vue__WEBPACK_IMPORTED_MODULE_4__["default"]
-  }
-}, {
-  path: '/admin/discounts/create',
-  component: _components_discounts_DiscountsCreate_vue__WEBPACK_IMPORTED_MODULE_2__["default"],
-  name: 'createDiscount'
-}, {
-  path: '/admin/discounts/edit/:id',
-  component: _components_discounts_DiscountsEdit_vue__WEBPACK_IMPORTED_MODULE_3__["default"],
-  name: 'editDiscount'
-}];
-var router = new vue_router__WEBPACK_IMPORTED_MODULE_0__["default"]({
-  routes: routes
-});
+window.Vue = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.common.js");
 var app = new Vue({
-  router: router
+  router: _router__WEBPACK_IMPORTED_MODULE_0__["default"]
 }).$mount('#app'); // Vue.component('example-component', require('./components/ExampleComponent.vue').default);
 
 /**
@@ -63053,6 +63050,48 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_DiscountsIndex_vue_vue_type_template_id_5ab939e8___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
 
 
+
+/***/ }),
+
+/***/ "./resources/js/router.js":
+/*!********************************!*\
+  !*** ./resources/js/router.js ***!
+  \********************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.common.js");
+/* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(vue__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var vue_router__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! vue-router */ "./node_modules/vue-router/dist/vue-router.esm.js");
+/* harmony import */ var _components_discounts_DiscountsIndex_vue__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./components/discounts/DiscountsIndex.vue */ "./resources/js/components/discounts/DiscountsIndex.vue");
+/* harmony import */ var _components_discounts_DiscountsCreate_vue__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./components/discounts/DiscountsCreate.vue */ "./resources/js/components/discounts/DiscountsCreate.vue");
+/* harmony import */ var _components_discounts_DiscountsEdit_vue__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./components/discounts/DiscountsEdit.vue */ "./resources/js/components/discounts/DiscountsEdit.vue");
+
+
+
+
+
+vue__WEBPACK_IMPORTED_MODULE_0___default.a.use(vue_router__WEBPACK_IMPORTED_MODULE_1__["default"]);
+var routes = [{
+  path: '/',
+  components: {
+    DiscountsIndex: _components_discounts_DiscountsIndex_vue__WEBPACK_IMPORTED_MODULE_2__["default"]
+  }
+}, {
+  path: '/admin/discounts/create',
+  component: _components_discounts_DiscountsCreate_vue__WEBPACK_IMPORTED_MODULE_3__["default"],
+  name: 'createDiscount'
+}, {
+  path: '/admin/discounts/edit/:id',
+  component: _components_discounts_DiscountsEdit_vue__WEBPACK_IMPORTED_MODULE_4__["default"],
+  name: 'editDiscount'
+}];
+var router = new vue_router__WEBPACK_IMPORTED_MODULE_1__["default"]({
+  routes: routes
+});
+/* harmony default export */ __webpack_exports__["default"] = (router);
 
 /***/ }),
 

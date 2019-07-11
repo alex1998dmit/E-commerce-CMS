@@ -6,9 +6,6 @@
 
 require('./bootstrap');
 
-window.Vue = require('vue');
-import VueRouter from 'vue-router';
-window.Vue.use(VueRouter);
 
 
 /**
@@ -22,18 +19,10 @@ window.Vue.use(VueRouter);
 // const files = require.context('./', true, /\.vue$/i);
 // files.keys().map(key => Vue.component(key.split('/').pop().split('.')[0], files(key).default));
 
-import DiscountsIndex from './components/discounts/DiscountsIndex.vue';
-import DiscountsCreate from './components/discounts/DiscountsCreate.vue';
-import DiscountsEdit from './components/discounts/DiscountsEdit.vue';
 
-const routes = [
-    {path: '/',components: { DiscountsIndex: DiscountsIndex}},
-    {path: '/admin/discounts/create', component: DiscountsCreate, name: 'createDiscount'},
-    {path: '/admin/discounts/edit/:id', component: DiscountsEdit, name: 'editDiscount'},
-];
+import router from './router';
 
-const router = new VueRouter({ routes });
-
+window.Vue = require('vue');
 const app = new Vue({ router }).$mount('#app');
 
 // Vue.component('example-component', require('./components/ExampleComponent.vue').default);

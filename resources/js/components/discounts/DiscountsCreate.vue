@@ -46,6 +46,7 @@
                 event.preventDefault();
                 var app = this;
                 var newDiscount = app.discount;
+                console.log(newDiscount);
                 axios.post('/api/v1/discounts', newDiscount)
                     .then(function (resp) {
                         app.$router.push({path: '/'});
