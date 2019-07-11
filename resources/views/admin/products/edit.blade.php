@@ -48,7 +48,7 @@
                                         <div class="form-group">
                                             @foreach($product->photo as $photo)
                                             <input checked="checked" name="uploaded_images[]" type="checkbox" value="{{ $photo->id }}">
-                                                <img src="{{ url('/upload/products/' . $photo->path )}}" alt="" width="300px" height="">
+                                                <img src="{{ url('/upload/products/' . $photo->path )}}" alt="" width="100px" height="">
                                             @endforeach
                                         </div>
                                         <div class="form-group">

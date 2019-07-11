@@ -19,6 +19,11 @@
                         </div>
                         <br>
                         <div class="category-table">
+                            <div class="row">
+                                <div class="col-md-12 text-center">
+                                    <h5> Результаты поиска по запросу <u>{{ $param }}</u>  :</h5>
+                                </div>
+                            </div>
                             <div class="col-md-12">
                                 <div class="row">
                                     <ul class="nav nav-tabs" id="myTab" role="tablist">
