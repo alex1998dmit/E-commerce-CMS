@@ -1,43 +1,50 @@
 <template>
-    <div>
-        <div class="form-group">
-            <router-link :to="{name: 'createDiscount'}" class="btn btn-success">Создать новую скидку</router-link>
-        </div>
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-herader">Скидки</div>
+                    <div class="card-body" id="fromCartsContent">
+                        <div class="row">
+                            <div class="col-md-12 text-right">
+                                <router-link :to="{name: 'createDiscount'}" class="btn btn-success">Создать новую скидку</router-link>
+                            </div>
+                        </div>
+                        <div class="category-table">
+                            <table class="table table-bordered table-striped">
+                                <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Название</th>
+                                    <th>Скидка</th>
+                                    <th>Редактировать</th>
+                                    <th>Удалить</th>
 
-        <div class="panel panel-default">
-            <div class="panel-heading">Discounts list</div>
-            <div class="panel-body">
-                <table class="table table-bordered table-striped">
-                    <thead>
-                    <tr>
-                        <th>ID</th>
-                        <th>Название</th>
-                        <th>Скидка</th>
-                        <th>Редактировать</th>
-                        <th>Удалить</th>
-
-                    </tr>
-                    </thead>
-                    <tbody>
-                        <tr v-for="discount, index in discounts">
-                            <td>{{ discount.id }}</td>
-                            <td>{{ discount.name }}</td>
-                            <td>{{ discount.discount }}</td>
-                            <td>
-                                <router-link :to="{name: 'editDiscount', params: {id: discount.id}}" class="btn btn-xs btn-info">
-                                    Редактировать
-                                </router-link>
-                            </td>
-                            <td>
-                                <a href="#"
-                                class="btn btn-xs btn-danger"
-                                v-on:click="deleteEntry(discount.id, index)">
-                                    Удалить
-                                </a>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                    <tr v-for="discount, index in discounts">
+                                        <td>{{ discount.id }}</td>
+                                        <td>{{ discount.name }}</td>
+                                        <td>{{ discount.discount }}</td>
+                                        <td>
+                                            <router-link :to="{name: 'editDiscount', params: {id: discount.id}}" class="btn btn-xs btn-info">
+                                                Редактировать
+                                            </router-link>
+                                        </td>
+                                        <td>
+                                            <a href="#"
+                                            class="btn btn-xs btn-danger"
+                                            v-on:click="deleteEntry(discount.id, index)">
+                                                Удалить
+                                            </a>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>

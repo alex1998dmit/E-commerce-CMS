@@ -2031,6 +2031,13 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
@@ -47758,86 +47765,102 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", [
-    _c(
-      "div",
-      { staticClass: "form-group" },
-      [
-        _c(
-          "router-link",
-          {
-            staticClass: "btn btn-success",
-            attrs: { to: { name: "createDiscount" } }
-          },
-          [_vm._v("Создать новую скидку")]
-        )
-      ],
-      1
-    ),
-    _vm._v(" "),
-    _c("div", { staticClass: "panel panel-default" }, [
-      _c("div", { staticClass: "panel-heading" }, [_vm._v("Discounts list")]),
-      _vm._v(" "),
-      _c("div", { staticClass: "panel-body" }, [
-        _c("table", { staticClass: "table table-bordered table-striped" }, [
-          _vm._m(0),
+  return _c("div", { staticClass: "container" }, [
+    _c("div", { staticClass: "row justify-content-center" }, [
+      _c("div", { staticClass: "col-md-12" }, [
+        _c("div", { staticClass: "card" }, [
+          _c("div", { staticClass: "card-herader" }, [_vm._v("Скидки")]),
           _vm._v(" "),
           _c(
-            "tbody",
-            _vm._l(_vm.discounts, function(discount, index) {
-              return _c("tr", [
-                _c("td", [_vm._v(_vm._s(discount.id))]),
-                _vm._v(" "),
-                _c("td", [_vm._v(_vm._s(discount.name))]),
-                _vm._v(" "),
-                _c("td", [_vm._v(_vm._s(discount.discount))]),
-                _vm._v(" "),
+            "div",
+            { staticClass: "card-body", attrs: { id: "fromCartsContent" } },
+            [
+              _c("div", { staticClass: "row" }, [
                 _c(
-                  "td",
+                  "div",
+                  { staticClass: "col-md-12 text-right" },
                   [
                     _c(
                       "router-link",
                       {
-                        staticClass: "btn btn-xs btn-info",
-                        attrs: {
-                          to: {
-                            name: "editDiscount",
-                            params: { id: discount.id }
-                          }
-                        }
+                        staticClass: "btn btn-success",
+                        attrs: { to: { name: "createDiscount" } }
                       },
-                      [
-                        _vm._v(
-                          "\n                                Редактировать\n                            "
-                        )
-                      ]
+                      [_vm._v("Создать новую скидку")]
                     )
                   ],
                   1
-                ),
-                _vm._v(" "),
-                _c("td", [
-                  _c(
-                    "a",
-                    {
-                      staticClass: "btn btn-xs btn-danger",
-                      attrs: { href: "#" },
-                      on: {
-                        click: function($event) {
-                          return _vm.deleteEntry(discount.id, index)
-                        }
-                      }
-                    },
-                    [
-                      _vm._v(
-                        "\n                                Удалить\n                            "
-                      )
-                    ]
-                  )
-                ])
+                )
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "category-table" }, [
+                _c(
+                  "table",
+                  { staticClass: "table table-bordered table-striped" },
+                  [
+                    _vm._m(0),
+                    _vm._v(" "),
+                    _c(
+                      "tbody",
+                      _vm._l(_vm.discounts, function(discount, index) {
+                        return _c("tr", [
+                          _c("td", [_vm._v(_vm._s(discount.id))]),
+                          _vm._v(" "),
+                          _c("td", [_vm._v(_vm._s(discount.name))]),
+                          _vm._v(" "),
+                          _c("td", [_vm._v(_vm._s(discount.discount))]),
+                          _vm._v(" "),
+                          _c(
+                            "td",
+                            [
+                              _c(
+                                "router-link",
+                                {
+                                  staticClass: "btn btn-xs btn-info",
+                                  attrs: {
+                                    to: {
+                                      name: "editDiscount",
+                                      params: { id: discount.id }
+                                    }
+                                  }
+                                },
+                                [
+                                  _vm._v(
+                                    "\n                                            Редактировать\n                                        "
+                                  )
+                                ]
+                              )
+                            ],
+                            1
+                          ),
+                          _vm._v(" "),
+                          _c("td", [
+                            _c(
+                              "a",
+                              {
+                                staticClass: "btn btn-xs btn-danger",
+                                attrs: { href: "#" },
+                                on: {
+                                  click: function($event) {
+                                    return _vm.deleteEntry(discount.id, index)
+                                  }
+                                }
+                              },
+                              [
+                                _vm._v(
+                                  "\n                                            Удалить\n                                        "
+                                )
+                              ]
+                            )
+                          ])
+                        ])
+                      }),
+                      0
+                    )
+                  ]
+                )
               ])
-            }),
-            0
+            ]
           )
         ])
       ])
