@@ -34,9 +34,8 @@
                                         <td>{{ discount.name }}</td>
                                         <td>{{ discount.discount }}</td>
                                         <td>
-                                            <router-link :to="{name: 'editDiscount', params: {id: discount.id}}" class="btn btn-xs btn-info">
-                                                Редактировать
-                                            </router-link>
+                                            <!-- <b-button v-b-modal.modal-1 v-on:click="openModal(discount)">Открыть модалку</b-button> -->
+                                            <b-button id="show-btn" @click="$bvModal.show('bv-modal-example'); openModal(discount, index)">Редактировать</b-button>
                                         </td>
                                         <td>
                                             <a href="#"
@@ -53,14 +52,22 @@
                 </div>
             </div>
         </div>
+        <modalWindow :discount="updating_data" :index="index"></modalWindow>
     </div>
 </template>
 
 <script>
+    import modalWindow from './includes/modalWindow'
+
     export default {
+        components: {
+            modalWindow
+        },
         data: function () {
             return {
-                discounts: []
+                discounts: [],
+                updating_data: {},
+                index: 0
             }
         },
         mounted() {
@@ -71,22 +78,35 @@
                 })
                 .catch(function (resp) {
                     console.log(resp);
-                    alert("Could not load discount");
+                    alert("Возникла проблемма при загрузке");
                 });
         },
         methods: {
             deleteEntry(id, index) {
-                if (confirm("Do you really want to delete it?")) {
+                if (confirm("Вы уверены что хотите удалить?")) {
                     var app = this;
                     axios.delete('/api/v1/discounts/' + id)
                         .then(function (resp) {
                             app.discounts.splice(index, 1);
                         })
                         .catch(function (resp) {
-                            alert("Could not delete discount");
+                            alert("Удаление не удалось");
                         });
                 }
+            },
+            openModal(user, index) {
+                this.updating_data = user;
+                this.index = index;
+            },
+            updateData(data) {
+
+            },
+            hideModal(){
+
             }
+        },
+        watch: {
+
         }
     }
 </script>

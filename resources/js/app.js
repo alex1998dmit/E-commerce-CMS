@@ -21,8 +21,20 @@ require('./bootstrap');
 
 
 import router from './router';
+import Vue from 'vue'
 
-window.Vue = require('vue');
+// Bootstrap-vue
+import BootstrapVue from 'bootstrap-vue'
+import 'bootstrap/dist/css/bootstrap.css'
+import 'bootstrap-vue/dist/bootstrap-vue.css'
+
+// Bootstrap components
+import { ModalPlugin } from 'bootstrap-vue'
+import { ButtonPlugin } from 'bootstrap-vue'
+
+Vue.use(ModalPlugin)
+Vue.use(ButtonPlugin)
+
 const app = new Vue({ router }).$mount('#app');
 
 // Vue.component('example-component', require('./components/ExampleComponent.vue').default);

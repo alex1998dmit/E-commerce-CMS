@@ -47,6 +47,11 @@ class DiscountsController extends Controller
         return Discount::findOrFail($id);
     }
 
+    public function single($id)
+    {
+        return Discount::findOrFail($id);
+    }
+
     /**
      * Show the form for editing the specified resource.
      *
