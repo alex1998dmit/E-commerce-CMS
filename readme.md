@@ -35,6 +35,7 @@ php artisan passport:install
 - [ ] Search logic with vue
 - [ ] Validation error
 - [ ] Cascade delete
+- [ ] !!!Add desc to discounts
 
 - [ ] Factories instead seeders
 - [ ] Unit tests

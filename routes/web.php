@@ -79,4 +79,10 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'admin']], function(
     Route::get('/users/{id}', 'UsersController@show')->name('user');
     Route::get('/users/trash/{id}', 'UsersController@trash')->name('user.trash');
     Route::post('/users/search', 'UsersController@search')->name('users.search');
+
+    // Discounts
+    Route::get('/discounts', 'DiscountsController@index')->name('discounts');
+    Route::get('/discounts/{discount_id}', 'DiscountsController@show')->name('discount');
+    Route::get('/discounts/delete/{discount_id}', 'DiscountsController@delete')->name('discount.delete');
+    Route::get('/discount/edit/{discount_id}', 'DiscountsController@edit')->name('discount.edit');
 });

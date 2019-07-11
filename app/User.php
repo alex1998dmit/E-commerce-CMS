@@ -65,6 +65,11 @@ class User extends Authenticatable implements MustVerifyEmail
         return $this->belongsToMany(Role::class);
     }
 
+    public function discount()
+    {
+        return $this->belongsTo('App\Discount');
+    }
+
     // NOT RELATHIONSHIPS
 
     /**
