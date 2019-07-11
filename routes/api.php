@@ -63,3 +63,7 @@ Route::group(['middleware' => 'auth:api'], function() {
 
     // For react app
 });
+
+Route::group(['prefix' => '/v1','namespace' => 'API\V1','as' => 'api.'], function () {
+        Route::resource('discounts', 'DiscountsController', ['except' => ['create', 'edit']]);
+    });

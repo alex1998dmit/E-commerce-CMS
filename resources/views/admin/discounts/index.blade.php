@@ -1,4 +1,4 @@
-@extends('admin.layouts.app')
+{{-- @extends('admin.layouts.app')
 
 @section('content')
 <div class="container">
@@ -44,6 +44,25 @@
                                 </tbody>
                             </table>
                         </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+@endsection --}}
+
+
+@extends('layouts.app')
+
+@section('content')
+    <div class="container">
+        <div class="row">
+            <div class="col-md-8 col-md-offset-2">
+                <div class="panel panel-default">
+                    <div class="panel-heading">Discounts</div>
+                    <div class="panel-body table-responsive">
+                        <router-view name="DiscountsIndex"></router-view>
+                        <router-view></router-view>
                     </div>
                 </div>
             </div>
