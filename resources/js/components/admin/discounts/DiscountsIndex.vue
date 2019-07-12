@@ -13,7 +13,7 @@
                         <div class="row">
                             <div class="col-md-12 text-right">
                                 <!-- <router-link :to="{name: 'createDiscount'}" class="btn btn-success">Создать новую скидку</router-link> -->
-                                <b-button id="show-btn" variant="outline-info" @click="$bvModal.show('create-discount-modal'); ">Создать новую скидку</b-button>
+                                <b-button id="show-btn" variant="outline-success" @click="$bvModal.show('create-discount-modal'); ">Создать новую скидку</b-button>
                             </div>
                         </div>
                         <br>
@@ -76,14 +76,14 @@
             return {
                 discounts: [],
                 updating_data: {},
-                new_data: {},
                 index: 0
             }
         },
         mounted() {
-            var app = this;
+            let app = this;
             axios.get('/api/v1/discounts')
                 .then(function (resp) {
+                    console.log(resp);
                     app.discounts = resp.data;
                 })
                 .catch(function (resp) {
@@ -93,8 +93,8 @@
         },
         methods: {
             deleteEntry(id, index) {
+                let app = this;
                 if (confirm("Вы уверены что хотите удалить?")) {
-                    var app = this;
                     axios.delete('/api/v1/discounts/' + id)
                         .then(function (resp) {
                             app.discounts.splice(index, 1);
@@ -109,8 +109,5 @@
                 this.index = index;
             },
         },
-        watch: {
-
-        }
     }
 </script>

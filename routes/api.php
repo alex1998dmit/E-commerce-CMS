@@ -60,12 +60,14 @@ Route::group(['middleware' => 'auth:api'], function() {
         Route::get('/orders/waitPayment/{id}', 'OrdersController@paymentWaiting');
         Route::get('/orders/paymentSent/{id}', 'OrdersController@paymentSent');
     });
-
-    // For react app
 });
 
-Route::group(['prefix' => '/v1','namespace' => 'API\V1','as' => 'api.'], function () {
+Route::group(['prefix' => '/v1','namespace' => 'API\V1'], function () {
     Route::get('/discounts/show/{discount}', 'DiscountsController@show');
     Route::put('/discounts/{discount}', 'DiscountsController@update');
     Route::resource('discounts', 'DiscountsController', ['except' => ['create', 'edit']]);
 });
+
+
+
+

@@ -10,8 +10,8 @@
                         <label for="exampleInputEmail1">Скидка</label>
                         <input type="text" class="form-control" v-model="discount.discount">
                     </div>
-                    <b-button class="mt-3" block variant="outline-success" @click="$bvModal.hide('bv-modal-example'); createDiscount()">Сохранить</b-button>
-                    <b-button class="mt-3" block variant="outline-danger" @click="$bvModal.hide('bv-modal-example');">Отмена</b-button>
+                    <b-button class="mt-3" block variant="outline-success" @click="$bvModal.hide('create-discount-modal'); createDiscount()">Сохранить</b-button>
+                    <b-button class="mt-3" block variant="outline-danger" @click="$bvModal.hide('create-discount-modal');">Отмена</b-button>
                 </form>
             </b-modal>
         </div>
@@ -31,11 +31,11 @@ export default {
     methods: {
         createDiscount() {
             event.preventDefault();
+            let app = this;
             var newDiscount = this.discount;
-            console.log(newDiscount);
             axios.post('/api/v1/discounts', newDiscount)
                 .then(function (resp) {
-                     this.$emit('discounts', newDiscount);
+                     app.$parent.discounts.push(resp.data);
                 })
                 .catch(function (resp) {
                     console.log(resp);
