@@ -12,20 +12,21 @@
                     <div class="card-body" id="fromCartsContent">
                         <div class="row">
                             <div class="col-md-12 text-right">
-                                <router-link :to="{name: 'createDiscount'}" class="btn btn-success">Создать новую скидку</router-link>
+                                <!-- <router-link :to="{name: 'createDiscount'}" class="btn btn-success">Создать новую скидку</router-link> -->
+                                <b-button id="show-btn" variant="outline-info" @click="$bvModal.show('create-discount-modal'); ">Создать новую скидку</b-button>
                             </div>
                         </div>
                         <br>
                         <div class="category-table">
-                            <table class="table table-bordered table-striped">
+                            <table class="table">
                                 <thead>
                                 <tr>
-                                    <th>ID</th>
-                                    <th>Название</th>
-                                    <th>Скидка</th>
-                                    <th>Редактировать</th>
-                                    <th>Удалить</th>
-
+                                    <th scope="col">ID</th>
+                                    <th scope="col">Название</th>
+                                    <th scope="col">Скидка</th>
+                                    <th scope="col">Подробнее</th>
+                                    <th scope="col">Редактировать</th>
+                                    <th scope="col">Удалить</th>
                                 </tr>
                                 </thead>
                                 <tbody>
@@ -33,6 +34,11 @@
                                         <td>{{ discount.id }}</td>
                                         <td>{{ discount.name }}</td>
                                         <td>{{ discount.discount }}</td>
+                                        <td>
+                                            <router-link :to="{name: 'showDiscount', params: {id: discount.id}}" class="btn btn-xs btn-info">
+                                                Подробнее
+                                            </router-link>
+                                        </td>
                                         <td>
                                             <!-- <b-button v-b-modal.modal-1 v-on:click="openModal(discount)">Открыть модалку</b-button> -->
                                             <b-button id="show-btn" variant="outline-info" @click="$bvModal.show('bv-modal-example'); openModal(discount, index)">Редактировать</b-button>
@@ -52,21 +58,25 @@
                 </div>
             </div>
         </div>
-        <modalWindow :discount="updating_data" :index="index"></modalWindow>
+        <modalShow :discount="updating_data" :index="index"></modalShow>
+        <modalCreate></modalCreate>
     </div>
 </template>
 
 <script>
-    import modalWindow from './includes/modalWindow'
+    import modalShow from './includes/modalWindow.vue'
+    import modalCreate from './includes/createDiscountModal.vue'
 
     export default {
         components: {
-            modalWindow
+            modalShow,
+            modalCreate
         },
         data: function () {
             return {
                 discounts: [],
                 updating_data: {},
+                new_data: {},
                 index: 0
             }
         },

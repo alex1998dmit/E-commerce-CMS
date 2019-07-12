@@ -65,10 +65,7 @@ Route::group(['middleware' => 'auth:api'], function() {
 });
 
 Route::group(['prefix' => '/v1','namespace' => 'API\V1','as' => 'api.'], function () {
-    // Route::get('discounts', 'DiscountsController@index');
-    // Route::post('discounts', 'DiscountsController@create');
-    Route::get('/discounts/{discounts}', 'DiscountsController@single');
+    Route::get('/discounts/show/{discount}', 'DiscountsController@show');
     Route::put('/discounts/{discount}', 'DiscountsController@update');
     Route::resource('discounts', 'DiscountsController', ['except' => ['create', 'edit']]);
 });
-

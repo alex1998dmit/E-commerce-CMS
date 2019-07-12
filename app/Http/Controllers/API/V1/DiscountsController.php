@@ -42,9 +42,10 @@ class DiscountsController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Discount $discount)
     {
-        return Discount::findOrFail($id);
+        $users = $discount->users;
+        return $discount;
     }
 
     public function single($id)
@@ -90,4 +91,5 @@ class DiscountsController extends Controller
         $dicount->delete();
         return '';
     }
+
 }

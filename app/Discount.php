@@ -8,10 +8,10 @@ class Discount extends Model
 {
     //
     protected $fillable = [
-        'name', 'discount', 
+        'name', 'discount',
     ];
 
-    public function user()
+    public function users()
     {
         return $this->hasMany('App\User');
     }
