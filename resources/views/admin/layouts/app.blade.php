@@ -10,7 +10,7 @@
     <title>{{ config('app.name', 'Laravel') }}</title>
 
     <!-- Scripts -->
-    <script src="{{ asset('js/app.js') }}"></script>
+    {{-- <script src="{{ asset('js/app.js') }}"></script> --}}
 
     <!-- Fonts -->
     <link rel="dns-prefetch" href="//fonts.gstatic.com">
@@ -98,47 +98,45 @@
                 </div>
             </div>
         </nav>
-
         <main class="py-4">
             @yield('content')
         </main>
     </div>
 <script>
-    console.log('show result');
-    Echo.channel('carts')
-        .listen('AddProductToShoppingCart', (e) => {
-            let cart = e.cart;
-            $("#carts_list").append(`
-                <th>${cart.username}</th>
-                <th>${cart.email}</th>
-                <th>${cart.product}</th>
-                <th>${cart.category}</th>
-                <th>${cart.amount}</th>
-                <th>${cart.product_price * cart.amount}</th>
-                <th>${cart.created_at}</th>
-                <td><a href="" class="btn btn-xs btn-info">Edit</a></td></td>
-                <td><a href="" class="btn btn-xs btn-danger">Trash</a></td>
-            `);
-        })
-
-        Echo.channel('orders')
-        .listen('NewOrder', (e) => {
-            let order = e.order;
-            console.log(e.order);
-            $("#orders_list").append(`
-                <tr>
-                    // TODO пофисить время
-                    <td>${order.created_at}</td>
-                    <td>${order.customer}</td>
-                    <td>${order.product_name}</td>
-                    <td>${order.category}</td>
-                    <td>${order.amount}</td>
-                    <td>${order.sum}</td>
-                    <td><a href="" class="btn btn-xs btn-info">Edit</a></td></td>
-                    <td><a href="" class="btn btn-xs btn-danger">Trash</a></td>
-                </tr>
-            `);
-        })
+    // console.log('show result');
+    // Echo.channel('carts')
+    //     .listen('AddProductToShoppingCart', (e) => {
+    //         let cart = e.cart;
+    //         $("#carts_list").append(`
+    //             <th>${cart.username}</th>
+    //             <th>${cart.email}</th>
+    //             <th>${cart.product}</th>
+    //             <th>${cart.category}</th>
+    //             <th>${cart.amount}</th>
+    //             <th>${cart.product_price * cart.amount}</th>
+    //             <th>${cart.created_at}</th>
+    //             <td><a href="" class="btn btn-xs btn-info">Edit</a></td></td>
+    //             <td><a href="" class="btn btn-xs btn-danger">Trash</a></td>
+    //         `);
+    //     })
+    //     Echo.channel('orders')
+    //     .listen('NewOrder', (e) => {
+    //         let order = e.order;
+    //         console.log(e.order);
+    //         $("#orders_list").append(`
+    //             <tr>
+    //                 // TODO пофисить время
+    //                 <td>${order.created_at}</td>
+    //                 <td>${order.customer}</td>
+    //                 <td>${order.product_name}</td>
+    //                 <td>${order.category}</td>
+    //                 <td>${order.amount}</td>
+    //                 <td>${order.sum}</td>
+    //                 <td><a href="" class="btn btn-xs btn-info">Edit</a></td></td>
+    //                 <td><a href="" class="btn btn-xs btn-danger">Trash</a></td>
+    //             </tr>
+    //         `);
+    //     })
 </script>
 </body>
 </html>

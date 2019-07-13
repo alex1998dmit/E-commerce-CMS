@@ -84,12 +84,6 @@
             @endif
 
             <div class="content">
-                <div class="title m-b-md">
-                    Laravel
-                </div>
-
-                <div class="links">
-                </div>
             </div>
         </div>
         <script src="{{ asset('js/app.js') }}"></script>

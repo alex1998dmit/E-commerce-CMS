@@ -4,14 +4,34 @@ import VueRouter from 'vue-router';
 import DiscountsIndex from './components/admin/discounts/DiscountsIndex.vue';
 import DiscountsCreate from './components/admin/discounts/DiscountsCreate.vue';
 import DiscountShow from './components/admin/discounts/DiscountShow.vue';
+import PersonalAccessTokens from './components/passport/PersonalAccessTokens.vue';
+import DashboardAdmin from './components/admin/dashboard/DashboardIndex.vue';
+
+import UsersIndex from './components/admin/users/UsersIndex.vue';
 
 Vue.use(VueRouter);
 
 const routes = [
-    {path: '/',components: { DiscountsIndex: DiscountsIndex}},
-    {path: '/admin/discounts/', component: DiscountsIndex},
-    {path: '/admin/discounts/create', component: DiscountsCreate, name: 'createDiscount'},
-    {path: '/admin/discounts/show/:id', component: DiscountShow, name:'showDiscount'}
+    {
+        path: '/discounts',
+        name: 'discounts',
+        component: DiscountsIndex
+    },
+    {
+        path: '/discounts/:id',
+        component: DiscountShow,
+        name:'showDiscount'
+    },
+    {
+        path: '/users',
+        component: UsersIndex,
+        name: 'users'
+    },
+    {
+        path: '/login',
+        component: PersonalAccessTokens,
+        name:'login'
+    },
 ];
 
 const router = new VueRouter({ routes });

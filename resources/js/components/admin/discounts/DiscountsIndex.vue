@@ -1,7 +1,5 @@
 <template>
-    <div class="container">
-        <div class="row justify-content-center">
-            <div class="col-md-12">
+        <div class="col-md-12">
                 <div class="card">
                     <div class="row">
                         <div class="col-md-12 text-center">
@@ -13,6 +11,7 @@
                         <div class="row">
                             <div class="col-md-12 text-right">
                                 <!-- <router-link :to="{name: 'createDiscount'}" class="btn btn-success">Создать новую скидку</router-link> -->
+                                <router-link :to="{name: 'dashboard'}" class="btn btn-info">Главная</router-link>
                                 <b-button id="show-btn" variant="outline-success" @click="$bvModal.show('create-discount-modal'); ">Создать новую скидку</b-button>
                             </div>
                         </div>
@@ -56,8 +55,6 @@
                         </div>
                     </div>
                 </div>
-            </div>
-        </div>
         <modalShow :discount="updating_data" :index="index"></modalShow>
         <modalCreate></modalCreate>
     </div>

@@ -86,3 +86,8 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'admin']], function(
     Route::get('/discounts/delete/{discount_id}', 'DiscountsController@delete')->name('discount.delete');
     Route::get('/discount/edit/{discount_id}', 'DiscountsController@edit')->name('discount.edit');
 });
+
+
+Route::get('/admina/', function (){
+    return view('dashboard');
+});

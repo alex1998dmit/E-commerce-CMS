@@ -20,11 +20,14 @@ require('./bootstrap');
 // files.keys().map(key => Vue.component(key.split('/').pop().split('.')[0], files(key).default));
 
 
+
+
 import router from './router';
 import Vue from 'vue'
 
+import App from './components/admin/App.vue'
+
 // Bootstrap-vue
-import BootstrapVue from 'bootstrap-vue'
 import 'bootstrap/dist/css/bootstrap.css'
 import 'bootstrap-vue/dist/bootstrap-vue.css'
 
@@ -35,7 +38,13 @@ import { ButtonPlugin } from 'bootstrap-vue'
 Vue.use(ModalPlugin)
 Vue.use(ButtonPlugin)
 
-const app = new Vue({ router }).$mount('#app');
+const app = new Vue({
+    el: '#app',
+    components: { App },
+    router,
+});
+
+
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to
