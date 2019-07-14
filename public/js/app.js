@@ -1985,12 +1985,27 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: 'childCategories',
   props: {
     childs: Array
   },
-  mounted: function mounted() {}
+  data: function data() {
+    return {
+      inputField: []
+    };
+  },
+  mounted: function mounted() {
+    console.log(this.$parent);
+  },
+  methods: {
+    addSubcategory: function addSubcategory(category) {
+      var app = this;
+      this.$emit('update', category);
+    }
+  }
 });
 
 /***/ }),
@@ -2015,6 +2030,21 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   components: {
@@ -2025,31 +2055,66 @@ __webpack_require__.r(__webpack_exports__);
   },
   data: function data() {
     return {
-      categoryTree: Array
+      categoryTree: [],
+      allCategories: [],
+      inputField: false,
+      parent_category_name: "",
+      new_category: {
+        parent_id: 0,
+        name: ""
+      }
     };
   },
   mounted: function mounted() {
-    var _this = this;
-
-    var categories = this.categories;
-    var categoriesWithChilds = categories.map(function (el) {
-      el.childs = _this.findChildsWithId(el.id);
-      return el;
-    });
-    var sortedCategoriesWithChilds = categoriesWithChilds.filter(function (el) {
-      if (el.parent_id === 0) {
-        return el;
-      }
-    });
-    this.categoryTree = sortedCategoriesWithChilds;
+    this.buildTree();
   },
   methods: {
+    buildTree: function buildTree() {
+      var _this = this;
+
+      this.allCategories = this.categories;
+      var categories = this.allCategories;
+      var categoriesWithChilds = categories.map(function (el) {
+        el.childs = _this.findChildsWithId(el.id);
+        return el;
+      });
+      var sortedCategoriesWithChilds = categoriesWithChilds.filter(function (el) {
+        if (el.parent_id === 0) {
+          return el;
+        }
+      });
+      this.categoryTree = sortedCategoriesWithChilds;
+    },
+    addNewCategoryToTreeState: function addNewCategoryToTreeState() {},
+    hideInput: function hideInput() {
+      this.inputField = !this.inputField;
+      this.new_category.name = "";
+      this.new_category.parent_id = 0;
+    },
+    addCategory: function addCategory() {
+      var _this2 = this;
+
+      var app = this;
+      axios.post('/api/v1/categories', this.new_category).then(function (resp) {
+        _this2.allCategories.push(resp.data);
+
+        app.buildTree();
+
+        _this2.hideInput();
+      })["catch"](function (resp) {});
+    },
+    // utils
     findChildsWithId: function findChildsWithId(id) {
       return this.categories.filter(function (el) {
         if (el.parent_id === id) {
           return el;
         }
       });
+    },
+    updateCategories: function updateCategories(category) {
+      this.inputField = true;
+      this.new_category.parent_id = category.id;
+      this.parent_category_name = category.name;
     }
   }
 });
@@ -76990,6 +77055,20 @@ var render = function() {
         "li",
         [
           _vm._v("\n        " + _vm._s(child.name) + "\n        "),
+          _c(
+            "button",
+            {
+              staticClass: "btn btn-success btn-sm",
+              attrs: { type: "button" },
+              on: {
+                click: function($event) {
+                  return _vm.addSubcategory(child)
+                }
+              }
+            },
+            [_vm._v("+")]
+          ),
+          _vm._v(" "),
           child.childs.length > 0
             ? _c("childCategories", { attrs: { childs: child.childs } })
             : _vm._e()
@@ -77028,21 +77107,114 @@ var render = function() {
       _c(
         "b-modal",
         { attrs: { id: "modal-xl", size: "xl", title: "Дерево категорий" } },
-        _vm._l(_vm.categoryTree, function(category) {
-          return _c(
-            "li",
-            [
-              _vm._v(
-                "\n            " + _vm._s(category.name) + "\n            "
-              ),
-              category.childs.length > 0
-                ? _c("childCategories", { attrs: { childs: category.childs } })
-                : _vm._e()
-            ],
-            1
-          )
-        }),
-        0
+        [
+          _vm.inputField
+            ? _c("div", { staticClass: "row" }, [
+                _c("div", { staticClass: "col-md-12" }),
+                _vm._v(" "),
+                _c("div", { staticClass: "col-md-6" }, [
+                  _c("input", {
+                    directives: [
+                      {
+                        name: "model",
+                        rawName: "v-model",
+                        value: _vm.new_category.name,
+                        expression: "new_category.name"
+                      }
+                    ],
+                    staticClass: "form-control",
+                    attrs: {
+                      type: "text",
+                      placeholder: _vm.parent_category_name
+                    },
+                    domProps: { value: _vm.new_category.name },
+                    on: {
+                      input: function($event) {
+                        if ($event.target.composing) {
+                          return
+                        }
+                        _vm.$set(_vm.new_category, "name", $event.target.value)
+                      }
+                    }
+                  })
+                ]),
+                _vm._v(" "),
+                _c("div", { staticClass: "col-md-6" }, [
+                  _c(
+                    "button",
+                    {
+                      staticClass: "btn btn-success",
+                      attrs: { type: "button" },
+                      on: {
+                        click: function($event) {
+                          return _vm.addCategory()
+                        }
+                      }
+                    },
+                    [_vm._v("Добавить")]
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "button",
+                    {
+                      staticClass: "btn btn-danger",
+                      attrs: { type: "button" },
+                      on: {
+                        click: function($event) {
+                          return _vm.hideInput()
+                        }
+                      }
+                    },
+                    [_vm._v("Отмена")]
+                  )
+                ])
+              ])
+            : _vm._e(),
+          _vm._v(" "),
+          _c("br"),
+          _vm._v(" "),
+          _vm._l(_vm.categoryTree, function(category) {
+            return _c(
+              "li",
+              [
+                _vm._v(
+                  "\n            " + _vm._s(category.name) + "\n            "
+                ),
+                _c(
+                  "button",
+                  {
+                    staticClass: "btn btn-success btn-sm",
+                    attrs: { type: "button" },
+                    on: {
+                      click: function($event) {
+                        return _vm.updateCategories(category)
+                      }
+                    }
+                  },
+                  [_vm._v("+")]
+                ),
+                _vm._v(" "),
+                _c(
+                  "button",
+                  {
+                    staticClass: "btn btn-warning btn-sm",
+                    attrs: { type: "button" }
+                  },
+                  [_vm._v("+ продукт")]
+                ),
+                _vm._v(" "),
+                category.childs.length > 0
+                  ? _c("childCategories", {
+                      attrs: { childs: category.childs },
+                      on: { update: _vm.updateCategories }
+                    })
+                  : _vm._e()
+              ],
+              1
+            )
+          })
+        ],
+        2
       )
     ],
     1

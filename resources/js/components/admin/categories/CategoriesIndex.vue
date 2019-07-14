@@ -50,7 +50,7 @@ import treeCategories from './includes/treeCategories';
 
 export default {
     components: {
-        treeCategories
+        treeCategories,
     },
     data: () => {
         return {

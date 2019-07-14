@@ -62,7 +62,13 @@ Route::group(['middleware' => 'auth:api'], function() {
     });
 });
 
+
+Route::post('/admin/categories/', function() {
+    return [];
+});
+
 Route::group(['prefix' => '/v1','namespace' => 'API\V1'], function () {
+
     Route::get('/discounts/show/{discount}', 'DiscountsController@show');
     Route::put('/discounts/{discount}', 'DiscountsController@update');
     Route::resource('discounts', 'DiscountsController', ['except' => ['create', 'edit']]);
@@ -70,8 +76,13 @@ Route::group(['prefix' => '/v1','namespace' => 'API\V1'], function () {
     Route::get('users/search', 'UsersController@search');
     Route::resource('users', 'UsersController', ['except' => 'create', 'edit']);
 
+    Route::post('/categories', 'CategoriesController@store');
+    // Route::post('/categories', function() {
+    //     return [];
+    // });
     Route::get('/categories/{id}', 'CategoriesController@show');
     Route::get('categories', 'CategoriesController@index');
+    // Route::resource('users', 'CategoriesController', ['except' => 'create', 'edit']);
 });
 
 
