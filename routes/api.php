@@ -69,6 +69,9 @@ Route::group(['prefix' => '/v1','namespace' => 'API\V1'], function () {
 
     Route::get('users/search', 'UsersController@search');
     Route::resource('users', 'UsersController', ['except' => 'create', 'edit']);
+
+    Route::get('/categories/{id}', 'CategoriesController@show');
+    Route::get('categories', 'CategoriesController@index');
 });
 
 

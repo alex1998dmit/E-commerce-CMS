@@ -1,17 +1,14 @@
 <template>
     <div>
         <div class="row">
-            <div class="col-md-6 text-center">
-                <form action="" method="" class="form-inline">
-                    <div class="form-group mx-sm-3">
-                        <input class="form-control" v-model="search_param" @change="search()" id="user_param" name="param" type="text" placeholder="Поиск..">
-                    </div>
-                    <!-- <input type="submit" class="btn btn-info" value="Найти"> -->
-                </form>
+            <div class="col-md-6 text-left">
+                <div class="form-group mx-sm-3">
+                    <input class="form-control" v-model="search_param" @change="search()" id="user_param" name="param" type="text" placeholder="Поиск..">
                 </div>
-                <div class="col-md-6 text-right">
-                    <a href="" class="btn btn-xs btn-warning">Удаленные пользователи</a>
-                </div>
+            </div>
+            <div class="col-md-6 text-right">
+                <a href="" class="btn btn-xs btn-warning">Удаленные пользователи</a>
+            </div>
             </div>
             <br>
             <div class="category-table">
@@ -54,48 +51,7 @@
                     </tbody>
                 </table>
             </div>
-            <b-modal id="modal-xl" size="xl" title="Заказы пользователя">
-                <div class="row">
-                    <div class="col-md-12">
-                        <h5>{{ user.name }}</h5>
-                        <h6>{{ user.email }}</h6>
-                    </div>
-                </div>
-                <br>
-                <div class="row">
-                    <div class="col-md-12">
-                        <div class="category-table">
-                            <h4>Заказы</h4>
-                            <table class="table">
-                                <thead>
-                                    <tr>
-                                        <th scope="col">id</th>
-                                        <th scope="col">Наименование товара</th>
-                                        <th scope="col">Категория товара</th>
-                                        <th scope="col">Дата заказа</th>
-                                        <th scope="col">Количество купленного товара</th>
-                                        <th scope="col">Цена за 1 единицу товара</th>
-                                        <th scope="col">Сумма (с учетом скидок)</th>
-                                        <th scope="col">Статус заказа</th>
-                                    </tr>
-                                </thead>
-                                <tbody class="categories_list" id="categories_list">
-                                    <tr v-for="order in user.order">
-                                        <td>{{ order.id }}</td>
-                                        <td>{{ order.product.name }}</td>
-                                        <td>{{ order.product.category.name }}</td>
-                                        <td>{{ order.created_at }}</td>
-                                        <td>{{ order.amount }}</td>
-                                        <td>{{ order.product.price }}</td>
-                                        <td>{{ order.sum }}</td>
-                                        <td>{{ order.status.name }}</td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                </div>
-            </b-modal>
+            <singleUserModal :user="user"></singleUserModal>
         </div>
     </div>
 </template>
@@ -105,6 +61,16 @@ import singleUserModal from './includes/singleUserModal';
 export default {
     components: {
         singleUserModal
+    },
+    data: () => {
+        return {
+            search_param: "",
+            users: [],
+            user: {
+                name: "",
+                order: []
+            },
+        }
     },
     mounted() {
         let app = this;
@@ -116,16 +82,6 @@ export default {
                 console.log(resp);
                 alert("Возникла проблемма при загрузке");
             });
-    },
-    data: () => {
-        return {
-            search_param: "",
-            users: [],
-            user: {
-                name: "",
-                order: []
-            },
-        }
     },
     methods: {
         showUserModal(id) {
@@ -141,6 +97,7 @@ export default {
             });
         },
         search() {
+            event.preventDefault();
             let app = this;
             axios.get('/api/v1/users/search', {
                 params: {

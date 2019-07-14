@@ -18,6 +18,9 @@
                     <router-link :to="{ name: 'users' }">Пользователи</router-link> |
                 </li>
                 <li>
+                    <router-link :to="{ name: 'categories' }">Категории</router-link> |
+                </li>
+                <li>
                     <a href="#pageSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">Pages</a>
                     <ul class="collapse list-unstyled" id="pageSubmenu">
                         <li>

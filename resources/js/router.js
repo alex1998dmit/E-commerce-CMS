@@ -9,6 +9,8 @@ import DashboardAdmin from './components/admin/dashboard/DashboardIndex.vue';
 
 import UsersIndex from './components/admin/users/UsersIndex.vue';
 
+import CategoriesIndex from './components/admin/categories/CategoriesIndex.vue';
+
 Vue.use(VueRouter);
 
 const routes = [
@@ -26,6 +28,11 @@ const routes = [
         path: '/users',
         component: UsersIndex,
         name: 'users'
+    },
+    {
+        path: '/categories',
+        component: CategoriesIndex,
+        name: 'categories'
     },
     {
         path: '/login',
