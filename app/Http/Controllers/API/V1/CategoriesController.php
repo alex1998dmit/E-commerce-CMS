@@ -53,4 +53,19 @@ class CategoriesController extends Controller
         }
         return new CategoryWithProducts($category);
     }
+
+    public function trash($id)
+    {
+        $category = Category::findOrFail($id);
+        $category->delete();
+
+        if ($category) {
+            foreach($category->childs as $subcategory) {
+                $subcategory->delete();
+            }
+            return Category::all();
+        } else {
+            abort(500);
+        }
+    }
 }

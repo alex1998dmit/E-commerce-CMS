@@ -1,19 +1,13 @@
-import Vue from 'vue';
-import VueRouter from 'vue-router';
-
+import DashboardAdmin from './components/admin/dashboard/DashboardIndex.vue';
 import DiscountsIndex from './components/admin/discounts/DiscountsIndex.vue';
 import DiscountsCreate from './components/admin/discounts/DiscountsCreate.vue';
 import DiscountShow from './components/admin/discounts/DiscountShow.vue';
 import PersonalAccessTokens from './components/passport/PersonalAccessTokens.vue';
-import DashboardAdmin from './components/admin/dashboard/DashboardIndex.vue';
-
 import UsersIndex from './components/admin/users/UsersIndex.vue';
-
 import CategoriesIndex from './components/admin/categories/CategoriesIndex.vue';
+import Login from './components/admin/auth/Login';
 
-Vue.use(VueRouter);
-
-const routes = [
+export const routes = [
     {
         path: '/discounts',
         name: 'discounts',
@@ -36,11 +30,12 @@ const routes = [
     },
     {
         path: '/login',
-        component: PersonalAccessTokens,
+        component: Login,
         name:'login'
     },
-];
-
-const router = new VueRouter({ routes });
-
-export default router;
+    {
+        path: '/',
+        component: DashboardAdmin,
+        name: 'dashboard'
+    }
+]

@@ -5,7 +5,7 @@
                 <h3>Admin panel</h3>
             </div>
             <ul class="list-unstyled components">
-                <p>Административая панель</p>
+                <p>{{ welcome }}</p>
                 <li class="active">
                     <a href="#homeSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">Категория скидок</a>
                     <ul class="collapse list-unstyled" id="homeSubmenu">
@@ -36,7 +36,21 @@
 </template>
 <script>
 export default {
-
+    computed: {
+        welcome() {
+            return this.$store.getters.welcome;
+        }
+    }
 }
 </script>
 
+<style>
+    #sidebar {
+        color: white;
+        height: 100%;
+    }
+
+    #sidebar ul li a {
+        color: white;
+    }
+</style>

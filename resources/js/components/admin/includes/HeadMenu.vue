@@ -5,7 +5,7 @@
                 <a class="nav-link" href="#"></a>
             </li>
             <li class="nav-item">
-                <router-link :to="{ name: 'login' }">login</router-link> |
+                <!-- <router-link :to="{ name: 'login' }">login</router-link> | -->
             </li>
         </ul>
     </div>

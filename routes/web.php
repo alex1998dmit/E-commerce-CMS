@@ -11,13 +11,16 @@
 |
 */
 
-Route::get('/', function () {
+// Route::get('/', function () {
+//     return view('welcome');
+// });
+
+Route::get('{any}', function() {
     return view('welcome');
-});
+})->where('any', '.*');
 
 Auth::routes();
 Auth::routes(['verify' => true]);
-
 
 Route::get('/home', 'HomeController@index')->name('home');
 // TODO middleware, метод Делит
@@ -87,7 +90,3 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'admin']], function(
     Route::get('/discount/edit/{discount_id}', 'DiscountsController@edit')->name('discount.edit');
 });
 
-
-Route::get('/admina/', function (){
-    return view('dashboard');
-});

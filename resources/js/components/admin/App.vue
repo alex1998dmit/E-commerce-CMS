@@ -26,6 +26,7 @@
     import HeadMenu from './includes/HeadMenu'
 
     export default {
+        name: 'app',
         components: {
             Menu, HeadMenu
         }

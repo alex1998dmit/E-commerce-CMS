@@ -80,6 +80,8 @@ Route::group(['prefix' => '/v1','namespace' => 'API\V1'], function () {
     // Route::post('/categories', function() {
     //     return [];
     // });
+
+    Route::delete('/categories/{id}', 'CategoriesController@trash');
     Route::get('/categories/{id}', 'CategoriesController@show');
     Route::get('categories', 'CategoriesController@index');
     // Route::resource('users', 'CategoriesController', ['except' => 'create', 'edit']);

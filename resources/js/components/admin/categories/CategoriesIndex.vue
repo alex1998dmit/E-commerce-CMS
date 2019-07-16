@@ -3,6 +3,7 @@
         <div class="row">
             <div class="col-md-12">
                 <b-button v-b-modal.modal-xl variant="primary">Открыть дерево категорий</b-button>
+                <b-button v-b-modal.modal-1>Создать категорию</b-button>
             </div>
         </div>
         <br>
@@ -27,13 +28,13 @@
                 </thead>
                 <tbody class="categories_list" id="categories_list">
                     <!-- @foreach ($allCategories  as $category) -->
-                    <tr>
-                        <!-- <td>{{ $category->id }}</td> -->
-                        <!-- <td>{{ $category->name }}</td> -->
+                    <tr v-for="category in categories" :key="category.id">
+                        <td>{{ category.id }}</td>
+                        <td>{{ category.name }}</td>
                         <td>
-                            <!-- @foreach($category->childs as $sub_category) -->
-                                <!-- {{ $sub_category->name }} -->
-                            <!-- @endforeach -->
+                            <tr v-for="subcategory in category.childs" :key="subcategory.id">
+                                <td>{{ subcategory.name }}</td>
+                            </tr>
                         </td>
                         <!-- <td><a href="{{ route('category.edit', ['id' => $category->id]) }}" class="btn btn-xs btn-info">Edit</a></td></td> -->
                         <!-- <td><a href="{{ route('category.trash', ['id' => $category->id]) }}" class="btn btn-xs btn-danger">Trash</a></td> -->
@@ -43,6 +44,12 @@
             </table>
         </div>
         <treeCategories v-if="categories.length > 0" :categories="this.categories"></treeCategories>
+        <b-modal id="modal-1" title="Создать категорию">
+            <p class="my-4">Новая категория</p>
+            <input type="text" v-model="new_category_data.name">
+            <input type="text" v-model="new_category_data.parent_id">
+            <input type="submit" value="создать" @click="createCategory();">
+        </b-modal>
     </div>
 </template>
 <script>
@@ -54,20 +61,19 @@ export default {
     },
     data: () => {
         return {
-            categories: [],
+            new_category_data: {
+                name: "",
+                parent_id: 0
+            }
         }
     },
     mounted() {
-        let app = this;
-        axios.get('/api/v1/categories')
-            .then((resp) => {
-                app.categories = resp.data;
-                app.buildTree(resp.data);
-            })
-            .catch((resp) => {
-                console.log(resp);
-                alert("Возникла проблемма при загрузке");
-            });
+        this.$store.dispatch('getCategories');
+    },
+    computed: {
+        categories() {
+            return this.$store.getters.categories;
+        }
     },
     methods: {
         buildTree(categories){
@@ -80,6 +86,9 @@ export default {
                 tag = (el.childs) ?  `<ul id="level-${el.id}">${el.name} ${add_category_button}</ul>` : `<li id="level-${el.id}">${el.name} ${add_category_button}</li>`;
                 parent_category.insertAdjacentHTML('beforeend', `${tag}`);
             });
+        },
+        createCategory() {
+            this.$store.dispatch('createCategories', this.new_category_data);
         }
     }
 }
