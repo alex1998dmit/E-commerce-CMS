@@ -84,6 +84,7 @@ Route::group(['prefix' => '/v1','namespace' => 'API\V1'], function () {
     Route::delete('/categories/{id}', 'CategoriesController@trash');
     Route::get('/categories/{id}', 'CategoriesController@show');
     Route::get('categories', 'CategoriesController@index');
+    Route::patch('categories/{category}','CategoriesController@update');
     // Route::resource('users', 'CategoriesController', ['except' => 'create', 'edit']);
 });
 

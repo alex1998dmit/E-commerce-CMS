@@ -1945,6 +1945,27 @@ __webpack_require__.r(__webpack_exports__);
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _includes_treeCategories__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./includes/treeCategories */ "./resources/js/components/admin/categories/includes/treeCategories.vue");
+/* harmony import */ var vuex__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! vuex */ "./node_modules/vuex/dist/vuex.esm.js");
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; var ownKeys = Object.keys(source); if (typeof Object.getOwnPropertySymbols === 'function') { ownKeys = ownKeys.concat(Object.getOwnPropertySymbols(source).filter(function (sym) { return Object.getOwnPropertyDescriptor(source, sym).enumerable; })); } ownKeys.forEach(function (key) { _defineProperty(target, key, source[key]); }); } return target; }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -2000,13 +2021,15 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 
+
 /* harmony default export */ __webpack_exports__["default"] = ({
   components: {
     treeCategories: _includes_treeCategories__WEBPACK_IMPORTED_MODULE_0__["default"]
   },
   data: function data() {
     return {
-      new_category_data: {
+      updating_category: {
+        id: 0,
         name: "",
         parent_id: 0
       }
@@ -2015,25 +2038,23 @@ __webpack_require__.r(__webpack_exports__);
   mounted: function mounted() {
     this.$store.dispatch('getCategories');
   },
-  computed: {
-    categories: function categories() {
-      return this.$store.getters.categories;
-    }
-  },
+  computed: _objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_1__["mapGetters"])(['categories'])),
   methods: {
-    buildTree: function buildTree(categories) {
-      var tag;
-      var parent_category;
-      var menu = document.getElementById('level-0');
-      var add_category_button = "<b-button variant='outline-success'>+</b-button>";
-      categories.map(function (el) {
-        parent_category = document.getElementById("level-".concat(el.parent_id));
-        tag = el.childs ? "<ul id=\"level-".concat(el.id, "\">").concat(el.name, " ").concat(add_category_button, "</ul>") : "<li id=\"level-".concat(el.id, "\">").concat(el.name, " ").concat(add_category_button, "</li>");
-        parent_category.insertAdjacentHTML('beforeend', "".concat(tag));
-      });
-    },
     createCategory: function createCategory() {
       this.$store.dispatch('createCategories', this.new_category_data);
+    },
+    removeCategory: function removeCategory(category) {
+      if (confirm("Вы уверены что хотите удалить категорию ?")) {
+        this.$store.dispatch('removeCategory', category);
+      }
+    },
+    editCategory: function editCategory(category) {
+      this.updating_category.id = category.id;
+      this.updating_category.name = category.name;
+      this.updating_category.parent_id = category.parent_id;
+    },
+    updateCategory: function updateCategory() {
+      this.$store.dispatch('updateCategory', this.updating_category);
     }
   }
 });
@@ -2083,6 +2104,10 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _mixins_createCategoryMixin_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../mixins/createCategoryMixin.js */ "./resources/js/components/admin/categories/mixins/createCategoryMixin.js");
 /* harmony import */ var _childCategories_vue__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./childCategories.vue */ "./resources/js/components/admin/categories/includes/childCategories.vue");
 /* harmony import */ var _helpers_categoryTree__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../../helpers/categoryTree */ "./resources/js/helpers/categoryTree.js");
+//
+//
+//
+//
 //
 //
 //
@@ -2310,6 +2335,11 @@ __webpack_require__.r(__webpack_exports__);
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _includes_modalWindow_vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./includes/modalWindow.vue */ "./resources/js/components/admin/discounts/includes/modalWindow.vue");
 /* harmony import */ var _includes_createDiscountModal_vue__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./includes/createDiscountModal.vue */ "./resources/js/components/admin/discounts/includes/createDiscountModal.vue");
+/* harmony import */ var vuex__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! vuex */ "./node_modules/vuex/dist/vuex.esm.js");
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; var ownKeys = Object.keys(source); if (typeof Object.getOwnPropertySymbols === 'function') { ownKeys = ownKeys.concat(Object.getOwnPropertySymbols(source).filter(function (sym) { return Object.getOwnPropertyDescriptor(source, sym).enumerable; })); } ownKeys.forEach(function (key) { _defineProperty(target, key, source[key]); }); } return target; }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
 //
 //
 //
@@ -2372,6 +2402,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -2379,38 +2410,31 @@ __webpack_require__.r(__webpack_exports__);
     modalShow: _includes_modalWindow_vue__WEBPACK_IMPORTED_MODULE_0__["default"],
     modalCreate: _includes_createDiscountModal_vue__WEBPACK_IMPORTED_MODULE_1__["default"]
   },
-  data: function data() {
-    return {
-      discounts: [],
-      updating_data: {},
-      index: 0
-    };
-  },
   mounted: function mounted() {
-    var app = this;
-    axios.get('/api/v1/discounts').then(function (resp) {
-      console.log(resp);
-      app.discounts = resp.data;
-    })["catch"](function (resp) {
-      console.log(resp);
-      alert("Возникла проблемма при загрузке");
-    });
+    this.$store.dispatch('getDiscounts');
   },
+  computed: _objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_2__["mapGetters"])(['discounts']), {
+    discount: {
+      get: function get() {
+        return this.$store.getters.updatingDiscount;
+      },
+      set: function set(updating_discount) {
+        return this.$store.commit('SET_NEW_DISCOUNT_PARAM', updating_discount);
+      }
+    }
+  }),
   methods: {
     deleteEntry: function deleteEntry(id, index) {
       var app = this;
 
-      if (confirm("Вы уверены что хотите удалить?")) {
-        axios["delete"]('/api/v1/discounts/' + id).then(function (resp) {
-          app.discounts.splice(index, 1);
-        })["catch"](function (resp) {
-          alert("Удаление не удалось");
-        });
-      }
+      if (confirm("Вы уверены что хотите удалить?")) {}
     },
-    openModal: function openModal(user, index) {
-      this.updating_data = user;
-      this.index = index;
+    openModal: function openModal(discount, index) {
+      this.discount = {
+        discount: discount,
+        index: index
+      };
+      console.log(this.discount);
     }
   }
 });
@@ -2504,21 +2528,20 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 /* harmony default export */ __webpack_exports__["default"] = ({
-  props: {
-    discount: Object,
-    index: Number
+  computed: {
+    updating_discount: {
+      get: function get() {
+        return this.$store.getters.updatingDiscount;
+      }
+    }
   },
   methods: {
     updateDiscount: function updateDiscount() {
-      event.preventDefault();
-      axios.put('/api/v1/discounts/' + this.discount.id, this.discount).then(function (resp) {
-        console.log(resp);
-      })["catch"](function (resp) {
-        alert('something gone wrong');
-        console.log(resp);
-      });
+      this.$store.dispatch('updateDiscount');
     },
-    deleteDiscount: function deleteDiscount(id, index) {}
+    deleteDiscount: function deleteDiscount() {
+      this.$store.dispatch('removeDiscount', this.updating_discount.discount.id);
+    }
   }
 });
 
@@ -77122,20 +77145,6 @@ var render = function() {
                 attrs: { variant: "primary" }
               },
               [_vm._v("Открыть дерево категорий")]
-            ),
-            _vm._v(" "),
-            _c(
-              "b-button",
-              {
-                directives: [
-                  {
-                    name: "b-modal",
-                    rawName: "v-b-modal.modal-1",
-                    modifiers: { "modal-1": true }
-                  }
-                ]
-              },
-              [_vm._v("Создать категорию")]
             )
           ],
           1
@@ -77146,96 +77155,162 @@ var render = function() {
       _vm._v(" "),
       _vm._m(0),
       _vm._v(" "),
-      _c("div", { staticClass: "category-table" }, [
-        _c("table", { staticClass: "table" }, [
-          _vm._m(1),
+      _c(
+        "div",
+        { staticClass: "category-table" },
+        [
+          _c("table", { staticClass: "table" }, [
+            _vm._m(1),
+            _vm._v(" "),
+            _c(
+              "tbody",
+              {
+                staticClass: "categories_list",
+                attrs: { id: "categories_list" }
+              },
+              _vm._l(_vm.categories, function(category) {
+                return _c("tr", { key: category.id }, [
+                  _c("td", [_vm._v(_vm._s(category.id))]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v(_vm._s(category.name))]),
+                  _vm._v(" "),
+                  _c(
+                    "td",
+                    _vm._l(category.childs, function(subcategory) {
+                      return _c("tr", { key: subcategory.id }, [
+                        _c("td", [_vm._v(_vm._s(subcategory.name))])
+                      ])
+                    }),
+                    0
+                  ),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("В разработке")]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v("В разработке")]),
+                  _vm._v(" "),
+                  _c("td", [
+                    _c(
+                      "a",
+                      {
+                        staticClass: "btn btn-xs btn-danger",
+                        attrs: { href: "#" },
+                        on: {
+                          click: function($event) {
+                            return _vm.removeCategory(category)
+                          }
+                        }
+                      },
+                      [
+                        _vm._v(
+                          "\n                                Удалить\n                        "
+                        )
+                      ]
+                    )
+                  ]),
+                  _vm._v(" "),
+                  _c("td", [
+                    _c(
+                      "a",
+                      {
+                        staticClass: "btn btn-xs btn-warning",
+                        attrs: { href: "#" },
+                        on: {
+                          click: function($event) {
+                            _vm.$bvModal.show("bv-modal-edit_category")
+                            _vm.editCategory(category)
+                          }
+                        }
+                      },
+                      [
+                        _vm._v(
+                          "\n                                Изменить\n                        "
+                        )
+                      ]
+                    )
+                  ])
+                ])
+              }),
+              0
+            )
+          ]),
           _vm._v(" "),
           _c(
-            "tbody",
+            "b-modal",
             {
-              staticClass: "categories_list",
-              attrs: { id: "categories_list" }
+              attrs: {
+                id: "bv-modal-edit_category",
+                "hide-footer": "",
+                title: "Редактировать категорию"
+              }
             },
-            _vm._l(_vm.categories, function(category) {
-              return _c("tr", { key: category.id }, [
-                _c("td", [_vm._v(_vm._s(category.id))]),
-                _vm._v(" "),
-                _c("td", [_vm._v(_vm._s(category.name))]),
-                _vm._v(" "),
-                _c(
-                  "td",
-                  _vm._l(category.childs, function(subcategory) {
-                    return _c("tr", { key: subcategory.id }, [
-                      _c("td", [_vm._v(_vm._s(subcategory.name))])
-                    ])
-                  }),
-                  0
-                )
-              ])
-            }),
-            0
+            [
+              _c("div", { staticClass: "form-group" }, [
+                _c("input", {
+                  directives: [
+                    {
+                      name: "model",
+                      rawName: "v-model",
+                      value: _vm.updating_category.name,
+                      expression: "updating_category.name"
+                    }
+                  ],
+                  staticClass: "form-control",
+                  attrs: {
+                    type: "text",
+                    placeholder: this.updating_category.name
+                  },
+                  domProps: { value: _vm.updating_category.name },
+                  on: {
+                    input: function($event) {
+                      if ($event.target.composing) {
+                        return
+                      }
+                      _vm.$set(
+                        _vm.updating_category,
+                        "name",
+                        $event.target.value
+                      )
+                    }
+                  }
+                })
+              ]),
+              _vm._v(" "),
+              _c(
+                "b-button",
+                {
+                  attrs: { variant: "outline-success", block: "" },
+                  on: {
+                    click: function($event) {
+                      _vm.$bvModal.hide("bv-modal-edit_category")
+                      _vm.updateCategory()
+                    }
+                  }
+                },
+                [_vm._v("Обновить")]
+              ),
+              _vm._v(" "),
+              _c(
+                "b-button",
+                {
+                  attrs: { variant: "outline-danger", block: "" },
+                  on: {
+                    click: function($event) {
+                      return _vm.$bvModal.hide("bv-modal-edit_category")
+                    }
+                  }
+                },
+                [_vm._v("Close Me")]
+              )
+            ],
+            1
           )
-        ])
-      ]),
+        ],
+        1
+      ),
       _vm._v(" "),
       _vm.categories.length > 0
         ? _c("treeCategories", { attrs: { categories: this.categories } })
-        : _vm._e(),
-      _vm._v(" "),
-      _c("b-modal", { attrs: { id: "modal-1", title: "Создать категорию" } }, [
-        _c("p", { staticClass: "my-4" }, [_vm._v("Новая категория")]),
-        _vm._v(" "),
-        _c("input", {
-          directives: [
-            {
-              name: "model",
-              rawName: "v-model",
-              value: _vm.new_category_data.name,
-              expression: "new_category_data.name"
-            }
-          ],
-          attrs: { type: "text" },
-          domProps: { value: _vm.new_category_data.name },
-          on: {
-            input: function($event) {
-              if ($event.target.composing) {
-                return
-              }
-              _vm.$set(_vm.new_category_data, "name", $event.target.value)
-            }
-          }
-        }),
-        _vm._v(" "),
-        _c("input", {
-          directives: [
-            {
-              name: "model",
-              rawName: "v-model",
-              value: _vm.new_category_data.parent_id,
-              expression: "new_category_data.parent_id"
-            }
-          ],
-          attrs: { type: "text" },
-          domProps: { value: _vm.new_category_data.parent_id },
-          on: {
-            input: function($event) {
-              if ($event.target.composing) {
-                return
-              }
-              _vm.$set(_vm.new_category_data, "parent_id", $event.target.value)
-            }
-          }
-        }),
-        _vm._v(" "),
-        _c("input", {
-          attrs: { type: "submit", value: "создать" },
-          on: {
-            click: function($event) {
-              return _vm.createCategory()
-            }
-          }
-        })
-      ])
+        : _vm._e()
     ],
     1
   )
@@ -77263,11 +77338,13 @@ var staticRenderFns = [
         _vm._v(" "),
         _c("th", { attrs: { scope: "col" } }, [_vm._v("Подкатегории")]),
         _vm._v(" "),
+        _c("th", { attrs: { scope: "col" } }, [_vm._v("Количество товаров")]),
+        _vm._v(" "),
+        _c("th", { attrs: { scope: "col" } }, [_vm._v("Количество заказов")]),
+        _vm._v(" "),
         _c("th", { attrs: { scope: "col" } }, [_vm._v("Удалить")]),
         _vm._v(" "),
-        _c("th", { attrs: { scope: "col" } }, [_vm._v("Редактировать")]),
-        _vm._v(" "),
-        _c("th", { attrs: { scope: "col" } }, [_vm._v("Добавить товар")])
+        _c("th", { attrs: { scope: "col" } }, [_vm._v("Редактировать")])
       ])
     ])
   }
@@ -77436,38 +77513,52 @@ var render = function() {
       _vm._v(" "),
       _c(
         "b-modal",
-        { attrs: { id: "bv-modal-create-category", "hide-footer": "" } },
+        {
+          attrs: {
+            id: "bv-modal-create-category",
+            "hide-footer": "",
+            title: "Добавить новую категорию"
+          }
+        },
         [
-          _c("div", { staticClass: "d-block text-center" }, [
-            _c("h5", [_vm._v("Hello From This Modal!")])
+          _c("br"),
+          _vm._v(" "),
+          _c("div", { staticClass: "row" }, [
+            _c("div", { staticClass: "col-md-12" }, [
+              _c("label", { attrs: { for: "category_name" } }, [
+                _vm._v("Название новой категории")
+              ]),
+              _vm._v(" "),
+              _c("input", {
+                directives: [
+                  {
+                    name: "model",
+                    rawName: "v-model",
+                    value: _vm.new_category.name,
+                    expression: "new_category.name"
+                  }
+                ],
+                staticClass: "form-control",
+                attrs: { type: "text", name: "category_name" },
+                domProps: { value: _vm.new_category.name },
+                on: {
+                  input: function($event) {
+                    if ($event.target.composing) {
+                      return
+                    }
+                    _vm.$set(_vm.new_category, "name", $event.target.value)
+                  }
+                }
+              })
+            ])
           ]),
           _vm._v(" "),
-          _c("input", {
-            directives: [
-              {
-                name: "model",
-                rawName: "v-model",
-                value: _vm.new_category.name,
-                expression: "new_category.name"
-              }
-            ],
-            attrs: { type: "text" },
-            domProps: { value: _vm.new_category.name },
-            on: {
-              input: function($event) {
-                if ($event.target.composing) {
-                  return
-                }
-                _vm.$set(_vm.new_category, "name", $event.target.value)
-              }
-            }
-          }),
+          _c("br"),
           _vm._v(" "),
           _c(
-            "button",
+            "b-button",
             {
-              staticClass: "mt-3 btn btn-success",
-              attrs: { type: "button" },
+              attrs: { block: "", variant: "outline-success" },
               on: {
                 click: function($event) {
                   return _vm.addSubcategory()
@@ -77484,11 +77575,11 @@ var render = function() {
               attrs: { block: "" },
               on: {
                 click: function($event) {
-                  return _vm.$bvModal.hide("bv-modal-example")
+                  return _vm.$bvModal.hide("bv-modal-create-category")
                 }
               }
             },
-            [_vm._v("Close Me")]
+            [_vm._v("Отмена")]
           )
         ],
         1
@@ -77854,7 +77945,7 @@ var render = function() {
                 _c(
                   "tbody",
                   _vm._l(_vm.discounts, function(discount, index) {
-                    return _c("tr", [
+                    return _c("tr", { key: discount.id }, [
                       _c("td", [_vm._v(_vm._s(discount.id))]),
                       _vm._v(" "),
                       _c("td", [_vm._v(_vm._s(discount.name))]),
@@ -77937,9 +78028,7 @@ var render = function() {
         )
       ]),
       _vm._v(" "),
-      _c("modalShow", {
-        attrs: { discount: _vm.updating_data, index: _vm.index }
-      }),
+      _c("modalShow"),
       _vm._v(" "),
       _c("modalCreate")
     ],
@@ -78160,19 +78249,23 @@ var render = function() {
                     {
                       name: "model",
                       rawName: "v-model",
-                      value: _vm.discount.id,
-                      expression: "discount.id"
+                      value: _vm.updating_discount.discount.id,
+                      expression: "updating_discount.discount.id"
                     }
                   ],
                   staticClass: "form-control",
                   attrs: { type: "text", disabled: "" },
-                  domProps: { value: _vm.discount.id },
+                  domProps: { value: _vm.updating_discount.discount.id },
                   on: {
                     input: function($event) {
                       if ($event.target.composing) {
                         return
                       }
-                      _vm.$set(_vm.discount, "id", $event.target.value)
+                      _vm.$set(
+                        _vm.updating_discount.discount,
+                        "id",
+                        $event.target.value
+                      )
                     }
                   }
                 })
@@ -78188,19 +78281,23 @@ var render = function() {
                     {
                       name: "model",
                       rawName: "v-model",
-                      value: _vm.discount.name,
-                      expression: "discount.name"
+                      value: _vm.updating_discount.discount.name,
+                      expression: "updating_discount.discount.name"
                     }
                   ],
                   staticClass: "form-control",
                   attrs: { type: "text" },
-                  domProps: { value: _vm.discount.name },
+                  domProps: { value: _vm.updating_discount.discount.name },
                   on: {
                     input: function($event) {
                       if ($event.target.composing) {
                         return
                       }
-                      _vm.$set(_vm.discount, "name", $event.target.value)
+                      _vm.$set(
+                        _vm.updating_discount.discount,
+                        "name",
+                        $event.target.value
+                      )
                     }
                   }
                 })
@@ -78216,19 +78313,23 @@ var render = function() {
                     {
                       name: "model",
                       rawName: "v-model",
-                      value: _vm.discount.discount,
-                      expression: "discount.discount"
+                      value: _vm.updating_discount.discount.discount,
+                      expression: "updating_discount.discount.discount"
                     }
                   ],
                   staticClass: "form-control",
                   attrs: { type: "text" },
-                  domProps: { value: _vm.discount.discount },
+                  domProps: { value: _vm.updating_discount.discount.discount },
                   on: {
                     input: function($event) {
                       if ($event.target.composing) {
                         return
                       }
-                      _vm.$set(_vm.discount, "discount", $event.target.value)
+                      _vm.$set(
+                        _vm.updating_discount.discount,
+                        "discount",
+                        $event.target.value
+                      )
                     }
                   }
                 })
@@ -78241,8 +78342,8 @@ var render = function() {
                   attrs: { block: "", variant: "outline-success" },
                   on: {
                     click: function($event) {
-                      _vm.$bvModal.hide("bv-modal-example")
                       _vm.updateDiscount()
+                      _vm.$bvModal.hide("bv-modal-example")
                     }
                   }
                 },
@@ -78257,7 +78358,7 @@ var render = function() {
                   on: {
                     click: function($event) {
                       _vm.$bvModal.hide("bv-modal-example")
-                      _vm.$parent.deleteEntry(_vm.discount.id, _vm.index)
+                      _vm.deleteDiscount()
                     }
                   }
                 },
@@ -96408,14 +96509,23 @@ __webpack_require__.r(__webpack_exports__);
     isLoggedIn: 1,
     loading: false,
     auth_error: null,
+    grant_type: "password",
+    client_id: 2,
+    client_secret: "WhYqHBDCWfGGecC4XcRc6yur09AJxxCvn3FiPJJT",
     categories: [],
     new_category: {
       name: "",
       parent_id: 0
     },
-    grant_type: "password",
-    client_id: 2,
-    client_secret: "WhYqHBDCWfGGecC4XcRc6yur09AJxxCvn3FiPJJT"
+    discounts: [],
+    new_discount: {
+      name: "",
+      discount: ""
+    },
+    updating_discount: {
+      index: 0,
+      discount: ""
+    }
   },
   getters: {
     isLoading: function isLoading(state) {
@@ -96435,6 +96545,15 @@ __webpack_require__.r(__webpack_exports__);
     },
     newCategory: function newCategory(state) {
       return state.new_category;
+    },
+    updatingDiscount: function updatingDiscount(state) {
+      return state.updating_discount;
+    },
+    newDiscount: function newDiscount(state) {
+      return state.new_discount;
+    },
+    discounts: function discounts(state) {
+      return state.discounts;
     }
   },
   mutations: {
@@ -96462,9 +96581,31 @@ __webpack_require__.r(__webpack_exports__);
     removeCategory: function removeCategory(state, categories) {
       state.categories.splice(0, state.categories.length);
       state.categories = categories;
-    }
+    },
+    updateCategory: function updateCategory(state, categories) {
+      state.categories.splice(0, state.categories.length);
+      state.categories = categories;
+    },
+    // discounts
+    GET_ALL_DISCOUNTS: function GET_ALL_DISCOUNTS(state, discounts) {
+      state.discounts = discounts;
+    },
+    CREATE_NEW_DISCOUNT: function CREATE_NEW_DISCOUNT(state, new_discount) {
+      state.discounts.push(new_discount);
+    },
+    REMOVE_DISCOUNT: function REMOVE_DISCOUNT(state, index) {
+      state.discounts.splice(index, 1);
+    },
+    UPDATE_DISCOUNT: function UPDATE_DISCOUNT(state, discount, index) {
+      state.discounts[index] = discount;
+    },
+    SET_NEW_DISCOUNT_PARAM: function SET_NEW_DISCOUNT_PARAM(state, discount) {
+      state.updating_discount = Object.assign({}, state.updating_discount, discount);
+    } // products
+
   },
   actions: {
+    // categories
     getCategories: function getCategories(context) {
       axios.get('/api/v1/categories').then(function (resp) {
         context.commit('updateCategories', resp.data);
@@ -96491,7 +96632,58 @@ __webpack_require__.r(__webpack_exports__);
         console.log('error with deleting category');
         console.log(resp);
       });
-    }
+    },
+    updateCategory: function updateCategory(context, category) {
+      axios.patch("/api/v1/categories/".concat(category.id), category).then(function (resp) {
+        context.commit('updateCategory', resp.data);
+      })["catch"](function (resp) {
+        console.log('error with update category');
+        console.log(resp);
+      });
+    },
+    // discounts
+    getDiscounts: function getDiscounts(context) {
+      axios.get('/api/v1/discounts').then(function (resp) {
+        context.commit('GET_ALL_DISCOUNTS', resp.data);
+      })["catch"](function (resp) {
+        console.log(resp);
+        alert("Возникла проблемма при загрузке");
+      });
+    },
+    createDiscount: function createDiscount(context, new_discount) {
+      axios.post('/api/v1/discounts', new_discount).then(function (resp) {
+        context.commit('CREATE_NEW_DISCOUNT', resp.data);
+      })["catch"](function (resp) {
+        console.log(resp);
+        alert("Could not create your discount");
+      });
+    },
+    removeDiscount: function removeDiscount(context, id) {
+      // TODO закинуть в helpers и импортировать сюда
+      var index = this.getters.discounts.map(function (obj) {
+        return obj.id;
+      }).indexOf(id);
+      axios["delete"]('/api/v1/discounts/' + id).then(function (resp) {
+        context.commit('REMOVE_DISCOUNT', index);
+      })["catch"](function (resp) {
+        alert("Удаление не удалось", resp);
+      });
+    },
+    // TODO продумать передавать ли сюда в качестве параметра поля изменяего объекта (новые данные)
+    updateDiscount: function updateDiscount(context) {
+      var discount = this.getters.updatingDiscount.discount;
+      var index = this.getters.updatingDiscount.index;
+      axios.put('/api/v1/discounts/' + discount.id, discount).then(function (resp) {
+        context.commit('UPDATE_DISCOUNT', resp.data, index);
+      })["catch"](function (resp) {
+        alert('Не получилось обновить скидку');
+        console.log(resp);
+      });
+    },
+    getNewDiscountParam: function getNewDiscountParam(context, params) {
+      context.commit('SET_NEW_DISCOUNT_PARAM', params);
+    } //
+
   }
 });
 

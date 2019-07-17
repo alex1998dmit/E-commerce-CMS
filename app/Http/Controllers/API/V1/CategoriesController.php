@@ -68,4 +68,10 @@ class CategoriesController extends Controller
             abort(500);
         }
     }
+
+    public function update(Request $request, Category $category)
+    {
+        $category->update($request->all());
+        return Category::all();
+    }
 }

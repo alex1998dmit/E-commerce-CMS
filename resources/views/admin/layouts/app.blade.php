@@ -43,9 +43,9 @@
                     <ul class="navbar-nav mr-auto">
                         <a class="nav-link" href="{{ route('products') }}">Products</a>
                     </ul>
-                    <ul class="navbar-nav mr-auto">
-                        <a class="nav-link" href="{{ route('carts') }}">From user's cart</a>
-                    </ul>
+                        {{-- <ul class="navbar-nav mr-auto">
+                            <a class="nav-link" href="{{ route('carts') }}">From user's cart</a>
+                        </ul> --}}
                     <ul class="navbar-nav mr-auto">
                         <a class="nav-link" href="{{ route('orders') }}">Orders</a>
                     </ul>
@@ -61,7 +61,7 @@
                     </ul>
 
                     <!-- Right Side Of Navbar -->
-                    <ul class="navbar-nav ml-auto">
+                    {{-- <ul class="navbar-nav ml-auto">
                         <!-- Authentication Links -->
                         @guest
                             <li class="nav-item">
@@ -93,8 +93,8 @@
                                     </form>
                                 </div>
                             </li>
-                        @endguest
-                    </ul>
+                        @endguest --}}
+                    {{-- </ul> --}}
                 </div>
             </div>
         </nav>

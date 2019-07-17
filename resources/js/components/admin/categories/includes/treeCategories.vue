@@ -13,13 +13,17 @@
                 <childCategories v-if="category.childs.length > 0" :childs="category.childs"></childCategories>
             </li>
         </b-modal>
-        <b-modal id="bv-modal-create-category" hide-footer>
-            <div class="d-block text-center">
-                <h5>Hello From This Modal!</h5>
+        <b-modal id="bv-modal-create-category" hide-footer title="Добавить новую категорию">
+            <br>
+            <div class="row">
+                <div class="col-md-12">
+                    <label for="category_name">Название новой категории</label>
+                    <input type="text" class="form-control" name="category_name" v-model="new_category.name">
+                </div>
             </div>
-            <input type="text" v-model="new_category.name">
-            <button type="button" class="mt-3 btn btn-success" @click="addSubcategory()">Добавить</button>
-            <b-button class="mt-3" block @click="$bvModal.hide('bv-modal-example')">Close Me</b-button>
+            <br>
+            <b-button block variant="outline-success" @click="addSubcategory()">Добавить</b-button>
+            <b-button class="mt-3" block @click="$bvModal.hide('bv-modal-create-category')">Отмена</b-button>
         </b-modal>
     </div>
 </template>

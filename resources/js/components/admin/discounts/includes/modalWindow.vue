@@ -4,18 +4,18 @@
                 <form action="">
                     <div class="form-group">
                         <label for="exampleInputEmail1">ID</label>
-                        <input type="text" class="form-control" v-model="discount.id" disabled>
+                        <input type="text" class="form-control" v-model="updating_discount.discount.id" disabled>
                     </div>
                     <div class="form-group">
                         <label for="exampleInputEmail1">Название скидки</label>
-                        <input type="text" class="form-control"  v-model="discount.name">
+                        <input type="text" class="form-control"  v-model="updating_discount.discount.name">
                     </div>
                     <div class="form-group">
                         <label for="exampleInputEmail1">Скидка</label>
-                        <input type="text" class="form-control" v-model="discount.discount">
+                        <input type="text" class="form-control" v-model="updating_discount.discount.discount">
                     </div>
-                    <b-button class="mt-3" block variant="outline-success" @click="$bvModal.hide('bv-modal-example'); updateDiscount()">Сохранить</b-button>
-                    <b-button class="mt-3" block variant="outline-danger" @click="$bvModal.hide('bv-modal-example'); $parent.deleteEntry(discount.id, index)">Удалить</b-button>
+                    <b-button class="mt-3" block variant="outline-success" @click="updateDiscount(); $bvModal.hide('bv-modal-example');">Сохранить</b-button>
+                    <b-button class="mt-3" block variant="outline-danger" @click="$bvModal.hide('bv-modal-example'); deleteDiscount()">Удалить</b-button>
                 </form>
             </b-modal>
         </div>
@@ -24,24 +24,19 @@
 <script>
 
 export default {
-    props: {
-        discount: Object,
-        index: Number
+    computed: {
+        updating_discount:{
+            get() {
+                return this.$store.getters.updatingDiscount;
+            },
+        }
     },
     methods: {
         updateDiscount() {
-            event.preventDefault();
-            axios.put('/api/v1/discounts/' + this.discount.id, this.discount)
-            .then((resp) => {
-                console.log(resp);
-            })
-            .catch((resp)=>{
-                alert('something gone wrong');
-                console.log(resp);
-            })
+            this.$store.dispatch('updateDiscount');
         },
-        deleteDiscount(id, index) {
-
+        deleteDiscount() {
+            this.$store.dispatch('removeDiscount', this.updating_discount.discount.id);
         },
     }
 }

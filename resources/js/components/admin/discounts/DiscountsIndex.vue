@@ -29,7 +29,7 @@
                                 </tr>
                                 </thead>
                                 <tbody>
-                                    <tr v-for="discount, index in discounts">
+                                    <tr v-for="discount, index in discounts" :key="discount.id">
                                         <td>{{ discount.id }}</td>
                                         <td>{{ discount.name }}</td>
                                         <td>{{ discount.discount }}</td>
@@ -55,55 +55,45 @@
                         </div>
                     </div>
                 </div>
-        <modalShow :discount="updating_data" :index="index"></modalShow>
+        <modalShow></modalShow>
         <modalCreate></modalCreate>
     </div>
 </template>
 
 <script>
-    import modalShow from './includes/modalWindow.vue'
+    import modalShow from './includes/modalWindow.vue';
     import modalCreate from './includes/createDiscountModal.vue'
+    import { mapGetters } from 'vuex';
 
     export default {
         components: {
             modalShow,
             modalCreate
         },
-        data: function () {
-            return {
-                discounts: [],
-                updating_data: {},
-                index: 0
-            }
-        },
         mounted() {
-            let app = this;
-            axios.get('/api/v1/discounts')
-                .then(function (resp) {
-                    console.log(resp);
-                    app.discounts = resp.data;
-                })
-                .catch(function (resp) {
-                    console.log(resp);
-                    alert("Возникла проблемма при загрузке");
-                });
+            this.$store.dispatch('getDiscounts');
+        },
+        computed: {
+            ...mapGetters(['discounts']),
+            discount: {
+                get() {
+                    return this.$store.getters.updatingDiscount;
+                },
+                set(updating_discount) {
+                    return this.$store.commit('SET_NEW_DISCOUNT_PARAM', updating_discount);
+                }
+            },
         },
         methods: {
             deleteEntry(id, index) {
                 let app = this;
                 if (confirm("Вы уверены что хотите удалить?")) {
-                    axios.delete('/api/v1/discounts/' + id)
-                        .then(function (resp) {
-                            app.discounts.splice(index, 1);
-                        })
-                        .catch(function (resp) {
-                            alert("Удаление не удалось");
-                        });
+
                 }
             },
-            openModal(user, index) {
-                this.updating_data = user;
-                this.index = index;
+            openModal(discount, index) {
+                this.discount = { discount, index };
+                console.log(this.discount);
             },
         },
     }

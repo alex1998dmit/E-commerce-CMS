@@ -3,7 +3,6 @@
         <div class="row">
             <div class="col-md-12">
                 <b-button v-b-modal.modal-xl variant="primary">Открыть дерево категорий</b-button>
-                <b-button v-b-modal.modal-1>Создать категорию</b-button>
             </div>
         </div>
         <br>
@@ -21,9 +20,10 @@
                         <th scope="col">ID</th>
                         <th scope="col">Название</th>
                         <th scope="col">Подкатегории</th>
+                        <th scope="col">Количество товаров</th>
+                        <th scope="col">Количество заказов</th>
                         <th scope="col">Удалить</th>
                         <th scope="col">Редактировать</th>
-                        <th scope="col">Добавить товар</th>
                     </tr>
                 </thead>
                 <tbody class="categories_list" id="categories_list">
@@ -36,24 +36,41 @@
                                 <td>{{ subcategory.name }}</td>
                             </tr>
                         </td>
-                        <!-- <td><a href="{{ route('category.edit', ['id' => $category->id]) }}" class="btn btn-xs btn-info">Edit</a></td></td> -->
+                        <td>В разработке</td>
+                        <td>В разработке</td>
+                        <td>
+                            <a href="#"
+                                class="btn btn-xs btn-danger"
+                                v-on:click="removeCategory(category)">
+                                    Удалить
+                            </a>
+                        </td>
+                        <td>
+                            <a href="#"
+                                class="btn btn-xs btn-warning"
+                                v-on:click="$bvModal.show('bv-modal-edit_category'); editCategory(category)">
+                                    Изменить
+                            </a>
+                        </td>
                         <!-- <td><a href="{{ route('category.trash', ['id' => $category->id]) }}" class="btn btn-xs btn-danger">Trash</a></td> -->
                         <!-- <td><a href="" class="btn btn-xs btn-info">Добавить продукт</a></td> -->
                     </tr>
                 </tbody>
             </table>
+            <b-modal id="bv-modal-edit_category" hide-footer title="Редактировать категорию">
+                <div class="form-group">
+                    <input type="text" class="form-control" :placeholder="this.updating_category.name" v-model="updating_category.name">
+                </div>
+                <b-button variant="outline-success" block @click="$bvModal.hide('bv-modal-edit_category'); updateCategory()">Обновить</b-button>
+                <b-button variant="outline-danger" block @click="$bvModal.hide('bv-modal-edit_category')">Close Me</b-button>
+            </b-modal>
         </div>
         <treeCategories v-if="categories.length > 0" :categories="this.categories"></treeCategories>
-        <b-modal id="modal-1" title="Создать категорию">
-            <p class="my-4">Новая категория</p>
-            <input type="text" v-model="new_category_data.name">
-            <input type="text" v-model="new_category_data.parent_id">
-            <input type="submit" value="создать" @click="createCategory();">
-        </b-modal>
     </div>
 </template>
 <script>
 import treeCategories from './includes/treeCategories';
+import { mapGetters } from 'vuex'
 
 export default {
     components: {
@@ -61,34 +78,35 @@ export default {
     },
     data: () => {
         return {
-            new_category_data: {
+            updating_category: {
+                id: 0,
                 name: "",
                 parent_id: 0
-            }
+            },
         }
     },
     mounted() {
         this.$store.dispatch('getCategories');
     },
     computed: {
-        categories() {
-            return this.$store.getters.categories;
-        }
+        ...mapGetters(['categories'])
     },
     methods: {
-        buildTree(categories){
-            let tag;
-            let parent_category;
-            let menu = document.getElementById('level-0');
-            let add_category_button = "<b-button variant='outline-success'>+</b-button>";
-            categories.map(el => {
-                parent_category = document.getElementById(`level-${el.parent_id}`);
-                tag = (el.childs) ?  `<ul id="level-${el.id}">${el.name} ${add_category_button}</ul>` : `<li id="level-${el.id}">${el.name} ${add_category_button}</li>`;
-                parent_category.insertAdjacentHTML('beforeend', `${tag}`);
-            });
-        },
         createCategory() {
             this.$store.dispatch('createCategories', this.new_category_data);
+        },
+        removeCategory(category) {
+            if (confirm("Вы уверены что хотите удалить категорию ?")) {
+                this.$store.dispatch('removeCategory', category);
+            }
+        },
+        editCategory(category) {
+            this.updating_category.id = category.id;
+            this.updating_category.name = category.name;
+            this.updating_category.parent_id = category.parent_id;
+        },
+        updateCategory() {
+            this.$store.dispatch('updateCategory', this.updating_category);
         }
     }
 }
