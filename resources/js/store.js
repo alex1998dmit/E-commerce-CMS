@@ -27,7 +27,15 @@ export default {
         updating_discount: {
             index: 0,
             discount: "",
-        }
+        },
+
+        products: [],
+        opened_product: {
+            category: {},
+            order: {},
+            wish_list: {},
+            photos: [],
+        },
     },
 
     getters: {
@@ -43,12 +51,16 @@ export default {
         auth_error(state) {
             return state.auth_error;
         },
+
+        // categories
         categories(state) {
             return state.categories;
         },
         newCategory(state) {
             return state.new_category;
         },
+
+        // discount
         updatingDiscount(state){
             return state.updating_discount;
         },
@@ -58,6 +70,14 @@ export default {
         discounts(state) {
             return state.discounts;
         },
+
+        // products
+        products(state) {
+            return state.products;
+        },
+        openedProduct(state) {
+            return state.opened_product;
+        }
     },
     mutations: {
         login(state) {
@@ -107,10 +127,16 @@ export default {
         },
         SET_NEW_DISCOUNT_PARAM(state, discount) {
             state.updating_discount = Object.assign({}, state.updating_discount, discount);
-        }
+        },
 
         // products
-        
+        GET_ALL_PRODUCTS(state, products) {
+            state.products = products;
+        },
+        SET_CURRENT_PRODUCT(state, product) {
+            console.log(product);
+            state.opened_product = Object.assign({}, state.opened_product, product);
+        }
     },
     actions: {
         // categories
@@ -190,8 +216,7 @@ export default {
                     alert("Удаление не удалось", resp);
                 });
         },
-
-        // TODO продумать передавать ли сюда в качестве параметра поля изменяего объекта (новые данные)
+            // TODO продумать передавать ли сюда в качестве параметра поля изменяего объекта (новые данные)
         updateDiscount(context) {
             const discount = this.getters.updatingDiscount.discount;
             const index = this.getters.updatingDiscount.index;
@@ -206,7 +231,18 @@ export default {
         },
         getNewDiscountParam(context, params) {
             context.commit('SET_NEW_DISCOUNT_PARAM', params);
-        }
-        //
+        },
+
+        // products
+        getProducts(context) {
+            axios.get('/api/v1/products')
+                .then((resp) => {
+                    context.commit('GET_ALL_PRODUCTS', resp.data);
+                })
+                .catch((resp) => {
+                    alert('Ошибка загрузки продуктов');
+                    console.log(resp);
+                });
+        },
     }
 }

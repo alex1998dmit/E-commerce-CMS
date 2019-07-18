@@ -44,6 +44,7 @@ class Product extends Model
         return $this->hasMany('App\Photo');
     }
 
+    // methods
     public function addPhotosAttribute($photos)
     {
         foreach ($photos as $photo) {
@@ -54,5 +55,10 @@ class Product extends Model
     public function getPhotosAttribute()
     {
         return $this->photos;
+    }
+
+    public function getTotalWishListAttribute()
+    {
+        return $this->hasMany('App\WishList')->whereProductId($this->id)->count();
     }
 }
