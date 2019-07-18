@@ -28,6 +28,7 @@
                                 <td>{{ openedProduct.order.length }}</td>
                                 <td>{{ openedProduct.created_at }}</td>
                                 <td>{{ openedProduct.updated_at ? openedProduct.updated_at : "-" }}</td>
+                                <td>{{ openedProduct.photo.length }}</td>
                             </tr>
                         </tbody>
                     </table>
@@ -36,6 +37,17 @@
             <div class="row" id="photos">
                 <div class="col-md-12">
                     <h5>Фотографии продукта</h5>
+                    <div class="col-md-12">
+                        <gallery :images="productImages" :index="index" @close="index = null"></gallery>
+                        <div
+                            class="image"
+                            v-for="(image, imageIndex) in productImages"
+                            :key="imageIndex"
+                            @click="index = imageIndex"
+                            :style="{ backgroundImage: 'url(' + image + ')', width: '300px', height: '200px' }"
+                        ></div>
+                        <!-- <img :src="getProductImage(openedProduct.photo)" alt="" id="uploading_image"> -->
+                    </div>
                 </div>
             </div>
             <div class="row" id="price_changing">
@@ -49,22 +61,33 @@
 </template>
 
 <script>
-  import { mapGetters, mapMutations } from 'vuex';
-  import { deleteProduct } from '../mixins/deleteProduct.js';
+import { mapGetters, mapMutations } from 'vuex';
+import { deleteProduct } from '../mixins/deleteProduct.js';
+import VueGallery from 'vue-gallery';
 
 export default {
     mixins: ["deleteProducts"],
+    components: {
+      'gallery': VueGallery
+    },
+    data: () => {
+        return {
+            index: null,
+        };
+    },
     computed: {
-        ...mapGetters(['openedProduct']),
+        ...mapGetters(['openedProduct', 'productImages']),
     },
-    mounted() {
-
-        // console.log(this.openedProduct);
-    },
-    methods: {
-        showInfo() {
-            console.log(this.openedProduct);
-        }
-    }
 }
 </script>
+
+<style>
+  .image {
+    float: left;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center center;
+    border: 1px solid #ebebeb;
+    margin: 5px;
+  }
+</style>

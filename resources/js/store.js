@@ -4,6 +4,9 @@
 
 export default {
     state: {
+        host: 'http://passportapi',
+        product_images_forlder: 'upload/products',
+
         currentUser: {},
         isLoggedIn: 1,
         loading: false,
@@ -34,8 +37,9 @@ export default {
             category: {},
             order: {},
             wish_list: {},
-            photos: [],
+            photo: [],
         },
+        opened_product_images: [],
     },
 
     getters: {
@@ -77,6 +81,9 @@ export default {
         },
         openedProduct(state) {
             return state.opened_product;
+        },
+        productImages(state) {
+            return state.opened_product_images;
         }
     },
     mutations: {
@@ -134,9 +141,15 @@ export default {
             state.products = products;
         },
         SET_CURRENT_PRODUCT(state, product) {
-            console.log(product);
             state.opened_product = Object.assign({}, state.opened_product, product);
-        }
+        },
+        SET_OPENED_PRODUCT_IMAGES(state) {
+            let photos = [];
+            for(let index in state.opened_product.photo) {
+               photos.push(`${state.host}/${state.product_images_forlder}/${state.opened_product.photo[index].path}`);
+            }
+            state.opened_product_images = photos;
+        },
     },
     actions: {
         // categories

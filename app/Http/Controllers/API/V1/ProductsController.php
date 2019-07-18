@@ -17,7 +17,7 @@ class ProductsController extends Controller
             $product->category;
             $atWhishLists = $product->wishList;
             $orders = $product->order;
-            $photos = $product->getPhotosAttribute();
+            $product->addPhotosAttribute($product->photo);
         }
         return $products;
     }

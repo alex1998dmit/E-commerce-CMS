@@ -70,6 +70,7 @@ export default {
     methods: {
         openAboutProductModal(product) {
             this.$store.commit('SET_CURRENT_PRODUCT', product);
+            this.$store.commit('SET_OPENED_PRODUCT_IMAGES', product.photo);
             this.$bvModal.show('bv-modal-about-product');
         }
     }
