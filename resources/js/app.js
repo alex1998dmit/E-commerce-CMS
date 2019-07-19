@@ -19,9 +19,11 @@ import 'bootstrap-vue/dist/bootstrap-vue.css';
 // Bootstrap components
 import { ModalPlugin } from 'bootstrap-vue';
 import { ButtonPlugin } from 'bootstrap-vue';
+import { FormCheckboxPlugin } from 'bootstrap-vue'
 
 Vue.use(ModalPlugin);
 Vue.use(ButtonPlugin);
+Vue.use(FormCheckboxPlugin)
 
 Vue.use(VueRouter);
 Vue.use(Vuex)

@@ -27,9 +27,14 @@ class ProductsController extends Controller
 
     }
 
-    public function show($id)
+    public function single($id)
     {
-
+        $product = Product::findOrFail($id);
+        $product->category;
+        $product->wishList;
+        $product->order;
+        $product->addPhotosAttribute($product->photo);
+        return $product;
     }
 
     public function trash($id)
@@ -40,5 +45,20 @@ class ProductsController extends Controller
     public function update(Request $request, Category $category)
     {
 
+    }
+
+    public function removeImage(Request $request) {
+        $image_id = $request->image_id;
+        $product_id = $request->product_id;
+
+        $product = Product::findOrFail($product_id);
+        $product_images = $product->photo;
+        foreach($product_images as $photo) {
+            if ($image_id == $photo->id) {
+                $photo->delete();
+                return response()->json(['data' => $this->single($product_id)], 202);
+            }
+        }
+        return response()->json('nothing to delete', 400);
     }
 }

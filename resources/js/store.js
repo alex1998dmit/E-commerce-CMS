@@ -22,6 +22,7 @@ export default {
             parent_id: 0
         },
 
+        // discount
         discounts: [],
         new_discount: {
             name: "",
@@ -32,6 +33,7 @@ export default {
             discount: "",
         },
 
+        // products
         products: [],
         opened_product: {
             category: {},
@@ -40,6 +42,12 @@ export default {
             photo: [],
         },
         opened_product_images: [],
+        updating_product: {
+            category: {},
+            order: {},
+            wish_list: {},
+            photo: [],
+        },
     },
 
     getters: {
@@ -84,7 +92,10 @@ export default {
         },
         productImages(state) {
             return state.opened_product_images;
-        }
+        },
+        updatingProduct(state) {
+            return state.updating_product;
+        },
     },
     mutations: {
         login(state) {
@@ -150,6 +161,12 @@ export default {
             }
             state.opened_product_images = photos;
         },
+        SET_UPDATING_PRODUCT_PARAMS(state, product) {
+            state.updating_product = product;
+        },
+        REMOVE_PHOTOS_FROM_UPDATING_PRODUCT(state, photo_index) {
+            state.updating_product.photo.splice(photo_index, 1);
+        }
     },
     actions: {
         // categories
@@ -257,5 +274,35 @@ export default {
                     console.log(resp);
                 });
         },
+        getUpdatingProduct(context, id) {
+            axios.get('/api/v1/products/' + id)
+                .then((resp) => {
+                    console.log('commit is ready');
+                    context.commit('SET_UPDATING_PRODUCT_PARAMS', resp.data);
+                })
+                .catch((resp)=> {
+                    alert('Возникла ошибка при загрузки обновляемого продукта');
+                    console.log(resp);
+                })
+        },
+        updateCategory(context, product) {
+
+        },
+        removePhotoFromUpdatingProduct(context, image_id) {
+            const product_id = context.getters.updatingProduct.id;
+            const photoAndProductsIds = { product_id, image_id };
+            const photoIndex = context.getters.updatingProduct.photo.map((obj) => obj.id).indexOf(image_id);
+            console.log('index of photo is ' + photoIndex);
+            axios.delete('/api/v1/products/images', { data: photoAndProductsIds })
+                .then((resp) => {
+                    console.log(resp);
+                    context.commit('REMOVE_PHOTOS_FROM_UPDATING_PRODUCT', photoIndex);
+                })
+                .catch((resp)=> {
+                    alert('Возникла ошибка при загрузки обновляемого продукта');
+                    console.log(resp);
+                })
+
+        }
     }
 }

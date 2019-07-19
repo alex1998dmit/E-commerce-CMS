@@ -1,6 +1,13 @@
 <template>
     <div>
         <b-modal id="bv-modal-about-product" size="xl" hide-footer title="О продукте">
+            <div class="row">
+                <div class="col-md-12 text-right">
+                    <router-link :to="{ name: 'editProduct', params: { id: openedProduct.id }}" class="btn btn-xs btn-info">Редактировать</router-link>
+                    <b-button variant="danger">Удалить</b-button>
+                </div>
+            </div>
+            <br>
             <div class="row" id="about">
                 <div class="col-md-12">
                     <h5>Общая информация</h5>
@@ -46,7 +53,6 @@
                             @click="index = imageIndex"
                             :style="{ backgroundImage: 'url(' + image + ')', width: '300px', height: '200px' }"
                         ></div>
-                        <!-- <img :src="getProductImage(openedProduct.photo)" alt="" id="uploading_image"> -->
                     </div>
                 </div>
             </div>
@@ -55,7 +61,6 @@
                     <h5>История изменения цен</h5>
                 </div>
             </div>
-            <b-button class="mt-3" block @click="$bvModal.hide('bv-modal-example'); showInfo()">Close Me</b-button>
         </b-modal>
     </div>
 </template>
@@ -90,4 +95,6 @@ export default {
     border: 1px solid #ebebeb;
     margin: 5px;
   }
+
+
 </style>

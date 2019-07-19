@@ -68,7 +68,6 @@ Route::post('/admin/categories/', function() {
 });
 
 Route::group(['prefix' => '/v1','namespace' => 'API\V1'], function () {
-
     Route::get('/discounts/show/{discount}', 'DiscountsController@show');
     Route::put('/discounts/{discount}', 'DiscountsController@update');
     Route::resource('discounts', 'DiscountsController', ['except' => ['create', 'edit']]);
@@ -83,6 +82,8 @@ Route::group(['prefix' => '/v1','namespace' => 'API\V1'], function () {
     Route::patch('categories/{category}','CategoriesController@update');
 
     Route::get('/products', 'ProductsController@index');
+    Route::get('/products/{id}', 'ProductsController@single');
+    Route::delete('/products/images', 'ProductsController@removeImage');
 });
 
 
