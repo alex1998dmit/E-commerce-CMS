@@ -2641,26 +2641,6 @@ __webpack_require__.r(__webpack_exports__);
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var vuex__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vuex */ "./node_modules/vuex/dist/vuex.esm.js");
 /* harmony import */ var _mixins_deleteProduct_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./mixins/deleteProduct.js */ "./resources/js/components/admin/products/mixins/deleteProduct.js");
-function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; var ownKeys = Object.keys(source); if (typeof Object.getOwnPropertySymbols === 'function') { ownKeys = ownKeys.concat(Object.getOwnPropertySymbols(source).filter(function (sym) { return Object.getOwnPropertyDescriptor(source, sym).enumerable; })); } ownKeys.forEach(function (key) { _defineProperty(target, key, source[key]); }); } return target; }
-
-function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
-
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
 //
 //
 //
@@ -2733,32 +2713,24 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
   mixins: ["deleteProduct"],
   data: function data() {
     return {
-      photos: [{
-        'id': 1,
-        'checked': true
-      }, {
-        'id': 2,
-        'checked': true
-      }, {
-        'id': 3,
-        'checked': true
-      }],
-      checked: true
+      photos: []
     };
   },
-  computed: _objectSpread({
+  computed: {
     updating_product: {
       get: function get() {
         return this.$store.getters.updatingProduct;
       }
     },
-    isChecked: function isChecked() {
-      return this.checked === this.checked;
+    final_categories: {
+      get: function get() {
+        return this.$store.getters.finalCategories;
+      }
     }
-  }, Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapGetters"])(["categories"])),
+  },
   mounted: function mounted() {
     this.$store.dispatch('getUpdatingProduct', this.$route.params.id);
-    this.$store.dispatch('getCategories');
+    this.$store.dispatch('getFinalCategories');
   },
   methods: {
     addPhoto: function addPhoto(path, id) {
@@ -2786,9 +2758,6 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
   watch: {
     updating_product: function updating_product(val) {
       this.addAllPhotoFromStoreToData(val.photo);
-    },
-    photos: function photos(val) {
-      console.log(val);
     }
   }
 });
@@ -2811,6 +2780,20 @@ function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { va
 
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -2904,6 +2887,9 @@ function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { va
 
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
+//
+//
+//
 //
 //
 //
@@ -81742,9 +81728,15 @@ var render = function() {
   return _c("div", { staticClass: "row" }, [
     _c("div", { staticClass: "col-md-12" }, [
       _c("div", { staticClass: "row" }, [
+        _c("div", { staticClass: "col-md-6 text-left" }, [
+          _c("h2", [_vm._v("Редактирование продукта")]),
+          _vm._v(" "),
+          _c("h5", [_vm._v(_vm._s(_vm.updating_product.name))])
+        ]),
+        _vm._v(" "),
         _c(
           "div",
-          { staticClass: "col-md-12 text-right" },
+          { staticClass: "col-md-6 text-right" },
           [
             _c(
               "router-link",
@@ -81758,13 +81750,11 @@ var render = function() {
       _vm._v(" "),
       _c("br"),
       _vm._v(" "),
-      _vm._m(0),
-      _vm._v(" "),
       _c("div", { staticClass: "row" }, [
         _c("div", { staticClass: "col-md-12" }, [
           _c("form", { attrs: { action: "" } }, [
             _c("div", { staticClass: "form-row" }, [
-              _c("div", { staticClass: "col-md-6" }, [
+              _c("div", { staticClass: "col-md-4" }, [
                 _c("label", { attrs: { for: "product_name" } }, [
                   _vm._v("Название")
                 ]),
@@ -81798,7 +81788,7 @@ var render = function() {
               _vm._v(" "),
               _c("br"),
               _vm._v(" "),
-              _c("div", { staticClass: "col-md-6" }, [
+              _c("div", { staticClass: "col-md-4" }, [
                 _c("label", { attrs: { for: "exampleInputEmail1" } }, [
                   _vm._v("Категория")
                 ]),
@@ -81836,7 +81826,7 @@ var render = function() {
                       }
                     }
                   },
-                  _vm._l(_vm.categories, function(category) {
+                  _vm._l(_vm.final_categories, function(category) {
                     return _c(
                       "option",
                       { key: category.id, domProps: { value: category.id } },
@@ -81855,7 +81845,7 @@ var render = function() {
               _vm._v(" "),
               _c("br"),
               _vm._v(" "),
-              _c("div", { staticClass: "col-md-12" }, [
+              _c("div", { staticClass: "col-md-4" }, [
                 _c("label", { attrs: { for: "price" } }, [_vm._v("Стоимость")]),
                 _vm._v(" "),
                 _c("input", {
@@ -81974,9 +81964,19 @@ var render = function() {
                   "div",
                   { staticClass: "form-group" },
                   [
-                    _c("b-button", { staticClass: "btn btn-success" }, [
-                      _vm._v("Сохранить")
-                    ])
+                    _c("br"),
+                    _vm._v(" "),
+                    _c(
+                      "b-button",
+                      { staticClass: "btn btn-success", attrs: { size: "lg" } },
+                      [_vm._v("Обновить")]
+                    ),
+                    _vm._v(" "),
+                    _c(
+                      "b-button",
+                      { staticClass: "btn btn-danger", attrs: { size: "lg" } },
+                      [_vm._v("Удалить")]
+                    )
                   ],
                   1
                 )
@@ -81988,18 +81988,7 @@ var render = function() {
     ])
   ])
 }
-var staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "row" }, [
-      _c("div", { staticClass: "col-md-12 text-center" }, [
-        _c("h5", [_vm._v("Редактирование продукта")])
-      ])
-    ])
-  }
-]
+var staticRenderFns = []
 render._withStripped = true
 
 
@@ -82021,97 +82010,133 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c(
-    "div",
-    { staticClass: "row" },
-    [
-      _vm._m(0),
-      _vm._v(" "),
-      _c("div", { staticClass: "card-body" }, [
+  return _c("div", { staticClass: "row" }, [
+    _c(
+      "div",
+      { staticClass: "col-md-12" },
+      [
         _c("div", { staticClass: "row" }, [
-          _c("div", { staticClass: "col-md-12" }, [
-            _c("table", { staticClass: "table" }, [
-              _vm._m(1),
+          _vm._m(0),
+          _vm._v(" "),
+          _c(
+            "div",
+            { staticClass: "col-md-8 text-right" },
+            [
+              _c("b-button", { attrs: { variant: "success" } }, [
+                _vm._v("Добавить продукт")
+              ]),
               _vm._v(" "),
-              _c(
-                "tbody",
-                _vm._l(_vm.products, function(product) {
-                  return _c("tr", { key: product.id }, [
-                    _c("td", [_vm._v(_vm._s(product.id))]),
-                    _vm._v(" "),
-                    _c("td", [_vm._v(_vm._s(product.name))]),
-                    _vm._v(" "),
-                    _c("td", [_vm._v(_vm._s(product.category.name))]),
-                    _vm._v(" "),
-                    _c("td", [_vm._v(_vm._s(product.price))]),
-                    _vm._v(" "),
-                    _c("td", [_vm._v(_vm._s(product.wish_list.length))]),
-                    _vm._v(" "),
-                    _c("td", [_vm._v(_vm._s(product.order.length))]),
-                    _vm._v(" "),
-                    _c(
-                      "td",
-                      [
+              _c("b-button", { attrs: { variant: "info" } }, [
+                _vm._v("Главное меню")
+              ])
+            ],
+            1
+          )
+        ]),
+        _vm._v(" "),
+        _vm._m(1),
+        _vm._v(" "),
+        _c("div", { staticClass: "card-body" }, [
+          _c("div", { staticClass: "row" }, [
+            _c("div", { staticClass: "col-md-12" }, [
+              _c("table", { staticClass: "table" }, [
+                _vm._m(2),
+                _vm._v(" "),
+                _c(
+                  "tbody",
+                  _vm._l(_vm.products, function(product) {
+                    return _c("tr", { key: product.id }, [
+                      _c("td", [_vm._v(_vm._s(product.id))]),
+                      _vm._v(" "),
+                      _c("td", [_vm._v(_vm._s(product.name))]),
+                      _vm._v(" "),
+                      _c("td", [_vm._v(_vm._s(product.category.name))]),
+                      _vm._v(" "),
+                      _c("td", [_vm._v(_vm._s(product.price))]),
+                      _vm._v(" "),
+                      _c("td", [_vm._v(_vm._s(product.wish_list.length))]),
+                      _vm._v(" "),
+                      _c("td", [_vm._v(_vm._s(product.order.length))]),
+                      _vm._v(" "),
+                      _c(
+                        "td",
+                        [
+                          _c(
+                            "b-button",
+                            {
+                              attrs: { id: "show-btn" },
+                              on: {
+                                click: function($event) {
+                                  return _vm.openAboutProductModal(product)
+                                }
+                              }
+                            },
+                            [
+                              _vm._v(
+                                "\n                                            Подробнее\n                                    "
+                              )
+                            ]
+                          )
+                        ],
+                        1
+                      ),
+                      _vm._v(" "),
+                      _c("td", [
                         _c(
-                          "b-button",
+                          "a",
                           {
-                            attrs: { id: "show-btn" },
+                            staticClass: "btn btn-xs btn-danger",
+                            attrs: { href: "#" },
                             on: {
                               click: function($event) {
-                                return _vm.openAboutProductModal(product)
+                                return _vm.fasfa()
                               }
                             }
                           },
                           [
                             _vm._v(
-                              "\n                                        Подробнее\n                                "
+                              "\n                                            Удалить\n                                    "
                             )
                           ]
                         )
-                      ],
-                      1
-                    ),
-                    _vm._v(" "),
-                    _c("td", [
-                      _c(
-                        "a",
-                        {
-                          staticClass: "btn btn-xs btn-danger",
-                          attrs: { href: "#" },
-                          on: {
-                            click: function($event) {
-                              return _vm.fasfa()
-                            }
-                          }
-                        },
-                        [
-                          _vm._v(
-                            "\n                                        Удалить\n                                "
-                          )
-                        ]
-                      )
+                      ])
                     ])
-                  ])
-                }),
-                0
-              )
+                  }),
+                  0
+                )
+              ])
             ])
           ])
-        ])
-      ]),
-      _vm._v(" "),
-      _c("AboutProductModule")
-    ],
-    1
-  )
+        ]),
+        _vm._v(" "),
+        _c("AboutProductModule")
+      ],
+      1
+    )
+  ])
 }
 var staticRenderFns = [
   function() {
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "col-md-12" }, [
-      _c("h5", [_vm._v("Продукция")])
+    return _c("div", { staticClass: "col-md-4 text-left" }, [
+      _c("h2", [_vm._v("Продукция")]),
+      _vm._v(" "),
+      _c("br")
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "row" }, [
+      _c("div", { staticClass: "col-md-12 text-left" }, [
+        _c("input", {
+          staticClass: "form-control",
+          attrs: { type: "text", placeholder: "Поиск по продукции..." }
+        })
+      ])
     ])
   },
   function() {
@@ -82175,9 +82200,11 @@ var render = function() {
         },
         [
           _c("div", { staticClass: "row" }, [
+            _c("div", { staticClass: "col-md-6 text-left" }),
+            _vm._v(" "),
             _c(
               "div",
-              { staticClass: "col-md-12 text-right" },
+              { staticClass: "col-md-6 text-right" },
               [
                 _c(
                   "router-link",
@@ -100579,7 +100606,9 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     grant_type: "password",
     client_id: 2,
     client_secret: "WhYqHBDCWfGGecC4XcRc6yur09AJxxCvn3FiPJJT",
+    // categories
     categories: [],
+    final_categories: [],
     new_category: {
       name: "",
       parent_id: 0
@@ -100630,6 +100659,9 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     newCategory: function newCategory(state) {
       return state.new_category;
     },
+    finalCategories: function finalCategories(state) {
+      return state.final_categories;
+    },
     // discount
     updatingDiscount: function updatingDiscount(state) {
       return state.updating_discount;
@@ -100665,6 +100697,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       state.loading = false;
     },
     loginFailed: function loginFailed() {},
+    // categories
     updateCategories: function updateCategories(state, payload) {
       state.categories = payload;
     },
@@ -100683,6 +100716,9 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     updateCategory: function updateCategory(state, categories) {
       state.categories.splice(0, state.categories.length);
       state.categories = categories;
+    },
+    SET_FINAL_CATEGORIES: function SET_FINAL_CATEGORIES(state, final_categories) {
+      state.final_categories = final_categories;
     },
     // discounts
     GET_ALL_DISCOUNTS: function GET_ALL_DISCOUNTS(state, discounts) {
@@ -100730,6 +100766,16 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         context.commit('updateCategories', resp.data);
       })["catch"](function (resp) {
         console.log('error showing categories');
+        console.log(resp);
+      });
+    },
+    getFinalCategories: function getFinalCategories(context) {
+      axios.get('/api/v1/finalCategories').then(function (resp) {
+        console.log('final ctegories');
+        console.log(resp.data);
+        context.commit('SET_FINAL_CATEGORIES', resp.data);
+      })["catch"](function (resp) {
+        alert('Ошибка при загрузке конечных категорий');
         console.log(resp);
       });
     },
@@ -100820,7 +100866,8 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         console.log(resp);
       });
     }
-  }, _defineProperty(_actions, "updateCategory", function updateCategory(context, product) {}), _defineProperty(_actions, "removePhotoFromUpdatingProduct", function removePhotoFromUpdatingProduct(context, image_id) {
+  }, _defineProperty(_actions, "updateCategory", function updateCategory(context, product) {// product = { updating product info }
+  }), _defineProperty(_actions, "removePhotoFromUpdatingProduct", function removePhotoFromUpdatingProduct(context, image_id) {
     var product_id = context.getters.updatingProduct.id;
     var photoAndProductsIds = {
       product_id: product_id,
@@ -100829,11 +100876,9 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     var photoIndex = context.getters.updatingProduct.photo.map(function (obj) {
       return obj.id;
     }).indexOf(image_id);
-    console.log('index of photo is ' + photoIndex);
     axios["delete"]('/api/v1/products/images', {
       data: photoAndProductsIds
     }).then(function (resp) {
-      console.log(resp);
       context.commit('REMOVE_PHOTOS_FROM_UPDATING_PRODUCT', photoIndex);
     })["catch"](function (resp) {
       alert('Возникла ошибка при загрузки обновляемого продукта');

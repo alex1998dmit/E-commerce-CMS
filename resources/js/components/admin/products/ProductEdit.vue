@@ -2,36 +2,35 @@
     <div class="row">
         <div class="col-md-12">
             <div class="row">
-                <div class="col-md-12 text-right">
+                <div class="col-md-6 text-left">
+                    <h2>Редактирование продукта</h2>
+                    <h5>{{ updating_product.name }}</h5>
+                </div>
+                <div class="col-md-6 text-right">
                     <router-link to="products" class="btn btn-primary">Назад</router-link>
                 </div>
             </div>
             <br>
             <div class="row">
-                <div class="col-md-12 text-center">
-                    <h5>Редактирование продукта</h5>
-                </div>
-            </div>
-            <div class="row">
                 <div class="col-md-12">
                     <form action="">
                         <div class="form-row">
-                            <div class="col-md-6">
+                            <div class="col-md-4">
                                 <label for="product_name">Название</label>
                                 <input type="text" class="form-control" id="product_name" v-model="updating_product.name">
                             </div>
                             <br>
-                            <div class="col-md-6">
+                            <div class="col-md-4">
                                 <label for="exampleInputEmail1">Категория</label>
                                 <select name="category_id" id="category" class="form-control" v-model="updating_product.category_id">
                                     <!-- <option value="{{ $product->category->id }}" selected>{{ $product->category->name }}</option> -->
-                                    <option v-for="category in categories" :key="category.id" v-bind:value="category.id">
+                                    <option v-for="category in final_categories" :key="category.id" v-bind:value="category.id">
                                         {{ category.name }}
                                     </option>
                                 </select>
                             </div>
                             <br>
-                            <div class="col-md-12">
+                            <div class="col-md-4">
                                 <label for="price">Стоимость</label>
                                 <input type="text" class="form-control" id="price" v-model="updating_product.price">
                             </div>
@@ -41,23 +40,6 @@
                                 <textarea class="form-control" name="product_desc" id="" cols="30" rows="10" v-model="updating_product.description" ></textarea>
                             </div>
                             <br>
-                            <!-- <div class="form-group">
-                                <div class="photo">
-                                    <b-form-checkbox-group id="checkbox-group-2" v-model="photos" name="photos">
-                                        <b-form-checkbox
-                                            v-for="(photo) in updating_product.photo"
-                                            :checked="isChecked"
-                                            :key="photo.id"
-                                            :value="photo.id"
-                                            >
-                                                <div
-                                                    class="image"
-                                                    :style="{ backgroundImage: 'url(http://passportapi/upload/products/' + photo.path + ')', width: '300px', height: '200px' }"
-                                                ></div>
-                                        </b-form-checkbox>
-                                </b-form-checkbox-group>
-                                </div>
-                            </div> -->
                             <div class="col-md-12">
                                 <div class="photo-delete" v-for="(photo) in updating_product.photo" :key="photo.id">
                                     <div
@@ -69,7 +51,9 @@
                             <br>
                             <div class="col-md-12 text-center">
                                 <div class="form-group">
-                                    <b-button class="btn btn-success">Сохранить</b-button>
+                                    <br>
+                                    <b-button class="btn btn-success" size="lg">Обновить</b-button>
+                                    <b-button class="btn btn-danger" size="lg">Удалить</b-button>
                                 </div>
                             </div>
                         </div>
@@ -89,8 +73,7 @@ export default {
     mixins: ["deleteProduct"],
     data: () => {
         return {
-            photos: [{'id': 1,'checked': true}, {'id': 2, 'checked': true}, {'id': 3, 'checked': true}],
-            checked: true,
+            photos: [],
         }
     },
     computed: {
@@ -99,15 +82,15 @@ export default {
                 return this.$store.getters.updatingProduct;
             },
         },
-        isChecked() {
-    	    return this.checked === this.checked;
-        },
-        ...mapGetters(["categories"]),
+        final_categories: {
+            get() {
+                return this.$store.getters.finalCategories;
+            }
+        }
     },
     mounted() {
         this.$store.dispatch('getUpdatingProduct', this.$route.params.id);
-        this.$store.dispatch('getCategories');
-
+        this.$store.dispatch('getFinalCategories');
     },
     methods: {
         addPhoto(path, id) {
@@ -129,9 +112,6 @@ export default {
         updating_product(val) {
             this.addAllPhotoFromStoreToData(val.photo);
         },
-        photos(val) {
-            console.log(val);
-        }
     }
 }
 </script>

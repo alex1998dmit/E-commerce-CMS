@@ -21,6 +21,19 @@ class CategoriesController extends Controller
         return $categories;
     }
 
+    public function finalCategories()
+    {
+        $categories = Category::all();
+        $final_categories = [];
+        foreach($categories as $category) {
+            if (count($category->childs) === 0) {
+                $final_categories[] = $category;
+            }
+        }
+        return $final_categories;
+        // return response()->json(['data' => $final_categories],200) ;
+    }
+
     public function store(Request $request)
     {
         $rules = [

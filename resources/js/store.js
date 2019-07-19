@@ -16,7 +16,9 @@ export default {
         client_id: 2,
         client_secret: "WhYqHBDCWfGGecC4XcRc6yur09AJxxCvn3FiPJJT",
 
+        // categories
         categories: [],
+        final_categories: [],
         new_category: {
             name: "",
             parent_id: 0
@@ -71,6 +73,9 @@ export default {
         newCategory(state) {
             return state.new_category;
         },
+        finalCategories(state) {
+            return state.final_categories;
+        },
 
         // discount
         updatingDiscount(state){
@@ -110,6 +115,8 @@ export default {
         loginFailed() {
 
         },
+
+        // categories
         updateCategories(state, payload) {
             state.categories = payload;
         },
@@ -128,6 +135,9 @@ export default {
         updateCategory(state, categories) {
             state.categories.splice(0, state.categories.length);
             state.categories = categories;
+        },
+        SET_FINAL_CATEGORIES(state, final_categories) {
+            state.final_categories = final_categories;
         },
 
         // discounts
@@ -179,6 +189,18 @@ export default {
                     console.log('error showing categories');
                     console.log(resp);
                 });
+        },
+        getFinalCategories(context) {
+            axios.get('/api/v1/finalCategories')
+                .then((resp) => {
+                    console.log('final ctegories');
+                    console.log(resp.data);
+                    context.commit('SET_FINAL_CATEGORIES', resp.data);
+                })
+                .catch((resp) => {
+                    alert('Ошибка при загрузке конечных категорий');
+                    console.log(resp);
+                })
         },
         createCategories(context, category) {
             axios.post('/api/v1/categories', context.state.new_category)
@@ -286,16 +308,15 @@ export default {
                 })
         },
         updateCategory(context, product) {
+            // product = { updating product info }
 
         },
         removePhotoFromUpdatingProduct(context, image_id) {
             const product_id = context.getters.updatingProduct.id;
             const photoAndProductsIds = { product_id, image_id };
             const photoIndex = context.getters.updatingProduct.photo.map((obj) => obj.id).indexOf(image_id);
-            console.log('index of photo is ' + photoIndex);
             axios.delete('/api/v1/products/images', { data: photoAndProductsIds })
                 .then((resp) => {
-                    console.log(resp);
                     context.commit('REMOVE_PHOTOS_FROM_UPDATING_PRODUCT', photoIndex);
                 })
                 .catch((resp)=> {
