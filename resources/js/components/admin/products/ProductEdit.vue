@@ -7,7 +7,9 @@
                     <h5>{{ updating_product.name }}</h5>
                 </div>
                 <div class="col-md-6 text-right">
-                    <router-link to="products" class="btn btn-primary">Назад</router-link>
+                    <router-link :to="{ name: 'products' }">
+                        <b-button variant="primary">Назад</b-button>
+                    </router-link>
                 </div>
             </div>
             <br>
@@ -47,12 +49,13 @@
                                         :style="{ backgroundImage: 'url(http://passportapi/upload/products/' + photo.path + ')', width: '300px', height: '200px' }"
                                     ><b-button size="sm" variant="danger" @click="removePhoto(photo)">x</b-button></div>
                                 </div>
+                                <input type="file" class="form-control" ref="file_input" id="attachments" @change="uploadPhotos" multiple>
                             </div>
                             <br>
                             <div class="col-md-12 text-center">
                                 <div class="form-group">
                                     <br>
-                                    <b-button class="btn btn-success" size="lg">Обновить</b-button>
+                                    <b-button class="btn btn-success" size="lg" @click="updateProduct">Обновить</b-button>
                                     <b-button class="btn btn-danger" size="lg">Удалить</b-button>
                                 </div>
                             </div>
@@ -73,7 +76,7 @@ export default {
     mixins: ["deleteProduct"],
     data: () => {
         return {
-            photos: [],
+            photos : null,
         }
     },
     computed: {
@@ -106,7 +109,23 @@ export default {
             if (confirm("Вы уверены что хотите удалить фото ?")) {
                 this.$store.dispatch('removePhotoFromUpdatingProduct', photo.id);
             }
-        }
+        },
+        updateProduct() {
+            let form = new FormData();
+            form.append('name',this.updating_product.name);
+            form.append('category_id',this.updating_product.category_id);
+            form.append('price',this.updating_product.price);
+            form.append('description',this.updating_product.description);
+            for (let i = 0; i < this.photos.length; i++) {
+                form.append('photo[]', this.photos[i])
+            }
+            console.log(this.photos);
+            this.$store.dispatch('updateProduct', form);
+            this.$router.push({ name: 'products' });
+        },
+        uploadPhotos(e) {
+            this.photos = e.target.files;
+        },
     },
     watch: {
         updating_product(val) {

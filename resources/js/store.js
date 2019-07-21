@@ -45,6 +45,7 @@ export default {
         },
         opened_product_images: [],
         updating_product: {
+            id: 0,
             category: {},
             order: {},
             wish_list: {},
@@ -176,6 +177,12 @@ export default {
         },
         REMOVE_PHOTOS_FROM_UPDATING_PRODUCT(state, photo_index) {
             state.updating_product.photo.splice(photo_index, 1);
+        },
+        REMOVE_PRODUCT(state, product_index) {
+            state.products.splice(product_index, 1);
+        },
+        UPDATE_PRODUCTS(state, product, index) {
+            state.products[index] = product;
         }
     },
     actions: {
@@ -324,6 +331,43 @@ export default {
                     console.log(resp);
                 })
 
+        },
+        createProduct(context, product){
+            axios.post('/api/v1/products/store', product)
+                .then((resp) => {
+                    console.log(resp);
+                })
+                .catch((resp) => {
+                    alert('Ошибка при создании продукта');
+                    console.log(resp);
+                })
+        },
+        trashProduct(context, product_id) {
+            const product_index = context.getters.products.map((obj) => obj.id).indexOf(product_id);
+            axios.delete('/api/v1/products/trash/' + product_id)
+                .then((resp) => {
+                    console.log(resp.data);
+                    context.commit('REMOVE_PRODUCT', product_index);
+                })
+                .catch((resp)=> {
+                    alert('Возникла ошибка при удалении продукта');
+                    console.log(resp);
+                })
+        },
+        updateProduct(context, product) {
+            const id = context.getters.updatingProduct.id;
+            const product_index = context.getters.products.map((obj) => obj.id).indexOf(id);
+            // TODO !!! обновить на пут потом
+            axios.post('/api/v1/products/update/' + id, product)
+                .then((resp) => {
+                    console.log(resp.data);
+                    context.commit('UPDATE_PRODUCTS', resp.data, product_index);
+                    // context.commit('REMOVE_PHOTOS_FROM_UPDATING_PRODUCT', photoIndex);
+                })
+                .catch((resp)=> {
+                    alert('Возникла ошибка при удалении продукта');
+                    console.log(resp);
+                })
         }
     }
 }

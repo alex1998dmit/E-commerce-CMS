@@ -7,8 +7,8 @@
                     <br>
                 </div>
                 <div class="col-md-8 text-right">
-                    <b-button variant="success">Добавить продукт</b-button>
-                    <b-button variant="info">Главное меню</b-button>
+                    <router-link :to="{ name: 'createProduct' }"><b-button variant="success">Добавить продукт</b-button></router-link>
+                    <!-- <b-button variant="info">Главное меню</b-button> -->
                 </div>
             </div>
             <div class="row">
@@ -50,7 +50,7 @@
                                     <td>
                                         <a href="#"
                                             class="btn btn-xs btn-danger"
-                                            @click="fasfa()">
+                                            @click="trashProduct(product.id)">
                                                 Удалить
                                         </a>
                                     </td>
@@ -86,6 +86,11 @@ export default {
             this.$store.commit('SET_CURRENT_PRODUCT', product);
             this.$store.commit('SET_OPENED_PRODUCT_IMAGES', product.photo);
             this.$bvModal.show('bv-modal-about-product');
+        },
+        trashProduct(id) {
+            if (confirm("Вы уверены что хотите удалить продукт ?")) {
+                this.$store.dispatch('trashProduct', id);
+            }
         }
     },
 }

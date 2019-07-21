@@ -10,26 +10,26 @@
                     <a href="#homeSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">Категория скидок</a>
                     <ul class="collapse list-unstyled" id="homeSubmenu">
                         <li>
-                            <router-link :to="{ name: 'discounts' }">Все скидки</router-link> |
+                            <router-link :to="{ name: 'discounts' }">Все скидки</router-link>
                         </li>
                     </ul>
                 </li>
                 <li>
-                    <router-link :to="{ name: 'users' }">Пользователи</router-link> |
+                    <router-link :to="{ name: 'users' }">Пользователи</router-link>
                 </li>
-                <li>
-                    <router-link :to="{ name: 'categories' }">Категории</router-link> |
-                </li>
-                <li>
-                    <router-link :to="{ name: 'products' }">Продукты</router-link> |
-                </li>
-                <li>
-                    <a href="#pageSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">Pages</a>
-                    <ul class="collapse list-unstyled" id="pageSubmenu">
+                <li class="active">
+                    <a href="#productsMenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">Товары</a>
+                    <ul class="collapse list-unstyled" id="productsMenu">
                         <li>
-                            <a href="#">Page 1</a>
+                            <router-link :to="{ name: 'createProduct' }">Добавить продукт</router-link>
+                        </li>
+                        <li>
+                            <router-link :to="{ name: 'products' }">Все товары</router-link>
                         </li>
                     </ul>
+                </li>
+                <li>
+                    <router-link :to="{ name: 'categories' }">Категории</router-link>
                 </li>
             </ul>
             <ul class="list-unstyled CTAs">

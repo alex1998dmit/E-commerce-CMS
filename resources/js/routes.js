@@ -8,6 +8,7 @@ import CategoriesIndex from './components/admin/categories/CategoriesIndex.vue';
 import Login from './components/admin/auth/Login';
 import ProductsIndex from './components/admin/products/ProductsIndex.vue';
 import ProductEdit from './components/admin/products/ProductEdit.vue';
+import ProductCreate from './components/admin/products/ProductCreate.vue';
 
 export const routes = [
     // discounts
@@ -53,6 +54,11 @@ export const routes = [
         path: '/products/edit/:id',
         component: ProductEdit,
         name: 'editProduct'
+    },
+    {
+        path: '/products/create',
+        component: ProductCreate,
+        name: 'createProduct'
     },
 
     {

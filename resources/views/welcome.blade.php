@@ -18,10 +18,10 @@
         </div>
         <script src="{{ asset('js/app.js') }}"></script>
         <script>
-            Echo.channel('home')
-                .listen('NewMessage', (e) => {
-                    console.log(e.message);
-                })
+            // Echo.channel('home')
+            //     .listen('NewMessage', (e) => {
+            //         console.log(e.message);
+            //     })
         </script>
         <script type="text/javascript">
             $(document).ready(function () {

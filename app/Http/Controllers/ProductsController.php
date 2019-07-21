@@ -69,7 +69,6 @@ class ProductsController extends Controller
 
     public function update(Request $request, $id)
     {
-
         $validator = $request->validate([
             'name' => 'required|min:3',
             'category_id' => 'required|numeric',

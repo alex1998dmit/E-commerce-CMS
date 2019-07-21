@@ -82,9 +82,14 @@ Route::group(['prefix' => '/v1','namespace' => 'API\V1'], function () {
     Route::get('finalCategories', 'CategoriesController@finalCategories');
     Route::patch('categories/{category}','CategoriesController@update');
 
+    // TODO !!! почему роуты некорретные ?
+    Route::post('/products/store', 'ProductsController@store');
+    Route::delete('/products/trash/{id}', 'ProductsController@trash');
     Route::get('/products', 'ProductsController@index');
     Route::get('/products/{id}', 'ProductsController@single');
     Route::delete('/products/images', 'ProductsController@removeImage');
+    // TODO !!! изменить глагол на пут
+    Route::post('/products/update/{product}', 'ProductsController@update');
 });
 
 
