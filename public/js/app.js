@@ -1946,10 +1946,12 @@ __webpack_require__.r(__webpack_exports__);
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _includes_treeCategories__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./includes/treeCategories */ "./resources/js/components/admin/categories/includes/treeCategories.vue");
 /* harmony import */ var vuex__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! vuex */ "./node_modules/vuex/dist/vuex.esm.js");
-function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; var ownKeys = Object.keys(source); if (typeof Object.getOwnPropertySymbols === 'function') { ownKeys = ownKeys.concat(Object.getOwnPropertySymbols(source).filter(function (sym) { return Object.getOwnPropertyDescriptor(source, sym).enumerable; })); } ownKeys.forEach(function (key) { _defineProperty(target, key, source[key]); }); } return target; }
-
-function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
-
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -2051,7 +2053,8 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       new_category_params: {
         name: "",
         parent_id: 0
-      }
+      },
+      search_param: ""
     };
   },
   mounted: function mounted() {
@@ -2060,8 +2063,6 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     this.$store.dispatch('getCategories'); // TODO !! Нужно ли отслеживать все изменения ?
 
     this.$store.subscribe(function (mutation, state) {
-      console.log('mutation ' + mutation.type);
-
       switch (mutation.type) {
         case 'UPDATE_CATEGORIES':
           _this.$store.dispatch('getCategories');
@@ -2070,7 +2071,21 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       }
     });
   },
-  computed: _objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_1__["mapGetters"])(['categories'])),
+  computed: {
+    categories: function categories() {
+      var _this2 = this;
+
+      var categories = this.$store.getters.categories;
+
+      if (this.search_param === "") {
+        return categories;
+      }
+
+      return categories.filter(function (category) {
+        return category.name.toLowerCase().includes(_this2.$data.search_param.toLocaleLowerCase());
+      });
+    }
+  },
   methods: {
     createCategory: function createCategory() {
       this.$store.dispatch('createCategories', this.new_category_data);
@@ -2090,6 +2105,13 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     },
     storeCategory: function storeCategory() {
       this.$store.dispatch('createCategory', this.new_category_params);
+    }
+  },
+  watch: {
+    search_param: function search_param(val) {
+      this.categories.filter(function (category) {
+        return category;
+      });
     }
   }
 });
@@ -80757,8 +80779,37 @@ var render = function() {
   return _c(
     "div",
     [
+      _vm._m(0),
+      _vm._v(" "),
+      _c("br"),
+      _vm._v(" "),
       _c("div", { staticClass: "row" }, [
-        _vm._m(0),
+        _c("div", { staticClass: "col-md-6" }, [
+          _c("input", {
+            directives: [
+              {
+                name: "model",
+                rawName: "v-model",
+                value: _vm.search_param,
+                expression: "search_param"
+              }
+            ],
+            staticClass: "form-control",
+            attrs: {
+              type: "text",
+              placeholder: "Введите название категории ..."
+            },
+            domProps: { value: _vm.search_param },
+            on: {
+              input: function($event) {
+                if ($event.target.composing) {
+                  return
+                }
+                _vm.search_param = $event.target.value
+              }
+            }
+          })
+        ]),
         _vm._v(" "),
         _c(
           "div",
@@ -80817,7 +80868,7 @@ var render = function() {
                 staticClass: "categories_list",
                 attrs: { id: "categories_list" }
               },
-              _vm._l(this.$store.state.categories, function(category) {
+              _vm._l(_vm.categories, function(category) {
                 return _c("tr", { key: category.id }, [
                   _c("td", [_vm._v(_vm._s(category.id))]),
                   _vm._v(" "),
@@ -81109,8 +81160,10 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "col-md-6 text-left" }, [
-      _c("h2", [_vm._v("Категории")])
+    return _c("div", { staticClass: "row" }, [
+      _c("div", { staticClass: "col-md-12 text-left" }, [
+        _c("h2", [_vm._v("Категории")])
+      ])
     ])
   },
   function() {

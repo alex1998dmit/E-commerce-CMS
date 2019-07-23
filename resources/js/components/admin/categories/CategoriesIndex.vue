@@ -1,10 +1,16 @@
 <template>
     <div>
         <div class="row">
-            <div class="col-md-6 text-left">
+            <div class="col-md-12 text-left">
                 <h2>Категории</h2>
             </div>
-            <div class="col-md-6 text-right">
+        </div>
+        <br>
+        <div class="row">
+            <div class="col-md-6">
+                <input type="text" class="form-control" v-model="search_param" placeholder="Введите название категории ...">
+            </div>
+             <div class="col-md-6 text-right">
                 <b-button variant="success" @click="$bvModal.show('bv-modal-create-from-menu-category')">Добавить категорию</b-button>
                 <b-button v-b-modal.modal-xl variant="primary">Дерево категорий</b-button>
                 <b-button variant="warning">Удаленные категории</b-button>
@@ -26,7 +32,7 @@
                 </thead>
                 <tbody class="categories_list" id="categories_list">
                     <!-- @foreach ($allCategories  as $category) -->
-                    <tr v-for="category in this.$store.state.categories" :key="category.id">
+                    <tr v-for="category in categories" :key="category.id">
                         <td>{{ category.id }}</td>
                         <td>{{ category.name }}</td>
                         <td>
@@ -101,14 +107,14 @@ export default {
             new_category_params: {
                 name: "",
                 parent_id: 0
-            }
+            },
+            search_param: "",
         }
     },
     mounted() {
         this.$store.dispatch('getCategories');
         // TODO !! Нужно ли отслеживать все изменения ?
         this.$store.subscribe((mutation, state) => {
-            console.log('mutation ' + mutation.type);
             switch(mutation.type) {
                 case 'UPDATE_CATEGORIES':
                     this.$store.dispatch('getCategories');
@@ -117,7 +123,13 @@ export default {
         })
     },
     computed: {
-        ...mapGetters(['categories'])
+        categories() {
+            let categories = this.$store.getters.categories;
+            if (this.search_param === "") {
+                return categories;
+            }
+            return categories.filter(category => category.name.toLowerCase().includes(this.$data.search_param.toLocaleLowerCase()))
+        },
     },
     methods: {
         createCategory() {
@@ -138,6 +150,11 @@ export default {
         },
         storeCategory() {
             this.$store.dispatch('createCategory', this.new_category_params);
+        }
+    },
+    watch: {
+        search_param(val) {
+            this.categories.filter(category => category);
         }
     }
 }
