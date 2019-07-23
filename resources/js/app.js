@@ -9,6 +9,10 @@ import Vue from 'vue';
 import Vuex from 'vuex';
 import { routes } from './routes';
 import StoreData from './store';
+// svg-icons
+// import { library } from '@fortawesome/fontawesome-svg-core';
+// import { faCoffee } from '@fortawesome/free-solid-svg-icons'
+// import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 
 import App from './components/admin/App.vue';
 
@@ -34,6 +38,7 @@ const router = new VueRouter({
     mode: 'history',
     routes,
 });
+
 
 const app = new Vue({
     el: '#app',

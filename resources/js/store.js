@@ -18,6 +18,7 @@ export default {
 
         // categories
         categories: [],
+        selected_category_for_adding_products: 1,
         final_categories: [],
         new_category: {
             name: "",
@@ -76,6 +77,9 @@ export default {
         },
         finalCategories(state) {
             return state.final_categories;
+        },
+        categoryIdForAddProudct(state) {
+            return state.selected_category_for_adding_products;
         },
 
         // discount
@@ -137,8 +141,14 @@ export default {
             state.categories.splice(0, state.categories.length);
             state.categories = categories;
         },
+        SET_CURRENT_CATEGORY_ID(state, category_id) {
+            state.selected_category_for_adding_products = category_id;
+        },
         SET_FINAL_CATEGORIES(state, final_categories) {
             state.final_categories = final_categories;
+        },
+        UPDATE_CATEGORIES(state, { category_index, updated_category }) {
+            state.categories[category_index] = updated_category;
         },
 
         // discounts
@@ -183,6 +193,9 @@ export default {
         },
         UPDATE_PRODUCTS(state, product, index) {
             state.products[index] = product;
+        },
+        SET_FINDED_PRODUCTS(state, products) {
+
         }
     },
     actions: {
@@ -200,8 +213,6 @@ export default {
         getFinalCategories(context) {
             axios.get('/api/v1/finalCategories')
                 .then((resp) => {
-                    console.log('final ctegories');
-                    console.log(resp.data);
                     context.commit('SET_FINAL_CATEGORIES', resp.data);
                 })
                 .catch((resp) => {
@@ -211,6 +222,16 @@ export default {
         },
         createCategories(context, category) {
             axios.post('/api/v1/categories', context.state.new_category)
+                .then((resp) => {
+                    context.commit('creaeteCategory', resp.data);
+                })
+                .catch((resp) => {
+                    console.log('error adding categories');
+                    console.log(resp);
+                })
+        },
+        createCategory(context, category) {
+            axios.post('/api/v1/categories', category)
                 .then((resp) => {
                     context.commit('creaeteCategory', resp.data);
                 })
@@ -233,9 +254,11 @@ export default {
                 });
         },
         updateCategory(context, category) {
+            const category_index = context.getters.categories.map((obj) => obj.id).indexOf(category.id);
             axios.patch(`/api/v1/categories/${category.id}`, category)
                 .then((resp) => {
-                    context.commit('updateCategory', resp.data);
+                    const updated_category = resp.data;
+                    context.commit('UPDATE_CATEGORIES', { category_index, updated_category });
                 })
                 .catch((resp) => {
                     console.log('error with update category');
@@ -306,17 +329,12 @@ export default {
         getUpdatingProduct(context, id) {
             axios.get('/api/v1/products/' + id)
                 .then((resp) => {
-                    console.log('commit is ready');
                     context.commit('SET_UPDATING_PRODUCT_PARAMS', resp.data);
                 })
                 .catch((resp)=> {
                     alert('Возникла ошибка при загрузки обновляемого продукта');
                     console.log(resp);
                 })
-        },
-        updateCategory(context, product) {
-            // product = { updating product info }
-
         },
         removePhotoFromUpdatingProduct(context, image_id) {
             const product_id = context.getters.updatingProduct.id;
@@ -335,7 +353,6 @@ export default {
         createProduct(context, product){
             axios.post('/api/v1/products/store', product)
                 .then((resp) => {
-                    console.log(resp);
                 })
                 .catch((resp) => {
                     alert('Ошибка при создании продукта');
@@ -360,14 +377,13 @@ export default {
             // TODO !!! обновить на пут потом
             axios.post('/api/v1/products/update/' + id, product)
                 .then((resp) => {
-                    console.log(resp.data);
                     context.commit('UPDATE_PRODUCTS', resp.data, product_index);
                     // context.commit('REMOVE_PHOTOS_FROM_UPDATING_PRODUCT', photoIndex);
                 })
                 .catch((resp)=> {
-                    alert('Возникла ошибка при удалении продукта');
+                    alert('Возникла ошибка при обновлении продукта');
                     console.log(resp);
                 })
-        }
+        },
     }
 }

@@ -5,6 +5,12 @@ export const createCategoryMixin = {
                 name: "",
                 parent_id: 0
             },
+            updating_category: {
+                id: 0,
+                name: "",
+                parent_id: 0,
+            },
+            open_form_with_products: false,
         }
     },
     methods: {
@@ -24,6 +30,16 @@ export const createCategoryMixin = {
             if (confirm("Вы уверены что хотите удалить категорию ?")) {
                 this.$store.dispatch('removeCategory', category);
             }
-        }
-    }
+        },
+        changeCategory(category) {
+            this.$data.updating_category.id = category.id;
+            this.$data.updating_category.name = category.name;
+            this.$data.updating_category.parent_id = category.parent_id;
+            this.$bvModal.show('bv-modal-change-category');
+        },
+        updateCategory() {
+            console.log('start udpate');
+            this.$store.dispatch('updateCategory', this.updating_category);
+        },
+    },
 }

@@ -85,6 +85,7 @@ class CategoriesController extends Controller
     public function update(Request $request, Category $category)
     {
         $category->update($request->all());
-        return Category::all();
+        $category->childs;
+        return $category;
     }
 }

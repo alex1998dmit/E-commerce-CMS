@@ -3,7 +3,8 @@
         <b-modal id="bv-modal-about-product" size="xl" hide-footer title="О продукте">
             <div class="row">
                 <div class="col-md-6 text-left">
-                    <!-- <h4>{{ openedProduct ? openedProduct.name : "-" }}</h4> -->
+                    <h4>{{ openedProduct.name }}</h4>
+                    <h6>{{ openedProduct.category.name }}</h6>
                 </div>
                 <div class="col-md-6 text-right">
                     <router-link :to="{ name: 'editProduct', params: { id: openedProduct.id }}" class="btn btn-xs btn-info">Редактировать</router-link>
@@ -90,14 +91,21 @@ export default {
 </script>
 
 <style>
-  .image {
+.image {
     float: left;
     background-size: cover;
     background-repeat: no-repeat;
     background-position: center center;
     border: 1px solid #ebebeb;
     margin: 5px;
-  }
+}
 
+a .next {
+    background: white;
+}
+
+a .close {
+    color: white;
+}
 
 </style>
