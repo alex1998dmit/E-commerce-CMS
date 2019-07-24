@@ -60,6 +60,7 @@ export default {
         }
     },
     methods: {
+        // file upload
         createProduct(e) {
             let form = new FormData();
             form.append('name',this.product.name);
@@ -74,6 +75,16 @@ export default {
         uploadFiles(e) {
             this.product.photos = e.target.files;
         },
+        // show table after
+        setCurrentCategory(category) {
+            if (category) {
+                this.$store.commit('SET_CURRENT_CATEGORY', category);
+            }
+        },
+        showProductsWithCurCategory() {
+            this.setCurrentCategory(this.selected_category);
+            this.$bvModal.show('bv-modal-products-with-category');
+        }
     },
     watch: {
         selected_category(category) {

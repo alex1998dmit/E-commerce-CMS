@@ -11,6 +11,7 @@ import UsersIndex from './components/admin/users/UsersIndex.vue';
 
 import CategoriesIndex from './components/admin/categories/CategoriesIndex.vue';
 import CategoriesTree from './components/admin/categories/CategoriesTree.vue';
+import CategoriesTrashed from './components/admin/categories/CategoriesTrashed.vue';
 
 import ProductsIndex from './components/admin/products/ProductsIndex.vue';
 import ProductEdit from './components/admin/products/ProductEdit.vue';
@@ -38,7 +39,12 @@ export const routes = [
     {
         path: '/treeCateories',
         component: CategoriesTree,
-        name: 'categoriesTree'
+        name: 'CategoriesTree'
+    },
+    {
+        path: '/trashedCategories',
+        component: CategoriesTrashed,
+        name: 'CategoriesTrashed'
     },
 
     // auth

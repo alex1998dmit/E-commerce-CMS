@@ -34,6 +34,23 @@ class CategoriesController extends Controller
         // return response()->json(['data' => $final_categories],200) ;
     }
 
+    public function trashed()
+    {
+        $categories = Category::onlyTrashed()->get();
+        return $categories;
+    }
+
+    public function restore($id)
+    {
+        $category = Category::onlyTrashed()->find($id);
+        if (!is_null($category)) {
+            $category->restore();
+            return $category;
+        } else {
+            return response()->json(['message' => 'Nothing to restore'], 500);
+        }
+    }
+
     public function store(Request $request)
     {
         $rules = [
@@ -76,10 +93,21 @@ class CategoriesController extends Controller
             foreach($category->childs as $subcategory) {
                 $subcategory->delete();
             }
-            return Category::all();
+            return response()->json(['message' => 'Success Delete'], 200);
         } else {
             abort(500);
         }
+    }
+
+    public function delete($id)
+    {
+        // Cascade delete childs
+        $category = Category::withTrashed()->where('id', $id)->first();
+        if ($category) {
+            $category->forceDelete();
+            return response()->json(['message' => 'Success Delete'], 200);
+        }
+        return response()->json(['message' => 'Not found'], 500);
     }
 
     public function update(Request $request, Category $category)

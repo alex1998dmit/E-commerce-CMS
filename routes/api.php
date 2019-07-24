@@ -76,11 +76,14 @@ Route::group(['prefix' => '/v1','namespace' => 'API\V1'], function () {
     Route::resource('users', 'UsersController', ['except' => 'create', 'edit']);
 
     Route::post('/categories', 'CategoriesController@store');
-    Route::delete('/categories/{id}', 'CategoriesController@trash');
     Route::get('/categories/{id}', 'CategoriesController@show');
     Route::get('categories', 'CategoriesController@index');
     Route::get('finalCategories', 'CategoriesController@finalCategories');
+    Route::get('trashedCategories', 'CategoriesController@trashed');
+    Route::get('categories/restore/{id}', 'CategoriesController@restore');
     Route::patch('categories/{category}','CategoriesController@update');
+    Route::get('categories/trash/{id}', 'CategoriesController@trash');
+    Route::delete('categories/{id}', 'CategoriesController@delete');
 
     // TODO !!! почему роуты некорретные ?
     Route::post('/products/store', 'ProductsController@store');

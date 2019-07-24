@@ -29,13 +29,16 @@
                     </ul>
                 </li>
                 <li class="active">
-                    <a href="#productsMenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">Категории</a>
-                    <ul class="collapse list-unstyled" id="productsMenu">
+                    <a href="#categoriesMenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">Категории</a>
+                    <ul class="collapse list-unstyled" id="categoriesMenu">
                         <li>
                             <router-link :to="{ name: 'categories' }">Таблица категорий</router-link>
                         </li>
                         <li>
                             <router-link :to="{ name: 'CategoriesTree' }">Дерево категорий</router-link>
+                        </li>
+                        <li>
+                            <router-link :to="{ name: 'CategoriesTrashed' }">Удаленные категории</router-link>
                         </li>
                     </ul>
                 </li>

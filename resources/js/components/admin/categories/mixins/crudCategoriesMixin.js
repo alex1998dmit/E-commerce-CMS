@@ -14,5 +14,11 @@ export const crudCategoriesMixin = {
             this.setCurrentCategory(category);
             this.$bvModal.show('bv-modal-change-category');
         },
+        // methods
+        trashCategory(category) {
+            if (confirm("Вы уверены что хотите удалить категорию ?")) {
+                this.$store.dispatch('trashCategory', category);
+            }
+       }
     },
 }

@@ -12,8 +12,8 @@
             </div>
              <div class="col-md-6 text-right">
                 <b-button variant="success" @click="$bvModal.show('bv-modal-create-from-menu-category')">Добавить категорию</b-button>
-                <b-button v-b-modal.modal-xl variant="primary">Дерево категорий</b-button>
-                <b-button variant="warning">Удаленные категории</b-button>
+                <b-button variant="primary" :to="{ name: 'CategoriesTree' }">Дерево категорий</b-button>
+                <b-button variant="warning" :to="{ name: 'CategoriesTrashed' }">Удаленные категории</b-button>
             </div>
         </div>
         <br>
@@ -89,20 +89,11 @@
     </div>
 </template>
 <script>
-import { mapGetters } from 'vuex'
+import { mapGetters } from 'vuex';
 
 export default {
     data: () => {
         return {
-            updating_category: {
-                id: 0,
-                name: "",
-                parent_id: 0
-            },
-            new_category_params: {
-                name: "",
-                parent_id: 0
-            },
             search_param: "",
         }
     },
@@ -118,38 +109,26 @@ export default {
         })
     },
     computed: {
-        categories() {
-            let categories = this.$store.getters.categories;
-            if (this.search_param === "") {
-                return categories;
-            }
-            return categories.filter(category => category.name.toLowerCase().includes(this.$data.search_param.toLocaleLowerCase()))
+        categories: {
+            get() {
+                return this.$store.getters.categories;
+            },
+            set(val) {}
         },
+        // categories() {
+        //     let categories = this.$store.getters.categories;
+        //     if (this.search_param === "") {
+        //         return categories;
+        //     }
+        //     return categories.filter(category => category.name.toLowerCase().includes(this.$data.search_param.toLocaleLowerCase()))
+        // },
     },
     methods: {
-        createCategory() {
-            this.$store.dispatch('createCategories', this.new_category_data);
-        },
-        removeCategory(category) {
-            if (confirm("Вы уверены что хотите удалить категорию ?")) {
-                this.$store.dispatch('removeCategory', category);
-            }
-        },
-        editCategory(category) {
-            this.updating_category.id = category.id;
-            this.updating_category.name = category.name;
-            this.updating_category.parent_id = category.parent_id;
-        },
-        updateCategory() {
-            this.$store.dispatch('updateCategory', this.updating_category);
-        },
-        storeCategory() {
-            this.$store.dispatch('createCategory', this.new_category_params);
-        }
+
     },
     watch: {
         search_param(val) {
-            this.categories.filter(category => category);
+            // this.categories.filter(category => category);
         }
     }
 }

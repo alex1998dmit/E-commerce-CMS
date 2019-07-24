@@ -1,6 +1,15 @@
 <template>
     <div>
         <div class="row">
+            <div class="col-md-6">
+                <h2>Дерево категорий</h2>
+            </div>
+            <div class="col-md-6 text-right">
+                <b-button variant="info" :to="{ name:'categories' }">Категории</b-button>
+            </div>
+        </div>
+        <br>
+        <div class="row">
             <div class="col-md-12 text-left">
                 <button type="button" class="btn btn-success btn-sm" @click="createCategory()">+</button>
             </div>
@@ -8,7 +17,7 @@
         <li v-for="(category) in categoryTree" :key="category.id">
             {{ category.name }}
                 <button type="button" class="btn btn-success btn-sm buttons-crud" @click="createCategory(category);" >+</button>
-                <button type="button" class="btn btn-danger btn-sm buttons-crud"  @click="deleteCategory(category)">x</button>
+                <button type="button" class="btn btn-danger btn-sm buttons-crud"  @click="trashCategory(category)">x</button>
                 <button type="button" class="btn btn-warning btn-sm buttons-crud"  @click="changeCategory(category)">изменить</button>
             <ChildsCategories v-if="category.childs.length > 0" :childs="category.childs"></ChildsCategories>
         </li>
@@ -24,8 +33,7 @@
 </template>
 <script>
 // mixins
-import { createCategoryMixin } from './mixins/createCategoryMixin.js';
-import { deleteCategoriesMixin } from './mixins/deleteCategoriesMixin';
+import { crudCategoriesMixin } from './mixins/crudCategoriesMixin';
 // components
 import ChildsCategories from './includes/tree/ChildsCategories.vue';
 import CreateCategory from './includes/modals/CreateCategory.vue';
@@ -36,7 +44,7 @@ import CreateProductWithCategory from './includes/modals/products/CreateProductW
 import { generateArrayOfCategoriesTree } from './../../../helpers/categoryTree';
 
 export default {
-    mixins: [createCategoryMixin, deleteCategoriesMixin ],
+    mixins: [ crudCategoriesMixin ],
     components: {
         ChildsCategories, CreateCategory, ChangeCategory, ProductsByCategory, CreateProductWithCategory
     },

@@ -20,6 +20,7 @@ export default {
 
         // categories
         categories: [],
+        trashed_categories: [],
         selected_category: {
             name: "",
             parent_id: 0,
@@ -95,6 +96,9 @@ export default {
                 return state.categories[index] ? state.categories[index] : { name: "", parent_id: 0 };
             };
         },
+        trashedCategories(state) {
+            return state.trashed_categories;
+        },
 
         // discount
         updatingDiscount(state){
@@ -142,16 +146,7 @@ export default {
         creaeteCategory(state, payload) {
             state.categories.push(payload);
         },
-        addNewCategoryParams(state, payload) {
-            for (let key in payload) {
-                state.new_category[key] = payload[key];
-            }
-        },
         removeCategory(state, categories) {
-            state.categories.splice(0, state.categories.length);
-            state.categories = categories;
-        },
-        updateCategory(state, categories) {
             state.categories.splice(0, state.categories.length);
             state.categories = categories;
         },
@@ -161,14 +156,20 @@ export default {
         SET_CURRENT_CATEGORY(state, category) {
             state.selected_category = category;
         },
-        SET_CURRENT_CATEGORY_ID(state, category_id) {
-            state.selected_category_for_adding_products = category_id;
-        },
         SET_FINAL_CATEGORIES(state, final_categories) {
             state.final_categories = final_categories;
         },
         UPDATE_CATEGORIES(state, { category_index, updated_category }) {
             state.categories[category_index] = updated_category;
+        },
+        SET_TRASHED_CATEGORIES(state, trashed_categories) {
+            state.trashed_categories = trashed_categories;
+        },
+        REMOVE_FROM_TRASHED_CATEGORIES(state, index) {
+            state.trashed_categories.splice(index, 1);
+        },
+        SET_ALL_CATEGORIES(state, categories) {
+            state.categories = categories;
         },
 
         // discounts
@@ -214,16 +215,13 @@ export default {
         UPDATE_PRODUCTS(state, product, index) {
             state.products[index] = product;
         },
-        SET_FINDED_PRODUCTS(state, products) {
-
-        }
     },
     actions: {
         // categories
         getCategories(context) {
             axios.get('/api/v1/categories')
                 .then((resp) => {
-                    context.commit('updateCategories', resp.data);
+                    context.commit('SET_ALL_CATEGORIES', resp.data);
                 })
                 .catch((resp) => {
                     console.log('error showing categories');
@@ -263,13 +261,13 @@ export default {
         addNewCategoryParam(context, paramAndValue) {
             context.commit('addNewCategoryParams', paramAndValue);
         },
-        removeCategory(context, category) {
-            axios.delete('/api/v1/categories/' + category.id)
+        trashCategory(context, category) {
+            axios.get('/api/v1/categories/trash/' + category.id)
                 .then((resp) => {
-                    context.commit('removeCategory', resp.data);
+                    context.dispatch('getCategories');
                 })
                 .catch((resp) => {
-                    console.log('error with deleting category');
+                    console.log('error with trash category');
                     console.log(resp);
                 });
         },
@@ -282,6 +280,37 @@ export default {
                 })
                 .catch((resp) => {
                     console.log('error with update category');
+                    console.log(resp);
+                })
+        },
+        getTrashedCategories(context) {
+            axios.get('/api/v1/trashedCategories')
+                .then((resp) => {
+                    context.commit('SET_TRASHED_CATEGORIES', resp.data);
+                })
+                .catch((resp) => {
+                    alert('Ошибка при загрузке удаленных категорий');
+                    console.log(resp);
+                })
+        },
+        restoreCategory(context, { category_id, category_index }) {
+            axios.get('/api/v1/categories/restore/' + category_id)
+                .then((resp) => {
+                    context.commit('creaeteCategory', resp.data);
+                    context.commit('REMOVE_FROM_TRASHED_CATEGORIES', category_index);
+                })
+                .catch((resp) => {
+                    alert('Ошибка при загрузке удаленных категорий');
+                    console.log(resp);
+                })
+        },
+        deleteCategory(context, { category_id, category_index }) {
+            axios.delete('/api/v1/categories/' + category_id)
+                .then((resp) => {
+                    context.dispatch('getTrashedCategories');
+                })
+                .catch((resp) => {
+                    alert('Ошибка при загрузке удаленных категорий');
                     console.log(resp);
                 })
         },
@@ -312,7 +341,7 @@ export default {
             const index = this.getters.discounts.map((obj) => obj.id).indexOf(id);
             axios.delete('/api/v1/discounts/' + id)
                 .then(function (resp) {
-                    context.commit('REMOVE_DISCOUNT', index);
+                    context.dispatch('');
                 })
                 .catch(function (resp) {
                     alert("Удаление не удалось", resp);
