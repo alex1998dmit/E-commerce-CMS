@@ -4,8 +4,6 @@
 
 export default {
     state: {
-        testState:[],
-
         host: 'http://passportapi',
         product_images_forlder: 'upload/products',
 
@@ -22,15 +20,12 @@ export default {
         categories: [],
         trashed_categories: [],
         selected_category: {
+            id: 0,
             name: "",
             parent_id: 0,
+            product: [],
         },
-        selected_category_for_adding_products: 1,
         final_categories: [],
-        new_category: {
-            name: "",
-            parent_id: 0
-        },
 
         // discount
         discounts: [],
@@ -79,14 +74,8 @@ export default {
         categories(state) {
             return state.categories;
         },
-        newCategory(state) {
-            return state.new_category;
-        },
         finalCategories(state) {
             return state.final_categories;
-        },
-        categoryIdForAddProudct(state) {
-            return state.selected_category_for_adding_products;
         },
         selectedCategory(state) {
             return state.selected_category;
@@ -140,10 +129,7 @@ export default {
         },
 
         // categories
-        updateCategories(state, payload) {
-            state.categories = payload;
-        },
-        creaeteCategory(state, payload) {
+        ADD_NEW_CATEGORY_TO_CATEGORIES(state, payload) {
             state.categories.push(payload);
         },
         removeCategory(state, categories) {
@@ -238,28 +224,15 @@ export default {
                     console.log(resp);
                 })
         },
-        createCategories(context, category) {
-            axios.post('/api/v1/categories', context.state.new_category)
-                .then((resp) => {
-                    context.commit('creaeteCategory', resp.data);
-                })
-                .catch((resp) => {
-                    console.log('error adding categories');
-                    console.log(resp);
-                })
-        },
         createCategory(context, category) {
             axios.post('/api/v1/categories', category)
                 .then((resp) => {
-                    context.commit('creaeteCategory', resp.data);
+                    context.commit('ADD_NEW_CATEGORY_TO_CATEGORIES', resp.data);
                 })
                 .catch((resp) => {
                     console.log('error adding categories');
                     console.log(resp);
                 })
-        },
-        addNewCategoryParam(context, paramAndValue) {
-            context.commit('addNewCategoryParams', paramAndValue);
         },
         trashCategory(context, category) {
             axios.get('/api/v1/categories/trash/' + category.id)
@@ -272,12 +245,7 @@ export default {
                 });
         },
         updateCategory(context, { category_id, updating_category }) {
-            const category_index = context.getters.categories.map((obj) => obj.id).indexOf(category_id);
             axios.patch(`/api/v1/categories/${category_id}`, updating_category)
-                .then((resp) => {
-                    const updated_category = resp.data;
-                    // context.commit('UPDATE_CATEGORIES', { category_index, updated_category });
-                })
                 .catch((resp) => {
                     console.log('error with update category');
                     console.log(resp);
@@ -296,7 +264,7 @@ export default {
         restoreCategory(context, { category_id, category_index }) {
             axios.get('/api/v1/categories/restore/' + category_id)
                 .then((resp) => {
-                    context.commit('creaeteCategory', resp.data);
+                    context.commit('ADD_NEW_CATEGORY_TO_CATEGORIES', resp.data);
                     context.commit('REMOVE_FROM_TRASHED_CATEGORIES', category_index);
                 })
                 .catch((resp) => {

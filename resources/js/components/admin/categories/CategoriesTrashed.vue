@@ -61,7 +61,11 @@ export default {
     },
     computed: {
         trashed_categories() {
-            return this.$store.getters.trashedCategories;
+            const categories = this.$store.getters.trashedCategories;
+            if (this.search_param.length > 0) {
+                return categories.filter((category) => category.name.toLowerCase().includes(this.search_param.toLocaleLowerCase()));
+            }
+            return categories;
         }
     },
     mounted() {

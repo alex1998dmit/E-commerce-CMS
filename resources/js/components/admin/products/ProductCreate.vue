@@ -66,10 +66,10 @@ export default {
     data: () => {
         return {
             product: {
-                name: "test",
-                category_id: 2,
+                name: "",
+                category_id:0,
                 price: 10000,
-                description: "new dasda",
+                description: "",
                 photos: []
             },
             attachments: [],

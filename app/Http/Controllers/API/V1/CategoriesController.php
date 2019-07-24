@@ -17,6 +17,10 @@ class CategoriesController extends Controller
         $categories = Category::all();
         foreach($categories as $category) {
             $childs = $category->childs;
+            $products = $category->product;
+            foreach($products as $product) {
+                $orders = $product->order;
+            }
         }
         return $categories;
     }

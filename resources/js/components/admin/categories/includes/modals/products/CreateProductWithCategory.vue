@@ -27,7 +27,7 @@
                         <div class="col-md-12 text-center">
                             <div class="form-group">
                                 <br>
-                                <b-button class="btn btn-success" @click="createProduct(); $bvModal.hide('bv-modal-add-product-category'); showProductsWithCurCategory()">Создать</b-button>
+                                <b-button class="btn btn-success" @click="createProduct(); $bvModal.hide('bv-modal-add-product-category');">Создать</b-button>
                                 <b-button class="btn btn-danger" @click="$bvModal.hide('bv-modal-add-product-category')">Отмена</b-button>
                             </div>
                         </div>

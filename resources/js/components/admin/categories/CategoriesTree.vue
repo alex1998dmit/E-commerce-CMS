@@ -9,11 +9,6 @@
             </div>
         </div>
         <br>
-        <div class="row">
-            <div class="col-md-12 text-left">
-                <button type="button" class="btn btn-success btn-sm" @click="createCategory()">+</button>
-            </div>
-        </div>
         <li v-for="(category) in categoryTree" :key="category.id">
             {{ category.name }}
                 <button type="button" class="btn btn-success btn-sm buttons-crud" @click="createCategory(category);" >+</button>
@@ -40,6 +35,7 @@ import CreateCategory from './includes/modals/CreateCategory.vue';
 import ChangeCategory from './includes/modals/ChangeCategory.vue';
 import ProductsByCategory from './includes/modals/products/ProductsByCategories';
 import CreateProductWithCategory from './includes/modals/products/CreateProductWithCategory';
+import CreateRootCategory from './includes/modals/CreateRootCategory';
 // utils
 import { generateArrayOfCategoriesTree } from './../../../helpers/categoryTree';
 
@@ -57,23 +53,6 @@ export default {
         this.$store.dispatch('getCategories');
         this.$store.dispatch('getFinalCategories');
         this.$store.dispatch('getProducts');
-    },
-    methods: {
-        setCurrentCategory(category) {
-            if (category) {
-                this.$store.commit('SET_CURRENT_CATEGORY', category);
-            }
-        },
-        // open modals
-        createCategory(category = null) {
-            this.setCurrentCategory(category);
-            this.$bvModal.show('bv-modal-create-category');
-        },
-        changeCategory(category = null) {
-            this.setCurrentCategory(category);
-            this.$bvModal.show('bv-modal-change-category');
-        },
-        //
     },
 }
 </script>
