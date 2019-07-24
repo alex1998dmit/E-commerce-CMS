@@ -86,17 +86,12 @@
                 <b-button variant="outline-danger" block @click="$bvModal.hide('bv-modal-create-from-menu-category')">Закрыть</b-button>
             </b-modal>
         </div>
-        <treeCategories v-if="categories.length > 0" :categories="this.categories"></treeCategories>
     </div>
 </template>
 <script>
-import treeCategories from './includes/treeCategories';
 import { mapGetters } from 'vuex'
 
 export default {
-    components: {
-        treeCategories,
-    },
     data: () => {
         return {
             updating_category: {

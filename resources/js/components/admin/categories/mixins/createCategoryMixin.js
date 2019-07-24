@@ -26,11 +26,11 @@ export const createCategoryMixin = {
             this.$store.dispatch('createCategories');
             this.$bvModal.hide('bv-modal-create-category');
         },
-        removeCategory(category) {
-            if (confirm("Вы уверены что хотите удалить категорию ?")) {
-                this.$store.dispatch('removeCategory', category);
-            }
-        },
+        // removeCategory(category) {
+        //     if (confirm("Вы уверены что хотите удалить категорию ?")) {
+        //         this.$store.dispatch('removeCategory', category);
+        //     }
+        // },
         changeCategory(category) {
             this.$data.updating_category.id = category.id;
             this.$data.updating_category.name = category.name;

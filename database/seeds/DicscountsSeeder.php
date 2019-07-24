@@ -16,6 +16,7 @@ class DicscountsSeeder extends Seeder
             DB::table('discounts')->insert([
                 'name' => 'Status with ' . $i . " discount",
                 'discount' => $i,
+                'description' => 'Lorem ipsum',
             ]);
         }
     }

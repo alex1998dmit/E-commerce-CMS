@@ -28,8 +28,16 @@
                         </li>
                     </ul>
                 </li>
-                <li>
-                    <router-link :to="{ name: 'categories' }">Категории</router-link>
+                <li class="active">
+                    <a href="#productsMenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">Категории</a>
+                    <ul class="collapse list-unstyled" id="productsMenu">
+                        <li>
+                            <router-link :to="{ name: 'categories' }">Таблица категорий</router-link>
+                        </li>
+                        <li>
+                            <router-link :to="{ name: 'CategoriesTree' }">Дерево категорий</router-link>
+                        </li>
+                    </ul>
                 </li>
             </ul>
             <ul class="list-unstyled CTAs">

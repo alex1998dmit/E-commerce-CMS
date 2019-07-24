@@ -4,6 +4,8 @@
 
 export default {
     state: {
+        testState:[],
+
         host: 'http://passportapi',
         product_images_forlder: 'upload/products',
 
@@ -18,6 +20,10 @@ export default {
 
         // categories
         categories: [],
+        selected_category: {
+            name: "",
+            parent_id: 0,
+        },
         selected_category_for_adding_products: 1,
         final_categories: [],
         new_category: {
@@ -81,6 +87,14 @@ export default {
         categoryIdForAddProudct(state) {
             return state.selected_category_for_adding_products;
         },
+        selectedCategory(state) {
+            return state.selected_category;
+        },
+        categoryByIndex(state) {
+            return (index) => {
+                return state.categories[index] ? state.categories[index] : { name: "", parent_id: 0 };
+            };
+        },
 
         // discount
         updatingDiscount(state){
@@ -140,6 +154,12 @@ export default {
         updateCategory(state, categories) {
             state.categories.splice(0, state.categories.length);
             state.categories = categories;
+        },
+        UPDATE_ALL_CATEGORIES(state, { category_id, updating_category }) {
+
+        },
+        SET_CURRENT_CATEGORY(state, category) {
+            state.selected_category = category;
         },
         SET_CURRENT_CATEGORY_ID(state, category_id) {
             state.selected_category_for_adding_products = category_id;
@@ -253,12 +273,12 @@ export default {
                     console.log(resp);
                 });
         },
-        updateCategory(context, category) {
-            const category_index = context.getters.categories.map((obj) => obj.id).indexOf(category.id);
-            axios.patch(`/api/v1/categories/${category.id}`, category)
+        updateCategory(context, { category_id, updating_category }) {
+            const category_index = context.getters.categories.map((obj) => obj.id).indexOf(category_id);
+            axios.patch(`/api/v1/categories/${category_id}`, updating_category)
                 .then((resp) => {
                     const updated_category = resp.data;
-                    context.commit('UPDATE_CATEGORIES', { category_index, updated_category });
+                    // context.commit('UPDATE_CATEGORIES', { category_index, updated_category });
                 })
                 .catch((resp) => {
                     console.log('error with update category');

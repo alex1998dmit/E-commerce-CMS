@@ -1,11 +1,17 @@
 import DashboardAdmin from './components/admin/dashboard/DashboardIndex.vue';
+
 import DiscountsIndex from './components/admin/discounts/DiscountsIndex.vue';
 import DiscountsCreate from './components/admin/discounts/DiscountsCreate.vue';
 import DiscountShow from './components/admin/discounts/DiscountShow.vue';
+
 import PersonalAccessTokens from './components/passport/PersonalAccessTokens.vue';
-import UsersIndex from './components/admin/users/UsersIndex.vue';
-import CategoriesIndex from './components/admin/categories/CategoriesIndex.vue';
 import Login from './components/admin/auth/Login';
+
+import UsersIndex from './components/admin/users/UsersIndex.vue';
+
+import CategoriesIndex from './components/admin/categories/CategoriesIndex.vue';
+import CategoriesTree from './components/admin/categories/CategoriesTree.vue';
+
 import ProductsIndex from './components/admin/products/ProductsIndex.vue';
 import ProductEdit from './components/admin/products/ProductEdit.vue';
 import ProductCreate from './components/admin/products/ProductCreate.vue';
@@ -28,6 +34,11 @@ export const routes = [
         path: '/categories',
         component: CategoriesIndex,
         name: 'categories'
+    },
+    {
+        path: '/treeCateories',
+        component: CategoriesTree,
+        name: 'categoriesTree'
     },
 
     // auth
