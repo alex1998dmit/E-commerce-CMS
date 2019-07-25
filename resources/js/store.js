@@ -57,6 +57,16 @@ export default {
 
         // Orders
         orders:[],
+        selected_order: {
+            id: 0,
+            name: "",
+            user_id: 0,
+            product: {
+                category: {},
+            },
+            user: {},
+            status: {}
+        },
 
         // Order statuses
         order_statuses: [],
@@ -127,6 +137,9 @@ export default {
         // orders
         orders(state) {
             return state.orders;
+        },
+        selectedOrder(state) {
+            return state.selected_order;
         },
 
         // orderstatuses
@@ -228,6 +241,9 @@ export default {
         // Orders
         SET_ALL_ORDERS(state, orders) {
             state.orders = orders;
+        },
+        SET_SELECTED_ORDER(state, order) {
+            state.selected_order = order;
         },
 
         // Order statuses

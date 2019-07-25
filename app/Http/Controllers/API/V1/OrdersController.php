@@ -14,6 +14,7 @@ class OrdersController extends Controller
         foreach($orders as $order) {
             $order->user;
             $order->product;
+            $order->product->category;
             $order->status;
         }
         return $orders;
@@ -24,6 +25,4 @@ class OrdersController extends Controller
         $orders = Order::where('status_id', '=', $statusId)->get();
         return $orders;
     }
-
-
 }

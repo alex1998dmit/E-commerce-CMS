@@ -50,6 +50,7 @@
                         <th scope="col">Сумма</th>
                         <th scope="col">Новый статус</th>
                         <th scope="col">Подробнее</th>
+                        <th scope="col">Редактировать</th>
                         <th scope="col">Удалить</th>
                     </tr>
                     </thead>
@@ -66,6 +67,13 @@
                                     @click="changeOrderStatus(order)"
                                     variant="primary">
                                         Изменить статус
+                                </b-button>
+                            </td>
+                            <td>
+                                <b-button
+                                    @click="openAboutOrder(order)"
+                                    variant="warning">
+                                        Подробнее
                                 </b-button>
                             </td>
                             <td>
@@ -87,11 +95,19 @@
                 </table>
             </div>
         </div>
+        <AboutOrder></AboutOrder>
     </div>
 </template>
 
 <script>
+import { crudOrdersMixin } from './mixins/crudOrdersMixin';
+import AboutOrder from './includes/modals/AboutOrder';
+
 export default {
+    mixins: [crudOrdersMixin],
+    components: {
+        AboutOrder
+    },
     computed: {
         order_status() {
             return this.$store.getters.selectedOrderStatus;
