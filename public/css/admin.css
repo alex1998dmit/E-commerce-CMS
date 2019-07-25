@@ -168,3 +168,11 @@ a.article:hover {
         display: none;
     }
 }
+
+/* ---------------------------------------------------
+    OrdersWithStatus
+----------------------------------------------------- */
+.menu-order-statuses-buttons {
+    margin-right: 5px;
+}
+

@@ -94,8 +94,12 @@ Route::group(['prefix' => '/v1','namespace' => 'API\V1'], function () {
     // TODO !!! изменить глагол на пут
     Route::post('/products/update/{product}', 'ProductsController@update');
 
+    // Orders
+    Route::get('/orders', 'OrdersController@index');
+
     // Order statuses
     Route::get('/orderStatuses', 'OrderStatuses@index');
+    Route::get('/orderStatuses/{id}', 'OrderStatuses@single');
 });
 
 

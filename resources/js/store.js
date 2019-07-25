@@ -55,8 +55,15 @@ export default {
             photo: [],
         },
 
+        // Orders
+        orders:[],
+
         // Order statuses
         order_statuses: [],
+        selected_order_status: {
+            name: "",
+            description: "",
+        },
     },
 
     getters: {
@@ -117,9 +124,17 @@ export default {
             return state.updating_product;
         },
 
+        // orders
+        orders(state) {
+            return state.orders;
+        },
+
         // orderstatuses
         orderStatuses(state) {
             return state.order_statuses;
+        },
+        selectedOrderStatus(state) {
+            return state.selected_order_status;
         }
     },
     mutations: {
@@ -210,10 +225,18 @@ export default {
             state.products[index] = product;
         },
 
+        // Orders
+        SET_ALL_ORDERS(state, orders) {
+            state.orders = orders;
+        },
+
         // Order statuses
         SET_ORDER_STATUSES(state, order_statuses) {
             state.order_statuses = order_statuses;
         },
+        SET_SELECTED_ORDER_STATUS(state, order_status) {
+            state.selected_order_status = order_status;
+        }
     },
     actions: {
         // categories
@@ -416,11 +439,33 @@ export default {
                 })
         },
 
+        // Orders
+        getOrders(context) {
+            axios.get('/api/v1/orders')
+            .then((resp) => {
+                context.commit('SET_ALL_ORDERS', resp.data);
+            })
+            .catch((resp) => {
+                alert('Ошибка загрузки заказов');
+                console.log(resp);
+            });
+        },
+
         // Order statuses
         getOrderStatuses(context) {
             axios.get('/api/v1/orderStatuses')
                 .then((resp) => {
                     context.commit('SET_ORDER_STATUSES', resp.data);
+                })
+                .catch((resp) => {
+                    alert('Ошибка загрузки статусов заказов');
+                    console.log(resp);
+                });
+        },
+        getSelectedOrderStatus(context, status_id) {
+            axios.get('/api/v1/orderStatuses/' + status_id)
+                .then((resp) => {
+                    context.commit('SET_SELECTED_ORDER_STATUS', resp.data);
                 })
                 .catch((resp) => {
                     alert('Ошибка загрузки статусов заказов');

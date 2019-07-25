@@ -10,7 +10,13 @@ class OrdersController extends Controller
 {
     public function index()
     {
-        return Order::all();
+        $orders = Order::all();
+        foreach($orders as $order) {
+            $order->user;
+            $order->product;
+            $order->status;
+        }
+        return $orders;
     }
 
     public function withStatus($statusId)
@@ -19,5 +25,5 @@ class OrdersController extends Controller
         return $orders;
     }
 
-    
+
 }

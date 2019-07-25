@@ -18,6 +18,7 @@ import ProductEdit from './components/admin/products/ProductEdit.vue';
 import ProductCreate from './components/admin/products/ProductCreate.vue';
 
 import OrdersIndex from './components/admin/orders/OrdersIndex';
+import OrdersWithStatus from './components/admin/orders/OrdersWithStatus';
 
 export const routes = [
     // discounts
@@ -87,6 +88,12 @@ export const routes = [
         name: 'dashboard'
     },
 
+    // orderWithStatus
+    {
+        path: '/orders/:statusId',
+        component: OrdersWithStatus,
+        name: 'OrdersWithStatus'
+    },
     // orders
     {
         path: '/orders',

@@ -13,4 +13,9 @@ class OrderStatuses extends Controller
     {
         return OrderStatus::all();
     }
+
+    public function single($id)
+    {
+        return OrderStatus::findOrFail($id);
+    }
 }

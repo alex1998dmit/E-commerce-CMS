@@ -3,6 +3,7 @@
         <div class="row">
             <div class="col-md-6">
                 <h2>Статусы заказа</h2>
+                <h5>{{ order_status.name }}</h5>
             </div>
             <div class="col-md-6">
 
@@ -20,21 +21,37 @@
 export default {
     data() {
         return {
-            status_id: 0,
-            status_name: null,
+            status: {
+                name: "",
+                descripton: "",
+            }
         }
     },
     computed: {
+        order_status() {
+            return this.$store.getters.selectedOrderStatus;
+        },
         orders() {
-            return [];
+
         }
     },
     mounted() {
-        this.status_id = this.$route.query.statusId;
-        console.log(this.status_id);
+        const status_id = this.$route.query.statusId;
+        if (status_id) {
+            this.$store.dispatch("getSelectedOrderStatus", status_id);
+        }
     },
     methods: {
-
+        update(status_id) {
+            this.$store.dispatch("getSelectedOrderStatus", status_id);
+        }
+    },
+    wathc: {
+        '$route'(new_val) {
+            console.log(new_val);
+            alert(new_val);
+            update(query.new_val.statusId);
+        }
     }
 }
 </script>
