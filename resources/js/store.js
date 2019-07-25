@@ -54,6 +54,9 @@ export default {
             wish_list: {},
             photo: [],
         },
+
+        // Order statuses
+        order_statuses: [],
     },
 
     getters: {
@@ -113,6 +116,11 @@ export default {
         updatingProduct(state) {
             return state.updating_product;
         },
+
+        // orderstatuses
+        orderStatuses(state) {
+            return state.order_statuses;
+        }
     },
     mutations: {
         login(state) {
@@ -200,6 +208,11 @@ export default {
         },
         UPDATE_PRODUCTS(state, product, index) {
             state.products[index] = product;
+        },
+
+        // Order statuses
+        SET_ORDER_STATUSES(state, order_statuses) {
+            state.order_statuses = order_statuses;
         },
     },
     actions: {
@@ -402,5 +415,17 @@ export default {
                     console.log(resp);
                 })
         },
+
+        // Order statuses
+        getOrderStatuses(context) {
+            axios.get('/api/v1/orderStatuses')
+                .then((resp) => {
+                    context.commit('SET_ORDER_STATUSES', resp.data);
+                })
+                .catch((resp) => {
+                    alert('Ошибка загрузки статусов заказов');
+                    console.log(resp);
+                });
+        }
     }
 }

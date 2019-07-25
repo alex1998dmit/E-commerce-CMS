@@ -17,6 +17,8 @@ import ProductsIndex from './components/admin/products/ProductsIndex.vue';
 import ProductEdit from './components/admin/products/ProductEdit.vue';
 import ProductCreate from './components/admin/products/ProductCreate.vue';
 
+import OrdersIndex from './components/admin/orders/OrdersIndex';
+
 export const routes = [
     // discounts
     {
@@ -78,9 +80,17 @@ export const routes = [
         name: 'createProduct'
     },
 
+    // admin
     {
         path: '/',
         component: DashboardAdmin,
         name: 'dashboard'
+    },
+
+    // orders
+    {
+        path: '/orders',
+        component: OrdersIndex,
+        name: 'Orders'
     }
 ];

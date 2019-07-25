@@ -5,7 +5,6 @@
                 <h3>Admin panel</h3>
             </div>
             <ul class="list-unstyled components">
-                <p>{{ welcome }}</p>
                 <li class="active">
                     <a href="#homeSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">Категория скидок</a>
                     <ul class="collapse list-unstyled" id="homeSubmenu">
@@ -42,6 +41,14 @@
                         </li>
                     </ul>
                 </li>
+                <li class="active">
+                    <a href="#ordersMenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">Заказы</a>
+                    <ul class="collapse list-unstyled" id="ordersMenu">
+                        <li v-for="status in order_statuses" :key="status.id">
+                             <router-link :to="{ name: 'Orders', query: { statusId: status.id }}">{{ status.name }}</router-link>
+                        </li>
+                    </ul>
+                </li>
             </ul>
             <ul class="list-unstyled CTAs">
             </ul>
@@ -51,9 +58,12 @@
 <script>
 export default {
     computed: {
-        welcome() {
-            return this.$store.getters.welcome;
+        order_statuses() {
+            return this.$store.getters.orderStatuses;
         }
+    },
+    mounted() {
+        this.$store.dispatch('getOrderStatuses');
     }
 }
 </script>
