@@ -74,6 +74,10 @@ export default {
             name: "",
             description: "",
         },
+
+        // users
+        users: [],
+
     },
 
     getters: {
@@ -148,6 +152,11 @@ export default {
         },
         selectedOrderStatus(state) {
             return state.selected_order_status;
+        },
+
+        // users
+        users(state) {
+            return state.users;
         }
     },
     mutations: {
@@ -245,6 +254,9 @@ export default {
         SET_SELECTED_ORDER(state, order) {
             state.selected_order = order;
         },
+        UPDATE_ORDER(state, { order_index, order }) {
+            state.orders[order_index] = order;
+        },
 
         // Order statuses
         SET_ORDER_STATUSES(state, order_statuses) {
@@ -252,7 +264,12 @@ export default {
         },
         SET_SELECTED_ORDER_STATUS(state, order_status) {
             state.selected_order_status = order_status;
-        }
+        },
+
+        // users
+        SET_ALL_USERS(state, users) {
+            state.users = users;
+        },
     },
     actions: {
         // categories
@@ -414,7 +431,7 @@ export default {
                     context.commit('REMOVE_PHOTOS_FROM_UPDATING_PRODUCT', photoIndex);
                 })
                 .catch((resp)=> {
-                    alert('Возникла ошибка при загрузки обновляемого продукта');
+                alert('Возникла ошибка при загрузки обновляемого продукта');
                     console.log(resp);
                 })
 
@@ -466,6 +483,27 @@ export default {
                 console.log(resp);
             });
         },
+        updateOrder(context, { order_id, order }) {
+            const order_index = context.getters.orders.map((order) => order.id).indexOf(order_id);
+            axios.put('/api/v1/orders/' + order_id, order)
+                .then(resp => {
+                    context.commit('UPDATE_ORDER', {  order_index, order:resp.data })
+                })
+                .catch((resp) => {
+                    alert('Ошибка при обновлении заказа');
+                    console.log(resp.data);
+                })
+        },
+        getSelectedOrder(context, order_id) {
+            axios.get('/api/v1/orders/' + order_id)
+                .then((resp) => {
+                    context.commit("SET_SELECTED_ORDER", resp.data);
+                })
+                .catch((resp) => {
+                    alert('Возникла ошибка при обновлении текущего заказа');
+                    console.log(resp.data);
+                })
+        },
 
         // Order statuses
         getOrderStatuses(context) {
@@ -487,6 +525,19 @@ export default {
                     alert('Ошибка загрузки статусов заказов');
                     console.log(resp);
                 });
-        }
+        },
+
+        // users
+        getUsers(context) {
+            axios.get('/api/v1/users/')
+            .then((resp) => {
+                console.log(resp);
+                context.commit('SET_ALL_USERS', resp.data);
+            })
+            .catch((resp) => {
+                alert('Ошибка при загрузке пользователей');
+                console.log(resp);
+            });
+        },
     }
 }

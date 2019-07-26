@@ -65,9 +65,7 @@
                             <td>
                                 <b-button
                                     @click="changeOrderStatus(order)"
-                                    variant="primary">
-                                        Изменить статус
-                                </b-button>
+                                    variant="primary">Изменить статус</b-button>
                             </td>
                             <td>
                                 <b-button
@@ -78,7 +76,7 @@
                             </td>
                             <td>
                                 <b-button
-                                    @click="changeOrder(order)"
+                                    @click="openChangeOrder(order)"
                                     variant="success">
                                         Редактировать
                                 </b-button>
@@ -96,17 +94,19 @@
             </div>
         </div>
         <AboutOrder></AboutOrder>
+        <ChangeOrder></ChangeOrder>
     </div>
 </template>
 
 <script>
 import { crudOrdersMixin } from './mixins/crudOrdersMixin';
 import AboutOrder from './includes/modals/AboutOrder';
+import ChangeOrder from './includes/modals/ChangeOrder';
 
 export default {
     mixins: [crudOrdersMixin],
     components: {
-        AboutOrder
+        AboutOrder, ChangeOrder
     },
     computed: {
         order_status() {

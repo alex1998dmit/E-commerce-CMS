@@ -20,9 +20,26 @@ class OrdersController extends Controller
         return $orders;
     }
 
+    public function single($id)
+    {
+        $order = Order::findOrFail($id);
+        $order->user;
+        $order->product;
+        $order->product->category;
+        $order->status;
+        return $order;
+    }
+
     public function withStatus($statusId)
     {
         $orders = Order::where('status_id', '=', $statusId)->get();
         return $orders;
+    }
+
+    public function update(Request $request, $id)
+    {
+        $order = Order::find($id);
+        $order->update($request->all());
+        return $order;
     }
 }
