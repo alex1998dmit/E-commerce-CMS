@@ -17,7 +17,9 @@
                     <head-menu></head-menu>
                 </div>
             </nav>
-            <router-view></router-view>
+            <div class="container">
+                <router-view></router-view>
+            </div>
         </div>
     </div>
 </template>

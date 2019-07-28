@@ -43,17 +43,19 @@
         </div>
         <FindProduct></FindProduct>
         <FindUser></FindUser>
+        <ChangeStatus></ChangeStatus>
     </b-modal>
 </template>
 <script>
 import { crudOrdersMixin } from '../../mixins/crudOrdersMixin';
 import FindProduct from './FindProduct';
 import FindUser from './FindUser';
+import ChangeStatus from './ChangeStatus';
 
 export default {
     mixins: [ crudOrdersMixin ],
     components: {
-        FindProduct, FindUser
+        FindProduct, FindUser, ChangeStatus
     },
     computed: {
         order: {
@@ -66,7 +68,6 @@ export default {
         }
     },
     methods: {
-
         closeModal() {
             this.$bvModal.hide("change-order-modal");
         }

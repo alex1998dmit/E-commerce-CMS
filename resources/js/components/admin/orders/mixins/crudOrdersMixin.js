@@ -15,6 +15,10 @@ export const crudOrdersMixin = {
         changeUser() {
             this.$bvModal.show("update-user-at-order");
         },
+        changeOrderStatus(order) {
+            this.$store.commit("SET_SELECTED_ORDER", order);
+            this.$bvModal.show("change-status-at-order");
+        },
         // logic
         updateOrder(order_id, order) {
             this.$store.dispatch("updateOrder", { order_id, order });

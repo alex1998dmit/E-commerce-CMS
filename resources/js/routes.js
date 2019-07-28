@@ -5,7 +5,6 @@ import DiscountsCreate from './components/admin/discounts/DiscountsCreate.vue';
 import DiscountShow from './components/admin/discounts/DiscountShow.vue';
 
 import PersonalAccessTokens from './components/passport/PersonalAccessTokens.vue';
-import Login from './components/admin/auth/Login';
 
 import UsersIndex from './components/admin/users/UsersIndex.vue';
 
@@ -19,6 +18,9 @@ import ProductCreate from './components/admin/products/ProductCreate.vue';
 
 import OrdersIndex from './components/admin/orders/OrdersIndex';
 import OrdersWithStatus from './components/admin/orders/OrdersWithStatus';
+import LoginUser from './components/admin/auth/Login';
+import RegisterUser from './components/admin/auth/Register';
+
 
 export const routes = [
     // discounts
@@ -53,8 +55,13 @@ export const routes = [
     // auth
     {
         path: '/login',
-        component: Login,
+        component: LoginUser,
         name:'login'
+    },
+    {
+        path: '/register',
+        component: RegisterUser,
+        name: 'register'
     },
 
     // users

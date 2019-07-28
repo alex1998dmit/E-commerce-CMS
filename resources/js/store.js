@@ -7,14 +7,12 @@ export default {
         host: 'http://passportapi',
         product_images_forlder: 'upload/products',
 
+        // auth
         currentUser: {},
         isLoggedIn: 1,
         loading: false,
         auth_error: null,
-
-        grant_type: "password",
-        client_id: 2,
-        client_secret: "WhYqHBDCWfGGecC4XcRc6yur09AJxxCvn3FiPJJT",
+        token: localStorage.getItem('access_token') || null,
 
         // categories
         categories: [],
@@ -62,6 +60,7 @@ export default {
             name: "",
             user_id: 0,
             product: {
+                name: "",
                 category: {},
             },
             user: {},
@@ -174,42 +173,21 @@ export default {
         },
 
         // categories
-        ADD_NEW_CATEGORY_TO_CATEGORIES(state, payload) {
-            state.categories.push(payload);
-        },
-        removeCategory(state, categories) {
+        ADD_NEW_CATEGORY_TO_CATEGORIES: (state, payload) => { state.categories.push(payload) },
+        removeCategory: (state, categories) => {
             state.categories.splice(0, state.categories.length);
             state.categories = categories;
         },
-        UPDATE_ALL_CATEGORIES(state, { category_id, updating_category }) {
-
-        },
-        SET_CURRENT_CATEGORY(state, category) {
-            state.selected_category = category;
-        },
-        SET_FINAL_CATEGORIES(state, final_categories) {
-            state.final_categories = final_categories;
-        },
-        UPDATE_CATEGORIES(state, { category_index, updated_category }) {
-            state.categories[category_index] = updated_category;
-        },
-        SET_TRASHED_CATEGORIES(state, trashed_categories) {
-            state.trashed_categories = trashed_categories;
-        },
-        REMOVE_FROM_TRASHED_CATEGORIES(state, index) {
-            state.trashed_categories.splice(index, 1);
-        },
-        SET_ALL_CATEGORIES(state, categories) {
-            state.categories = categories;
-        },
+        SET_CURRENT_CATEGORY: (state, category) =>  state.selected_category = category,
+        SET_FINAL_CATEGORIES: (state, final_categories) => state.final_categories = final_categories,
+        UPDATE_CATEGORIES: (state, { category_index, updated_category }) => state.categories[category_index] = updated_category,
+        SET_TRASHED_CATEGORIES: (state, trashed_categories) => state.trashed_categories = trashed_categories,
+        REMOVE_FROM_TRASHED_CATEGORIES: (state, index) => state.trashed_categories.splice(index, 1),
+        SET_ALL_CATEGORIES: (state, categories) => state.categories = categories,
 
         // discounts
-        GET_ALL_DISCOUNTS(state, discounts) {
-            state.discounts = discounts;
-        },
-        CREATE_NEW_DISCOUNT(state, new_discount) {
-            state.discounts.push(new_discount);
-        },
+        GET_ALL_DISCOUNTS: (state, discounts) => state.discounts = discounts,
+        CREATE_NEW_DISCOUNT: (state, new_discount) => state.discounts.push(new_discount),
         REMOVE_DISCOUNT(state, index) {
             state.discounts.splice(index, 1);
         },
@@ -248,30 +226,38 @@ export default {
         },
 
         // Orders
-        SET_ALL_ORDERS(state, orders) {
-            state.orders = orders;
-        },
-        SET_SELECTED_ORDER(state, order) {
-            state.selected_order = order;
-        },
-        UPDATE_ORDER(state, { order_index, order }) {
-            state.orders[order_index] = order;
-        },
+        SET_ALL_ORDERS : (state, orders) => state.orders = orders,
+        SET_SELECTED_ORDER: (state, order) => state.selected_order = order,
+        UPDATE_ORDER: (state, { order_index, order }) => state.orders[order_index] = order,
 
         // Order statuses
-        SET_ORDER_STATUSES(state, order_statuses) {
-            state.order_statuses = order_statuses;
-        },
-        SET_SELECTED_ORDER_STATUS(state, order_status) {
-            state.selected_order_status = order_status;
-        },
+        SET_ORDER_STATUSES: (state, order_statuses) => state.order_statuses = order_statuses,
+        SET_SELECTED_ORDER_STATUS: (state, order_status) => state.selected_order_status = order_status,
 
         // users
-        SET_ALL_USERS(state, users) {
-            state.users = users;
-        },
+        SET_ALL_USERS: (state, users) => state.users = users,
+
+        // auth
+        SET_USER_TOKEN: (state, token) => state.token = token,
     },
     actions: {
+        // auth
+        retrieveToken(context, credentials) {
+            axios.post('/api/v1/login', {
+                username: credentials.username,
+                password: credentials.password,
+            })
+                .then((resp) => {
+                    const token = resp.data.access_token;
+                    localStorage.setItem('access_token', token);
+                    context.commit('SET_USER_TOKEN', token);
+                })
+                .catch((resp) => {
+                    console.log('Ошибка при входе');
+                    console.log(resp);
+                })
+        },
+
         // categories
         getCategories(context) {
             axios.get('/api/v1/categories')
@@ -485,22 +471,14 @@ export default {
         },
         updateOrder(context, { order_id, order }) {
             const order_index = context.getters.orders.map((order) => order.id).indexOf(order_id);
+            console.log('------', order ,order_id);
             axios.put('/api/v1/orders/' + order_id, order)
                 .then(resp => {
+                    console.log(resp.data);
                     context.commit('UPDATE_ORDER', {  order_index, order:resp.data })
                 })
                 .catch((resp) => {
                     alert('Ошибка при обновлении заказа');
-                    console.log(resp.data);
-                })
-        },
-        getSelectedOrder(context, order_id) {
-            axios.get('/api/v1/orders/' + order_id)
-                .then((resp) => {
-                    context.commit("SET_SELECTED_ORDER", resp.data);
-                })
-                .catch((resp) => {
-                    alert('Возникла ошибка при обновлении текущего заказа');
                     console.log(resp.data);
                 })
         },

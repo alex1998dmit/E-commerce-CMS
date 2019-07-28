@@ -1,5 +1,5 @@
 <template>
-    <b-modal id="bv-modal-add-root-category" hide-footer title="Редактировать категорию">
+    <b-modal id="bv-modal-add-root-category" hide-footer title="Добавить категорию">
         <div class="row">
             <div class="col-md-12">
                 <label for="category_name">Название категории</label>

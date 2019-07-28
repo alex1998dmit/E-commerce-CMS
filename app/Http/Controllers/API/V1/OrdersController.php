@@ -40,6 +40,8 @@ class OrdersController extends Controller
     {
         $order = Order::find($id);
         $order->update($request->all());
+        $order->status_id = $request->status_id;
+        $order->save();
         return $order;
     }
 }
