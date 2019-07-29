@@ -39,8 +39,11 @@ Route::get('user/removefromwishlist/{wishList}', 'API\WishListController@delete'
 Route::group(['middleware' => 'auth:api'], function() {
     //-- User's info
     Route::group(['prefix' => 'user'], function() {
+
         // Route::get('show/{id}', 'API\UserController@show');
         Route::post('logout', 'AuthenticationController@logoutAPI');
+        Route::group(['middleware' => ['web']], function () {
+        });
 
         //---- WishList
         Route::get('/wishlist', 'API\WishListController@index');
@@ -105,6 +108,13 @@ Route::group(['prefix' => '/v1','namespace' => 'API\V1'], function () {
 
     // AUTH
     Route::post('/login', 'AuthController@login');
+    Route::get('/info', 'AuthController@info');
+    Route::post('/register', 'AuthController@register');
+
+    Route::group(['middleware' => 'auth:api'], function() {
+        Route::post('/logout', 'AuthController@logout');
+        Route::get('/user', 'AuthController@about');
+      });
 });
 
 

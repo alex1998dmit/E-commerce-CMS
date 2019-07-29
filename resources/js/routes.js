@@ -1,4 +1,4 @@
-import DashboardAdmin from './components/admin/dashboard/DashboardIndex.vue';
+import Dashboard from './components/admin/includes/Dashboard.vue';
 
 import DiscountsIndex from './components/admin/discounts/DiscountsIndex.vue';
 import DiscountsCreate from './components/admin/discounts/DiscountsCreate.vue';
@@ -18,93 +18,135 @@ import ProductCreate from './components/admin/products/ProductCreate.vue';
 
 import OrdersIndex from './components/admin/orders/OrdersIndex';
 import OrdersWithStatus from './components/admin/orders/OrdersWithStatus';
+
 import LoginUser from './components/admin/auth/Login';
 import RegisterUser from './components/admin/auth/Register';
+import LogoutUser from './components/admin/auth/Logout';
 
+import Error from './components/admin/includes/Error';
 
 export const routes = [
+    // main
+        // admin
+    {
+        path: '/',
+        component: Dashboard,
+        name: 'dashboard',
+        meta: { requiresAuth: true }
+    },
+    {
+        path: '/error',
+        component: Error,
+        name: 'error',
+        meta: { requiresAuth: true }
+    },
+
     // discounts
     {
         path: '/discounts',
         name: 'discounts',
-        component: DiscountsIndex
+        component: DiscountsIndex,
+        meta: { requiresAuth: true, adminAuth: true }
     },
     {
         path: '/discounts/:id',
         component: DiscountShow,
-        name:'showDiscount'
+        name:'showDiscount',
+        meta: { requiresAuth: true, adminAuth: true }
+
     },
 
     // categories
     {
         path: '/categories',
         component: CategoriesIndex,
-        name: 'categories'
+        name: 'categories',
+        meta: { requiresAuth: true, adminAuth: true }
+
     },
     {
         path: '/treeCateories',
         component: CategoriesTree,
-        name: 'CategoriesTree'
+        name: 'CategoriesTree',
+        meta: { requiresAuth: true, adminAuth: true }
+
     },
     {
         path: '/trashedCategories',
         component: CategoriesTrashed,
-        name: 'CategoriesTrashed'
+        name: 'CategoriesTrashed',
+        meta: { requiresAuth: true, adminAuth: true }
+
     },
 
     // auth
     {
         path: '/login',
         component: LoginUser,
-        name:'login'
+        name:'login',
+        meta: {
+            requiresVisitor: true,
+        }
     },
     {
         path: '/register',
         component: RegisterUser,
-        name: 'register'
+        name: 'register',
+        meta: {
+            requiresVisitor: true,
+        }
+    },
+    {
+        path: '/logout',
+        component: LogoutUser,
+        name: 'logout',
     },
 
     // users
     {
         path: '/users',
         component: UsersIndex,
-        name: 'users'
+        name: 'users',
+        meta: { requiresAuth: true, adminAuth: true }
+
     },
 
     // products
     {
         path: '/products',
         component: ProductsIndex,
-        name: 'products'
+        name: 'products',
+        meta: { requiresAuth: true, adminAuth: true }
+
     },
     {
         path: '/products/edit/:id',
         component: ProductEdit,
-        name: 'editProduct'
+        name: 'editProduct',
+        meta: { requiresAuth: true, adminAuth: true }
+
     },
     {
         path: '/products/create',
         component: ProductCreate,
-        name: 'createProduct'
-    },
+        name: 'createProduct',
+        meta: { requiresAuth: true, adminAuth: true }
 
-    // admin
-    {
-        path: '/',
-        component: DashboardAdmin,
-        name: 'dashboard'
     },
 
     // orderWithStatus
     {
         path: '/orders/:statusId',
         component: OrdersWithStatus,
-        name: 'OrdersWithStatus'
+        name: 'OrdersWithStatus',
+        meta: { requiresAuth: true, adminAuth: true }
+
     },
     // orders
     {
         path: '/orders',
         component: OrdersIndex,
-        name: 'Orders'
+        name: 'Orders',
+        meta: { requiresAuth: true, adminAuth: true }
     }
 ];

@@ -1,6 +1,6 @@
 <template>
     <div>
-        <nav id="sidebar">
+        <nav id="sidebar" v-if="isLoggedIn">
             <div class="sidebar-header">
                 <h3>Admin panel</h3>
             </div>
@@ -63,6 +63,9 @@ export default {
     computed: {
         order_statuses() {
             return this.$store.getters.orderStatuses;
+        },
+        isLoggedIn() {
+            return this.$store.getters.isLoggedIn;
         }
     },
     mounted() {

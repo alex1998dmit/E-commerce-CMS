@@ -3,7 +3,7 @@
         <div class="col-md-3">
         </div>
         <div class="col-md-6">
-            <h3>Вход</h3>
+            <h2>Вход</h2>
             <form action="" @submit.prevent="login">
                 <div class="col-xs-12">
                     <div class="form-group">
@@ -38,6 +38,12 @@ export default {
             this.$store.dispatch('retrieveToken', {
                 username: this.username,
                 password: this.password,
+            })
+            .then(resp => {
+                this.$store.dispatch("getUserInfo")
+                    .then((resp) => {
+                        this.$router.push({ name: "dashboard" });
+                    })
             });
         }
     }

@@ -25,6 +25,9 @@ import { ModalPlugin } from 'bootstrap-vue';
 import { ButtonPlugin } from 'bootstrap-vue';
 import { FormCheckboxPlugin } from 'bootstrap-vue'
 
+// Helpers
+import { isAdmin } from './helpers/auth';
+
 Vue.use(ModalPlugin);
 Vue.use(ButtonPlugin);
 Vue.use(FormCheckboxPlugin)
@@ -38,6 +41,35 @@ const router = new VueRouter({
     mode: 'history',
     routes,
 });
+
+router.beforeEach((to, from, next) => {
+    if(to.meta.requiresAuth) {
+        const isLoggedIn = store.getters.isLoggedIn;
+        if(!isLoggedIn) {
+            next({ name:'login' })
+        } else if (to.meta.adminAuth) {
+            const user = JSON.parse(window.localStorage.getItem('user'));
+            const roles = user.role;
+            if (roles.filter(role => role.name == 'operator' || role.name == 'admin').length === 0) {
+                next({ name: 'error' })
+            } else {
+                next();
+            }
+        } else {
+            next();
+        }
+    } else if (to.meta.requiresVisitor) {
+        if (store.getters.isLoggedIn) {
+            next({
+              name: 'categories'
+            })
+          } else {
+            next()
+        }
+    } else {
+        next()
+    }
+})
 
 
 const app = new Vue({

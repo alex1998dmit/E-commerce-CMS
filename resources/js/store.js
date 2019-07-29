@@ -1,3 +1,5 @@
+import { reject } from "q";
+
 // import { getLocalUser } from './helpers/auth';
 
 // const user = getLocalUser();
@@ -8,8 +10,7 @@ export default {
         product_images_forlder: 'upload/products',
 
         // auth
-        currentUser: {},
-        isLoggedIn: 1,
+        currentUser: JSON.parse(localStorage.getItem('user')) || { role: [] },
         loading: false,
         auth_error: null,
         token: localStorage.getItem('access_token') || null,
@@ -80,17 +81,12 @@ export default {
     },
 
     getters: {
-        isLoading(state) {
-            return state.loading;
-        },
+        // auth
         isLoggedIn(state) {
-            return state.isLoggedIn;
+            return state.token !== null;
         },
         currentUser(state) {
             return state.currentUser;
-        },
-        auth_error(state) {
-            return state.auth_error;
         },
 
         // categories
@@ -159,18 +155,7 @@ export default {
         }
     },
     mutations: {
-        login(state) {
-            state.loading = true;
-            state.auth_error = null;
-        },
-        loginSuccess(state, payload) {
-            state.auth_error = null;
-            state.isLoggedIn = true;
-            state.loading = false;
-        },
-        loginFailed() {
 
-        },
 
         // categories
         ADD_NEW_CATEGORY_TO_CATEGORIES: (state, payload) => { state.categories.push(payload) },
@@ -239,23 +224,87 @@ export default {
 
         // auth
         SET_USER_TOKEN: (state, token) => state.token = token,
+        DESTROY_TOKEN: (state) => state.token = null,
+        REMOVE_USER_PARAMS: (state) => state.currentUser = null,
+        SET_CURRENT_USER_PARAMS: (state, user) => state.currentUser = user,
     },
     actions: {
         // auth
-        retrieveToken(context, credentials) {
-            axios.post('/api/v1/login', {
-                username: credentials.username,
-                password: credentials.password,
-            })
+        register(context, data) {
+            return new Promise((resolve, reject) => {
+                axios.post('api/v1/register', {
+                    name: data.name,
+                    email: data.email,
+                    password: data.password
+                })
                 .then((resp) => {
-                    const token = resp.data.access_token;
-                    localStorage.setItem('access_token', token);
-                    context.commit('SET_USER_TOKEN', token);
+                    resolve(resp);
                 })
                 .catch((resp) => {
-                    console.log('Ошибка при входе');
+                    console.log('Ошибка при регистрации');
                     console.log(resp);
+                    reject(error);
                 })
+            })
+        },
+        retrieveToken(context, credentials) {
+            return new Promise((resolve, reject) => {
+                axios.post('/api/v1/login', {
+                    username: credentials.username,
+                    password: credentials.password,
+                })
+                    .then((resp) => {
+                        const token = resp.data.access_token;
+                        localStorage.setItem('access_token', token);
+                        context.commit('SET_USER_TOKEN', token);
+                        resolve(resp);
+                    })
+                    .catch((resp) => {
+                        console.log('Ошибка при входе');
+                        console.log(resp);
+                        reject(error);
+                    })
+            });
+        },
+        destroyToken(context) {
+            axios.defaults.headers.common['Authorization']=`Bearer ${context.state.token}`;
+            if (context.getters.isLoggedIn) {
+                return new Promise((resolve, reject) => {
+                    axios.post('api/v1/logout')
+                        .then((resp) => {
+                            localStorage.removeItem('access_token')
+                            context.commit('DESTROY_TOKEN')
+                            resolve(resp);
+                        })
+                        .catch((resp) => {
+                            localStorage.removeItem('access_token')
+                            localStorage.removeItem('user')
+                            context.commit('DESTROY_TOKEN')
+                            context.commit('REMOVE_USER_PARAMS');
+                            console.log('Ошибка при вызоде');
+                            console.log(resp);
+                            reject(error);
+                        })
+                });
+            }
+        },
+        getUserInfo(context) {
+            return new Promise((resolve, reject) => {
+                if (context.state.token) {
+                    axios.defaults.headers.common['Authorization']=`Bearer ${context.state.token}`;
+                    axios.get('api/v1/user')
+                        .then((resp) => {
+                            localStorage.setItem('user', JSON.stringify(resp.data));
+                            context.commit('SET_CURRENT_USER_PARAMS', resp.data)
+                            resolve(resp.data);
+                        })
+                        .catch((resp) => {
+                            console.log('Ошибка при получении информации о пользователе');
+                            console.log(resp);
+                            reject(resp);
+                        })
+                }
+            });
         },
 
         // categories

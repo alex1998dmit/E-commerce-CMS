@@ -31,6 +31,11 @@
         name: 'app',
         components: {
             Menu, HeadMenu
-        }
+        },
+        computed: {
+            isLoggedIn() {
+                return this.$store.getters.isLoggedIn;
+            }
+        },
     }
 </script>

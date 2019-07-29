@@ -8,21 +8,21 @@
                 <div class="col-xs-12">
                     <div class="form-group">
                         <label for="username">ФИО</label>
-                        <input type="username" name="username" id="" class="form-control">
+                        <input type="username" name="username" id="" class="form-control" v-model="name">
                     </div>
                     <div class="form-group">
                         <label for="email">Почта</label>
-                        <input type="email" name="email" id="" class="form-control">
+                        <input type="email" name="email" id="" class="form-control" v-model="email">
                     </div>
                 </div>
                 <div class="col-xs-12">
                     <div class="form-group">
                         <label for="password">Пароль</label>
-                        <input type="password" name="password" id="password" class="form-control">
+                        <input type="password" name="password" id="password" class="form-control" v-model="password">
                     </div>
                 </div>
                 <div class="col-xs-12">
-                    <b-button variant="outline-primary">Зарегистрироваться</b-button>
+                    <b-button variant="outline-primary" type="submit">Зарегистрироваться</b-button>
                     <b-button variant="success">Войти</b-button>
                 </div>
             </form>
@@ -34,14 +34,22 @@
 export default {
     data() {
         return {
-            username: "",
+            email: "",
+            name: "",
             password: "",
 
         }
     },
     methods: {
         register() {
-
+            this.$store.dispatch('register', {
+                name: this.name,
+                email: this.email,
+                password: this.password,
+            })
+            .then(resp => {
+                this.$router.push({ name: "login" });
+            });
         }
     }
 }

@@ -1,9 +1,8 @@
-export function getLocalUser() {
-    const userStr = localStorage.getItem("user");
-
-    if (!user) {
-        return null;
+export function isAdmin(user) {
+    if (user.role.filter(role => role.name == 'operator' || role.name == 'admin').length > 0) {
+        console.log(true);
+        return true;
     }
-
-    return JSON.parse(userStr);
+    console.log(false);
+    return false;
 }
