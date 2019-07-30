@@ -1,42 +1,47 @@
 <template>
-    <div class="col-md-12">
-        <div class="card">
+    <div class="row">
+        <div class="col">
             <div class="row">
-                <div class="col-md-12 text-center">
-                    <br>
-                    <h5>Скидки</h5>
+                <div class="col-6">
+                    <h2>Скидка категорий</h2>
+                </div>
+                <div class="col-6 text-right">
+                    <router-link class="btn btn-primary" :to="{ name: 'dashboard' }">Главная</router-link>
+                    <!-- <router-link class="btn btn-primary">Главная</router-link> -->
                 </div>
             </div>
-            <div class="card-body" id="fromCartsContent">
-                <div class="row">
-                    <div class="col-md-12 text-right">
-                        <!-- <router-link :to="{name: 'createDiscount'}" class="btn btn-success">Создать новую скидку</router-link> -->
-                        <router-link :to="{name: 'dashboard'}" class="btn btn-info">Главная</router-link>
-                        <b-button id="show-btn" variant="outline-success" @click="$bvModal.show('create-discount-modal'); ">Создать новую скидку</b-button>
-                    </div>
+            <br>
+            <div class="row">
+                <div class="col-6 text-left">
+                    <input type="text" class="form-control" placeholder="Поиск по скидкам ...">
                 </div>
-                <br>
-                <div class="category-table">
+                <div class="col-6 text-right">
+                    <b-button class="btn btn-success" @click="openCreateModal()">+ скидку</b-button>
+                </div>
+            </div>
+            <br>
+            <div class="row">
+                <div class="col">
                     <table class="table">
                         <thead>
-                        <tr>
-                            <th scope="col">ID</th>
-                            <th scope="col">Название</th>
-                            <th scope="col">Скидка</th>
-                            <th scope="col">Подробнее</th>
-                            <th scope="col">Редактировать</th>
-                            <th scope="col">Удалить</th>
-                        </tr>
+                            <tr>
+                                <th scope="col">ID</th>
+                                <th scope="col">Название</th>
+                                <th scope="col">Скидка</th>
+                                <th scope="col">Подробнее</th>
+                                <th scope="col">Редактировать</th>
+                                <th scope="col">Удалить</th>
+                            </tr>
                         </thead>
                         <tbody>
-                            <tr v-for="discount, index in discounts" :key="discount.id">
+                            <tr v-for="(discount, index) in discounts" :key="discount.id">
                                 <td>{{ discount.id }}</td>
                                 <td>{{ discount.name }}</td>
                                 <td>{{ discount.discount }}</td>
                                 <td>
-                                    <router-link :to="{name: 'showDiscount', params: {id: discount.id}}" class="btn btn-xs btn-info">
+                                    <b-button variant="info" @click="openAboutModal(discount, index)">
                                         Подробнее
-                                    </router-link>
+                                    </b-button>
                                 </td>
                                 <td>
                                     <!-- <b-button v-b-modal.modal-1 v-on:click="openModal(discount)">Открыть модалку</b-button> -->
@@ -54,47 +59,36 @@
                     </table>
                 </div>
             </div>
+            <ModalCreateDiscount></ModalCreateDiscount>
+            <AboutDiscount></AboutDiscount>
         </div>
-        <modalShow></modalShow>
-        <modalCreate></modalCreate>
     </div>
 </template>
 
 <script>
-    import modalShow from './includes/modalWindow.vue';
-    import modalCreate from './includes/createDiscountModal.vue'
+    // mixins
+    import { crudDiscountMixin } from './mixins/crudDiscountMixin';
+
+    // modals
+    import ModalCreateDiscount from './includes/modals/CreateDiscount';
+    import AboutDiscount from './includes/modals/AboutDiscount';
+
     import { mapGetters } from 'vuex';
 
     export default {
         components: {
-            modalShow,
-            modalCreate
+            ModalCreateDiscount,
+            AboutDiscount
         },
+        mixins: [crudDiscountMixin],
         mounted() {
             this.$store.dispatch('getDiscounts');
         },
         computed: {
             ...mapGetters(['discounts']),
-            discount: {
-                get() {
-                    return this.$store.getters.updatingDiscount;
-                },
-                set(updating_discount) {
-                    return this.$store.commit('SET_NEW_DISCOUNT_PARAM', updating_discount);
-                }
-            },
         },
         methods: {
-            deleteEntry(id, index) {
-                let app = this;
-                if (confirm("Вы уверены что хотите удалить?")) {
 
-                }
-            },
-            openModal(discount, index) {
-                this.discount = { discount, index };
-                console.log(this.discount);
-            },
         },
     }
 </script>

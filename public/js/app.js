@@ -1918,6 +1918,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
@@ -3002,9 +3003,10 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _includes_modalWindow_vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./includes/modalWindow.vue */ "./resources/js/components/admin/discounts/includes/modalWindow.vue");
-/* harmony import */ var _includes_createDiscountModal_vue__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./includes/createDiscountModal.vue */ "./resources/js/components/admin/discounts/includes/createDiscountModal.vue");
-/* harmony import */ var vuex__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! vuex */ "./node_modules/vuex/dist/vuex.esm.js");
+/* harmony import */ var _mixins_crudDiscountMixin__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./mixins/crudDiscountMixin */ "./resources/js/components/admin/discounts/mixins/crudDiscountMixin.js");
+/* harmony import */ var _includes_modals_CreateDiscount__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./includes/modals/CreateDiscount */ "./resources/js/components/admin/discounts/includes/modals/CreateDiscount.vue");
+/* harmony import */ var _includes_modals_AboutDiscount__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./includes/modals/AboutDiscount */ "./resources/js/components/admin/discounts/includes/modals/AboutDiscount.vue");
+/* harmony import */ var vuex__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! vuex */ "./node_modules/vuex/dist/vuex.esm.js");
 function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; var ownKeys = Object.keys(source); if (typeof Object.getOwnPropertySymbols === 'function') { ownKeys = ownKeys.concat(Object.getOwnPropertySymbols(source).filter(function (sym) { return Object.getOwnPropertyDescriptor(source, sym).enumerable; })); } ownKeys.forEach(function (key) { _defineProperty(target, key, source[key]); }); } return target; }
 
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
@@ -3071,54 +3073,92 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 //
+//
+//
+//
+//
+//
+// mixins
+ // modals
+
 
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   components: {
-    modalShow: _includes_modalWindow_vue__WEBPACK_IMPORTED_MODULE_0__["default"],
-    modalCreate: _includes_createDiscountModal_vue__WEBPACK_IMPORTED_MODULE_1__["default"]
+    ModalCreateDiscount: _includes_modals_CreateDiscount__WEBPACK_IMPORTED_MODULE_1__["default"],
+    AboutDiscount: _includes_modals_AboutDiscount__WEBPACK_IMPORTED_MODULE_2__["default"]
   },
+  mixins: [_mixins_crudDiscountMixin__WEBPACK_IMPORTED_MODULE_0__["crudDiscountMixin"]],
   mounted: function mounted() {
     this.$store.dispatch('getDiscounts');
   },
-  computed: _objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_2__["mapGetters"])(['discounts']), {
-    discount: {
-      get: function get() {
-        return this.$store.getters.updatingDiscount;
-      },
-      set: function set(updating_discount) {
-        return this.$store.commit('SET_NEW_DISCOUNT_PARAM', updating_discount);
-      }
-    }
-  }),
-  methods: {
-    deleteEntry: function deleteEntry(id, index) {
-      var app = this;
-
-      if (confirm("Вы уверены что хотите удалить?")) {}
-    },
-    openModal: function openModal(discount, index) {
-      this.discount = {
-        discount: discount,
-        index: index
-      };
-      console.log(this.discount);
-    }
-  }
+  computed: _objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_3__["mapGetters"])(['discounts'])),
+  methods: {}
 });
 
 /***/ }),
 
-/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/admin/discounts/includes/createDiscountModal.vue?vue&type=script&lang=js&":
-/*!*******************************************************************************************************************************************************************************************************!*\
-  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/admin/discounts/includes/createDiscountModal.vue?vue&type=script&lang=js& ***!
-  \*******************************************************************************************************************************************************************************************************/
+/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/admin/discounts/includes/modals/AboutDiscount.vue?vue&type=script&lang=js&":
+/*!********************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/admin/discounts/includes/modals/AboutDiscount.vue?vue&type=script&lang=js& ***!
+  \********************************************************************************************************************************************************************************************************/
 /*! exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -3141,33 +3181,33 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
-      discount: {
-        name: "",
-        discount: ""
-      }
+      search_param: ""
     };
   },
-  methods: {
-    createDiscount: function createDiscount() {
-      event.preventDefault();
-      var app = this;
-      var newDiscount = this.discount;
-      axios.post('/api/v1/discounts', newDiscount).then(function (resp) {
-        app.$parent.discounts.push(resp.data);
-      })["catch"](function (resp) {
-        console.log(resp);
-        alert("Could not create your discount");
-      });
+  computed: {
+    discount: function discount() {
+      return this.$store.getters.selectedDiscount;
+    },
+    users: function users() {
+      var _this = this;
+
+      if (this.search_param) {
+        return this.discount.users.filter(function (user) {
+          return user.name.toLowerCase().includes(_this.search_param.toLocaleLowerCase());
+        });
+      }
+
+      return this.discount.users;
     }
   }
 });
 
 /***/ }),
 
-/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/admin/discounts/includes/modalWindow.vue?vue&type=script&lang=js&":
-/*!***********************************************************************************************************************************************************************************************!*\
-  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/admin/discounts/includes/modalWindow.vue?vue&type=script&lang=js& ***!
-  \***********************************************************************************************************************************************************************************************/
+/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/admin/discounts/includes/modals/CreateDiscount.vue?vue&type=script&lang=js&":
+/*!*********************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/admin/discounts/includes/modals/CreateDiscount.vue?vue&type=script&lang=js& ***!
+  \*********************************************************************************************************************************************************************************************************/
 /*! exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -3196,21 +3236,24 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
-  computed: {
-    updating_discount: {
-      get: function get() {
-        return this.$store.getters.updatingDiscount;
-      }
-    }
+  data: function data() {
+    return {
+      name: "",
+      discount: 0,
+      description: ""
+    };
   },
   methods: {
-    updateDiscount: function updateDiscount() {
-      this.$store.dispatch('updateDiscount');
-    },
-    deleteDiscount: function deleteDiscount() {
-      this.$store.dispatch('removeDiscount', this.updating_discount.discount.id);
-    }
+    create: function create() {},
+    closeModal: function closeModal() {}
   }
 });
 
@@ -84136,6 +84179,12 @@ var render = function() {
                   on: { click: _vm.login }
                 },
                 [_vm._v("Войти")]
+              ),
+              _vm._v(" "),
+              _c(
+                "b-button",
+                { attrs: { variant: "primary", to: { name: "register" } } },
+                [_vm._v("Регистрация")]
               )
             ],
             1
@@ -85917,158 +85966,170 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c(
-    "div",
-    { staticClass: "col-md-12" },
-    [
-      _c("div", { staticClass: "card" }, [
-        _vm._m(0),
-        _vm._v(" "),
-        _c(
-          "div",
-          { staticClass: "card-body", attrs: { id: "fromCartsContent" } },
-          [
-            _c("div", { staticClass: "row" }, [
+  return _c("div", { staticClass: "row" }, [
+    _c(
+      "div",
+      { staticClass: "col" },
+      [
+        _c("div", { staticClass: "row" }, [
+          _vm._m(0),
+          _vm._v(" "),
+          _c(
+            "div",
+            { staticClass: "col-6 text-right" },
+            [
               _c(
-                "div",
-                { staticClass: "col-md-12 text-right" },
-                [
-                  _c(
-                    "router-link",
-                    {
-                      staticClass: "btn btn-info",
-                      attrs: { to: { name: "dashboard" } }
-                    },
-                    [_vm._v("Главная")]
-                  ),
-                  _vm._v(" "),
-                  _c(
-                    "b-button",
-                    {
-                      attrs: { id: "show-btn", variant: "outline-success" },
-                      on: {
-                        click: function($event) {
-                          return _vm.$bvModal.show("create-discount-modal")
-                        }
-                      }
-                    },
-                    [_vm._v("Создать новую скидку")]
-                  )
-                ],
-                1
+                "router-link",
+                {
+                  staticClass: "btn btn-primary",
+                  attrs: { to: { name: "dashboard" } }
+                },
+                [_vm._v("Главная")]
               )
-            ]),
-            _vm._v(" "),
-            _c("br"),
-            _vm._v(" "),
-            _c("div", { staticClass: "category-table" }, [
-              _c("table", { staticClass: "table" }, [
-                _vm._m(1),
-                _vm._v(" "),
-                _c(
-                  "tbody",
-                  _vm._l(_vm.discounts, function(discount, index) {
-                    return _c("tr", { key: discount.id }, [
-                      _c("td", [_vm._v(_vm._s(discount.id))]),
-                      _vm._v(" "),
-                      _c("td", [_vm._v(_vm._s(discount.name))]),
-                      _vm._v(" "),
-                      _c("td", [_vm._v(_vm._s(discount.discount))]),
-                      _vm._v(" "),
-                      _c(
-                        "td",
-                        [
-                          _c(
-                            "router-link",
-                            {
-                              staticClass: "btn btn-xs btn-info",
-                              attrs: {
-                                to: {
-                                  name: "showDiscount",
-                                  params: { id: discount.id }
-                                }
-                              }
-                            },
-                            [
-                              _vm._v(
-                                "\n                                    Подробнее\n                                "
-                              )
-                            ]
-                          )
-                        ],
-                        1
-                      ),
-                      _vm._v(" "),
-                      _c(
-                        "td",
-                        [
-                          _c(
-                            "b-button",
-                            {
-                              attrs: {
-                                id: "show-btn",
-                                variant: "outline-info"
-                              },
-                              on: {
-                                click: function($event) {
-                                  _vm.$bvModal.show("bv-modal-example")
-                                  _vm.openModal(discount, index)
-                                }
-                              }
-                            },
-                            [_vm._v("Редактировать")]
-                          )
-                        ],
-                        1
-                      ),
-                      _vm._v(" "),
-                      _c("td", [
+            ],
+            1
+          )
+        ]),
+        _vm._v(" "),
+        _c("br"),
+        _vm._v(" "),
+        _c("div", { staticClass: "row" }, [
+          _vm._m(1),
+          _vm._v(" "),
+          _c(
+            "div",
+            { staticClass: "col-6 text-right" },
+            [
+              _c(
+                "b-button",
+                {
+                  staticClass: "btn btn-success",
+                  on: {
+                    click: function($event) {
+                      return _vm.openCreateModal()
+                    }
+                  }
+                },
+                [_vm._v("+ скидку")]
+              )
+            ],
+            1
+          )
+        ]),
+        _vm._v(" "),
+        _c("br"),
+        _vm._v(" "),
+        _c("div", { staticClass: "row" }, [
+          _c("div", { staticClass: "col" }, [
+            _c("table", { staticClass: "table" }, [
+              _vm._m(2),
+              _vm._v(" "),
+              _c(
+                "tbody",
+                _vm._l(_vm.discounts, function(discount, index) {
+                  return _c("tr", { key: discount.id }, [
+                    _c("td", [_vm._v(_vm._s(discount.id))]),
+                    _vm._v(" "),
+                    _c("td", [_vm._v(_vm._s(discount.name))]),
+                    _vm._v(" "),
+                    _c("td", [_vm._v(_vm._s(discount.discount))]),
+                    _vm._v(" "),
+                    _c(
+                      "td",
+                      [
                         _c(
-                          "a",
+                          "b-button",
                           {
-                            staticClass: "btn btn-xs btn-danger",
-                            attrs: { href: "#" },
+                            attrs: { variant: "info" },
                             on: {
                               click: function($event) {
-                                return _vm.deleteEntry(discount.id, index)
+                                return _vm.openAboutModal(discount, index)
                               }
                             }
                           },
                           [
                             _vm._v(
-                              "\n                                    Удалить\n                                "
+                              "\n                                    Подробнее\n                                "
                             )
                           ]
                         )
-                      ])
+                      ],
+                      1
+                    ),
+                    _vm._v(" "),
+                    _c(
+                      "td",
+                      [
+                        _c(
+                          "b-button",
+                          {
+                            attrs: { id: "show-btn", variant: "outline-info" },
+                            on: {
+                              click: function($event) {
+                                _vm.$bvModal.show("bv-modal-example")
+                                _vm.openModal(discount, index)
+                              }
+                            }
+                          },
+                          [_vm._v("Редактировать")]
+                        )
+                      ],
+                      1
+                    ),
+                    _vm._v(" "),
+                    _c("td", [
+                      _c(
+                        "a",
+                        {
+                          staticClass: "btn btn-xs btn-danger",
+                          attrs: { href: "#" },
+                          on: {
+                            click: function($event) {
+                              return _vm.deleteEntry(discount.id, index)
+                            }
+                          }
+                        },
+                        [
+                          _vm._v(
+                            "\n                                    Удалить\n                                "
+                          )
+                        ]
+                      )
                     ])
-                  }),
-                  0
-                )
-              ])
+                  ])
+                }),
+                0
+              )
             ])
-          ]
-        )
-      ]),
-      _vm._v(" "),
-      _c("modalShow"),
-      _vm._v(" "),
-      _c("modalCreate")
-    ],
-    1
-  )
+          ])
+        ]),
+        _vm._v(" "),
+        _c("ModalCreateDiscount"),
+        _vm._v(" "),
+        _c("AboutDiscount")
+      ],
+      1
+    )
+  ])
 }
 var staticRenderFns = [
   function() {
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "row" }, [
-      _c("div", { staticClass: "col-md-12 text-center" }, [
-        _c("br"),
-        _vm._v(" "),
-        _c("h5", [_vm._v("Скидки")])
-      ])
+    return _c("div", { staticClass: "col-6" }, [
+      _c("h2", [_vm._v("Скидка категорий")])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "col-6 text-left" }, [
+      _c("input", {
+        staticClass: "form-control",
+        attrs: { type: "text", placeholder: "Поиск по скидкам ..." }
+      })
     ])
   },
   function() {
@@ -86098,10 +86159,10 @@ render._withStripped = true
 
 /***/ }),
 
-/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/admin/discounts/includes/createDiscountModal.vue?vue&type=template&id=128cbeb4&":
-/*!***********************************************************************************************************************************************************************************************************************************************!*\
-  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/admin/discounts/includes/createDiscountModal.vue?vue&type=template&id=128cbeb4& ***!
-  \***********************************************************************************************************************************************************************************************************************************************/
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/admin/discounts/includes/modals/AboutDiscount.vue?vue&type=template&id=4ee17e9e&":
+/*!************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/admin/discounts/includes/modals/AboutDiscount.vue?vue&type=template&id=4ee17e9e& ***!
+  \************************************************************************************************************************************************************************************************************************************************/
 /*! exports provided: render, staticRenderFns */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -86114,113 +86175,147 @@ var render = function() {
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
   return _c(
-    "div",
+    "b-modal",
+    {
+      attrs: {
+        id: "about-discount-modal",
+        size: "xl",
+        title: "Подробнее о скидочной категории",
+        "hide-footer": ""
+      }
+    },
     [
-      _c(
-        "b-modal",
-        {
-          attrs: {
-            id: "create-discount-modal",
-            title: "Создать скидку",
-            "hide-footer": ""
-          }
-        },
-        [
-          _c(
-            "form",
-            { attrs: { action: "" } },
-            [
-              _c("div", { staticClass: "form-group" }, [
-                _c("label", { attrs: { for: "exampleInputEmail1" } }, [
-                  _vm._v("Название скидки")
+      _c("div", { staticClass: "row" }, [
+        _c("div", { staticClass: "col-md-12 text-left" }, [
+          _c("h2", [_vm._v("Информация о скидочной категории")])
+        ])
+      ]),
+      _vm._v(" "),
+      _c("br"),
+      _vm._v(" "),
+      _c("div", { staticClass: "row" }, [
+        _c("div", { staticClass: "col-md-12" }, [
+          _c("table", { staticClass: "table" }, [
+            _c("thead", [
+              _c("tr", [
+                _c("th", { attrs: { scope: "col" } }, [
+                  _vm._v("ID скидочной категори")
                 ]),
                 _vm._v(" "),
-                _c("input", {
-                  directives: [
-                    {
-                      name: "model",
-                      rawName: "v-model",
-                      value: _vm.discount.name,
-                      expression: "discount.name"
-                    }
-                  ],
-                  staticClass: "form-control",
-                  attrs: { type: "text" },
-                  domProps: { value: _vm.discount.name },
-                  on: {
-                    input: function($event) {
-                      if ($event.target.composing) {
-                        return
-                      }
-                      _vm.$set(_vm.discount, "name", $event.target.value)
-                    }
-                  }
-                })
-              ]),
-              _vm._v(" "),
-              _c("div", { staticClass: "form-group" }, [
-                _c("label", { attrs: { for: "exampleInputEmail1" } }, [
-                  _vm._v("Скидка")
+                _c("th", { attrs: { scope: "col" } }, [_vm._v("Название")]),
+                _vm._v(" "),
+                _c("th", { attrs: { scope: "col" } }, [
+                  _vm._v("Размер скидки")
                 ]),
                 _vm._v(" "),
-                _c("input", {
-                  directives: [
-                    {
-                      name: "model",
-                      rawName: "v-model",
-                      value: _vm.discount.discount,
-                      expression: "discount.discount"
-                    }
-                  ],
-                  staticClass: "form-control",
-                  attrs: { type: "text" },
-                  domProps: { value: _vm.discount.discount },
-                  on: {
-                    input: function($event) {
-                      if ($event.target.composing) {
-                        return
-                      }
-                      _vm.$set(_vm.discount, "discount", $event.target.value)
-                    }
-                  }
-                })
-              ]),
-              _vm._v(" "),
-              _c(
-                "b-button",
-                {
-                  staticClass: "mt-3",
-                  attrs: { block: "", variant: "outline-success" },
-                  on: {
-                    click: function($event) {
-                      _vm.$bvModal.hide("create-discount-modal")
-                      _vm.createDiscount()
-                    }
-                  }
-                },
-                [_vm._v("Сохранить")]
-              ),
-              _vm._v(" "),
-              _c(
-                "b-button",
-                {
-                  staticClass: "mt-3",
-                  attrs: { block: "", variant: "outline-danger" },
-                  on: {
-                    click: function($event) {
-                      return _vm.$bvModal.hide("create-discount-modal")
-                    }
-                  }
-                },
-                [_vm._v("Отмена")]
-              )
+                _c("th", { attrs: { scope: "col" } }, [
+                  _vm._v("Дата создания")
+                ]),
+                _vm._v(" "),
+                _c("th", { attrs: { scope: "col" } }, [
+                  _vm._v("Дата обновления")
+                ])
+              ])
+            ]),
+            _vm._v(" "),
+            _c("tbody", [
+              _c("tr", [
+                _c("td", [_vm._v(_vm._s(_vm.discount.id))]),
+                _vm._v(" "),
+                _c("td", [_vm._v(_vm._s(_vm.discount.name))]),
+                _vm._v(" "),
+                _c("td", [_vm._v(_vm._s(_vm.discount.discount))]),
+                _vm._v(" "),
+                _c("td", [_vm._v(_vm._s(_vm.discount.created_at))]),
+                _vm._v(" "),
+                _c("td", [_vm._v(_vm._s(_vm.discount.upadted_at))])
+              ])
+            ])
+          ])
+        ])
+      ]),
+      _vm._v(" "),
+      _c("br"),
+      _vm._v(" "),
+      _c("div", { staticClass: "row" }, [
+        _c("div", { staticClass: "col-md-6 text-left" }, [
+          _c("h5", [_vm._v("Пользователи этой категории:")])
+        ]),
+        _vm._v(" "),
+        _c("div", { staticClass: "col-md-6" }, [
+          _c("input", {
+            directives: [
+              {
+                name: "model",
+                rawName: "v-model",
+                value: _vm.search_param,
+                expression: "search_param"
+              }
             ],
-            1
-          )
-        ]
-      )
-    ],
-    1
+            staticClass: "form-control",
+            attrs: { type: "text", placeholder: "Поиск по пользователям ..." },
+            domProps: { value: _vm.search_param },
+            on: {
+              input: function($event) {
+                if ($event.target.composing) {
+                  return
+                }
+                _vm.search_param = $event.target.value
+              }
+            }
+          })
+        ])
+      ]),
+      _vm._v(" "),
+      _c("br"),
+      _vm._v(" "),
+      _c("div", { staticClass: "row" }, [
+        _c("div", { staticClass: "col-md-12" }, [
+          _c("table", { staticClass: "table" }, [
+            _c("thead", [
+              _c("tr", [
+                _c("th", { attrs: { scope: "col" } }, [
+                  _vm._v("ID пользователя")
+                ]),
+                _vm._v(" "),
+                _c("th", { attrs: { scope: "col" } }, [_vm._v("Username")]),
+                _vm._v(" "),
+                _c("th", { attrs: { scope: "col" } }, [_vm._v("Email")]),
+                _vm._v(" "),
+                _c("th", { attrs: { scope: "col" } }, [
+                  _vm._v("Дата регистрации")
+                ]),
+                _vm._v(" "),
+                _c("th", { attrs: { scope: "col" } }, [
+                  _vm._v("Дата подтверждения")
+                ])
+              ])
+            ]),
+            _vm._v(" "),
+            _c(
+              "tbody",
+              [
+                _c("tr"),
+                _vm._l(_vm.users, function(user) {
+                  return _c("tr", { key: user.id }, [
+                    _c("td", [_vm._v(_vm._s(user.id))]),
+                    _vm._v(" "),
+                    _c("td", [_vm._v(_vm._s(user.name))]),
+                    _vm._v(" "),
+                    _c("td", [_vm._v(_vm._s(user.email))]),
+                    _vm._v(" "),
+                    _c("td", [_vm._v(_vm._s(user.created_at))]),
+                    _vm._v(" "),
+                    _c("td", [_vm._v(_vm._s(user.email_verified_at))])
+                  ])
+                })
+              ],
+              2
+            )
+          ])
+        ])
+      ])
+    ]
   )
 }
 var staticRenderFns = []
@@ -86230,10 +86325,10 @@ render._withStripped = true
 
 /***/ }),
 
-/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/admin/discounts/includes/modalWindow.vue?vue&type=template&id=0eb6bae1&":
-/*!***************************************************************************************************************************************************************************************************************************************!*\
-  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/admin/discounts/includes/modalWindow.vue?vue&type=template&id=0eb6bae1& ***!
-  \***************************************************************************************************************************************************************************************************************************************/
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/admin/discounts/includes/modals/CreateDiscount.vue?vue&type=template&id=176e8aaa&":
+/*!*************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/admin/discounts/includes/modals/CreateDiscount.vue?vue&type=template&id=176e8aaa& ***!
+  \*************************************************************************************************************************************************************************************************************************************************/
 /*! exports provided: render, staticRenderFns */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -86246,154 +86341,74 @@ var render = function() {
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
   return _c(
-    "div",
+    "b-modal",
+    {
+      attrs: {
+        id: "create-discount-modal",
+        title: "Создать новую категорию скидок",
+        "hide-footer": ""
+      }
+    },
     [
-      _c(
-        "b-modal",
-        {
-          attrs: {
-            id: "bv-modal-example",
-            title: "Редактирование",
-            "hide-footer": ""
-          }
-        },
-        [
-          _c(
-            "form",
-            { attrs: { action: "" } },
-            [
-              _c("div", { staticClass: "form-group" }, [
-                _c("label", { attrs: { for: "exampleInputEmail1" } }, [
-                  _vm._v("ID")
-                ]),
-                _vm._v(" "),
-                _c("input", {
-                  directives: [
-                    {
-                      name: "model",
-                      rawName: "v-model",
-                      value: _vm.updating_discount.discount.id,
-                      expression: "updating_discount.discount.id"
-                    }
-                  ],
-                  staticClass: "form-control",
-                  attrs: { type: "text", disabled: "" },
-                  domProps: { value: _vm.updating_discount.discount.id },
-                  on: {
-                    input: function($event) {
-                      if ($event.target.composing) {
-                        return
-                      }
-                      _vm.$set(
-                        _vm.updating_discount.discount,
-                        "id",
-                        $event.target.value
-                      )
-                    }
-                  }
-                })
-              ]),
-              _vm._v(" "),
-              _c("div", { staticClass: "form-group" }, [
-                _c("label", { attrs: { for: "exampleInputEmail1" } }, [
-                  _vm._v("Название скидки")
-                ]),
-                _vm._v(" "),
-                _c("input", {
-                  directives: [
-                    {
-                      name: "model",
-                      rawName: "v-model",
-                      value: _vm.updating_discount.discount.name,
-                      expression: "updating_discount.discount.name"
-                    }
-                  ],
-                  staticClass: "form-control",
-                  attrs: { type: "text" },
-                  domProps: { value: _vm.updating_discount.discount.name },
-                  on: {
-                    input: function($event) {
-                      if ($event.target.composing) {
-                        return
-                      }
-                      _vm.$set(
-                        _vm.updating_discount.discount,
-                        "name",
-                        $event.target.value
-                      )
-                    }
-                  }
-                })
-              ]),
-              _vm._v(" "),
-              _c("div", { staticClass: "form-group" }, [
-                _c("label", { attrs: { for: "exampleInputEmail1" } }, [
-                  _vm._v("Скидка")
-                ]),
-                _vm._v(" "),
-                _c("input", {
-                  directives: [
-                    {
-                      name: "model",
-                      rawName: "v-model",
-                      value: _vm.updating_discount.discount.discount,
-                      expression: "updating_discount.discount.discount"
-                    }
-                  ],
-                  staticClass: "form-control",
-                  attrs: { type: "text" },
-                  domProps: { value: _vm.updating_discount.discount.discount },
-                  on: {
-                    input: function($event) {
-                      if ($event.target.composing) {
-                        return
-                      }
-                      _vm.$set(
-                        _vm.updating_discount.discount,
-                        "discount",
-                        $event.target.value
-                      )
-                    }
-                  }
-                })
-              ]),
-              _vm._v(" "),
+      _c("div", { staticClass: "row" }, [
+        _c("div", { staticClass: "col" }, [
+          _c("div", { staticClass: "row" }, [
+            _c("div", { staticClass: "col" }, [
               _c(
-                "b-button",
+                "form",
                 {
-                  staticClass: "mt-3",
-                  attrs: { block: "", variant: "outline-success" },
+                  attrs: { action: "" },
                   on: {
-                    click: function($event) {
-                      _vm.updateDiscount()
-                      _vm.$bvModal.hide("bv-modal-example")
+                    submit: function($event) {
+                      $event.preventDefault()
+                      _vm.create()
+                      _vm.closeModal()
                     }
                   }
                 },
-                [_vm._v("Сохранить")]
-              ),
-              _vm._v(" "),
-              _c(
-                "b-button",
-                {
-                  staticClass: "mt-3",
-                  attrs: { block: "", variant: "outline-danger" },
-                  on: {
-                    click: function($event) {
-                      _vm.$bvModal.hide("bv-modal-example")
-                      _vm.deleteDiscount()
-                    }
-                  }
-                },
-                [_vm._v("Удалить")]
+                [
+                  _c("div", { staticClass: "form-group" }, [
+                    _c("label", { attrs: { for: "" } }, [_vm._v("Название")]),
+                    _vm._v(" "),
+                    _c("input", {
+                      staticClass: "form-control",
+                      attrs: { type: "text" }
+                    })
+                  ]),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "form-group" }, [
+                    _c("label", { attrs: { for: "" } }, [
+                      _vm._v("Размер скидки")
+                    ]),
+                    _vm._v(" "),
+                    _c("input", {
+                      staticClass: "form-control",
+                      attrs: { type: "text" }
+                    })
+                  ]),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "form-group" }, [
+                    _c("label", { attrs: { for: "" } }, [_vm._v("Описание")]),
+                    _vm._v(" "),
+                    _c("textarea", {
+                      staticClass: "form-control",
+                      attrs: { name: "", id: "", cols: "30", rows: "10" }
+                    })
+                  ]),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "form-group" }, [
+                    _c("input", {
+                      staticClass: "btn btn-success",
+                      attrs: { type: "submit", value: "Создать" }
+                    })
+                  ])
+                ]
               )
-            ],
-            1
-          )
-        ]
-      )
-    ],
-    1
+            ])
+          ])
+        ])
+      ])
+    ]
   )
 }
 var staticRenderFns = []
@@ -107303,18 +107318,18 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
-/***/ "./resources/js/components/admin/discounts/includes/createDiscountModal.vue":
-/*!**********************************************************************************!*\
-  !*** ./resources/js/components/admin/discounts/includes/createDiscountModal.vue ***!
-  \**********************************************************************************/
+/***/ "./resources/js/components/admin/discounts/includes/modals/AboutDiscount.vue":
+/*!***********************************************************************************!*\
+  !*** ./resources/js/components/admin/discounts/includes/modals/AboutDiscount.vue ***!
+  \***********************************************************************************/
 /*! exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _createDiscountModal_vue_vue_type_template_id_128cbeb4___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./createDiscountModal.vue?vue&type=template&id=128cbeb4& */ "./resources/js/components/admin/discounts/includes/createDiscountModal.vue?vue&type=template&id=128cbeb4&");
-/* harmony import */ var _createDiscountModal_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./createDiscountModal.vue?vue&type=script&lang=js& */ "./resources/js/components/admin/discounts/includes/createDiscountModal.vue?vue&type=script&lang=js&");
-/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+/* harmony import */ var _AboutDiscount_vue_vue_type_template_id_4ee17e9e___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./AboutDiscount.vue?vue&type=template&id=4ee17e9e& */ "./resources/js/components/admin/discounts/includes/modals/AboutDiscount.vue?vue&type=template&id=4ee17e9e&");
+/* harmony import */ var _AboutDiscount_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./AboutDiscount.vue?vue&type=script&lang=js& */ "./resources/js/components/admin/discounts/includes/modals/AboutDiscount.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
 
 
 
@@ -107323,9 +107338,9 @@ __webpack_require__.r(__webpack_exports__);
 /* normalize component */
 
 var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
-  _createDiscountModal_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
-  _createDiscountModal_vue_vue_type_template_id_128cbeb4___WEBPACK_IMPORTED_MODULE_0__["render"],
-  _createDiscountModal_vue_vue_type_template_id_128cbeb4___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
+  _AboutDiscount_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _AboutDiscount_vue_vue_type_template_id_4ee17e9e___WEBPACK_IMPORTED_MODULE_0__["render"],
+  _AboutDiscount_vue_vue_type_template_id_4ee17e9e___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
   false,
   null,
   null,
@@ -107335,55 +107350,55 @@ var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_
 
 /* hot reload */
 if (false) { var api; }
-component.options.__file = "resources/js/components/admin/discounts/includes/createDiscountModal.vue"
+component.options.__file = "resources/js/components/admin/discounts/includes/modals/AboutDiscount.vue"
 /* harmony default export */ __webpack_exports__["default"] = (component.exports);
 
 /***/ }),
 
-/***/ "./resources/js/components/admin/discounts/includes/createDiscountModal.vue?vue&type=script&lang=js&":
-/*!***********************************************************************************************************!*\
-  !*** ./resources/js/components/admin/discounts/includes/createDiscountModal.vue?vue&type=script&lang=js& ***!
-  \***********************************************************************************************************/
+/***/ "./resources/js/components/admin/discounts/includes/modals/AboutDiscount.vue?vue&type=script&lang=js&":
+/*!************************************************************************************************************!*\
+  !*** ./resources/js/components/admin/discounts/includes/modals/AboutDiscount.vue?vue&type=script&lang=js& ***!
+  \************************************************************************************************************/
 /*! exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_createDiscountModal_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../../node_modules/babel-loader/lib??ref--4-0!../../../../../../node_modules/vue-loader/lib??vue-loader-options!./createDiscountModal.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/admin/discounts/includes/createDiscountModal.vue?vue&type=script&lang=js&");
-/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_createDiscountModal_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_AboutDiscount_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../../../node_modules/babel-loader/lib??ref--4-0!../../../../../../../node_modules/vue-loader/lib??vue-loader-options!./AboutDiscount.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/admin/discounts/includes/modals/AboutDiscount.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_AboutDiscount_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
 
 /***/ }),
 
-/***/ "./resources/js/components/admin/discounts/includes/createDiscountModal.vue?vue&type=template&id=128cbeb4&":
-/*!*****************************************************************************************************************!*\
-  !*** ./resources/js/components/admin/discounts/includes/createDiscountModal.vue?vue&type=template&id=128cbeb4& ***!
-  \*****************************************************************************************************************/
+/***/ "./resources/js/components/admin/discounts/includes/modals/AboutDiscount.vue?vue&type=template&id=4ee17e9e&":
+/*!******************************************************************************************************************!*\
+  !*** ./resources/js/components/admin/discounts/includes/modals/AboutDiscount.vue?vue&type=template&id=4ee17e9e& ***!
+  \******************************************************************************************************************/
 /*! exports provided: render, staticRenderFns */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_createDiscountModal_vue_vue_type_template_id_128cbeb4___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../../../node_modules/vue-loader/lib??vue-loader-options!./createDiscountModal.vue?vue&type=template&id=128cbeb4& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/admin/discounts/includes/createDiscountModal.vue?vue&type=template&id=128cbeb4&");
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_createDiscountModal_vue_vue_type_template_id_128cbeb4___WEBPACK_IMPORTED_MODULE_0__["render"]; });
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_AboutDiscount_vue_vue_type_template_id_4ee17e9e___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../../../../node_modules/vue-loader/lib??vue-loader-options!./AboutDiscount.vue?vue&type=template&id=4ee17e9e& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/admin/discounts/includes/modals/AboutDiscount.vue?vue&type=template&id=4ee17e9e&");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_AboutDiscount_vue_vue_type_template_id_4ee17e9e___WEBPACK_IMPORTED_MODULE_0__["render"]; });
 
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_createDiscountModal_vue_vue_type_template_id_128cbeb4___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_AboutDiscount_vue_vue_type_template_id_4ee17e9e___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
 
 
 
 /***/ }),
 
-/***/ "./resources/js/components/admin/discounts/includes/modalWindow.vue":
-/*!**************************************************************************!*\
-  !*** ./resources/js/components/admin/discounts/includes/modalWindow.vue ***!
-  \**************************************************************************/
+/***/ "./resources/js/components/admin/discounts/includes/modals/CreateDiscount.vue":
+/*!************************************************************************************!*\
+  !*** ./resources/js/components/admin/discounts/includes/modals/CreateDiscount.vue ***!
+  \************************************************************************************/
 /*! exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _modalWindow_vue_vue_type_template_id_0eb6bae1___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./modalWindow.vue?vue&type=template&id=0eb6bae1& */ "./resources/js/components/admin/discounts/includes/modalWindow.vue?vue&type=template&id=0eb6bae1&");
-/* harmony import */ var _modalWindow_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./modalWindow.vue?vue&type=script&lang=js& */ "./resources/js/components/admin/discounts/includes/modalWindow.vue?vue&type=script&lang=js&");
-/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+/* harmony import */ var _CreateDiscount_vue_vue_type_template_id_176e8aaa___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./CreateDiscount.vue?vue&type=template&id=176e8aaa& */ "./resources/js/components/admin/discounts/includes/modals/CreateDiscount.vue?vue&type=template&id=176e8aaa&");
+/* harmony import */ var _CreateDiscount_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./CreateDiscount.vue?vue&type=script&lang=js& */ "./resources/js/components/admin/discounts/includes/modals/CreateDiscount.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
 
 
 
@@ -107392,9 +107407,9 @@ __webpack_require__.r(__webpack_exports__);
 /* normalize component */
 
 var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
-  _modalWindow_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
-  _modalWindow_vue_vue_type_template_id_0eb6bae1___WEBPACK_IMPORTED_MODULE_0__["render"],
-  _modalWindow_vue_vue_type_template_id_0eb6bae1___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
+  _CreateDiscount_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _CreateDiscount_vue_vue_type_template_id_176e8aaa___WEBPACK_IMPORTED_MODULE_0__["render"],
+  _CreateDiscount_vue_vue_type_template_id_176e8aaa___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
   false,
   null,
   null,
@@ -107404,40 +107419,70 @@ var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_
 
 /* hot reload */
 if (false) { var api; }
-component.options.__file = "resources/js/components/admin/discounts/includes/modalWindow.vue"
+component.options.__file = "resources/js/components/admin/discounts/includes/modals/CreateDiscount.vue"
 /* harmony default export */ __webpack_exports__["default"] = (component.exports);
 
 /***/ }),
 
-/***/ "./resources/js/components/admin/discounts/includes/modalWindow.vue?vue&type=script&lang=js&":
-/*!***************************************************************************************************!*\
-  !*** ./resources/js/components/admin/discounts/includes/modalWindow.vue?vue&type=script&lang=js& ***!
-  \***************************************************************************************************/
+/***/ "./resources/js/components/admin/discounts/includes/modals/CreateDiscount.vue?vue&type=script&lang=js&":
+/*!*************************************************************************************************************!*\
+  !*** ./resources/js/components/admin/discounts/includes/modals/CreateDiscount.vue?vue&type=script&lang=js& ***!
+  \*************************************************************************************************************/
 /*! exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_modalWindow_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../../node_modules/babel-loader/lib??ref--4-0!../../../../../../node_modules/vue-loader/lib??vue-loader-options!./modalWindow.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/admin/discounts/includes/modalWindow.vue?vue&type=script&lang=js&");
-/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_modalWindow_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_CreateDiscount_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../../../node_modules/babel-loader/lib??ref--4-0!../../../../../../../node_modules/vue-loader/lib??vue-loader-options!./CreateDiscount.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/admin/discounts/includes/modals/CreateDiscount.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_CreateDiscount_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
 
 /***/ }),
 
-/***/ "./resources/js/components/admin/discounts/includes/modalWindow.vue?vue&type=template&id=0eb6bae1&":
-/*!*********************************************************************************************************!*\
-  !*** ./resources/js/components/admin/discounts/includes/modalWindow.vue?vue&type=template&id=0eb6bae1& ***!
-  \*********************************************************************************************************/
+/***/ "./resources/js/components/admin/discounts/includes/modals/CreateDiscount.vue?vue&type=template&id=176e8aaa&":
+/*!*******************************************************************************************************************!*\
+  !*** ./resources/js/components/admin/discounts/includes/modals/CreateDiscount.vue?vue&type=template&id=176e8aaa& ***!
+  \*******************************************************************************************************************/
 /*! exports provided: render, staticRenderFns */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_modalWindow_vue_vue_type_template_id_0eb6bae1___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../../../node_modules/vue-loader/lib??vue-loader-options!./modalWindow.vue?vue&type=template&id=0eb6bae1& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/admin/discounts/includes/modalWindow.vue?vue&type=template&id=0eb6bae1&");
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_modalWindow_vue_vue_type_template_id_0eb6bae1___WEBPACK_IMPORTED_MODULE_0__["render"]; });
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_CreateDiscount_vue_vue_type_template_id_176e8aaa___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../../../../node_modules/vue-loader/lib??vue-loader-options!./CreateDiscount.vue?vue&type=template&id=176e8aaa& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/admin/discounts/includes/modals/CreateDiscount.vue?vue&type=template&id=176e8aaa&");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_CreateDiscount_vue_vue_type_template_id_176e8aaa___WEBPACK_IMPORTED_MODULE_0__["render"]; });
 
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_modalWindow_vue_vue_type_template_id_0eb6bae1___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_CreateDiscount_vue_vue_type_template_id_176e8aaa___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
 
 
+
+/***/ }),
+
+/***/ "./resources/js/components/admin/discounts/mixins/crudDiscountMixin.js":
+/*!*****************************************************************************!*\
+  !*** ./resources/js/components/admin/discounts/mixins/crudDiscountMixin.js ***!
+  \*****************************************************************************/
+/*! exports provided: crudDiscountMixin */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "crudDiscountMixin", function() { return crudDiscountMixin; });
+var crudDiscountMixin = {
+  methods: {
+    // openModal
+    openCreateModal: function openCreateModal() {
+      this.$bvModal.show("create-discount-modal");
+    },
+    openEditModal: function openEditModal() {},
+    openAboutModal: function openAboutModal(discount, index) {
+      this.$store.commit("SET_SELECTED_DISCOUNT", discount);
+      this.$bvModal.show("about-discount-modal");
+    },
+    // logic
+    createDiscount: function createDiscount() {},
+    updateDiscount: function updateDiscount() {},
+    removeDiscount: function removeDiscount() {}
+  }
+};
 
 /***/ }),
 
@@ -109213,13 +109258,8 @@ __webpack_require__.r(__webpack_exports__);
     final_categories: [],
     // discount
     discounts: [],
-    new_discount: {
-      name: "",
-      discount: ""
-    },
-    updating_discount: {
-      index: 0,
-      discount: ""
+    selected_discount: {
+      users: []
     },
     // products
     products: [],
@@ -109289,14 +109329,11 @@ __webpack_require__.r(__webpack_exports__);
       return state.trashed_categories;
     },
     // discount
-    updatingDiscount: function updatingDiscount(state) {
-      return state.updating_discount;
-    },
-    newDiscount: function newDiscount(state) {
-      return state.new_discount;
-    },
     discounts: function discounts(state) {
       return state.discounts;
+    },
+    selectedDiscount: function selectedDiscount(state) {
+      return state.selected_discount;
     },
     // products
     products: function products(state) {
@@ -109363,17 +109400,11 @@ __webpack_require__.r(__webpack_exports__);
     GET_ALL_DISCOUNTS: function GET_ALL_DISCOUNTS(state, discounts) {
       return state.discounts = discounts;
     },
-    CREATE_NEW_DISCOUNT: function CREATE_NEW_DISCOUNT(state, new_discount) {
-      return state.discounts.push(new_discount);
-    },
     REMOVE_DISCOUNT: function REMOVE_DISCOUNT(state, index) {
       state.discounts.splice(index, 1);
     },
-    UPDATE_DISCOUNT: function UPDATE_DISCOUNT(state, discount, index) {
-      state.discounts[index] = discount;
-    },
-    SET_NEW_DISCOUNT_PARAM: function SET_NEW_DISCOUNT_PARAM(state, discount) {
-      state.updating_discount = Object.assign({}, state.updating_discount, discount);
+    SET_SELECTED_DISCOUNT: function SET_SELECTED_DISCOUNT(state, discount) {
+      return state.selected_discount = discount;
     },
     // products
     GET_ALL_PRODUCTS: function GET_ALL_PRODUCTS(state, products) {

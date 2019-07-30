@@ -15,7 +15,11 @@ class DiscountsController extends Controller
      */
     public function index()
     {
-        return Discount::all();
+        $dicounts = Discount::all();
+        foreach($dicounts as $discount) {
+            $discount->users;
+        }
+        return $dicounts;
     }
 
     /**

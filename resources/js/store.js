@@ -28,13 +28,8 @@ export default {
 
         // discount
         discounts: [],
-        new_discount: {
-            name: "",
-            discount: "",
-        },
-        updating_discount: {
-            index: 0,
-            discount: "",
+        selected_discount: {
+            users: [],
         },
 
         // products
@@ -109,14 +104,11 @@ export default {
         },
 
         // discount
-        updatingDiscount(state){
-            return state.updating_discount;
-        },
-        newDiscount(state){
-            return state.new_discount;
-        },
         discounts(state) {
             return state.discounts;
+        },
+        selectedDiscount(state) {
+            return state.selected_discount;
         },
 
         // products
@@ -155,8 +147,6 @@ export default {
         }
     },
     mutations: {
-
-
         // categories
         ADD_NEW_CATEGORY_TO_CATEGORIES: (state, payload) => { state.categories.push(payload) },
         removeCategory: (state, categories) => {
@@ -172,16 +162,10 @@ export default {
 
         // discounts
         GET_ALL_DISCOUNTS: (state, discounts) => state.discounts = discounts,
-        CREATE_NEW_DISCOUNT: (state, new_discount) => state.discounts.push(new_discount),
         REMOVE_DISCOUNT(state, index) {
             state.discounts.splice(index, 1);
         },
-        UPDATE_DISCOUNT(state, discount, index) {
-            state.discounts[index] = discount;
-        },
-        SET_NEW_DISCOUNT_PARAM(state, discount) {
-            state.updating_discount = Object.assign({}, state.updating_discount, discount);
-        },
+        SET_SELECTED_DISCOUNT: (state, discount) => state.selected_discount = discount,
 
         // products
         GET_ALL_PRODUCTS(state, products) {
