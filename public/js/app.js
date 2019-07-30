@@ -3006,11 +3006,17 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _mixins_crudDiscountMixin__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./mixins/crudDiscountMixin */ "./resources/js/components/admin/discounts/mixins/crudDiscountMixin.js");
 /* harmony import */ var _includes_modals_CreateDiscount__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./includes/modals/CreateDiscount */ "./resources/js/components/admin/discounts/includes/modals/CreateDiscount.vue");
 /* harmony import */ var _includes_modals_AboutDiscount__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./includes/modals/AboutDiscount */ "./resources/js/components/admin/discounts/includes/modals/AboutDiscount.vue");
-/* harmony import */ var vuex__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! vuex */ "./node_modules/vuex/dist/vuex.esm.js");
-function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; var ownKeys = Object.keys(source); if (typeof Object.getOwnPropertySymbols === 'function') { ownKeys = ownKeys.concat(Object.getOwnPropertySymbols(source).filter(function (sym) { return Object.getOwnPropertyDescriptor(source, sym).enumerable; })); } ownKeys.forEach(function (key) { _defineProperty(target, key, source[key]); }); } return target; }
-
-function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
-
+/* harmony import */ var _includes_modals_EditDiscount__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./includes/modals/EditDiscount */ "./resources/js/components/admin/discounts/includes/modals/EditDiscount.vue");
+/* harmony import */ var _includes_modals_UsersModal__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./includes/modals/UsersModal */ "./resources/js/components/admin/discounts/includes/modals/UsersModal.vue");
+/* harmony import */ var vuex__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! vuex */ "./node_modules/vuex/dist/vuex.esm.js");
+//
+//
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -3084,17 +3090,44 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
 
 
+
+
 /* harmony default export */ __webpack_exports__["default"] = ({
+  data: function data() {
+    return {
+      search_param: ""
+    };
+  },
   components: {
     ModalCreateDiscount: _includes_modals_CreateDiscount__WEBPACK_IMPORTED_MODULE_1__["default"],
-    AboutDiscount: _includes_modals_AboutDiscount__WEBPACK_IMPORTED_MODULE_2__["default"]
+    AboutDiscount: _includes_modals_AboutDiscount__WEBPACK_IMPORTED_MODULE_2__["default"],
+    EditDiscount: _includes_modals_EditDiscount__WEBPACK_IMPORTED_MODULE_3__["default"],
+    UsersModal: _includes_modals_UsersModal__WEBPACK_IMPORTED_MODULE_4__["default"]
   },
   mixins: [_mixins_crudDiscountMixin__WEBPACK_IMPORTED_MODULE_0__["crudDiscountMixin"]],
   mounted: function mounted() {
     this.$store.dispatch('getDiscounts');
+    this.$store.dispatch('getUsers');
   },
-  computed: _objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_3__["mapGetters"])(['discounts'])),
-  methods: {}
+  computed: {
+    discounts: function discounts() {
+      var _this = this;
+
+      if (this.search_param) {
+        return this.$store.getters.discounts.filter(function (discount) {
+          return discount.name.toLowerCase().includes(_this.search_param.toLocaleLowerCase());
+        });
+      }
+
+      return this.$store.getters.discounts;
+    }
+  },
+  methods: {
+    openUsersModal: function openUsersModal(discount) {
+      this.$store.commit("SET_SELECTED_DISCOUNT", discount);
+      this.$bvModal.show("discount-users-modal");
+    }
+  }
 });
 
 /***/ }),
@@ -3204,6 +3237,89 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
+/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/admin/discounts/includes/modals/AddUser.vue?vue&type=script&lang=js&":
+/*!**************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/admin/discounts/includes/modals/AddUser.vue?vue&type=script&lang=js& ***!
+  \**************************************************************************************************************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+/* harmony default export */ __webpack_exports__["default"] = ({
+  data: function data() {
+    return {
+      search_param: null
+    };
+  },
+  computed: {
+    discount: function discount() {
+      return this.$store.getters.selectedDiscount;
+    },
+    users: function users() {
+      var _this = this;
+
+      if (this.search_param) {
+        return this.$store.getters.users.filter(function (user) {
+          return user.email.toLowerCase().includes(_this.search_param.toLocaleLowerCase());
+        });
+      }
+
+      return [];
+    }
+  },
+  methods: {
+    updateUser: function updateUser(user_id) {
+      var user = {
+        discount_id: this.discount.id
+      };
+      this.$store.dispatch('updateUser', {
+        user_id: user_id,
+        user: user
+      });
+    }
+  }
+});
+
+/***/ }),
+
 /***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/admin/discounts/includes/modals/CreateDiscount.vue?vue&type=script&lang=js&":
 /*!*********************************************************************************************************************************************************************************************************!*\
   !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/admin/discounts/includes/modals/CreateDiscount.vue?vue&type=script&lang=js& ***!
@@ -3254,6 +3370,176 @@ __webpack_require__.r(__webpack_exports__);
   methods: {
     create: function create() {},
     closeModal: function closeModal() {}
+  }
+});
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/admin/discounts/includes/modals/EditDiscount.vue?vue&type=script&lang=js&":
+/*!*******************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/admin/discounts/includes/modals/EditDiscount.vue?vue&type=script&lang=js& ***!
+  \*******************************************************************************************************************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _mixins_crudDiscountMixin__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../mixins/crudDiscountMixin */ "./resources/js/components/admin/discounts/mixins/crudDiscountMixin.js");
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+  mixins: [_mixins_crudDiscountMixin__WEBPACK_IMPORTED_MODULE_0__["crudDiscountMixin"]],
+  computed: {
+    discount: {
+      get: function get() {
+        return this.$store.getters.selectedDiscount;
+      },
+      set: function set(val) {}
+    }
+  },
+  methods: {
+    closeModal: function closeModal() {
+      this.$bvModal.hide("create-discount");
+    }
+  }
+});
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/admin/discounts/includes/modals/UsersModal.vue?vue&type=script&lang=js&":
+/*!*****************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/admin/discounts/includes/modals/UsersModal.vue?vue&type=script&lang=js& ***!
+  \*****************************************************************************************************************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _mixins_crudDiscountMixin__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../mixins/crudDiscountMixin */ "./resources/js/components/admin/discounts/mixins/crudDiscountMixin.js");
+/* harmony import */ var _AddUser__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./AddUser */ "./resources/js/components/admin/discounts/includes/modals/AddUser.vue");
+/* harmony import */ var _users_includes_modals_ChangeUserDiscount__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../users/includes/modals/ChangeUserDiscount */ "./resources/js/components/admin/users/includes/modals/ChangeUserDiscount.vue");
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+// mixins
+ // modals
+
+
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+  mixins: [_mixins_crudDiscountMixin__WEBPACK_IMPORTED_MODULE_0__["crudDiscountMixin"]],
+  components: {
+    AddUser: _AddUser__WEBPACK_IMPORTED_MODULE_1__["default"],
+    ChangeUserDiscount: _users_includes_modals_ChangeUserDiscount__WEBPACK_IMPORTED_MODULE_2__["default"]
+  },
+  data: function data() {
+    return {
+      search_param: null
+    };
+  },
+  computed: {
+    discount: function discount() {
+      return this.$store.getters.selectedDiscount;
+    },
+    users: function users() {
+      var _this = this;
+
+      var users = this.$store.getters.users;
+      var usersWithCurDiscount = users.filter(function (user) {
+        return user.discount_id === _this.discount.id;
+      });
+
+      if (this.search_param) {
+        return usersWithCurDiscount.filter(function (user) {
+          return user.name.toLowerCase().includes(_this.search_param.toLocaleLowerCase());
+        });
+      }
+
+      return usersWithCurDiscount;
+    }
+  },
+  methods: {
+    openAddUserModal: function openAddUserModal() {
+      this.$bvModal.show("add-discount-to-user");
+    },
+    openChangeUserDiscount: function openChangeUserDiscount(user) {
+      this.$store.commit('SET_SELECTED_USER', user);
+      this.$bvModal.show("change-user-discount");
+    }
   }
 });
 
@@ -4962,6 +5248,70 @@ __webpack_require__.r(__webpack_exports__);
         console.log(resp);
         alert("Возникла проблемма при поиске");
       });
+    }
+  }
+});
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/admin/users/includes/modals/ChangeUserDiscount.vue?vue&type=script&lang=js&":
+/*!*********************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/admin/users/includes/modals/ChangeUserDiscount.vue?vue&type=script&lang=js& ***!
+  \*********************************************************************************************************************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+/* harmony default export */ __webpack_exports__["default"] = ({
+  computed: {
+    user: {
+      get: function get() {
+        return this.$store.getters.selectedUser;
+      }
+    },
+    discounts: function discounts() {
+      return this.$store.getters.discounts;
+    }
+  },
+  methods: {
+    updateDiscount: function updateDiscount() {
+      this.$store.dispatch('updateUser', {
+        user_id: this.user.id,
+        user: {
+          discount_id: this.user.discount_id
+        }
+      });
+    },
+    closeModal: function closeModal() {
+      this.$bvModal.hide("change-user-discount");
     }
   }
 });
@@ -85994,7 +86344,29 @@ var render = function() {
         _c("br"),
         _vm._v(" "),
         _c("div", { staticClass: "row" }, [
-          _vm._m(1),
+          _c("div", { staticClass: "col-6 text-left" }, [
+            _c("input", {
+              directives: [
+                {
+                  name: "model",
+                  rawName: "v-model",
+                  value: _vm.search_param,
+                  expression: "search_param"
+                }
+              ],
+              staticClass: "form-control",
+              attrs: { type: "text", placeholder: "Поиск по скидкам ..." },
+              domProps: { value: _vm.search_param },
+              on: {
+                input: function($event) {
+                  if ($event.target.composing) {
+                    return
+                  }
+                  _vm.search_param = $event.target.value
+                }
+              }
+            })
+          ]),
           _vm._v(" "),
           _c(
             "div",
@@ -86022,7 +86394,7 @@ var render = function() {
         _c("div", { staticClass: "row" }, [
           _c("div", { staticClass: "col" }, [
             _c("table", { staticClass: "table" }, [
-              _vm._m(2),
+              _vm._m(1),
               _vm._v(" "),
               _c(
                 "tbody",
@@ -86063,15 +86435,41 @@ var render = function() {
                         _c(
                           "b-button",
                           {
-                            attrs: { id: "show-btn", variant: "outline-info" },
+                            attrs: { id: "show-btn", variant: "primary" },
                             on: {
                               click: function($event) {
-                                _vm.$bvModal.show("bv-modal-example")
-                                _vm.openModal(discount, index)
+                                return _vm.openEditModal(discount)
                               }
                             }
                           },
-                          [_vm._v("Редактировать")]
+                          [
+                            _vm._v(
+                              "\n                                    Редактировать\n                                "
+                            )
+                          ]
+                        )
+                      ],
+                      1
+                    ),
+                    _vm._v(" "),
+                    _c(
+                      "td",
+                      [
+                        _c(
+                          "b-button",
+                          {
+                            attrs: { id: "users", variant: "success" },
+                            on: {
+                              click: function($event) {
+                                return _vm.openUsersModal(discount)
+                              }
+                            }
+                          },
+                          [
+                            _vm._v(
+                              "\n                                    Пользователи\n                                "
+                            )
+                          ]
                         )
                       ],
                       1
@@ -86106,7 +86504,11 @@ var render = function() {
         _vm._v(" "),
         _c("ModalCreateDiscount"),
         _vm._v(" "),
-        _c("AboutDiscount")
+        _c("AboutDiscount"),
+        _vm._v(" "),
+        _c("EditDiscount"),
+        _vm._v(" "),
+        _c("UsersModal")
       ],
       1
     )
@@ -86125,17 +86527,6 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "col-6 text-left" }, [
-      _c("input", {
-        staticClass: "form-control",
-        attrs: { type: "text", placeholder: "Поиск по скидкам ..." }
-      })
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
     return _c("thead", [
       _c("tr", [
         _c("th", { attrs: { scope: "col" } }, [_vm._v("ID")]),
@@ -86147,6 +86538,8 @@ var staticRenderFns = [
         _c("th", { attrs: { scope: "col" } }, [_vm._v("Подробнее")]),
         _vm._v(" "),
         _c("th", { attrs: { scope: "col" } }, [_vm._v("Редактировать")]),
+        _vm._v(" "),
+        _c("th", { attrs: { scope: "col" } }, [_vm._v("Пользователи")]),
         _vm._v(" "),
         _c("th", { attrs: { scope: "col" } }, [_vm._v("Удалить")])
       ])
@@ -86187,7 +86580,7 @@ var render = function() {
     [
       _c("div", { staticClass: "row" }, [
         _c("div", { staticClass: "col-md-12 text-left" }, [
-          _c("h2", [_vm._v("Информация о скидочной категории")])
+          _c("h3", [_vm._v(_vm._s(_vm.discount.name))])
         ])
       ]),
       _vm._v(" "),
@@ -86228,7 +86621,7 @@ var render = function() {
                 _vm._v(" "),
                 _c("td", [_vm._v(_vm._s(_vm.discount.created_at))]),
                 _vm._v(" "),
-                _c("td", [_vm._v(_vm._s(_vm.discount.upadted_at))])
+                _c("td", [_vm._v(_vm._s(_vm.discount.updated_at))])
               ])
             ])
           ])
@@ -86325,6 +86718,127 @@ render._withStripped = true
 
 /***/ }),
 
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/admin/discounts/includes/modals/AddUser.vue?vue&type=template&id=68507e0f&":
+/*!******************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/admin/discounts/includes/modals/AddUser.vue?vue&type=template&id=68507e0f& ***!
+  \******************************************************************************************************************************************************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "render", function() { return render; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c(
+    "b-modal",
+    {
+      attrs: {
+        id: "add-discount-to-user",
+        title: "Добавить пользователе к категории",
+        "hide-footer": ""
+      }
+    },
+    [
+      _c("div", { staticClass: "row" }, [
+        _c("div", { staticClass: "col" }, [
+          _c("h5", [_vm._v(_vm._s(_vm.discount.name))])
+        ])
+      ]),
+      _vm._v(" "),
+      _c("div", { staticClass: "row" }, [
+        _c("div", { staticClass: "col" }, [
+          _c("input", {
+            directives: [
+              {
+                name: "model",
+                rawName: "v-model",
+                value: _vm.search_param,
+                expression: "search_param"
+              }
+            ],
+            staticClass: "form-control",
+            attrs: { type: "text" },
+            domProps: { value: _vm.search_param },
+            on: {
+              input: function($event) {
+                if ($event.target.composing) {
+                  return
+                }
+                _vm.search_param = $event.target.value
+              }
+            }
+          })
+        ])
+      ]),
+      _vm._v(" "),
+      _c("br"),
+      _vm._v(" "),
+      _c("div", { staticClass: "row" }, [
+        _c("div", { staticClass: "col" }, [
+          _c(
+            "ul",
+            _vm._l(_vm.users, function(user) {
+              return _c(
+                "li",
+                { key: user.id },
+                [
+                  _vm._v(
+                    "\n                    " +
+                      _vm._s(user.email) +
+                      "\n                    "
+                  ),
+                  user.discount_id != _vm.discount.id
+                    ? _c(
+                        "b-button",
+                        {
+                          attrs: { size: "sm", variant: "success" },
+                          on: {
+                            click: function($event) {
+                              return _vm.updateUser(user.id)
+                            }
+                          }
+                        },
+                        [
+                          _vm._v(
+                            "\n                            +\n                    "
+                          )
+                        ]
+                      )
+                    : _vm._e(),
+                  _vm._v(" "),
+                  user.discount_id == _vm.discount.id
+                    ? _c(
+                        "b-button",
+                        { attrs: { size: "sm", variant: "light" } },
+                        [
+                          _vm._v(
+                            "\n                            ✔\n                    "
+                          )
+                        ]
+                      )
+                    : _vm._e()
+                ],
+                1
+              )
+            }),
+            0
+          )
+        ])
+      ])
+    ]
+  )
+}
+var staticRenderFns = []
+render._withStripped = true
+
+
+
+/***/ }),
+
 /***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/admin/discounts/includes/modals/CreateDiscount.vue?vue&type=template&id=176e8aaa&":
 /*!*************************************************************************************************************************************************************************************************************************************************!*\
   !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/admin/discounts/includes/modals/CreateDiscount.vue?vue&type=template&id=176e8aaa& ***!
@@ -86409,6 +86923,298 @@ var render = function() {
         ])
       ])
     ]
+  )
+}
+var staticRenderFns = []
+render._withStripped = true
+
+
+
+/***/ }),
+
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/admin/discounts/includes/modals/EditDiscount.vue?vue&type=template&id=0677bbf8&":
+/*!***********************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/admin/discounts/includes/modals/EditDiscount.vue?vue&type=template&id=0677bbf8& ***!
+  \***********************************************************************************************************************************************************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "render", function() { return render; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c(
+    "b-modal",
+    {
+      attrs: {
+        id: "create-discount",
+        title: "Созадать новую скидочную категорию",
+        "hide-footer": ""
+      }
+    },
+    [
+      _c("div", { staticClass: "row" }, [
+        _c("div", { staticClass: "col" }, [
+          _c(
+            "form",
+            {
+              attrs: { action: "" },
+              on: {
+                submit: function($event) {
+                  $event.preventDefault()
+                  _vm.updateDiscount(_vm.discount.id, _vm.discount)
+                  _vm.closeModal()
+                }
+              }
+            },
+            [
+              _c("div", { staticClass: "form-group" }, [
+                _c("label", { attrs: { for: "" } }, [_vm._v("Название")]),
+                _vm._v(" "),
+                _c("input", {
+                  directives: [
+                    {
+                      name: "model",
+                      rawName: "v-model",
+                      value: _vm.discount.name,
+                      expression: "discount.name"
+                    }
+                  ],
+                  staticClass: "form-control",
+                  attrs: { type: "text" },
+                  domProps: { value: _vm.discount.name },
+                  on: {
+                    input: function($event) {
+                      if ($event.target.composing) {
+                        return
+                      }
+                      _vm.$set(_vm.discount, "name", $event.target.value)
+                    }
+                  }
+                })
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "form-group" }, [
+                _c("label", { attrs: { for: "" } }, [_vm._v("Размер скидки")]),
+                _vm._v(" "),
+                _c("input", {
+                  directives: [
+                    {
+                      name: "model",
+                      rawName: "v-model",
+                      value: _vm.discount.discount,
+                      expression: "discount.discount"
+                    }
+                  ],
+                  staticClass: "form-control",
+                  attrs: { type: "text" },
+                  domProps: { value: _vm.discount.discount },
+                  on: {
+                    input: function($event) {
+                      if ($event.target.composing) {
+                        return
+                      }
+                      _vm.$set(_vm.discount, "discount", $event.target.value)
+                    }
+                  }
+                })
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "form-group" }, [
+                _c("label", { attrs: { for: "" } }, [_vm._v("Описание")]),
+                _vm._v(" "),
+                _c("textarea", {
+                  directives: [
+                    {
+                      name: "model",
+                      rawName: "v-model",
+                      value: _vm.discount.description,
+                      expression: "discount.description"
+                    }
+                  ],
+                  staticClass: "form-control",
+                  attrs: { cols: "30", rows: "10" },
+                  domProps: { value: _vm.discount.description },
+                  on: {
+                    input: function($event) {
+                      if ($event.target.composing) {
+                        return
+                      }
+                      _vm.$set(_vm.discount, "description", $event.target.value)
+                    }
+                  }
+                })
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "form-group" }, [
+                _c("input", {
+                  staticClass: "btn btn-success",
+                  attrs: { type: "submit", value: "Обновить" }
+                })
+              ])
+            ]
+          )
+        ])
+      ])
+    ]
+  )
+}
+var staticRenderFns = []
+render._withStripped = true
+
+
+
+/***/ }),
+
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/admin/discounts/includes/modals/UsersModal.vue?vue&type=template&id=cca1475c&":
+/*!*********************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/admin/discounts/includes/modals/UsersModal.vue?vue&type=template&id=cca1475c& ***!
+  \*********************************************************************************************************************************************************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "render", function() { return render; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c(
+    "b-modal",
+    {
+      attrs: {
+        id: "discount-users-modal",
+        size: "xl",
+        "hide-footer": "",
+        title: "Пользователи скидочной категории"
+      }
+    },
+    [
+      _c("div", { staticClass: "row" }, [
+        _c("div", { staticClass: "col" }, [
+          _c("h3", [_vm._v(_vm._s(_vm.discount.name))])
+        ]),
+        _vm._v(" "),
+        _c(
+          "div",
+          { staticClass: "col text-right" },
+          [
+            _c(
+              "b-button",
+              {
+                attrs: { variant: "success" },
+                on: { click: _vm.openAddUserModal }
+              },
+              [_vm._v("Добавить пользователя")]
+            )
+          ],
+          1
+        )
+      ]),
+      _vm._v(" "),
+      _c("br"),
+      _vm._v(" "),
+      _c("div", { staticClass: "row" }, [
+        _c("div", { staticClass: "col-6" }, [
+          _c("input", {
+            directives: [
+              {
+                name: "model",
+                rawName: "v-model",
+                value: _vm.search_param,
+                expression: "search_param"
+              }
+            ],
+            staticClass: "form-control",
+            attrs: { type: "text", placeholder: "Поиск по пользователям" },
+            domProps: { value: _vm.search_param },
+            on: {
+              input: function($event) {
+                if ($event.target.composing) {
+                  return
+                }
+                _vm.search_param = $event.target.value
+              }
+            }
+          })
+        ])
+      ]),
+      _vm._v(" "),
+      _c("br"),
+      _vm._v(" "),
+      _c("div", { staticClass: "row" }, [
+        _c("div", { staticClass: "col" }, [
+          _c("table", { staticClass: "table" }, [
+            _c("thead", [
+              _c("tr", [
+                _c("th", { attrs: { scope: "col" } }, [
+                  _vm._v("ID пользователя")
+                ]),
+                _vm._v(" "),
+                _c("th", { attrs: { scope: "col" } }, [_vm._v("Username")]),
+                _vm._v(" "),
+                _c("th", { attrs: { scope: "col" } }, [_vm._v("Email")]),
+                _vm._v(" "),
+                _c("th", { attrs: { scope: "col" } }, [
+                  _vm._v("Изменить категорию")
+                ])
+              ])
+            ]),
+            _vm._v(" "),
+            _c(
+              "tbody",
+              [
+                _c("tr"),
+                _vm._l(_vm.users, function(user) {
+                  return _c("tr", { key: user.id }, [
+                    _c("td", [_vm._v(_vm._s(user.id))]),
+                    _vm._v(" "),
+                    _c("td", [_vm._v(_vm._s(user.name))]),
+                    _vm._v(" "),
+                    _c("td", [_vm._v(_vm._s(user.email))]),
+                    _vm._v(" "),
+                    _c(
+                      "td",
+                      [
+                        _c(
+                          "b-button",
+                          {
+                            attrs: { variant: "warning" },
+                            on: {
+                              click: function($event) {
+                                return _vm.openChangeUserDiscount(user)
+                              }
+                            }
+                          },
+                          [
+                            _vm._v(
+                              "\n                                    Поменять категорию\n                            "
+                            )
+                          ]
+                        )
+                      ],
+                      1
+                    )
+                  ])
+                })
+              ],
+              2
+            )
+          ])
+        ])
+      ]),
+      _vm._v(" "),
+      _c("AddUser"),
+      _vm._v(" "),
+      _c("ChangeUserDiscount")
+    ],
+    1
   )
 }
 var staticRenderFns = []
@@ -89577,6 +90383,127 @@ var staticRenderFns = [
     ])
   }
 ]
+render._withStripped = true
+
+
+
+/***/ }),
+
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/admin/users/includes/modals/ChangeUserDiscount.vue?vue&type=template&id=70106253&":
+/*!*************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/admin/users/includes/modals/ChangeUserDiscount.vue?vue&type=template&id=70106253& ***!
+  \*************************************************************************************************************************************************************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "render", function() { return render; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c(
+    "b-modal",
+    {
+      attrs: {
+        id: "change-user-discount",
+        "hide-footer": "",
+        title: "Изменить скидочную категорию пользователя"
+      }
+    },
+    [
+      _c("div", { staticClass: "row" }, [
+        _c("div", { staticClass: "col" }, [
+          _c("h5", [_vm._v(_vm._s(_vm.user.email))])
+        ])
+      ]),
+      _vm._v(" "),
+      _c("div", { staticClass: "row" }, [
+        _c("div", { staticClass: "col" }, [
+          _c(
+            "form",
+            {
+              attrs: { action: "" },
+              on: {
+                submit: function($event) {
+                  $event.preventDefault()
+                  _vm.updateDiscount()
+                  _vm.closeModal()
+                }
+              }
+            },
+            [
+              _c("div", { staticClass: "form-group" }, [
+                _c("label", { attrs: { for: "select-discount" } }, [
+                  _vm._v("Выберите скидочную категорию")
+                ]),
+                _vm._v(" "),
+                _c(
+                  "select",
+                  {
+                    directives: [
+                      {
+                        name: "model",
+                        rawName: "v-model",
+                        value: _vm.user.discount_id,
+                        expression: "user.discount_id"
+                      }
+                    ],
+                    staticClass: "form-control",
+                    attrs: { id: "select-discount" },
+                    on: {
+                      change: function($event) {
+                        var $$selectedVal = Array.prototype.filter
+                          .call($event.target.options, function(o) {
+                            return o.selected
+                          })
+                          .map(function(o) {
+                            var val = "_value" in o ? o._value : o.value
+                            return val
+                          })
+                        _vm.$set(
+                          _vm.user,
+                          "discount_id",
+                          $event.target.multiple
+                            ? $$selectedVal
+                            : $$selectedVal[0]
+                        )
+                      }
+                    }
+                  },
+                  _vm._l(_vm.discounts, function(discount) {
+                    return _c(
+                      "option",
+                      { key: discount.id, domProps: { value: discount.id } },
+                      [
+                        _vm._v(
+                          "\n                            " +
+                            _vm._s(discount.name) +
+                            "\n                        "
+                        )
+                      ]
+                    )
+                  }),
+                  0
+                )
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "form-group" }, [
+                _c("input", {
+                  staticClass: "btn btn-success",
+                  attrs: { type: "submit", value: "Изменить" }
+                })
+              ])
+            ]
+          )
+        ])
+      ])
+    ]
+  )
+}
+var staticRenderFns = []
 render._withStripped = true
 
 
@@ -107387,6 +108314,75 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
+/***/ "./resources/js/components/admin/discounts/includes/modals/AddUser.vue":
+/*!*****************************************************************************!*\
+  !*** ./resources/js/components/admin/discounts/includes/modals/AddUser.vue ***!
+  \*****************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _AddUser_vue_vue_type_template_id_68507e0f___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./AddUser.vue?vue&type=template&id=68507e0f& */ "./resources/js/components/admin/discounts/includes/modals/AddUser.vue?vue&type=template&id=68507e0f&");
+/* harmony import */ var _AddUser_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./AddUser.vue?vue&type=script&lang=js& */ "./resources/js/components/admin/discounts/includes/modals/AddUser.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+/* normalize component */
+
+var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+  _AddUser_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _AddUser_vue_vue_type_template_id_68507e0f___WEBPACK_IMPORTED_MODULE_0__["render"],
+  _AddUser_vue_vue_type_template_id_68507e0f___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/components/admin/discounts/includes/modals/AddUser.vue"
+/* harmony default export */ __webpack_exports__["default"] = (component.exports);
+
+/***/ }),
+
+/***/ "./resources/js/components/admin/discounts/includes/modals/AddUser.vue?vue&type=script&lang=js&":
+/*!******************************************************************************************************!*\
+  !*** ./resources/js/components/admin/discounts/includes/modals/AddUser.vue?vue&type=script&lang=js& ***!
+  \******************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_AddUser_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../../../node_modules/babel-loader/lib??ref--4-0!../../../../../../../node_modules/vue-loader/lib??vue-loader-options!./AddUser.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/admin/discounts/includes/modals/AddUser.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_AddUser_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./resources/js/components/admin/discounts/includes/modals/AddUser.vue?vue&type=template&id=68507e0f&":
+/*!************************************************************************************************************!*\
+  !*** ./resources/js/components/admin/discounts/includes/modals/AddUser.vue?vue&type=template&id=68507e0f& ***!
+  \************************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_AddUser_vue_vue_type_template_id_68507e0f___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../../../../node_modules/vue-loader/lib??vue-loader-options!./AddUser.vue?vue&type=template&id=68507e0f& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/admin/discounts/includes/modals/AddUser.vue?vue&type=template&id=68507e0f&");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_AddUser_vue_vue_type_template_id_68507e0f___WEBPACK_IMPORTED_MODULE_0__["render"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_AddUser_vue_vue_type_template_id_68507e0f___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
+
+
+
+/***/ }),
+
 /***/ "./resources/js/components/admin/discounts/includes/modals/CreateDiscount.vue":
 /*!************************************************************************************!*\
   !*** ./resources/js/components/admin/discounts/includes/modals/CreateDiscount.vue ***!
@@ -107456,6 +108452,144 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
+/***/ "./resources/js/components/admin/discounts/includes/modals/EditDiscount.vue":
+/*!**********************************************************************************!*\
+  !*** ./resources/js/components/admin/discounts/includes/modals/EditDiscount.vue ***!
+  \**********************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _EditDiscount_vue_vue_type_template_id_0677bbf8___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./EditDiscount.vue?vue&type=template&id=0677bbf8& */ "./resources/js/components/admin/discounts/includes/modals/EditDiscount.vue?vue&type=template&id=0677bbf8&");
+/* harmony import */ var _EditDiscount_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./EditDiscount.vue?vue&type=script&lang=js& */ "./resources/js/components/admin/discounts/includes/modals/EditDiscount.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+/* normalize component */
+
+var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+  _EditDiscount_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _EditDiscount_vue_vue_type_template_id_0677bbf8___WEBPACK_IMPORTED_MODULE_0__["render"],
+  _EditDiscount_vue_vue_type_template_id_0677bbf8___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/components/admin/discounts/includes/modals/EditDiscount.vue"
+/* harmony default export */ __webpack_exports__["default"] = (component.exports);
+
+/***/ }),
+
+/***/ "./resources/js/components/admin/discounts/includes/modals/EditDiscount.vue?vue&type=script&lang=js&":
+/*!***********************************************************************************************************!*\
+  !*** ./resources/js/components/admin/discounts/includes/modals/EditDiscount.vue?vue&type=script&lang=js& ***!
+  \***********************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_EditDiscount_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../../../node_modules/babel-loader/lib??ref--4-0!../../../../../../../node_modules/vue-loader/lib??vue-loader-options!./EditDiscount.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/admin/discounts/includes/modals/EditDiscount.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_EditDiscount_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./resources/js/components/admin/discounts/includes/modals/EditDiscount.vue?vue&type=template&id=0677bbf8&":
+/*!*****************************************************************************************************************!*\
+  !*** ./resources/js/components/admin/discounts/includes/modals/EditDiscount.vue?vue&type=template&id=0677bbf8& ***!
+  \*****************************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_EditDiscount_vue_vue_type_template_id_0677bbf8___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../../../../node_modules/vue-loader/lib??vue-loader-options!./EditDiscount.vue?vue&type=template&id=0677bbf8& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/admin/discounts/includes/modals/EditDiscount.vue?vue&type=template&id=0677bbf8&");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_EditDiscount_vue_vue_type_template_id_0677bbf8___WEBPACK_IMPORTED_MODULE_0__["render"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_EditDiscount_vue_vue_type_template_id_0677bbf8___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
+
+
+
+/***/ }),
+
+/***/ "./resources/js/components/admin/discounts/includes/modals/UsersModal.vue":
+/*!********************************************************************************!*\
+  !*** ./resources/js/components/admin/discounts/includes/modals/UsersModal.vue ***!
+  \********************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _UsersModal_vue_vue_type_template_id_cca1475c___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./UsersModal.vue?vue&type=template&id=cca1475c& */ "./resources/js/components/admin/discounts/includes/modals/UsersModal.vue?vue&type=template&id=cca1475c&");
+/* harmony import */ var _UsersModal_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./UsersModal.vue?vue&type=script&lang=js& */ "./resources/js/components/admin/discounts/includes/modals/UsersModal.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+/* normalize component */
+
+var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+  _UsersModal_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _UsersModal_vue_vue_type_template_id_cca1475c___WEBPACK_IMPORTED_MODULE_0__["render"],
+  _UsersModal_vue_vue_type_template_id_cca1475c___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/components/admin/discounts/includes/modals/UsersModal.vue"
+/* harmony default export */ __webpack_exports__["default"] = (component.exports);
+
+/***/ }),
+
+/***/ "./resources/js/components/admin/discounts/includes/modals/UsersModal.vue?vue&type=script&lang=js&":
+/*!*********************************************************************************************************!*\
+  !*** ./resources/js/components/admin/discounts/includes/modals/UsersModal.vue?vue&type=script&lang=js& ***!
+  \*********************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_UsersModal_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../../../node_modules/babel-loader/lib??ref--4-0!../../../../../../../node_modules/vue-loader/lib??vue-loader-options!./UsersModal.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/admin/discounts/includes/modals/UsersModal.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_UsersModal_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./resources/js/components/admin/discounts/includes/modals/UsersModal.vue?vue&type=template&id=cca1475c&":
+/*!***************************************************************************************************************!*\
+  !*** ./resources/js/components/admin/discounts/includes/modals/UsersModal.vue?vue&type=template&id=cca1475c& ***!
+  \***************************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_UsersModal_vue_vue_type_template_id_cca1475c___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../../../../node_modules/vue-loader/lib??vue-loader-options!./UsersModal.vue?vue&type=template&id=cca1475c& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/admin/discounts/includes/modals/UsersModal.vue?vue&type=template&id=cca1475c&");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_UsersModal_vue_vue_type_template_id_cca1475c___WEBPACK_IMPORTED_MODULE_0__["render"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_UsersModal_vue_vue_type_template_id_cca1475c___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
+
+
+
+/***/ }),
+
 /***/ "./resources/js/components/admin/discounts/mixins/crudDiscountMixin.js":
 /*!*****************************************************************************!*\
   !*** ./resources/js/components/admin/discounts/mixins/crudDiscountMixin.js ***!
@@ -107472,15 +108606,26 @@ var crudDiscountMixin = {
     openCreateModal: function openCreateModal() {
       this.$bvModal.show("create-discount-modal");
     },
-    openEditModal: function openEditModal() {},
+    openEditModal: function openEditModal(discount) {
+      this.$store.commit("SET_SELECTED_DISCOUNT", discount);
+      this.$bvModal.show("create-discount");
+    },
     openAboutModal: function openAboutModal(discount, index) {
       this.$store.commit("SET_SELECTED_DISCOUNT", discount);
       this.$bvModal.show("about-discount-modal");
     },
     // logic
     createDiscount: function createDiscount() {},
-    updateDiscount: function updateDiscount() {},
-    removeDiscount: function removeDiscount() {}
+    updateDiscount: function updateDiscount(discount_id, discount) {
+      this.$store.dispatch('updateDiscount', {
+        discount: discount,
+        discount_id: discount_id
+      });
+    },
+    removeDiscount: function removeDiscount() {},
+    updateUserDiscount: function updateUserDiscount() {
+      this.$store.dispatch('');
+    }
   }
 };
 
@@ -108829,6 +109974,75 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
+/***/ "./resources/js/components/admin/users/includes/modals/ChangeUserDiscount.vue":
+/*!************************************************************************************!*\
+  !*** ./resources/js/components/admin/users/includes/modals/ChangeUserDiscount.vue ***!
+  \************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _ChangeUserDiscount_vue_vue_type_template_id_70106253___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./ChangeUserDiscount.vue?vue&type=template&id=70106253& */ "./resources/js/components/admin/users/includes/modals/ChangeUserDiscount.vue?vue&type=template&id=70106253&");
+/* harmony import */ var _ChangeUserDiscount_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./ChangeUserDiscount.vue?vue&type=script&lang=js& */ "./resources/js/components/admin/users/includes/modals/ChangeUserDiscount.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+/* normalize component */
+
+var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+  _ChangeUserDiscount_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _ChangeUserDiscount_vue_vue_type_template_id_70106253___WEBPACK_IMPORTED_MODULE_0__["render"],
+  _ChangeUserDiscount_vue_vue_type_template_id_70106253___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/components/admin/users/includes/modals/ChangeUserDiscount.vue"
+/* harmony default export */ __webpack_exports__["default"] = (component.exports);
+
+/***/ }),
+
+/***/ "./resources/js/components/admin/users/includes/modals/ChangeUserDiscount.vue?vue&type=script&lang=js&":
+/*!*************************************************************************************************************!*\
+  !*** ./resources/js/components/admin/users/includes/modals/ChangeUserDiscount.vue?vue&type=script&lang=js& ***!
+  \*************************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_ChangeUserDiscount_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../../../node_modules/babel-loader/lib??ref--4-0!../../../../../../../node_modules/vue-loader/lib??vue-loader-options!./ChangeUserDiscount.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/admin/users/includes/modals/ChangeUserDiscount.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_ChangeUserDiscount_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./resources/js/components/admin/users/includes/modals/ChangeUserDiscount.vue?vue&type=template&id=70106253&":
+/*!*******************************************************************************************************************!*\
+  !*** ./resources/js/components/admin/users/includes/modals/ChangeUserDiscount.vue?vue&type=template&id=70106253& ***!
+  \*******************************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_ChangeUserDiscount_vue_vue_type_template_id_70106253___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../../../../node_modules/vue-loader/lib??vue-loader-options!./ChangeUserDiscount.vue?vue&type=template&id=70106253& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/admin/users/includes/modals/ChangeUserDiscount.vue?vue&type=template&id=70106253&");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_ChangeUserDiscount_vue_vue_type_template_id_70106253___WEBPACK_IMPORTED_MODULE_0__["render"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_ChangeUserDiscount_vue_vue_type_template_id_70106253___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
+
+
+
+/***/ }),
+
 /***/ "./resources/js/components/admin/users/includes/singleUserModal.vue":
 /*!**************************************************************************!*\
   !*** ./resources/js/components/admin/users/includes/singleUserModal.vue ***!
@@ -109297,7 +110511,8 @@ __webpack_require__.r(__webpack_exports__);
       description: ""
     },
     // users
-    users: []
+    users: [],
+    selected_user: {}
   },
   getters: {
     // auth
@@ -109365,6 +110580,9 @@ __webpack_require__.r(__webpack_exports__);
     // users
     users: function users(state) {
       return state.users;
+    },
+    selectedUser: function selectedUser(state) {
+      return state.selected_user;
     }
   },
   mutations: {
@@ -109405,6 +110623,9 @@ __webpack_require__.r(__webpack_exports__);
     },
     SET_SELECTED_DISCOUNT: function SET_SELECTED_DISCOUNT(state, discount) {
       return state.selected_discount = discount;
+    },
+    UPDATE_DISCOUNT: function UPDATE_DISCOUNT(state, discount, index) {
+      return state.discounts[index] = discount;
     },
     // products
     GET_ALL_PRODUCTS: function GET_ALL_PRODUCTS(state, products) {
@@ -109457,6 +110678,9 @@ __webpack_require__.r(__webpack_exports__);
     SET_ALL_USERS: function SET_ALL_USERS(state, users) {
       return state.users = users;
     },
+    SET_SELECTED_USER: function SET_SELECTED_USER(state, user) {
+      return state.selected_user = user;
+    },
     // auth
     SET_USER_TOKEN: function SET_USER_TOKEN(state, token) {
       return state.token = token;
@@ -109469,6 +110693,11 @@ __webpack_require__.r(__webpack_exports__);
     },
     SET_CURRENT_USER_PARAMS: function SET_CURRENT_USER_PARAMS(state, user) {
       return state.currentUser = user;
+    },
+    UDPATE_USER: function UDPATE_USER(state, _ref3) {
+      var user = _ref3.user,
+          index = _ref3.index;
+      return state.users.splice(index, 1, user);
     }
   },
   actions: {
@@ -109575,9 +110804,9 @@ __webpack_require__.r(__webpack_exports__);
         console.log(resp);
       });
     },
-    updateCategory: function updateCategory(context, _ref3) {
-      var category_id = _ref3.category_id,
-          updating_category = _ref3.updating_category;
+    updateCategory: function updateCategory(context, _ref4) {
+      var category_id = _ref4.category_id,
+          updating_category = _ref4.updating_category;
       axios.patch("/api/v1/categories/".concat(category_id), updating_category)["catch"](function (resp) {
         console.log('error with update category');
         console.log(resp);
@@ -109591,9 +110820,9 @@ __webpack_require__.r(__webpack_exports__);
         console.log(resp);
       });
     },
-    restoreCategory: function restoreCategory(context, _ref4) {
-      var category_id = _ref4.category_id,
-          category_index = _ref4.category_index;
+    restoreCategory: function restoreCategory(context, _ref5) {
+      var category_id = _ref5.category_id,
+          category_index = _ref5.category_index;
       axios.get('/api/v1/categories/restore/' + category_id).then(function (resp) {
         context.commit('ADD_NEW_CATEGORY_TO_CATEGORIES', resp.data);
         context.commit('REMOVE_FROM_TRASHED_CATEGORIES', category_index);
@@ -109602,9 +110831,9 @@ __webpack_require__.r(__webpack_exports__);
         console.log(resp);
       });
     },
-    deleteCategory: function deleteCategory(context, _ref5) {
-      var category_id = _ref5.category_id,
-          category_index = _ref5.category_index;
+    deleteCategory: function deleteCategory(context, _ref6) {
+      var category_id = _ref6.category_id,
+          category_index = _ref6.category_index;
       axios["delete"]('/api/v1/categories/' + category_id).then(function (resp) {
         context.dispatch('getTrashedCategories');
       })["catch"](function (resp) {
@@ -109641,10 +110870,13 @@ __webpack_require__.r(__webpack_exports__);
       });
     },
     // TODO продумать передавать ли сюда в качестве параметра поля изменяего объекта (новые данные)
-    updateDiscount: function updateDiscount(context) {
-      var discount = this.getters.updatingDiscount.discount;
-      var index = this.getters.updatingDiscount.index;
-      axios.put('/api/v1/discounts/' + discount.id, discount).then(function (resp) {
+    updateDiscount: function updateDiscount(context, _ref7) {
+      var discount = _ref7.discount,
+          discount_id = _ref7.discount_id;
+      var index = context.getters.discounts.map(function (discount) {
+        return discount.id;
+      }).indexOf(discount_id);
+      axios.put("/api/v1/discounts/".concat(discount_id), discount).then(function (resp) {
         context.commit('UPDATE_DISCOUNT', resp.data, index);
       })["catch"](function (resp) {
         alert('Не получилось обновить скидку');
@@ -109729,9 +110961,9 @@ __webpack_require__.r(__webpack_exports__);
         console.log(resp);
       });
     },
-    updateOrder: function updateOrder(context, _ref6) {
-      var order_id = _ref6.order_id,
-          order = _ref6.order;
+    updateOrder: function updateOrder(context, _ref8) {
+      var order_id = _ref8.order_id,
+          order = _ref8.order;
       var order_index = context.getters.orders.map(function (order) {
         return order.id;
       }).indexOf(order_id);
@@ -109772,6 +111004,23 @@ __webpack_require__.r(__webpack_exports__);
       })["catch"](function (resp) {
         alert('Ошибка при загрузке пользователей');
         console.log(resp);
+      });
+    },
+    updateUser: function updateUser(context, _ref9) {
+      var user_id = _ref9.user_id,
+          user = _ref9.user;
+      var index = context.getters.users.map(function (user) {
+        return user.id;
+      }).indexOf(user_id);
+      axios.put("/api/v1/users/".concat(user_id), user).then(function (resp) {
+        console.log(resp.data);
+        context.commit('UDPATE_USER', {
+          user: resp.data,
+          index: index
+        });
+      })["catch"](function (error) {
+        alert('Ошибка при обновлении пользоватля');
+        console.log(error);
       });
     }
   }

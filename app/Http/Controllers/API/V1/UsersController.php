@@ -45,9 +45,15 @@ class UsersController extends Controller
 
     }
 
-    public function update()
+    public function update(Request $request, $id)
     {
-
+        $user = User::findOrFail($id);
+        $user->update($request->all());
+        if ($request->discount_id) {
+            $user->discount_id = $request->discount_id;
+            $user->save();
+        }
+        return $user;
     }
 
     public function delete()

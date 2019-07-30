@@ -75,8 +75,11 @@ Route::group(['prefix' => '/v1','namespace' => 'API\V1'], function () {
     Route::put('/discounts/{discount}', 'DiscountsController@update');
     Route::resource('discounts', 'DiscountsController', ['except' => ['create', 'edit']]);
 
+    // users
     Route::get('users/search', 'UsersController@search');
+    Route::put('/users/{id}', 'UsersController@update');
     Route::resource('users', 'UsersController', ['except' => 'create', 'edit']);
+
 
     Route::post('/categories', 'CategoriesController@store');
     Route::get('/categories/{id}', 'CategoriesController@show');

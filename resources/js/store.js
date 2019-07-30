@@ -72,7 +72,7 @@ export default {
 
         // users
         users: [],
-
+        selected_user: {},
     },
 
     getters: {
@@ -144,6 +144,9 @@ export default {
         // users
         users(state) {
             return state.users;
+        },
+        selectedUser(state) {
+            return state.selected_user;
         }
     },
     mutations: {
@@ -166,6 +169,7 @@ export default {
             state.discounts.splice(index, 1);
         },
         SET_SELECTED_DISCOUNT: (state, discount) => state.selected_discount = discount,
+        UPDATE_DISCOUNT: (state, discount, index) => state.discounts[index] = discount,
 
         // products
         GET_ALL_PRODUCTS(state, products) {
@@ -205,12 +209,14 @@ export default {
 
         // users
         SET_ALL_USERS: (state, users) => state.users = users,
+        SET_SELECTED_USER: (state, user) => state.selected_user = user,
 
         // auth
         SET_USER_TOKEN: (state, token) => state.token = token,
         DESTROY_TOKEN: (state) => state.token = null,
         REMOVE_USER_PARAMS: (state) => state.currentUser = null,
         SET_CURRENT_USER_PARAMS: (state, user) => state.currentUser = user,
+        UDPATE_USER: (state, { user, index }) => state.users.splice(index, 1, user),
     },
     actions: {
         // auth
@@ -403,11 +409,10 @@ export default {
                     alert("Удаление не удалось", resp);
                 });
         },
-            // TODO продумать передавать ли сюда в качестве параметра поля изменяего объекта (новые данные)
-        updateDiscount(context) {
-            const discount = this.getters.updatingDiscount.discount;
-            const index = this.getters.updatingDiscount.index;
-            axios.put('/api/v1/discounts/' + discount.id, discount)
+        // TODO продумать передавать ли сюда в качестве параметра поля изменяего объекта (новые данные)
+        updateDiscount(context, { discount, discount_id }) {
+            const index = context.getters.discounts.map((discount) => discount.id).indexOf(discount_id);
+            axios.put(`/api/v1/discounts/${discount_id}`, discount)
                 .then((resp) => {
                     context.commit('UPDATE_DISCOUNT', resp.data, index);
                 })
@@ -550,5 +555,17 @@ export default {
                 console.log(resp);
             });
         },
+        updateUser(context, { user_id, user}) {
+            const index = context.getters.users.map((user) => user.id).indexOf(user_id);
+            axios.put(`/api/v1/users/${user_id}`, user)
+                .then(resp => {
+                    console.log(resp.data);
+                    context.commit('UDPATE_USER', { user: resp.data, index});
+                })
+                .catch(error => {
+                    alert('Ошибка при обновлении пользоватля');
+                    console.log(error);
+                })
+        }
     }
 }

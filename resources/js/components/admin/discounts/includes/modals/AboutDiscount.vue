@@ -2,7 +2,7 @@
     <b-modal id="about-discount-modal" size="xl" title="Подробнее о скидочной категории" hide-footer>
         <div class="row">
             <div class="col-md-12 text-left">
-                <h2>Информация о скидочной категории</h2>
+                <h3>{{ discount.name }}</h3>
             </div>
         </div>
         <br>
@@ -24,7 +24,7 @@
                             <td>{{ discount.name }}</td>
                             <td>{{ discount.discount }}</td>
                             <td>{{ discount.created_at }}</td>
-                            <td>{{ discount.upadted_at }}</td>
+                            <td>{{ discount.updated_at }}</td>
                         </tr>
                     </tbody>
                 </table>
