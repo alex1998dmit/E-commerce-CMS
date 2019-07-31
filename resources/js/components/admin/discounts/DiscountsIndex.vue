@@ -3,7 +3,7 @@
         <div class="col">
             <div class="row">
                 <div class="col-6">
-                    <h2>Скидка категорий</h2>
+                    <h2>Категории скидок</h2>
                 </div>
                 <div class="col-6 text-right">
                     <router-link class="btn btn-primary" :to="{ name: 'dashboard' }">Главная</router-link>
@@ -15,7 +15,7 @@
                     <input type="text" class="form-control" placeholder="Поиск по скидкам ..." v-model="search_param">
                 </div>
                 <div class="col-6 text-right">
-                    <b-button class="btn btn-success" @click="openCreateModal()">+ скидку</b-button>
+                    <b-button class="btn btn-success" @click="openCreateModal()">Добавить скидку</b-button>
                 </div>
             </div>
             <br>
@@ -56,7 +56,7 @@
                                 <td>
                                     <a href="#"
                                     class="btn btn-xs btn-danger"
-                                    v-on:click="deleteEntry(discount.id, index)">
+                                    v-on:click="openDeleteModal(discount)">
                                         Удалить
                                     </a>
                                 </td>
@@ -69,6 +69,7 @@
             <AboutDiscount></AboutDiscount>
             <EditDiscount></EditDiscount>
             <UsersModal></UsersModal>
+            <DeleteDiscount></DeleteDiscount>
         </div>
     </div>
 </template>
@@ -82,6 +83,7 @@
     import AboutDiscount from './includes/modals/AboutDiscount';
     import EditDiscount from './includes/modals/EditDiscount';
     import UsersModal from './includes/modals/UsersModal';
+    import DeleteDiscount from './includes/modals/DeleteDiscount';
 
     import { mapGetters } from 'vuex';
 
@@ -96,6 +98,7 @@
             AboutDiscount,
             EditDiscount,
             UsersModal,
+            DeleteDiscount,
         },
         mixins: [crudDiscountMixin],
         mounted() {
@@ -114,7 +117,22 @@
             openUsersModal(discount) {
                 this.$store.commit("SET_SELECTED_DISCOUNT", discount);
                 this.$bvModal.show("discount-users-modal");
-            }
+            },
+            openDeleteModal(discount) {
+                this.$store.commit("SET_SELECTED_DISCOUNT", discount);
+                this.$bvModal.show("trash-discount-category");
+            },
+                    openCreateModal() {
+            this.$bvModal.show("create-discount-modal");
+            },
+            openEditModal(discount) {
+                this.$store.commit("SET_SELECTED_DISCOUNT", discount);
+                this.$bvModal.show("create-discount");
+            },
+            openAboutModal(discount, index) {
+                this.$store.commit("SET_SELECTED_DISCOUNT", discount);
+                this.$bvModal.show("about-discount-modal");
+            },
         },
     }
 </script>

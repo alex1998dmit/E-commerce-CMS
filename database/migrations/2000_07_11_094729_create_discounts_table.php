@@ -19,6 +19,7 @@ class CreateDiscountsTable extends Migration
             $table->float('discount');
             $table->text('description');
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

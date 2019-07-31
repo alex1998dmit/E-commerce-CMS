@@ -74,12 +74,11 @@ export default {
             return this.$store.getters.selectedDiscount;
         },
         users() {
-            const users = this.$store.getters.users;
-            const usersWithCurDiscount = users.filter(user => user.discount_id === this.discount.id);
+            const users = this.$store.getters.users.filter(user => user.discount_id === this.discount.id);
             if (this.search_param) {
-                return usersWithCurDiscount.filter((user) => user.name.toLowerCase().includes(this.search_param.toLocaleLowerCase()));
+                return users.filter((user) => user.name.toLowerCase().includes(this.search_param.toLocaleLowerCase()));
             }
-            return usersWithCurDiscount;
+            return users;
         }
     },
     methods: {

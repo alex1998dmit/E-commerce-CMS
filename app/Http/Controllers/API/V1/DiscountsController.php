@@ -36,7 +36,11 @@ class DiscountsController extends Controller
      */
     public function store(Request $request)
     {
-        $discount = Discount::create($request->all());
+        $discount = Discount::create([
+            'name' => $request->name,
+            'discount' => $request->discount,
+            'description' => $request->description
+        ]);
         return $discount;
     }
 
@@ -79,7 +83,7 @@ class DiscountsController extends Controller
     {
         $discount = Discount::findOrFail($id);
         $discount->update($request->all());
-
+        $discount->save();
         return $discount;
     }
 
@@ -89,11 +93,11 @@ class DiscountsController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function trash($id)
     {
-        $dicount = Discount::findOrFail($id);
-        $dicount->delete();
-        return '';
+        $discount = Discount::findOrFail($id);
+        $discount->delete();
+        return response()->json(['mesasage' => 'succesfully deleted'], 200);
     }
 
 }

@@ -56,9 +56,15 @@ class UsersController extends Controller
         return $user;
     }
 
-    public function delete()
+    public function replaceDiscountsIds(Request $request, $old_discount_id)
     {
-
+        $new_discount_id = $request->new_discount_id;
+        $users = User::where('discount_id', '=', $old_discount_id)->get();
+        foreach ($users as $user) {
+            $user->discount_id = $new_discount_id;
+            $user->save();
+        }
+        return User::all();
     }
 
     public function search(Request $request)

@@ -1,8 +1,4 @@
-import { reject } from "q";
-
-// import { getLocalUser } from './helpers/auth';
-
-// const user = getLocalUser();
+import Vue from 'vue';
 
 export default {
     state: {
@@ -165,11 +161,10 @@ export default {
 
         // discounts
         GET_ALL_DISCOUNTS: (state, discounts) => state.discounts = discounts,
-        REMOVE_DISCOUNT(state, index) {
-            state.discounts.splice(index, 1);
-        },
+        REMOVE_DISCOUNT: (state, index) => state.discounts.splice(index, 1),
         SET_SELECTED_DISCOUNT: (state, discount) => state.selected_discount = discount,
-        UPDATE_DISCOUNT: (state, discount, index) => state.discounts[index] = discount,
+        UPDATE_DISCOUNT: (state, { discount, index }) => state.discounts[index] = discount,
+        ADD_DISCOUNT: (state, discount) => state.discounts.push(discount),
 
         // products
         GET_ALL_PRODUCTS(state, products) {
@@ -208,8 +203,12 @@ export default {
         SET_SELECTED_ORDER_STATUS: (state, order_status) => state.selected_order_status = order_status,
 
         // users
-        SET_ALL_USERS: (state, users) => state.users = users,
+        SET_ALL_USERS: (state, users) => {
+            state.users = users;
+            // Vue.set(state, 'users', [...users]);
+        },
         SET_SELECTED_USER: (state, user) => state.selected_user = user,
+        CLEAR_USERS: (state) => state.users.splice(0, state.users.length),
 
         // auth
         SET_USER_TOKEN: (state, token) => state.token = token,
@@ -391,41 +390,39 @@ export default {
         createDiscount(context, new_discount) {
             axios.post('/api/v1/discounts', new_discount)
             .then(function (resp) {
-                context.commit('CREATE_NEW_DISCOUNT', resp.data);
+                context.commit('ADD_DISCOUNT', resp.data);
             })
             .catch(function (resp) {
                 console.log(resp);
                 alert("Could not create your discount");
             });
         },
-        removeDiscount(context, id) {
-            // TODO закинуть в helpers и импортировать сюда
-            const index = this.getters.discounts.map((obj) => obj.id).indexOf(id);
-            axios.delete('/api/v1/discounts/' + id)
-                .then(function (resp) {
-                    context.dispatch('');
-                })
-                .catch(function (resp) {
-                    alert("Удаление не удалось", resp);
-                });
-        },
         // TODO продумать передавать ли сюда в качестве параметра поля изменяего объекта (новые данные)
         updateDiscount(context, { discount, discount_id }) {
             const index = context.getters.discounts.map((discount) => discount.id).indexOf(discount_id);
             axios.put(`/api/v1/discounts/${discount_id}`, discount)
                 .then((resp) => {
-                    context.commit('UPDATE_DISCOUNT', resp.data, index);
+                    context.commit('UPDATE_DISCOUNT', { discount: resp.data, index });
                 })
                 .catch((resp) => {
                     alert('Не получилось обновить скидку');
                     console.log(resp);
                 })
         },
-        getNewDiscountParam(context, params) {
-            context.commit('SET_NEW_DISCOUNT_PARAM', params);
+        trashDiscount(context, discount_id) {
+            const index = context.getters.discounts.map((discount) => discount.id).indexOf(discount_id);
+            axios.delete(`/api/v1/discounts/${discount_id}`)
+                .then((resp) => {
+                    context.commit('REMOVE_DISCOUNT', index);
+                })
+                .catch((resp) => {
+                    alert('Не получилось обновить скидку');
+                    console.log(resp);
+                })
         },
 
-        // products
+
+        // proiucts
         getProducts(context) {
             axios.get('/api/v1/products')
                 .then((resp) => {
@@ -473,7 +470,6 @@ export default {
             const product_index = context.getters.products.map((obj) => obj.id).indexOf(product_id);
             axios.delete('/api/v1/products/trash/' + product_id)
                 .then((resp) => {
-                    console.log(resp.data);
                     context.commit('REMOVE_PRODUCT', product_index);
                 })
                 .catch((resp)=> {
@@ -512,7 +508,6 @@ export default {
             console.log('------', order ,order_id);
             axios.put('/api/v1/orders/' + order_id, order)
                 .then(resp => {
-                    console.log(resp.data);
                     context.commit('UPDATE_ORDER', {  order_index, order:resp.data })
                 })
                 .catch((resp) => {
@@ -559,11 +554,22 @@ export default {
             const index = context.getters.users.map((user) => user.id).indexOf(user_id);
             axios.put(`/api/v1/users/${user_id}`, user)
                 .then(resp => {
-                    console.log(resp.data);
                     context.commit('UDPATE_USER', { user: resp.data, index});
                 })
                 .catch(error => {
                     alert('Ошибка при обновлении пользоватля');
+                    console.log(error);
+                })
+        },
+        replaceUsersDiscountId(context, { old_discount_id, new_discount_id }) {
+            console.log('object is ', { new_discount_id });
+            axios.put(`/api/v1/users/replaceDiscounts/${old_discount_id}`, { new_discount_id })
+                .then(resp => {
+                    context.commit('CLEAR_USERS', resp.data);
+                    context.commit('SET_ALL_USERS', resp.data);
+                })
+                .catch(error => {
+                    alert('Ошибка при обновлении категорий пользователей');
                     console.log(error);
                 })
         }

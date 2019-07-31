@@ -43,6 +43,9 @@ export default {
         closeModal() {
             this.$bvModal.hide("create-discount");
         },
+        updateDiscount(discount_id, discount) {
+            this.$store.dispatch('updateDiscount', { discount, discount_id });
+        },
     }
 }
 </script>

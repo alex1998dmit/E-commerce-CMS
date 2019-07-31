@@ -71,12 +71,16 @@ Route::post('/admin/categories/', function() {
 });
 
 Route::group(['prefix' => '/v1','namespace' => 'API\V1'], function () {
+    Route::get('/discounts', 'DiscountsController@index');
     Route::get('/discounts/show/{discount}', 'DiscountsController@show');
     Route::put('/discounts/{discount}', 'DiscountsController@update');
-    Route::resource('discounts', 'DiscountsController', ['except' => ['create', 'edit']]);
+    Route::delete('/discounts/{discount}', 'DiscountsController@trash');
+    Route::post('/discounts', 'DiscountsController@store');
+    // Route::resource('discounts', 'DiscountsController', ['except' => ['create', 'edit']]);
 
     // users
     Route::get('users/search', 'UsersController@search');
+    Route::put('/users/replaceDiscounts/{old_discount_id}', 'UsersController@replaceDiscountsIds');
     Route::put('/users/{id}', 'UsersController@update');
     Route::resource('users', 'UsersController', ['except' => 'create', 'edit']);
 
