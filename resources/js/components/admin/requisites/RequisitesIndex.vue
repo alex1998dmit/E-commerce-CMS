@@ -44,7 +44,7 @@
                                 </b-button>
                             </td>
                             <td>
-                                <b-button id="show-btn" variant="primary" @click="openEditModal(requisite)">
+                                <b-button id="show-btn" variant="primary" @click="openEditModal(requisite, index)">
                                     Редактировать
                                 </b-button>
                             </td>
@@ -67,11 +67,13 @@
         </div>
     </div>
     <AboutRequisite v-if="this.requisites.length > 0"></AboutRequisite>
+    <EditRequisite></EditRequisite>
 </div>
 </template>
 
 <script>
 import AboutRequisite from './modals/AboutRequisite';
+import EditRequisite from './modals/EditRequisite';
 
 export default {
     data() {
@@ -81,7 +83,7 @@ export default {
     },
     components: {
         AboutRequisite,
-
+        EditRequisite,
     },
     computed: {
         requisites: {
@@ -109,9 +111,10 @@ export default {
         openCreateModal(requisite) {
             // this.$bvModal.show("create-requisite-modal");
         },
-        openEditModal(requisite) {
+        openEditModal(requisite, index) {
+            this.$store.commit("SET_REQUISITE_INDEX", index);
             this.$store.commit("SET_SELECTED_REQUISITE", requisite);
-            // this.$bvModal.show("edit-requisite-modal");
+            this.$bvModal.show("edit-requisite-modal");
         },
         openAboutModal(requisite, index) {
             this.$store.commit("SET_REQUISITE_INDEX", index);

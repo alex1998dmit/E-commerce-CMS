@@ -424,9 +424,9 @@ export default {
                 alert("Не получилось создать реквизит");
             });
         },
-        updateRequisite(context, { requisite, requisite_id }) {
-            const index = context.getters.requisites.map((requisite) => requisite.id).indexOf(requisite_id);
-            axios.put(`/api/v1/discounts/${requisite_id}`, requisite)
+        updateRequisite(context, { requisite, requisite_id, index }) {
+            console.log({ requisite, requisite_id, index });
+            axios.put(`/api/v1/requisites/${requisite_id}`, requisite)
                 .then((resp) => {
                     context.commit('UPDATE_REQUISITE', { requisite: resp.data, index });
                 })
