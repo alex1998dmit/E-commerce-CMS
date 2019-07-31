@@ -71,6 +71,14 @@ Route::post('/admin/categories/', function() {
 });
 
 Route::group(['prefix' => '/v1','namespace' => 'API\V1'], function () {
+    // requisites
+    Route::get('/requisites', 'RequisitesController@index');
+    Route::get('/requisites/{requisite}', 'RequisitesController@single');
+    Route::put('/requisites/{requisite}', 'RequisitesController@update');
+    Route::delete('/requisites/{requisite}', 'RequisitesController@trash');
+    Route::get('/requisites/restore/{requisite}', 'RequisitesController@restore');
+    Route::post('/requisites', 'RequisitesController@store');
+
     Route::get('/discounts', 'DiscountsController@index');
     Route::get('/discounts/show/{discount}', 'DiscountsController@show');
     Route::put('/discounts/{discount}', 'DiscountsController@update');
@@ -84,7 +92,7 @@ Route::group(['prefix' => '/v1','namespace' => 'API\V1'], function () {
     Route::put('/users/{id}', 'UsersController@update');
     Route::resource('users', 'UsersController', ['except' => 'create', 'edit']);
 
-
+    // categories
     Route::post('/categories', 'CategoriesController@store');
     Route::get('/categories/{id}', 'CategoriesController@show');
     Route::get('categories', 'CategoriesController@index');

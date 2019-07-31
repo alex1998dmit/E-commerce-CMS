@@ -19,6 +19,7 @@ class CreateRequisitesTable extends Migration
             $table->string('requisite');
             $table->string('description')->nullable();
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

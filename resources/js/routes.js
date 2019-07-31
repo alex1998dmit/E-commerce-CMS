@@ -4,6 +4,8 @@ import DiscountsIndex from './components/admin/discounts/DiscountsIndex.vue';
 import DiscountsCreate from './components/admin/discounts/DiscountsCreate.vue';
 import DiscountShow from './components/admin/discounts/DiscountShow.vue';
 
+import RequisitesIndex from './components/admin/requisites/RequisitesIndex';
+
 import PersonalAccessTokens from './components/passport/PersonalAccessTokens.vue';
 
 import UsersIndex from './components/admin/users/UsersIndex.vue';
@@ -54,6 +56,12 @@ export const routes = [
         name:'showDiscount',
         meta: { requiresAuth: true, adminAuth: true }
 
+    },
+    {
+        path: '/requisites',
+        component: RequisitesIndex,
+        name: 'requisites',
+        meta: { requiresAuth: true, adminAuth: true }
     },
 
     // categories

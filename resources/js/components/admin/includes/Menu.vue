@@ -2,7 +2,7 @@
     <div>
         <nav id="sidebar" v-if="isLoggedIn">
             <div class="sidebar-header">
-                <h3>Admin panel</h3>
+                <h3>Админ панель</h3>
             </div>
             <ul class="list-unstyled components">
                 <li class="active">
@@ -12,6 +12,9 @@
                             <router-link :to="{ name: 'discounts' }">Все скидки</router-link>
                         </li>
                     </ul>
+                </li>
+                <li>
+                    <router-link :to="{ name: 'requisites' }">Реквизиты</router-link>
                 </li>
                 <li>
                     <router-link :to="{ name: 'users' }">Пользователи</router-link>
