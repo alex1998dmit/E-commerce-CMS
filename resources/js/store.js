@@ -22,6 +22,14 @@ export default {
         },
         final_categories: [],
 
+        // requisites
+        requisites: [],
+        selected_requisite: {
+            name: "",
+            products: []
+        },
+        requisite_index: 0,
+
         // discount
         discounts: [],
         selected_discount: {
@@ -107,6 +115,17 @@ export default {
             return state.selected_discount;
         },
 
+        // requisite
+        requisites(state) {
+            return state.requisites;
+        },
+        selectedRequisite(state) {
+            return state.selected_requisite;
+        },
+        requisiteIndex(state) {
+            return state.requisite_index;
+        },
+
         // products
         products(state) {
             return state.products;
@@ -158,6 +177,14 @@ export default {
         SET_TRASHED_CATEGORIES: (state, trashed_categories) => state.trashed_categories = trashed_categories,
         REMOVE_FROM_TRASHED_CATEGORIES: (state, index) => state.trashed_categories.splice(index, 1),
         SET_ALL_CATEGORIES: (state, categories) => state.categories = categories,
+
+        // requisites
+        SET_ALL_REQUISITES: (state, requisites) => state.requisites = requisites,
+        SET_SELECTED_REQUISITE: (state, requisite) => state.selected_requisite = requisite,
+        UPDATE_REQUISITE: (state, { index, requisite }) => state.categories[index] = requisite,
+        REMOVE_REQUISITE: (state, index) => state.requisites.splice(index, 1),
+        ADD_REQUISITE: (state, requisite) => state.requisites.push(requisite),
+        SET_REQUISITE_INDEX: (state, requisite_index) => state.requisite_index = requisite_index,
 
         // discounts
         GET_ALL_DISCOUNTS: (state, discounts) => state.discounts = discounts,
@@ -372,6 +399,50 @@ export default {
                 })
                 .catch((resp) => {
                     alert('Ошибка при загрузке удаленных категорий');
+                    console.log(resp);
+                })
+        },
+
+        // requisites
+        getRequisites(context) {
+            axios.get('/api/v1/requisites')
+                .then(function (resp) {
+                    context.commit('SET_ALL_REQUISITES', resp.data);
+                })
+                .catch(function (resp) {
+                    console.log(resp);
+                    alert("Возникла проблемма при загрузке реквизитов");
+                });
+        },
+        createRequisite(context, requisite) {
+            axios.post('/api/v1/requisites', requisite)
+            .then(function (resp) {
+                context.commit('ADD_REQUISITE', resp.data);
+            })
+            .catch(function (resp) {
+                console.log(resp);
+                alert("Не получилось создать реквизит");
+            });
+        },
+        updateRequisite(context, { requisite, requisite_id }) {
+            const index = context.getters.requisites.map((requisite) => requisite.id).indexOf(requisite_id);
+            axios.put(`/api/v1/discounts/${requisite_id}`, requisite)
+                .then((resp) => {
+                    context.commit('UPDATE_REQUISITE', { requisite: resp.data, index });
+                })
+                .catch((resp) => {
+                    alert('Не получилось обновить скидку');
+                    console.log(resp);
+                })
+        },
+        trashRequisite(context, requisite_id) {
+            const index = context.getters.requisites.map((requisite) => requisite.id).indexOf(requisite_id);
+            axios.delete(`/api/v1/requisites/${discount_id}`)
+                .then((resp) => {
+                    context.commit('REMOVE_REQUISITE', index);
+                })
+                .catch((resp) => {
+                    alert('Не получилось удалить реквизит');
                     console.log(resp);
                 })
         },

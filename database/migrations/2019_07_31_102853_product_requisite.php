@@ -16,13 +16,13 @@ class ProductRequisite extends Migration
         if (!Schema::hasTable('product_requisite')) {
             Schema::create('product_requisite', function (Blueprint $table) {
                 $table->bigIncrements('id');
-                $table->bigInteger('user_id')->unsigned();
+                $table->bigInteger('product_id')->unsigned();
                 $table->bigInteger('requisite_id')->unsigned();
                 $table->timestamps();
             });
 
             Schema::table('product_requisite', function($table) {
-                $table->foreign('user_id')->references('id')->on('users');
+                $table->foreign('product_id')->references('id')->on('products');
                 $table->foreign('requisite_id')->references('id')->on('requisites');
             });
         }

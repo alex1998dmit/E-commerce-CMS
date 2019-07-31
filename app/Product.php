@@ -19,6 +19,11 @@ class Product extends Model
     // TODO Проверить семантическую верность приема
     // protected $appends = ['photos'];
 
+    public function requisites()
+    {
+        return $this->belongsToMany('App\Requisite');
+    }
+
     public function category()
     {
         return $this->belongsTo('App\Category');

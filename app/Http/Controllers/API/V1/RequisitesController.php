@@ -11,6 +11,9 @@ class RequisitesController extends Controller
     public function index()
     {
         $requisites = Requisite::all();
+        foreach($requisites as $requisite) {
+            $requisite->products;
+        }
         return $requisites;
     }
 

@@ -5257,13 +5257,247 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _modals_AboutRequisite__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./modals/AboutRequisite */ "./resources/js/components/admin/requisites/modals/AboutRequisite.vue");
 //
 //
 //
 //
 //
 //
-/* harmony default export */ __webpack_exports__["default"] = ({});
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+  data: function data() {
+    return {
+      search_param: null
+    };
+  },
+  components: {
+    AboutRequisite: _modals_AboutRequisite__WEBPACK_IMPORTED_MODULE_0__["default"]
+  },
+  computed: {
+    requisites: {
+      get: function get() {
+        return this.$store.getters.requisites;
+      },
+      set: function set(val) {}
+    },
+    requisite: function requisite() {
+      return this.$store.getters.seletctedRequisite;
+    }
+  },
+  mounted: function mounted() {
+    this.$store.dispatch('getRequisites');
+  },
+  methods: {
+    openProductsModal: function openProductsModal(requisite) {
+      this.$store.commit("SET_SELECTED_REQUISITE", requisite); // this.$bvModal.show("requisites-products-modal");
+    },
+    openDeleteModal: function openDeleteModal(requisite) {
+      this.$store.commit("SET_SELECTED_REQUISITE", requisite); // this.$bvModal.show("trash-requisite");
+    },
+    openCreateModal: function openCreateModal(requisite) {// this.$bvModal.show("create-requisite-modal");
+    },
+    openEditModal: function openEditModal(requisite) {
+      this.$store.commit("SET_SELECTED_REQUISITE", requisite); // this.$bvModal.show("edit-requisite-modal");
+    },
+    openAboutModal: function openAboutModal(requisite, index) {
+      this.$store.commit("SET_REQUISITE_INDEX", index);
+      this.$store.commit("SET_SELECTED_REQUISITE", requisite);
+      this.$bvModal.show("about-requisite-modal");
+    }
+  }
+});
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/admin/requisites/modals/AboutRequisite.vue?vue&type=script&lang=js&":
+/*!*************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/admin/requisites/modals/AboutRequisite.vue?vue&type=script&lang=js& ***!
+  \*************************************************************************************************************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+/* harmony default export */ __webpack_exports__["default"] = ({
+  data: function data() {
+    return {
+      search_param: ""
+    };
+  },
+  computed: {
+    requisite: function requisite() {
+      return this.$store.getters.selectedRequisite;
+    },
+    products: function products() {
+      var _this = this;
+
+      var requisite_index = this.$store.getters.requisiteIndex;
+
+      if (this.search_param) {
+        return this.$store.getters.requisites[requisite_index].products.filter(function (product) {
+          return product.name.toLowerCase().includes(_this.search_param.toLocaleLowerCase());
+        });
+      }
+
+      return this.$store.getters.requisites[requisite_index].products;
+    }
+  }
+});
 
 /***/ }),
 
@@ -88497,7 +88731,419 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", { staticClass: "row" })
+  return _c(
+    "div",
+    { staticClass: "row" },
+    [
+      _c("div", { staticClass: "col" }, [
+        _c("div", { staticClass: "row" }, [
+          _vm._m(0),
+          _vm._v(" "),
+          _c(
+            "div",
+            { staticClass: "col-6 text-right" },
+            [
+              _c(
+                "router-link",
+                {
+                  staticClass: "btn btn-primary",
+                  attrs: { to: { name: "dashboard" } }
+                },
+                [_vm._v("Главная")]
+              )
+            ],
+            1
+          )
+        ]),
+        _vm._v(" "),
+        _c("br"),
+        _vm._v(" "),
+        _c("div", { staticClass: "row" }, [
+          _c("div", { staticClass: "col-6 text-left" }, [
+            _c("input", {
+              directives: [
+                {
+                  name: "model",
+                  rawName: "v-model",
+                  value: _vm.search_param,
+                  expression: "search_param"
+                }
+              ],
+              staticClass: "form-control",
+              attrs: {
+                type: "text",
+                placeholder: "Поиск по названию реквизита ..."
+              },
+              domProps: { value: _vm.search_param },
+              on: {
+                input: function($event) {
+                  if ($event.target.composing) {
+                    return
+                  }
+                  _vm.search_param = $event.target.value
+                }
+              }
+            })
+          ]),
+          _vm._v(" "),
+          _c(
+            "div",
+            { staticClass: "col-6 text-right" },
+            [
+              _c(
+                "b-button",
+                {
+                  staticClass: "btn btn-success",
+                  on: {
+                    click: function($event) {
+                      return _vm.openCreateModal()
+                    }
+                  }
+                },
+                [_vm._v("Добавить реквизит")]
+              )
+            ],
+            1
+          )
+        ]),
+        _vm._v(" "),
+        _c("br"),
+        _vm._v(" "),
+        _c("div", { staticClass: "row" }, [
+          _c("div", { staticClass: "col" }, [
+            _c("table", { staticClass: "table" }, [
+              _vm._m(1),
+              _vm._v(" "),
+              _c(
+                "tbody",
+                _vm._l(_vm.requisites, function(requisite, index) {
+                  return _c("tr", { key: requisite.id }, [
+                    _c("td", [_vm._v(_vm._s(requisite.id))]),
+                    _vm._v(" "),
+                    _c("td", [_vm._v(_vm._s(requisite.title))]),
+                    _vm._v(" "),
+                    _c("td", [_vm._v(_vm._s(requisite.requisite))]),
+                    _vm._v(" "),
+                    _c(
+                      "td",
+                      [
+                        _c(
+                          "b-button",
+                          {
+                            attrs: { variant: "info" },
+                            on: {
+                              click: function($event) {
+                                return _vm.openAboutModal(requisite, index)
+                              }
+                            }
+                          },
+                          [
+                            _vm._v(
+                              "\n                                    Подробнее\n                                "
+                            )
+                          ]
+                        )
+                      ],
+                      1
+                    ),
+                    _vm._v(" "),
+                    _c(
+                      "td",
+                      [
+                        _c(
+                          "b-button",
+                          {
+                            attrs: { id: "show-btn", variant: "primary" },
+                            on: {
+                              click: function($event) {
+                                return _vm.openEditModal(requisite)
+                              }
+                            }
+                          },
+                          [
+                            _vm._v(
+                              "\n                                    Редактировать\n                                "
+                            )
+                          ]
+                        )
+                      ],
+                      1
+                    ),
+                    _vm._v(" "),
+                    _c(
+                      "td",
+                      [
+                        _c(
+                          "b-button",
+                          {
+                            attrs: { id: "users", variant: "success" },
+                            on: {
+                              click: function($event) {
+                                return _vm.openProductsModal(requisite)
+                              }
+                            }
+                          },
+                          [
+                            _vm._v(
+                              "\n                                    Товары\n                                "
+                            )
+                          ]
+                        )
+                      ],
+                      1
+                    ),
+                    _vm._v(" "),
+                    _c("td", [
+                      _c(
+                        "a",
+                        {
+                          staticClass: "btn btn-xs btn-danger",
+                          attrs: { href: "#" },
+                          on: {
+                            click: function($event) {
+                              return _vm.openDeleteModal(_vm.discount)
+                            }
+                          }
+                        },
+                        [
+                          _vm._v(
+                            "\n                                    Удалить\n                                "
+                          )
+                        ]
+                      )
+                    ])
+                  ])
+                }),
+                0
+              )
+            ])
+          ])
+        ])
+      ]),
+      _vm._v(" "),
+      this.requisites.length > 0 ? _c("AboutRequisite") : _vm._e()
+    ],
+    1
+  )
+}
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "col-6" }, [
+      _c("h2", [_vm._v("Реквизиты")])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("thead", [
+      _c("tr", [
+        _c("th", { attrs: { scope: "col" } }, [_vm._v("ID")]),
+        _vm._v(" "),
+        _c("th", { attrs: { scope: "col" } }, [_vm._v("Название")]),
+        _vm._v(" "),
+        _c("th", { attrs: { scope: "col" } }, [_vm._v("Номер реквизита")]),
+        _vm._v(" "),
+        _c("th", { attrs: { scope: "col" } }, [_vm._v("Подробнее")]),
+        _vm._v(" "),
+        _c("th", { attrs: { scope: "col" } }, [_vm._v("Редактировать")]),
+        _vm._v(" "),
+        _c("th", { attrs: { scope: "col" } }, [_vm._v("Товары")]),
+        _vm._v(" "),
+        _c("th", { attrs: { scope: "col" } }, [_vm._v("Удалить")])
+      ])
+    ])
+  }
+]
+render._withStripped = true
+
+
+
+/***/ }),
+
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/admin/requisites/modals/AboutRequisite.vue?vue&type=template&id=39f354eb&":
+/*!*****************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/admin/requisites/modals/AboutRequisite.vue?vue&type=template&id=39f354eb& ***!
+  \*****************************************************************************************************************************************************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "render", function() { return render; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c(
+    "b-modal",
+    {
+      attrs: {
+        size: "xl",
+        id: "about-requisite-modal",
+        title: "О реквизите",
+        "hide-footer": ""
+      }
+    },
+    [
+      _c("div", { staticClass: "row" }, [
+        _c("div", { staticClass: "col" }, [
+          _c("h3", [_vm._v(_vm._s(_vm.requisite.title))])
+        ]),
+        _vm._v(" "),
+        _c("div", { staticClass: "col text-right" })
+      ]),
+      _vm._v(" "),
+      _c("br"),
+      _vm._v(" "),
+      _c("div", { staticClass: "row" }, [
+        _c("div", { staticClass: "col" }, [
+          _c("h4", [_vm._v("Общая информация")])
+        ])
+      ]),
+      _vm._v(" "),
+      _c("br"),
+      _vm._v(" "),
+      _c("div", { staticClass: "row" }, [
+        _c("div", { staticClass: "col" }, [
+          _c("table", { staticClass: "table" }, [
+            _c("thead", [
+              _c("tr", [
+                _c("th", { attrs: { scope: "col" } }, [_vm._v("ID")]),
+                _vm._v(" "),
+                _c("th", { attrs: { scope: "col" } }, [_vm._v("Название")]),
+                _vm._v(" "),
+                _c("th", { attrs: { scope: "col" } }, [_vm._v("Реквизит")]),
+                _vm._v(" "),
+                _c("th", { attrs: { scope: "col" } }, [_vm._v("Описание")]),
+                _vm._v(" "),
+                _c("th", { attrs: { scope: "col" } }, [_vm._v("Товаров")]),
+                _vm._v(" "),
+                _c("th", { attrs: { scope: "col" } }, [
+                  _vm._v("Дата создания")
+                ]),
+                _vm._v(" "),
+                _c("th", { attrs: { scope: "col" } }, [
+                  _vm._v("Дата обновления")
+                ])
+              ])
+            ]),
+            _vm._v(" "),
+            _c("tbody", [
+              _c("tr", [
+                _c("td", [_vm._v(_vm._s(_vm.requisite.id))]),
+                _vm._v(" "),
+                _c("td", [_vm._v(_vm._s(_vm.requisite.title))]),
+                _vm._v(" "),
+                _c("td", [_vm._v(_vm._s(_vm.requisite.requisite))]),
+                _vm._v(" "),
+                _c("td", [_vm._v(_vm._s(_vm.requisite.description))]),
+                _vm._v(" "),
+                _c("td", [_vm._v(_vm._s(_vm.requisite.products.length))]),
+                _vm._v(" "),
+                _c("td", [_vm._v(_vm._s(_vm.requisite.created_at))]),
+                _vm._v(" "),
+                _c("td", [_vm._v(_vm._s(_vm.requisite.updated_at))])
+              ])
+            ])
+          ])
+        ])
+      ]),
+      _vm._v(" "),
+      _c("br"),
+      _vm._v(" "),
+      _c("div", { staticClass: "row" }, [
+        _c("div", { staticClass: "col" }, [_c("h4", [_vm._v("Продукция:")])])
+      ]),
+      _vm._v(" "),
+      _c("br"),
+      _vm._v(" "),
+      _c("div", { staticClass: "row" }, [
+        _c("div", { staticClass: "col-6" }, [
+          _c("input", {
+            directives: [
+              {
+                name: "model",
+                rawName: "v-model",
+                value: _vm.search_param,
+                expression: "search_param"
+              }
+            ],
+            staticClass: "form-control",
+            attrs: {
+              type: "text",
+              placeholder: "Поиск по названию продукта ..."
+            },
+            domProps: { value: _vm.search_param },
+            on: {
+              input: function($event) {
+                if ($event.target.composing) {
+                  return
+                }
+                _vm.search_param = $event.target.value
+              }
+            }
+          })
+        ])
+      ]),
+      _vm._v(" "),
+      _c("br"),
+      _vm._v(" "),
+      _c("div", { staticClass: "row" }, [
+        _c("div", { staticClass: "col" }, [
+          _c("table", { staticClass: "table" }, [
+            _c("thead", [
+              _c("tr", [
+                _c("th", { attrs: { scope: "col" } }, [_vm._v("ID")]),
+                _vm._v(" "),
+                _c("th", { attrs: { scope: "col" } }, [_vm._v("Название")]),
+                _vm._v(" "),
+                _c("th", { attrs: { scope: "col" } }, [_vm._v("Категория")]),
+                _vm._v(" "),
+                _c("th", { attrs: { scope: "col" } }, [_vm._v("Стоимость")]),
+                _vm._v(" "),
+                _c("th", { attrs: { scope: "col" } }, [_vm._v("Описание")]),
+                _vm._v(" "),
+                _c("th", { attrs: { scope: "col" } }, [
+                  _vm._v("Дата добавления")
+                ]),
+                _vm._v(" "),
+                _c("th", { attrs: { scope: "col" } }, [
+                  _vm._v("Дата обновления")
+                ])
+              ])
+            ]),
+            _vm._v(" "),
+            _c(
+              "tbody",
+              _vm._l(_vm.products, function(product) {
+                return _c("tr", { key: product.id }, [
+                  _c("td", [_vm._v(_vm._s(product.id))]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v(_vm._s(product.name))]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v(_vm._s(product.category))]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v(_vm._s(product.price))]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v(_vm._s(product.description))]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v(_vm._s(product.created_at))]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v(_vm._s(product.updated_at))])
+                ])
+              }),
+              0
+            )
+          ])
+        ])
+      ])
+    ]
+  )
 }
 var staticRenderFns = []
 render._withStripped = true
@@ -108330,6 +108976,75 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
+/***/ "./resources/js/components/admin/requisites/modals/AboutRequisite.vue":
+/*!****************************************************************************!*\
+  !*** ./resources/js/components/admin/requisites/modals/AboutRequisite.vue ***!
+  \****************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _AboutRequisite_vue_vue_type_template_id_39f354eb___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./AboutRequisite.vue?vue&type=template&id=39f354eb& */ "./resources/js/components/admin/requisites/modals/AboutRequisite.vue?vue&type=template&id=39f354eb&");
+/* harmony import */ var _AboutRequisite_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./AboutRequisite.vue?vue&type=script&lang=js& */ "./resources/js/components/admin/requisites/modals/AboutRequisite.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+/* normalize component */
+
+var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+  _AboutRequisite_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _AboutRequisite_vue_vue_type_template_id_39f354eb___WEBPACK_IMPORTED_MODULE_0__["render"],
+  _AboutRequisite_vue_vue_type_template_id_39f354eb___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/components/admin/requisites/modals/AboutRequisite.vue"
+/* harmony default export */ __webpack_exports__["default"] = (component.exports);
+
+/***/ }),
+
+/***/ "./resources/js/components/admin/requisites/modals/AboutRequisite.vue?vue&type=script&lang=js&":
+/*!*****************************************************************************************************!*\
+  !*** ./resources/js/components/admin/requisites/modals/AboutRequisite.vue?vue&type=script&lang=js& ***!
+  \*****************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_AboutRequisite_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../../node_modules/babel-loader/lib??ref--4-0!../../../../../../node_modules/vue-loader/lib??vue-loader-options!./AboutRequisite.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/admin/requisites/modals/AboutRequisite.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_AboutRequisite_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./resources/js/components/admin/requisites/modals/AboutRequisite.vue?vue&type=template&id=39f354eb&":
+/*!***********************************************************************************************************!*\
+  !*** ./resources/js/components/admin/requisites/modals/AboutRequisite.vue?vue&type=template&id=39f354eb& ***!
+  \***********************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_AboutRequisite_vue_vue_type_template_id_39f354eb___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../../../node_modules/vue-loader/lib??vue-loader-options!./AboutRequisite.vue?vue&type=template&id=39f354eb& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/admin/requisites/modals/AboutRequisite.vue?vue&type=template&id=39f354eb&");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_AboutRequisite_vue_vue_type_template_id_39f354eb___WEBPACK_IMPORTED_MODULE_0__["render"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_AboutRequisite_vue_vue_type_template_id_39f354eb___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
+
+
+
+/***/ }),
+
 /***/ "./resources/js/components/admin/users/UsersIndex.vue":
 /*!************************************************************!*\
   !*** ./resources/js/components/admin/users/UsersIndex.vue ***!
@@ -108903,6 +109618,13 @@ __webpack_require__.r(__webpack_exports__);
       product: []
     },
     final_categories: [],
+    // requisites
+    requisites: [],
+    selected_requisite: {
+      name: "",
+      products: []
+    },
+    requisite_index: 0,
     // discount
     discounts: [],
     selected_discount: {
@@ -108983,6 +109705,16 @@ __webpack_require__.r(__webpack_exports__);
     selectedDiscount: function selectedDiscount(state) {
       return state.selected_discount;
     },
+    // requisite
+    requisites: function requisites(state) {
+      return state.requisites;
+    },
+    selectedRequisite: function selectedRequisite(state) {
+      return state.selected_requisite;
+    },
+    requisiteIndex: function requisiteIndex(state) {
+      return state.requisite_index;
+    },
     // products
     products: function products(state) {
       return state.products;
@@ -109047,6 +109779,27 @@ __webpack_require__.r(__webpack_exports__);
     SET_ALL_CATEGORIES: function SET_ALL_CATEGORIES(state, categories) {
       return state.categories = categories;
     },
+    // requisites
+    SET_ALL_REQUISITES: function SET_ALL_REQUISITES(state, requisites) {
+      return state.requisites = requisites;
+    },
+    SET_SELECTED_REQUISITE: function SET_SELECTED_REQUISITE(state, requisite) {
+      return state.selected_requisite = requisite;
+    },
+    UPDATE_REQUISITE: function UPDATE_REQUISITE(state, _ref2) {
+      var index = _ref2.index,
+          requisite = _ref2.requisite;
+      return state.categories[index] = requisite;
+    },
+    REMOVE_REQUISITE: function REMOVE_REQUISITE(state, index) {
+      return state.requisites.splice(index, 1);
+    },
+    ADD_REQUISITE: function ADD_REQUISITE(state, requisite) {
+      return state.requisites.push(requisite);
+    },
+    SET_REQUISITE_INDEX: function SET_REQUISITE_INDEX(state, requisite_index) {
+      return state.requisite_index = requisite_index;
+    },
     // discounts
     GET_ALL_DISCOUNTS: function GET_ALL_DISCOUNTS(state, discounts) {
       return state.discounts = discounts;
@@ -109057,9 +109810,9 @@ __webpack_require__.r(__webpack_exports__);
     SET_SELECTED_DISCOUNT: function SET_SELECTED_DISCOUNT(state, discount) {
       return state.selected_discount = discount;
     },
-    UPDATE_DISCOUNT: function UPDATE_DISCOUNT(state, _ref2) {
-      var discount = _ref2.discount,
-          index = _ref2.index;
+    UPDATE_DISCOUNT: function UPDATE_DISCOUNT(state, _ref3) {
+      var discount = _ref3.discount,
+          index = _ref3.index;
       return state.discounts[index] = discount;
     },
     ADD_DISCOUNT: function ADD_DISCOUNT(state, discount) {
@@ -109100,9 +109853,9 @@ __webpack_require__.r(__webpack_exports__);
     SET_SELECTED_ORDER: function SET_SELECTED_ORDER(state, order) {
       return state.selected_order = order;
     },
-    UPDATE_ORDER: function UPDATE_ORDER(state, _ref3) {
-      var order_index = _ref3.order_index,
-          order = _ref3.order;
+    UPDATE_ORDER: function UPDATE_ORDER(state, _ref4) {
+      var order_index = _ref4.order_index,
+          order = _ref4.order;
       return state.orders[order_index] = order;
     },
     // Order statuses
@@ -109135,9 +109888,9 @@ __webpack_require__.r(__webpack_exports__);
     SET_CURRENT_USER_PARAMS: function SET_CURRENT_USER_PARAMS(state, user) {
       return state.currentUser = user;
     },
-    UDPATE_USER: function UDPATE_USER(state, _ref4) {
-      var user = _ref4.user,
-          index = _ref4.index;
+    UDPATE_USER: function UDPATE_USER(state, _ref5) {
+      var user = _ref5.user,
+          index = _ref5.index;
       return state.users.splice(index, 1, user);
     }
   },
@@ -109245,9 +109998,9 @@ __webpack_require__.r(__webpack_exports__);
         console.log(resp);
       });
     },
-    updateCategory: function updateCategory(context, _ref5) {
-      var category_id = _ref5.category_id,
-          updating_category = _ref5.updating_category;
+    updateCategory: function updateCategory(context, _ref6) {
+      var category_id = _ref6.category_id,
+          updating_category = _ref6.updating_category;
       axios.patch("/api/v1/categories/".concat(category_id), updating_category)["catch"](function (resp) {
         console.log('error with update category');
         console.log(resp);
@@ -109261,9 +110014,9 @@ __webpack_require__.r(__webpack_exports__);
         console.log(resp);
       });
     },
-    restoreCategory: function restoreCategory(context, _ref6) {
-      var category_id = _ref6.category_id,
-          category_index = _ref6.category_index;
+    restoreCategory: function restoreCategory(context, _ref7) {
+      var category_id = _ref7.category_id,
+          category_index = _ref7.category_index;
       axios.get('/api/v1/categories/restore/' + category_id).then(function (resp) {
         context.commit('ADD_NEW_CATEGORY_TO_CATEGORIES', resp.data);
         context.commit('REMOVE_FROM_TRASHED_CATEGORIES', category_index);
@@ -109272,13 +110025,57 @@ __webpack_require__.r(__webpack_exports__);
         console.log(resp);
       });
     },
-    deleteCategory: function deleteCategory(context, _ref7) {
-      var category_id = _ref7.category_id,
-          category_index = _ref7.category_index;
+    deleteCategory: function deleteCategory(context, _ref8) {
+      var category_id = _ref8.category_id,
+          category_index = _ref8.category_index;
       axios["delete"]('/api/v1/categories/' + category_id).then(function (resp) {
         context.dispatch('getTrashedCategories');
       })["catch"](function (resp) {
         alert('Ошибка при загрузке удаленных категорий');
+        console.log(resp);
+      });
+    },
+    // requisites
+    getRequisites: function getRequisites(context) {
+      axios.get('/api/v1/requisites').then(function (resp) {
+        context.commit('SET_ALL_REQUISITES', resp.data);
+      })["catch"](function (resp) {
+        console.log(resp);
+        alert("Возникла проблемма при загрузке реквизитов");
+      });
+    },
+    createRequisite: function createRequisite(context, requisite) {
+      axios.post('/api/v1/requisites', requisite).then(function (resp) {
+        context.commit('ADD_REQUISITE', resp.data);
+      })["catch"](function (resp) {
+        console.log(resp);
+        alert("Не получилось создать реквизит");
+      });
+    },
+    updateRequisite: function updateRequisite(context, _ref9) {
+      var requisite = _ref9.requisite,
+          requisite_id = _ref9.requisite_id;
+      var index = context.getters.requisites.map(function (requisite) {
+        return requisite.id;
+      }).indexOf(requisite_id);
+      axios.put("/api/v1/discounts/".concat(requisite_id), requisite).then(function (resp) {
+        context.commit('UPDATE_REQUISITE', {
+          requisite: resp.data,
+          index: index
+        });
+      })["catch"](function (resp) {
+        alert('Не получилось обновить скидку');
+        console.log(resp);
+      });
+    },
+    trashRequisite: function trashRequisite(context, requisite_id) {
+      var index = context.getters.requisites.map(function (requisite) {
+        return requisite.id;
+      }).indexOf(requisite_id);
+      axios["delete"]("/api/v1/requisites/".concat(discount_id)).then(function (resp) {
+        context.commit('REMOVE_REQUISITE', index);
+      })["catch"](function (resp) {
+        alert('Не получилось удалить реквизит');
         console.log(resp);
       });
     },
@@ -109300,9 +110097,9 @@ __webpack_require__.r(__webpack_exports__);
       });
     },
     // TODO продумать передавать ли сюда в качестве параметра поля изменяего объекта (новые данные)
-    updateDiscount: function updateDiscount(context, _ref8) {
-      var discount = _ref8.discount,
-          discount_id = _ref8.discount_id;
+    updateDiscount: function updateDiscount(context, _ref10) {
+      var discount = _ref10.discount,
+          discount_id = _ref10.discount_id;
       var index = context.getters.discounts.map(function (discount) {
         return discount.id;
       }).indexOf(discount_id);
@@ -109401,9 +110198,9 @@ __webpack_require__.r(__webpack_exports__);
         console.log(resp);
       });
     },
-    updateOrder: function updateOrder(context, _ref9) {
-      var order_id = _ref9.order_id,
-          order = _ref9.order;
+    updateOrder: function updateOrder(context, _ref11) {
+      var order_id = _ref11.order_id,
+          order = _ref11.order;
       var order_index = context.getters.orders.map(function (order) {
         return order.id;
       }).indexOf(order_id);
@@ -109445,9 +110242,9 @@ __webpack_require__.r(__webpack_exports__);
         console.log(resp);
       });
     },
-    updateUser: function updateUser(context, _ref10) {
-      var user_id = _ref10.user_id,
-          user = _ref10.user;
+    updateUser: function updateUser(context, _ref12) {
+      var user_id = _ref12.user_id,
+          user = _ref12.user;
       var index = context.getters.users.map(function (user) {
         return user.id;
       }).indexOf(user_id);
@@ -109461,9 +110258,9 @@ __webpack_require__.r(__webpack_exports__);
         console.log(error);
       });
     },
-    replaceUsersDiscountId: function replaceUsersDiscountId(context, _ref11) {
-      var old_discount_id = _ref11.old_discount_id,
-          new_discount_id = _ref11.new_discount_id;
+    replaceUsersDiscountId: function replaceUsersDiscountId(context, _ref13) {
+      var old_discount_id = _ref13.old_discount_id,
+          new_discount_id = _ref13.new_discount_id;
       console.log('object is ', {
         new_discount_id: new_discount_id
       });
