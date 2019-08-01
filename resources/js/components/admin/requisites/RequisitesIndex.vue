@@ -69,6 +69,7 @@
     <AboutRequisite v-if="this.requisites.length > 0"></AboutRequisite>
     <EditRequisite></EditRequisite>
     <ProductsRequisite v-if="this.requisites.length > 0"></ProductsRequisite>
+    <CreateRequisite></CreateRequisite>
 </div>
 </template>
 
@@ -76,6 +77,7 @@
 import AboutRequisite from './modals/AboutRequisite';
 import EditRequisite from './modals/EditRequisite';
 import ProductsRequisite from './modals/ProductsRequisite';
+import CreateRequisite from './modals/CreateRequisite';
 
 export default {
     data() {
@@ -87,6 +89,7 @@ export default {
         AboutRequisite,
         EditRequisite,
         ProductsRequisite,
+        CreateRequisite,
     },
     computed: {
         requisites: {
@@ -114,7 +117,7 @@ export default {
             // this.$bvModal.show("trash-requisite");
         },
         openCreateModal(requisite) {
-            // this.$bvModal.show("create-requisite-modal");
+            this.$bvModal.show("create-requisite-modal");
         },
         openEditModal(requisite, index) {
             this.$store.commit("SET_REQUISITE_INDEX", index);

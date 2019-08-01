@@ -73,7 +73,6 @@ export default {
         addProduct(product) {
             const product_index = this.$store.getters.products.map((el) => el.id).indexOf(product.id);
             this.$store.dispatch('createProductRequisite', { requisite_id: this.requisite.id, product_id: product.id, requsite_index: this.index, product_index });
-            // this.closeModal();
         }
     }
 }

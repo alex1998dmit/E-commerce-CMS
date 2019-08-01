@@ -5260,6 +5260,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _modals_AboutRequisite__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./modals/AboutRequisite */ "./resources/js/components/admin/requisites/modals/AboutRequisite.vue");
 /* harmony import */ var _modals_EditRequisite__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./modals/EditRequisite */ "./resources/js/components/admin/requisites/modals/EditRequisite.vue");
 /* harmony import */ var _modals_ProductsRequisite__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./modals/ProductsRequisite */ "./resources/js/components/admin/requisites/modals/ProductsRequisite.vue");
+/* harmony import */ var _modals_CreateRequisite__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./modals/CreateRequisite */ "./resources/js/components/admin/requisites/modals/CreateRequisite.vue");
 //
 //
 //
@@ -5334,6 +5335,8 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+
 
 
 
@@ -5346,7 +5349,8 @@ __webpack_require__.r(__webpack_exports__);
   components: {
     AboutRequisite: _modals_AboutRequisite__WEBPACK_IMPORTED_MODULE_0__["default"],
     EditRequisite: _modals_EditRequisite__WEBPACK_IMPORTED_MODULE_1__["default"],
-    ProductsRequisite: _modals_ProductsRequisite__WEBPACK_IMPORTED_MODULE_2__["default"]
+    ProductsRequisite: _modals_ProductsRequisite__WEBPACK_IMPORTED_MODULE_2__["default"],
+    CreateRequisite: _modals_CreateRequisite__WEBPACK_IMPORTED_MODULE_3__["default"]
   },
   computed: {
     requisites: {
@@ -5372,7 +5376,8 @@ __webpack_require__.r(__webpack_exports__);
     openDeleteModal: function openDeleteModal(requisite) {
       this.$store.commit("SET_SELECTED_REQUISITE", requisite); // this.$bvModal.show("trash-requisite");
     },
-    openCreateModal: function openCreateModal(requisite) {// this.$bvModal.show("create-requisite-modal");
+    openCreateModal: function openCreateModal(requisite) {
+      this.$bvModal.show("create-requisite-modal");
     },
     openEditModal: function openEditModal(requisite, index) {
       this.$store.commit("SET_REQUISITE_INDEX", index);
@@ -5613,7 +5618,64 @@ __webpack_require__.r(__webpack_exports__);
         product_id: product.id,
         requsite_index: this.index,
         product_index: product_index
-      }); // this.closeModal();
+      });
+    }
+  }
+});
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/admin/requisites/modals/CreateRequisite.vue?vue&type=script&lang=js&":
+/*!**************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/admin/requisites/modals/CreateRequisite.vue?vue&type=script&lang=js& ***!
+  \**************************************************************************************************************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+/* harmony default export */ __webpack_exports__["default"] = ({
+  data: function data() {
+    return {
+      requisite: {
+        title: "",
+        requisite: "",
+        description: ""
+      }
+    };
+  },
+  methods: {
+    createRequisite: function createRequisite() {
+      this.$store.dispatch("createRequisite", this.requisite);
+    },
+    closeModal: function closeModal() {
+      this.$bvModal.hide("create-requisite-modal");
     }
   }
 });
@@ -89218,7 +89280,9 @@ var render = function() {
       _vm._v(" "),
       _c("EditRequisite"),
       _vm._v(" "),
-      this.requisites.length > 0 ? _c("ProductsRequisite") : _vm._e()
+      this.requisites.length > 0 ? _c("ProductsRequisite") : _vm._e(),
+      _vm._v(" "),
+      _c("CreateRequisite")
     ],
     1
   )
@@ -89563,6 +89627,148 @@ var render = function() {
               )
             }),
             0
+          )
+        ])
+      ])
+    ]
+  )
+}
+var staticRenderFns = []
+render._withStripped = true
+
+
+
+/***/ }),
+
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/admin/requisites/modals/CreateRequisite.vue?vue&type=template&id=10e351ee&":
+/*!******************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/admin/requisites/modals/CreateRequisite.vue?vue&type=template&id=10e351ee& ***!
+  \******************************************************************************************************************************************************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "render", function() { return render; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c(
+    "b-modal",
+    {
+      attrs: {
+        id: "create-requisite-modal",
+        title: "Добавить реквизит",
+        "hide-footer": ""
+      }
+    },
+    [
+      _c("div", { staticClass: "row" }, [
+        _c("div", { staticClass: "col" }, [
+          _c(
+            "form",
+            {
+              attrs: { action: "" },
+              on: {
+                submit: function($event) {
+                  $event.preventDefault()
+                  _vm.createRequisite()
+                  _vm.closeModal()
+                }
+              }
+            },
+            [
+              _c("div", { staticClass: "form-group" }, [
+                _c("label", { attrs: { for: "" } }, [_vm._v("Название")]),
+                _vm._v(" "),
+                _c("input", {
+                  directives: [
+                    {
+                      name: "model",
+                      rawName: "v-model",
+                      value: _vm.requisite.title,
+                      expression: "requisite.title"
+                    }
+                  ],
+                  staticClass: "form-control",
+                  attrs: { type: "text" },
+                  domProps: { value: _vm.requisite.title },
+                  on: {
+                    input: function($event) {
+                      if ($event.target.composing) {
+                        return
+                      }
+                      _vm.$set(_vm.requisite, "title", $event.target.value)
+                    }
+                  }
+                })
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "form-group" }, [
+                _c("label", { attrs: { for: "" } }, [_vm._v("Размер скидки")]),
+                _vm._v(" "),
+                _c("input", {
+                  directives: [
+                    {
+                      name: "model",
+                      rawName: "v-model",
+                      value: _vm.requisite.requisite,
+                      expression: "requisite.requisite"
+                    }
+                  ],
+                  staticClass: "form-control",
+                  attrs: { type: "text" },
+                  domProps: { value: _vm.requisite.requisite },
+                  on: {
+                    input: function($event) {
+                      if ($event.target.composing) {
+                        return
+                      }
+                      _vm.$set(_vm.requisite, "requisite", $event.target.value)
+                    }
+                  }
+                })
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "form-group" }, [
+                _c("label", { attrs: { for: "" } }, [_vm._v("Описание")]),
+                _vm._v(" "),
+                _c("textarea", {
+                  directives: [
+                    {
+                      name: "model",
+                      rawName: "v-model",
+                      value: _vm.requisite.description,
+                      expression: "requisite.description"
+                    }
+                  ],
+                  staticClass: "form-control",
+                  attrs: { cols: "30", rows: "10" },
+                  domProps: { value: _vm.requisite.description },
+                  on: {
+                    input: function($event) {
+                      if ($event.target.composing) {
+                        return
+                      }
+                      _vm.$set(
+                        _vm.requisite,
+                        "description",
+                        $event.target.value
+                      )
+                    }
+                  }
+                })
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "form-group" }, [
+                _c("input", {
+                  staticClass: "btn btn-success",
+                  attrs: { type: "submit", value: "Создать" }
+                })
+              ])
+            ]
           )
         ])
       ])
@@ -109817,6 +110023,75 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_AddProductToRequisite_vue_vue_type_template_id_3aa86121___WEBPACK_IMPORTED_MODULE_0__["render"]; });
 
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_AddProductToRequisite_vue_vue_type_template_id_3aa86121___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
+
+
+
+/***/ }),
+
+/***/ "./resources/js/components/admin/requisites/modals/CreateRequisite.vue":
+/*!*****************************************************************************!*\
+  !*** ./resources/js/components/admin/requisites/modals/CreateRequisite.vue ***!
+  \*****************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _CreateRequisite_vue_vue_type_template_id_10e351ee___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./CreateRequisite.vue?vue&type=template&id=10e351ee& */ "./resources/js/components/admin/requisites/modals/CreateRequisite.vue?vue&type=template&id=10e351ee&");
+/* harmony import */ var _CreateRequisite_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./CreateRequisite.vue?vue&type=script&lang=js& */ "./resources/js/components/admin/requisites/modals/CreateRequisite.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+/* normalize component */
+
+var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+  _CreateRequisite_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _CreateRequisite_vue_vue_type_template_id_10e351ee___WEBPACK_IMPORTED_MODULE_0__["render"],
+  _CreateRequisite_vue_vue_type_template_id_10e351ee___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/components/admin/requisites/modals/CreateRequisite.vue"
+/* harmony default export */ __webpack_exports__["default"] = (component.exports);
+
+/***/ }),
+
+/***/ "./resources/js/components/admin/requisites/modals/CreateRequisite.vue?vue&type=script&lang=js&":
+/*!******************************************************************************************************!*\
+  !*** ./resources/js/components/admin/requisites/modals/CreateRequisite.vue?vue&type=script&lang=js& ***!
+  \******************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_CreateRequisite_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../../node_modules/babel-loader/lib??ref--4-0!../../../../../../node_modules/vue-loader/lib??vue-loader-options!./CreateRequisite.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/admin/requisites/modals/CreateRequisite.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_CreateRequisite_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./resources/js/components/admin/requisites/modals/CreateRequisite.vue?vue&type=template&id=10e351ee&":
+/*!************************************************************************************************************!*\
+  !*** ./resources/js/components/admin/requisites/modals/CreateRequisite.vue?vue&type=template&id=10e351ee& ***!
+  \************************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_CreateRequisite_vue_vue_type_template_id_10e351ee___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../../../node_modules/vue-loader/lib??vue-loader-options!./CreateRequisite.vue?vue&type=template&id=10e351ee& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/admin/requisites/modals/CreateRequisite.vue?vue&type=template&id=10e351ee&");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_CreateRequisite_vue_vue_type_template_id_10e351ee___WEBPACK_IMPORTED_MODULE_0__["render"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_CreateRequisite_vue_vue_type_template_id_10e351ee___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
 
 
 
