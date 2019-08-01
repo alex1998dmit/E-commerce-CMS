@@ -111,6 +111,7 @@ Route::group(['prefix' => '/v1','namespace' => 'API\V1'], function () {
     Route::delete('/products/images', 'ProductsController@removeImage');
     // TODO !!! изменить глагол на пут
     Route::post('/products/update/{product}', 'ProductsController@update');
+    Route::post('/products/{id}/requisite', 'ProductsController@postProductsRequsites');
 
     // Orders
     Route::get('/orders', 'OrdersController@index');

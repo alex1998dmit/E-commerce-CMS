@@ -181,7 +181,7 @@ export default {
         // requisites
         SET_ALL_REQUISITES: (state, requisites) => state.requisites = requisites,
         SET_SELECTED_REQUISITE: (state, requisite) => state.selected_requisite = requisite,
-        UPDATE_REQUISITE: (state, { index, requisite }) => state.categories[index] = requisite,
+        UPDATE_REQUISITE: (state, { index, requisite }) => { state.requisites.splice(index, 1, requisite) },
         REMOVE_REQUISITE: (state, index) => state.requisites.splice(index, 1),
         ADD_REQUISITE: (state, requisite) => state.requisites.push(requisite),
         SET_REQUISITE_INDEX: (state, requisite_index) => state.requisite_index = requisite_index,
@@ -218,6 +218,9 @@ export default {
         },
         UPDATE_PRODUCTS(state, product, index) {
             state.products[index] = product;
+        },
+        UPDATE_PRODUCT: (state, { product, index }) => {
+            state.products.splice(index, 1, product)
         },
 
         // Orders
@@ -445,6 +448,21 @@ export default {
                     alert('Не получилось удалить реквизит');
                     console.log(resp);
                 })
+        },
+
+        // requisite-product
+        createProductRequisite(context, { requisite_id, product_id, requsite_index, product_index }) {
+            axios.post(`/api/v1/products/${product_id}/requisite`, { requisite_id })
+                .then(function (resp) {
+                    console.log('---', resp.data.product);
+                    console.log('UPDATE_PRODUCT', { product: resp.data.product, index: product_index });
+                    context.commit('UPDATE_REQUISITE', { requisite: resp.data.requisite, index: requsite_index });
+                    context.commit('UPDATE_PRODUCT', { product: resp.data.product, index: product_index });
+                })
+                .catch(function (resp) {
+                    console.log(resp);
+                    alert("Не получилось создать реквизит");
+                });
         },
 
         // discounts

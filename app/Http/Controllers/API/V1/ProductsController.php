@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers\API\V1;
 
+use DB;
 use App\Photo;
 use App\Category;
 use App\Product;
+use App\Requisite;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Http\Request;
@@ -16,6 +18,7 @@ class ProductsController extends Controller
         $products = Product::all();
         foreach ($products as $product) {
             $product->category;
+            $product->requisites;
             $atWhishLists = $product->wishList;
             $orders = $product->order;
             $product->addPhotosAttribute($product->photo);
@@ -43,8 +46,24 @@ class ProductsController extends Controller
                 'path' => $fileName,
             ]);
         }
-
         return $this->single($product->id);
+    }
+
+    public function postProductsRequsites($product_id, Request $request)
+    {
+        $product = Product::findOrFail($product_id);
+        $requisite_id = $request->requisite_id;
+        // TODO Поменять на более красивое
+        $requisites = DB::table('product_requisite')->where('requisite_id', '=', $requisite_id)->where('product_id', '=', $product_id)->first();
+
+        if ($requisites) {
+            return response()->json('already exists', 400);
+        }
+
+        $product->requisites()->attach($requisite_id);
+        $requisite = Requisite::find($requisite_id);
+        $requisite->products;
+        return response()->json(['product' => $this->single($product_id), 'requisite' => $requisite], 201);
     }
 
     public function single($id)
@@ -53,6 +72,7 @@ class ProductsController extends Controller
         $product->category;
         $product->wishList;
         $product->order;
+        $product->requisites;
         $product->addPhotosAttribute($product->photo);
         return $product;
     }

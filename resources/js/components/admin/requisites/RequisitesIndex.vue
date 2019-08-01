@@ -49,7 +49,7 @@
                                 </b-button>
                             </td>
                             <td>
-                                <b-button id="users" variant="success" @click="openProductsModal(requisite)">
+                                <b-button id="users" variant="success" @click="openProductsModal(requisite, index)">
                                     Товары
                                 </b-button>
                             </td>
@@ -68,12 +68,14 @@
     </div>
     <AboutRequisite v-if="this.requisites.length > 0"></AboutRequisite>
     <EditRequisite></EditRequisite>
+    <ProductsRequisite v-if="this.requisites.length > 0"></ProductsRequisite>
 </div>
 </template>
 
 <script>
 import AboutRequisite from './modals/AboutRequisite';
 import EditRequisite from './modals/EditRequisite';
+import ProductsRequisite from './modals/ProductsRequisite';
 
 export default {
     data() {
@@ -84,6 +86,7 @@ export default {
     components: {
         AboutRequisite,
         EditRequisite,
+        ProductsRequisite,
     },
     computed: {
         requisites: {
@@ -98,11 +101,13 @@ export default {
     },
     mounted() {
         this.$store.dispatch('getRequisites');
+        this.$store.dispatch('getProducts');
     },
     methods: {
-        openProductsModal(requisite) {
+        openProductsModal(requisite, index) {
+            this.$store.commit("SET_REQUISITE_INDEX", index);
             this.$store.commit("SET_SELECTED_REQUISITE", requisite);
-            // this.$bvModal.show("requisites-products-modal");
+            this.$bvModal.show("requisites-products-modal");
         },
         openDeleteModal(requisite) {
             this.$store.commit("SET_SELECTED_REQUISITE", requisite);
