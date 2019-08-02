@@ -13,8 +13,16 @@
                         </li>
                     </ul>
                 </li>
-                <li>
-                    <router-link :to="{ name: 'requisites' }">Реквизиты</router-link>
+                <li class="active">
+                    <a href="#productsMenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">Реквизиты</a>
+                    <ul class="collapse list-unstyled" id="productsMenu">
+                        <li>
+                            <router-link :to="{ name: 'requisites' }">Активные реквизиты</router-link>
+                        </li>
+                        <li>
+                            <router-link :to="{ name: 'trashedRequisuites' }">Удаленные реквизиты</router-link>
+                        </li>
+                    </ul>
                 </li>
                 <li>
                     <router-link :to="{ name: 'users' }">Пользователи</router-link>

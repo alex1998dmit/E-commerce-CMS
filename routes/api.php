@@ -78,6 +78,7 @@ Route::group(['prefix' => '/v1','namespace' => 'API\V1'], function () {
     Route::delete('/requisites/{requisite}', 'RequisitesController@trash');
     Route::get('/requisites/restore/{requisite}', 'RequisitesController@restore');
     Route::post('/requisites', 'RequisitesController@store');
+    Route::get('/trashed/requisites', 'RequisitesController@trashed');
 
     Route::get('/discounts', 'DiscountsController@index');
     Route::get('/discounts/show/{discount}', 'DiscountsController@show');

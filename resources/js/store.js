@@ -29,6 +29,7 @@ export default {
             products: []
         },
         requisite_index: 0,
+        trashed_requisites: [],
 
         // discount
         discounts: [],
@@ -125,6 +126,7 @@ export default {
         requisiteIndex(state) {
             return state.requisite_index;
         },
+        trashedRequisites: (state) => state.trashed_requisites,
 
         // products
         products(state) {
@@ -185,6 +187,8 @@ export default {
         REMOVE_REQUISITE: (state, index) => state.requisites.splice(index, 1),
         ADD_REQUISITE: (state, requisite) => state.requisites.push(requisite),
         SET_REQUISITE_INDEX: (state, requisite_index) => state.requisite_index = requisite_index,
+        SET_TRASHED_REQUISITES: (state, requisites) => state.trashed_requisites = requisites,
+        REMOVE_TRASHED_REQUISITES: (state, index) => state.trashed_requisites.splice(index, 1),
 
         // discounts
         GET_ALL_DISCOUNTS: (state, discounts) => state.discounts = discounts,
@@ -438,14 +442,33 @@ export default {
                     console.log(resp);
                 })
         },
-        trashRequisite(context, requisite_id) {
-            const index = context.getters.requisites.map((requisite) => requisite.id).indexOf(requisite_id);
-            axios.delete(`/api/v1/requisites/${discount_id}`)
+        trashRequisite(context, { requisite_id, index }) {
+            axios.delete(`/api/v1/requisites/${requisite_id}`)
                 .then((resp) => {
                     context.commit('REMOVE_REQUISITE', index);
                 })
                 .catch((resp) => {
                     alert('Не получилось удалить реквизит');
+                    console.log(resp);
+                })
+        },
+        getTrashedRequisites(context) {
+            axios.get(`/api/v1/trashed/requisites`)
+                .then((resp) => {
+                    context.commit('SET_TRASHED_REQUISITES', resp.data);
+                })
+                .catch((resp) => {
+                    alert('Не получилось получить удаленные реквизиты');
+                    console.log(resp);
+                })
+        },
+        restoreTrashedRequisite(context, { requisite_id, index }) {
+            axios.get(`/api/v1/requisites/restore/${requisite_id}`)
+                .then((resp) => {
+                    context.commit('REMOVE_TRASHED_REQUISITES', index);
+                })
+                .catch((resp) => {
+                    alert('Не получилось восстановить реквизит');
                     console.log(resp);
                 })
         },

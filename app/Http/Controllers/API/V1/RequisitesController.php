@@ -40,11 +40,10 @@ class RequisitesController extends Controller
         return $requisite;
     }
 
-    public function trash($id)
+    public function trashed()
     {
-        $requisite = Requisite::find($id);
-        $requisite->delete();
-        return response()->json(['mesasage' => 'succesfully deleted'], 200);
+        $requisites = Requisite::onlyTrashed()->get();
+        return $requisites;
     }
 
     public function restore($id)
@@ -56,5 +55,13 @@ class RequisitesController extends Controller
         } else {
             return response()->json(['message' => 'Nothing to restore'], 500);
         }
+    }
+
+    public function trash($id)
+    {
+        $requisite = Requisite::find($id);
+        $requisite->products()->detach();
+        $requisite->delete();
+        return response()->json(['mesasage' => 'succesfully deleted'], 200);
     }
 }

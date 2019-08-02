@@ -5,6 +5,7 @@ import DiscountsCreate from './components/admin/discounts/DiscountsCreate.vue';
 import DiscountShow from './components/admin/discounts/DiscountShow.vue';
 
 import RequisitesIndex from './components/admin/requisites/RequisitesIndex';
+import TrashedRequisuites from './components/admin/requisites/TrashedRequisuites';
 
 import PersonalAccessTokens from './components/passport/PersonalAccessTokens.vue';
 
@@ -57,10 +58,18 @@ export const routes = [
         meta: { requiresAuth: true, adminAuth: true }
 
     },
+
+    // requisites
     {
         path: '/requisites',
         component: RequisitesIndex,
         name: 'requisites',
+        meta: { requiresAuth: true, adminAuth: true }
+    },
+    {
+        path: '/trashedRequisuites',
+        component: TrashedRequisuites,
+        name: 'trashedRequisuites',
         meta: { requiresAuth: true, adminAuth: true }
     },
 
