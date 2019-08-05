@@ -7,7 +7,7 @@
         </div>
         <div class="row">
            <div class="col">
-                <input type="text" class="form-control" v-model="search_param">
+                <input type="text" class="form-control" v-model="search_param" placeholder="Введите почту пользователя ...">
             </div>
         </div>
         <br>

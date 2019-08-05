@@ -8,11 +8,11 @@
                 <div class="col-xs-12">
                     <div class="form-group">
                         <label for="username">ФИО</label>
-                        <input type="username" name="username" id="" class="form-control" v-model="name">
+                        <input type="username" name="username" id="username" class="form-control" v-model="name">
                     </div>
                     <div class="form-group">
                         <label for="email">Почта</label>
-                        <input type="email" name="email" id="" class="form-control" v-model="email">
+                        <input type="email" name="email" id="email" class="form-control" v-model="email">
                     </div>
                 </div>
                 <div class="col-xs-12">
@@ -22,7 +22,7 @@
                     </div>
                 </div>
                 <div class="col-xs-12">
-                    <b-button variant="outline-primary" type="submit">Зарегистрироваться</b-button>
+                    <input type="submit" class="btn btn-outline-primary" value="Зарегистрироваться">
                     <b-button variant="success">Войти</b-button>
                 </div>
             </form>

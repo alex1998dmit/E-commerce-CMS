@@ -4358,13 +4358,7 @@ __webpack_require__.r(__webpack_exports__);
   },
   methods: {
     redirectToOrders: function redirectToOrders() {
-      this.$bvModal.hide("change-status-at-order");
-      this.$router.push({
-        name: 'OrdersWithStatus',
-        params: {
-          statusId: this.order.status_id
-        }
-      });
+      this.$bvModal.hide("change-status-at-order"); // this.$router.push({ name: 'OrdersWithStatus', params: {statusId: this.order.status_id }});
     },
     updateStatus: function updateStatus() {
       var status_index = this.statuses.map(function (status) {
@@ -83299,14 +83293,11 @@ var render = function() {
             "div",
             { staticClass: "col-xs-12" },
             [
-              _c(
-                "b-button",
-                {
-                  attrs: { variant: "outline-success" },
-                  on: { click: _vm.login }
-                },
-                [_vm._v("Войти")]
-              ),
+              _c("input", {
+                staticClass: "btn btn-outline-success",
+                attrs: { type: "submit", value: "Войти" },
+                on: { click: _vm.login }
+              }),
               _vm._v(" "),
               _c(
                 "b-button",
@@ -83399,7 +83390,7 @@ var render = function() {
                   }
                 ],
                 staticClass: "form-control",
-                attrs: { type: "username", name: "username", id: "" },
+                attrs: { type: "username", name: "username", id: "username" },
                 domProps: { value: _vm.name },
                 on: {
                   input: function($event) {
@@ -83425,7 +83416,7 @@ var render = function() {
                   }
                 ],
                 staticClass: "form-control",
-                attrs: { type: "email", name: "email", id: "" },
+                attrs: { type: "email", name: "email", id: "email" },
                 domProps: { value: _vm.email },
                 on: {
                   input: function($event) {
@@ -83471,11 +83462,10 @@ var render = function() {
             "div",
             { staticClass: "col-xs-12" },
             [
-              _c(
-                "b-button",
-                { attrs: { variant: "outline-primary", type: "submit" } },
-                [_vm._v("Зарегистрироваться")]
-              ),
+              _c("input", {
+                staticClass: "btn btn-outline-primary",
+                attrs: { type: "submit", value: "Зарегистрироваться" }
+              }),
               _vm._v(" "),
               _c("b-button", { attrs: { variant: "success" } }, [
                 _vm._v("Войти")
@@ -85540,7 +85530,10 @@ var render = function() {
               }
             ],
             staticClass: "form-control",
-            attrs: { type: "text" },
+            attrs: {
+              type: "text",
+              placeholder: "Введите почту пользователя ..."
+            },
             domProps: { value: _vm.search_param },
             on: {
               input: function($event) {
@@ -86435,7 +86428,7 @@ var render = function() {
                 {
                   staticClass: "dropdown-toggle",
                   attrs: {
-                    href: "#productsMenu",
+                    href: "#requisites",
                     "data-toggle": "collapse",
                     "aria-expanded": "false"
                   }
@@ -86447,7 +86440,7 @@ var render = function() {
                 "ul",
                 {
                   staticClass: "collapse list-unstyled",
-                  attrs: { id: "productsMenu" }
+                  attrs: { id: "requisites" }
                 },
                 [
                   _c(
@@ -90033,7 +90026,9 @@ var render = function() {
               ]),
               _vm._v(" "),
               _c("div", { staticClass: "form-group" }, [
-                _c("label", { attrs: { for: "" } }, [_vm._v("Размер скидки")]),
+                _c("label", { attrs: { for: "" } }, [
+                  _vm._v("Номер реквизита")
+                ]),
                 _vm._v(" "),
                 _c("input", {
                   directives: [
@@ -90059,7 +90054,7 @@ var render = function() {
               ]),
               _vm._v(" "),
               _c("div", { staticClass: "form-group" }, [
-                _c("label", { attrs: { for: "" } }, [_vm._v("Описание")]),
+                _c("label", { attrs: { for: "" } }, [_vm._v("Комментарий")]),
                 _vm._v(" "),
                 _c("textarea", {
                   directives: [
@@ -90175,7 +90170,7 @@ var render = function() {
               ]),
               _vm._v(" "),
               _c("div", { staticClass: "form-group" }, [
-                _c("label", { attrs: { for: "" } }, [_vm._v("Размер скидки")]),
+                _c("label", { attrs: { for: "" } }, [_vm._v("Реквизит")]),
                 _vm._v(" "),
                 _c("input", {
                   directives: [
@@ -111535,7 +111530,7 @@ __webpack_require__.r(__webpack_exports__);
         })["catch"](function (resp) {
           console.log('Ошибка при входе');
           console.log(resp);
-          reject(error);
+          reject(resp);
         });
       });
     },

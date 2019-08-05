@@ -44,6 +44,11 @@ class Product extends Model
         return $this->hasMany('App\Order');
     }
 
+    public function priceChangings()
+    {
+        return $this->hasMany('App\PriceChanging');
+    }
+
     public function photo()
     {
         return $this->hasMany('App\Photo');

@@ -285,7 +285,7 @@ export default {
                     .catch((resp) => {
                         console.log('Ошибка при входе');
                         console.log(resp);
-                        reject(error);
+                        reject(resp);
                     })
             });
         },

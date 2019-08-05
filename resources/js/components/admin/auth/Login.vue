@@ -18,7 +18,7 @@
                     </div>
                 </div>
                 <div class="col-xs-12">
-                    <b-button variant="outline-success" @click="login">Войти</b-button>
+                    <input type="submit" class="btn btn-outline-success" value="Войти" @click="login">
                     <b-button variant="primary" :to="{ name: 'register' }">Регистрация</b-button>
                 </div>
             </form>

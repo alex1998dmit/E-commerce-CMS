@@ -44,7 +44,7 @@ export default {
     methods: {
         redirectToOrders() {
             this.$bvModal.hide("change-status-at-order");
-            this.$router.push({ name: 'OrdersWithStatus', params: {statusId: this.order.status_id }});
+            // this.$router.push({ name: 'OrdersWithStatus', params: {statusId: this.order.status_id }});
         },
         updateStatus() {
             const status_index = this.statuses.map((status) => status.id).indexOf(this.order.status_id);

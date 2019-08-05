@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\API\V1;
 
 use DB;
+use App\PriceChanging;
 use App\Photo;
 use App\Category;
 use App\Product;
@@ -74,6 +75,7 @@ class ProductsController extends Controller
         $product->order;
         $product->requisites;
         $product->addPhotosAttribute($product->photo);
+        $product->priceChangings;
         return $product;
     }
 
@@ -87,11 +89,22 @@ class ProductsController extends Controller
     public function update(Request $request, $product_id)
     {
         $product = Product::findOrFail($product_id);
+        $old_price = $product->price;
+        $new_price = $request->price;
         $product->name = $request->name;
         $product->category_id = $request->category_id;
         $product->price = $request->price;
         $product->description = $request->description;
         $product->save();
+
+        if ($old_price !== $new_price) {
+            $priceChanging = PriceChanging::create([
+                'product_id' => $product_id,
+                'old_price' => $old_price,
+                'new_price' => $new_price
+            ]);
+            $product->priceChangings()->save($priceChanging);
+        }
 
         if ($request->file('photo')) {
             foreach($request->file('photo') as $key => $photo) {

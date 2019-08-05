@@ -8,11 +8,11 @@
                         <input type="text" class="form-control" v-model="requisite.title">
                     </div>
                     <div class="form-group">
-                        <label for="">Размер скидки</label>
+                        <label for="">Номер реквизита</label>
                         <input type="text" class="form-control" v-model="requisite.requisite">
                     </div>
                     <div class="form-group">
-                        <label for="">Описание</label>
+                        <label for="">Комментарий</label>
                         <textarea class="form-control" cols="30" rows="10" v-model="requisite.description"></textarea>
                     </div>
                     <div class="form-group">

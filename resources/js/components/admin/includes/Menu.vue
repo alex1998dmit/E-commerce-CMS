@@ -14,8 +14,8 @@
                     </ul>
                 </li>
                 <li class="active">
-                    <a href="#productsMenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">Реквизиты</a>
-                    <ul class="collapse list-unstyled" id="productsMenu">
+                    <a href="#requisites" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">Реквизиты</a>
+                    <ul class="collapse list-unstyled" id="requisites">
                         <li>
                             <router-link :to="{ name: 'requisites' }">Активные реквизиты</router-link>
                         </li>

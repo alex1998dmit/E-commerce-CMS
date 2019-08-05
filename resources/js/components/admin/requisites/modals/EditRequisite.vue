@@ -8,7 +8,7 @@
                         <input type="text" class="form-control" v-model="requisite.title">
                     </div>
                     <div class="form-group">
-                        <label for="">Размер скидки</label>
+                        <label for="">Реквизит</label>
                         <input type="text" class="form-control" v-model="requisite.requisite">
                     </div>
                     <div class="form-group">
