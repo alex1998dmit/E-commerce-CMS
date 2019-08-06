@@ -6,6 +6,9 @@
                     <div class="col">
                         <h3>Заказ №{{ order.id }}({{ order.status.name }})</h3>
                     </div>
+                    <div class="col">
+                        <router-link class="btn btn-info" :to="{ name: 'OrderAbout', params: { id: order.id }}">Подробнее</router-link>
+                    </div>
                 </div>
                 <br>
                 <div class="row">

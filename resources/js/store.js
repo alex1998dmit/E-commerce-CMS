@@ -39,6 +39,14 @@ export default {
 
         // products
         products: [],
+        product: {
+            category: {},
+            wish_list: [],
+            order: [],
+            photo: [],
+            price_changings: [],
+        },
+        product_images: [],
         opened_product: {
             category: {},
             order: {},
@@ -67,6 +75,7 @@ export default {
             user: {},
             status: {}
         },
+        order_history: [],
 
         // Order statuses
         order_statuses: [],
@@ -132,6 +141,12 @@ export default {
         products(state) {
             return state.products;
         },
+        product(state) {
+            return state.product;
+        },
+        selectedProductImages(state) {
+            return state.product_images;
+        },
         openedProduct(state) {
             return state.opened_product;
         },
@@ -148,6 +163,9 @@ export default {
         },
         selectedOrder(state) {
             return state.selected_order;
+        },
+        orderHistory(state) {
+            return state.order_history;
         },
 
         // orderstatuses
@@ -201,6 +219,14 @@ export default {
         GET_ALL_PRODUCTS(state, products) {
             state.products = products;
         },
+        SET_PRODUCT: (state, product) => state.product = product,
+        SET_PRODUCT_IMAGES: (state, photos) => {
+            let images = [];
+            for(let index in photos) {
+                images.push(`${state.host}/${state.product_images_forlder}/${photos[index].path}`);
+            }
+            state.product_images = images;
+        },
         SET_CURRENT_PRODUCT(state, product) {
             state.opened_product = Object.assign({}, state.opened_product, product);
         },
@@ -231,6 +257,7 @@ export default {
         SET_ALL_ORDERS : (state, orders) => state.orders = orders,
         SET_SELECTED_ORDER: (state, order) => state.selected_order = order,
         UPDATE_ORDER: (state, { order_index, order }) => state.orders[order_index] = order,
+        SET_SELECTED_ORDER_HISTORY: (state, order_history) => state.order_history = order_history,
 
         // Order statuses
         SET_ORDER_STATUSES: (state, order_statuses) => state.order_statuses = order_statuses,
@@ -545,6 +572,18 @@ export default {
                     console.log(resp);
                 });
         },
+        getProduct(context, id) {
+            axios.get('/api/v1/products/' + id)
+                .then((resp) => {
+                    context.commit('SET_PRODUCT', resp.data);
+                    console.log()
+                    context.commit('SET_PRODUCT_IMAGES', resp.data.photo);
+                })
+                .catch((resp) => {
+                    alert('Ошибка загрузки продукта');
+                    console.log(resp);
+                });
+        },
         getUpdatingProduct(context, id) {
             axios.get('/api/v1/products/' + id)
                 .then((resp) => {
@@ -607,13 +646,34 @@ export default {
         // Orders
         getOrders(context) {
             axios.get('/api/v1/orders')
-            .then((resp) => {
-                context.commit('SET_ALL_ORDERS', resp.data);
-            })
-            .catch((resp) => {
-                alert('Ошибка загрузки заказов');
-                console.log(resp);
-            });
+                .then((resp) => {
+                    context.commit('SET_ALL_ORDERS', resp.data);
+                })
+                .catch((resp) => {
+                    alert('Ошибка загрузки заказов');
+                    console.log(resp);
+                });
+        },
+        getOrder(context, id) {
+            axios.get('/api/v1/orders/' + id)
+                .then((resp) => {
+                    context.commit('SET_SELECTED_ORDER', resp.data);
+                })
+                .catch((resp) => {
+                    alert('Ошибка загрузки заказов');
+                    console.log(resp);
+                });
+        },
+        getOrderHistory(context, order_id) {
+            axios.get(`/api/v1/orders/${order_id}/history/`)
+                .then((resp) => {
+                    console.log(resp.data);
+                    context.commit('SET_SELECTED_ORDER_HISTORY', resp.data);
+                })
+                .catch((resp) => {
+                    alert('Ошибка загрузки заказов');
+                    console.log(resp);
+                });
         },
         updateOrder(context, { order_id, order }) {
             const order_index = context.getters.orders.map((order) => order.id).indexOf(order_id);

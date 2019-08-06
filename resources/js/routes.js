@@ -18,9 +18,12 @@ import CategoriesTrashed from './components/admin/categories/CategoriesTrashed.v
 import ProductsIndex from './components/admin/products/ProductsIndex.vue';
 import ProductEdit from './components/admin/products/ProductEdit.vue';
 import ProductCreate from './components/admin/products/ProductCreate.vue';
+import AboutProduct from './components/admin/products/AboutProduct.vue';
 
 import OrdersIndex from './components/admin/orders/OrdersIndex';
 import OrdersWithStatus from './components/admin/orders/OrdersWithStatus';
+import OrderAbout from './components/admin/orders/OrderAbout';
+
 
 import LoginUser from './components/admin/auth/Login';
 import RegisterUser from './components/admin/auth/Register';
@@ -148,7 +151,12 @@ export const routes = [
         component: ProductCreate,
         name: 'createProduct',
         meta: { requiresAuth: true, adminAuth: true }
-
+    },
+    {
+        path: '/products/:id',
+        component: AboutProduct,
+        name: 'aboutProduct',
+        meta: { requiresAuth: true, adminAuth: true }
     },
 
     // orderWithStatus
@@ -161,9 +169,15 @@ export const routes = [
     },
     // orders
     {
+        path: '/orders/:id/about',
+        component: OrderAbout,
+        name: 'OrderAbout',
+        meta: { requiresAuth: true, adminAuth: true }
+    },
+    {
         path: '/orders',
         component: OrdersIndex,
         name: 'Orders',
         meta: { requiresAuth: true, adminAuth: true }
-    }
+    },
 ];

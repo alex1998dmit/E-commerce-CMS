@@ -118,6 +118,7 @@ Route::group(['prefix' => '/v1','namespace' => 'API\V1'], function () {
     Route::get('/orders', 'OrdersController@index');
     Route::get('/orders/{id}', 'OrdersController@single');
     Route::put('/orders/{order_id}', 'OrdersController@update');
+    Route::get('/orders/{order_id}/history', 'OrderHistoryController@index');
 
     // Order statuses
     Route::get('/orderStatuses', 'OrderStatuses@index');

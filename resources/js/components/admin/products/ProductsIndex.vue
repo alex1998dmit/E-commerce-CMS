@@ -8,7 +8,7 @@
                 </div>
                 <div class="col-md-8 text-right">
                     <router-link :to="{ name: 'createProduct' }"><b-button variant="success">Добавить продукт</b-button></router-link>
-                    <!-- <b-button variant="info">Главное меню</b-button> -->
+                    <b-button variant="primary">Главное меню</b-button>
                 </div>
             </div>
             <div class="row">
@@ -31,6 +31,7 @@
                                 <th scope="col">Цена</th>
                                 <th scope="col">В корзине:</th>
                                 <th scope="col">Покупок:</th>
+                                <th scope="col">Редактировать</th>
                                 <th scope="col">Подробнее</th>
                                 <th scope="col">Удалить</th>
                             </tr>
@@ -44,8 +45,18 @@
                                     <td>{{ product.wish_list.length }}</td>
                                     <td>{{ product.order.length }}</td>
                                     <td>
+                    <!-- < class="btn btn-xs btn-warning">Редактировать</router-link> -->
                                         <b-button
                                             id="show-btn"
+                                            variant="warning"
+                                            :to="{ name: 'editProduct', params: { id: product.id }}">
+                                                Редактировать
+                                        </b-button>
+                                    </td>
+                                    <td>
+                                        <b-button
+                                            id="show-btn"
+                                            variant="info"
                                             @click="openAboutProductModal(product)">
                                                 Подробнее
                                         </b-button>
@@ -97,8 +108,8 @@
 <script>
   import { mapGetters, mapMutations } from 'vuex';
   import { deleteProduct } from './mixins/deleteProduct.js';
-  import AboutProductModule from './includes/aboutProductModule.vue';
-  import SearchResults from './includes/SearchResults.vue';
+  import AboutProductModule from './includes/aboutProductModule';
+  import SearchResults from './includes/SearchResults';
 
 export default {
     mixins: ["deleteProduct"],

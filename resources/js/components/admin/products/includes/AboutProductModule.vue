@@ -7,7 +7,8 @@
                     <h6>{{ openedProduct.category.name }}</h6>
                 </div>
                 <div class="col-md-6 text-right">
-                    <router-link :to="{ name: 'editProduct', params: { id: openedProduct.id }}" class="btn btn-xs btn-info">Редактировать</router-link>
+                    <router-link :to="{ name: 'aboutProduct', params: { id: openedProduct.id }}" class="btn btn-xs btn-info">Подробнее</router-link>
+                    <router-link :to="{ name: 'editProduct', params: { id: openedProduct.id }}" class="btn btn-xs btn-warning">Редактировать</router-link>
                     <b-button variant="danger">Удалить</b-button>
                 </div>
             </div>
@@ -58,11 +59,6 @@
                             :style="{ backgroundImage: 'url(' + image + ')', width: '300px', height: '200px' }"
                         ></div>
                     </div>
-                </div>
-            </div>
-            <div class="row" id="price_changing">
-                <div class="col-md-12">
-                    <h5>История изменения цен</h5>
                 </div>
             </div>
         </b-modal>

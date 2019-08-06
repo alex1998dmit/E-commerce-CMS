@@ -15,7 +15,14 @@ class CreatePriceChangingsTable extends Migration
     {
         Schema::create('price_changings', function (Blueprint $table) {
             $table->bigIncrements('id');
+            $table->bigInteger('product_id')->unsigned();
+            $table->decimal('old_price', 12, 2);
+            $table->decimal('new_price', 12, 2);
             $table->timestamps();
+        });
+
+        Schema::table('price_changings', function($table) {
+            $table->foreign('product_id')->references('id')->on('products');
         });
     }
 

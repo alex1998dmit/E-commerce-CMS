@@ -19,7 +19,7 @@ class CreateOrdersTable extends Migration
             $table->bigInteger('product_id')->unsigned();
             $table->bigInteger('status_id')->unsigned()->default(1);
             $table->integer('amount');
-            $table->float('sum');
+            $table->decimal('sum', 12, 2);
             $table->timestamps();
             $table->softDeletes();
         });

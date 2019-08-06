@@ -15,7 +15,7 @@
             <br>
             <div class="row">
                 <div class="col-md-12">
-                    <form action="">
+                    <form action="" @submit.prevent="updateProduct">
                         <div class="form-row">
                             <div class="col-md-4">
                                 <label for="product_name">Название</label>
@@ -52,12 +52,9 @@
                                 <input type="file" class="form-control" ref="file_input" id="attachments" @change="uploadPhotos" multiple>
                             </div>
                             <br>
-                            <div class="col-md-12 text-center">
-                                <div class="form-group">
-                                    <br>
-                                    <b-button class="btn btn-success" size="lg" @click="updateProduct">Обновить</b-button>
-                                    <b-button class="btn btn-danger" size="lg">Удалить</b-button>
-                                </div>
+                            <div class="offset-md-4 col-md-4">
+                                <br>
+                                <input type="submit" class="btn btn-block btn-success" value="Обновить">
                             </div>
                         </div>
                     </form>

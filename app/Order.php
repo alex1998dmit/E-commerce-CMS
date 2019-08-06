@@ -28,6 +28,11 @@ class Order extends Model
         return $this->belongsTo('App\OrderStatus', 'status_id');
     }
 
+    public function orderHistory()
+    {
+        return $this->hasMany('App\OrderStatusesChangings');
+    }
+
     public function changeStatus($status)
     {
         $status_id = OrderStatus::where('name', '=', $status)->first()->id;
