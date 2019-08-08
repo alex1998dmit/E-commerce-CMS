@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\API\V1;
 
+use App\Events\NewOrder;
 use App\OrderStatusesChangings;
 use App\Order;
 use Illuminate\Http\Request;
@@ -27,6 +28,7 @@ class OrdersController extends Controller
         $order->user;
         $order->product;
         $order->product->category;
+        $order->product->photo;
         $order->status;
         return $order;
     }
@@ -55,5 +57,18 @@ class OrdersController extends Controller
         $order->status_id = $request->status_id;
         $order->save();
         return $order;
+    }
+
+    public function store(Request $request)
+    {
+        $order = Order::create([
+            'user_id' => $request->user_id,
+            'product_id' => $request->product_id,
+            'amount' => $request->amount,
+            'sum' => $request->sum,
+        ]);
+
+        event(new NewOrder($this->single($order->id)));
+        return $this->single($order->id);
     }
 }

@@ -176,3 +176,44 @@ a.article:hover {
     margin: 5px;
 }
 
+/* ---------------------------------------------------
+    Notification
+----------------------------------------------------- */
+.notification-button {
+    margin-bottom: 5%;
+}
+
+.head-menu-notifications {
+    border-bottom: 1px solid lightgrey;
+    margin-bottom: 2%;
+}
+
+.head-menu-notifications p {
+    line-height: 1.7em;
+    font-weight: 600;
+    color: black;
+    font-size: 1em;
+}
+
+.today-notifacation-row {
+    background: #fafafa;
+    padding-top: 1%;
+    border-top: 1px solid lightgrey;
+    border-bottom: 1px solid lightgrey;
+    margin-bottom: 4%;
+}
+
+.today-notifacation-row p {
+    font-size: 1.0em;
+}
+
+.button-checked-block {
+    align-items: center;
+    justify-content: center;
+    display: flex;
+}
+
+.checked-all-link {
+    font-size: 0.8em;
+    color: #939ca5;
+}

@@ -22,7 +22,7 @@ class NewOrder implements ShouldBroadcast
      */
     public function __construct($order)
     {
-        $this->order = new OrderResource($order);
+        $this->order = $order;
     }
 
     /**

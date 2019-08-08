@@ -10,7 +10,7 @@ class Order extends Model
     use SoftDeletes;
 
     protected $fillable = [
-        'product_id', 'user_id', 'amount', 'sum',
+        'product_id', 'user_id', 'amount', 'sum', 'isChecked'
     ];
 
     public function user()

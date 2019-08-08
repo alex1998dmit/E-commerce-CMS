@@ -11,6 +11,9 @@ export default {
         auth_error: null,
         token: localStorage.getItem('access_token') || null,
 
+        // notifications
+        order_notifications: [],
+
         // categories
         categories: [],
         trashed_categories: [],
@@ -71,9 +74,12 @@ export default {
             product: {
                 name: "",
                 category: {},
+                photos: [],
             },
             user: {},
-            status: {}
+            status: {
+                name: "",
+            }
         },
         order_history: [],
 
@@ -96,6 +102,11 @@ export default {
         },
         currentUser(state) {
             return state.currentUser;
+        },
+
+        // notifications
+        orderNotifications(state) {
+            return state.order_notifications;
         },
 
         // categories
@@ -185,6 +196,12 @@ export default {
         }
     },
     mutations: {
+        // notifications
+        SET_ORDER_NOTIFICATIONS: (state, notifications) => state.order_notifications = notifications,
+        ADD_ORDER_NOTIFICATION: (state, notification) => state.order_notifications.push(notification),
+        REMOVE_ORDER_NOTIFICATION: (state, index) => state.order_notifications.splice(index, 1),
+        REMOVE_ALL_ORDER_NOTIFICATIONS: (state) => state.order_notifications.splice(0, state.order_notifications.length),
+
         // categories
         ADD_NEW_CATEGORY_TO_CATEGORIES: (state, payload) => { state.categories.push(payload) },
         removeCategory: (state, categories) => {
@@ -355,6 +372,38 @@ export default {
                         })
                 }
             });
+        },
+
+        // notifcations
+        getOrderNotifications(context) {
+            axios.get('/api/v1/notifications/orders')
+                .then((resp) => {
+                    context.commit('SET_ORDER_NOTIFICATIONS', resp.data);
+                })
+                .catch((resp) => {
+                    console.log('Ошибка при загрузке уведомлений');
+                    console.log(resp);
+                });
+        },
+        checkOrderNotification(context, { index, notification_id }) {
+            axios.post(`/api/v1/notificatons/check/orders/${notification_id}`)
+                .then((resp) => {
+                    context.commit('REMOVE_ORDER_NOTIFICATION', index);
+                })
+                .catch((resp) => {
+                    console.log('Ошибка при обновлении уведомлений');
+                    console.log(resp);
+                });
+        },
+        checkAllNotification(context) {
+            axios.post(`/api/v1/notificatons/check/orders`)
+                .then((resp) => {
+                    context.commit('REMOVE_ALL_ORDER_NOTIFICATIONS');
+                })
+                .catch((resp) => {
+                    console.log('Ошибка при обновлении уведомлений');
+                    console.log(resp);
+                });
         },
 
         // categories

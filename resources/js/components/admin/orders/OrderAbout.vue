@@ -99,8 +99,16 @@ export default {
         }
     },
     mounted() {
+        console.log('-', this.$route.params.id);
         this.$store.dispatch('getOrder', this.$route.params.id);
         this.$store.dispatch('getOrderHistory', this.$route.params.id);
+    },
+    watch: {
+        '$route'() {
+            console.log('route is works');
+            this.$store.dispatch('getOrder', this.$route.params.id);
+            this.$store.dispatch('getOrderHistory', this.$route.params.id);
+        },
     }
 }
 </script>

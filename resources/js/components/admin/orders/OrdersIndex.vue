@@ -41,6 +41,8 @@ export default {
             this.$store.dispatch("getSelectedOrderStatus", status_id);
         }
     },
+    created() {
+    },
     methods: {
         update(status_id) {
             this.$store.dispatch("getSelectedOrderStatus", status_id);

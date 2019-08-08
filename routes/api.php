@@ -116,6 +116,7 @@ Route::group(['prefix' => '/v1','namespace' => 'API\V1'], function () {
 
     // Orders
     Route::get('/orders', 'OrdersController@index');
+    Route::post('/orders', 'OrdersController@store');
     Route::get('/orders/{id}', 'OrdersController@single');
     Route::put('/orders/{order_id}', 'OrdersController@update');
     Route::get('/orders/{order_id}/history', 'OrderHistoryController@index');
@@ -123,6 +124,11 @@ Route::group(['prefix' => '/v1','namespace' => 'API\V1'], function () {
     // Order statuses
     Route::get('/orderStatuses', 'OrderStatuses@index');
     Route::get('/orderStatuses/{id}', 'OrderStatuses@single');
+
+    // Order notifications
+    Route::get('/notifications/orders', 'NotificationsController@orders');
+    Route::post('/notificatons/check/orders/', 'NotificationsController@checkAllOrders');
+    Route::post('/notificatons/check/orders/{id}', 'NotificationsController@orderCheck');
 
     // AUTH
     Route::post('/login', 'AuthController@login');
