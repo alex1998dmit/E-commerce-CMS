@@ -5,6 +5,8 @@ export default {
         host: 'http://passportapi',
         product_images_forlder: 'upload/products',
 
+        search_param: null,
+
         // auth
         currentUser: JSON.parse(localStorage.getItem('user')) || { role: [] },
         loading: false,
@@ -66,22 +68,26 @@ export default {
         },
 
         // Orders
-        orders:[],
-        selected_order: {
-            id: 0,
-            name: "",
-            user_id: 0,
-            product: {
-                name: "",
-                category: {},
-                photos: [],
+        orders: {
+            items: [],
+            page: 1,
+            pageCount: 0,
+            selected: {
+                id: 0,
+                name: null,
+                user_id: 0,
+                product: {
+                    name: "",
+                    category: {},
+                    photos: [],
+                },
+                user: {},
+                status: {
+                    name: "",
+                }
             },
-            user: {},
-            status: {
-                name: "",
-            }
+            order_history: []
         },
-        order_history: [],
 
         // Order statuses
         order_statuses: [],
@@ -96,6 +102,10 @@ export default {
     },
 
     getters: {
+        searchParam (state) {
+            return state.search_param
+        },
+
         // auth
         isLoggedIn(state) {
             return state.token !== null;
@@ -170,13 +180,16 @@ export default {
 
         // orders
         orders(state) {
-            return state.orders;
+            return state.orders.items;
         },
         selectedOrder(state) {
-            return state.selected_order;
+            return state.orders.selected;
         },
         orderHistory(state) {
-            return state.order_history;
+            return state.orders.order_history;
+        },
+        ordersPageCount (state) {
+            return state.orders.pageCount;
         },
 
         // orderstatuses
@@ -196,10 +209,13 @@ export default {
         }
     },
     mutations: {
-        // notifications
+        // search param
+        SET_SEARCH_PARAM: (state, param) => state.search_param = param,
+
+        // notifications - unCheckedOrders
         SET_ORDER_NOTIFICATIONS: (state, notifications) => state.order_notifications = notifications,
         ADD_ORDER_NOTIFICATION: (state, notification) => state.order_notifications.push(notification),
-        REMOVE_ORDER_NOTIFICATION: (state, index) => state.order_notifications.splice(index, 1),
+        REMOVE_ORDER_NOTIFICATION: (state, index) => { state.order_notifications.splice(index, 1) },
         REMOVE_ALL_ORDER_NOTIFICATIONS: (state) => state.order_notifications.splice(0, state.order_notifications.length),
 
         // categories
@@ -271,9 +287,14 @@ export default {
         },
 
         // Orders
-        SET_ALL_ORDERS : (state, orders) => state.orders = orders,
-        SET_SELECTED_ORDER: (state, order) => state.selected_order = order,
-        UPDATE_ORDER: (state, { order_index, order }) => state.orders[order_index] = order,
+        SET_ALL_ORDERS : (state, orders) => {
+            state.orders.items = orders.data
+            state.orders.pageCount = orders.last_page
+        },
+        SET_SELECTED_ORDER: (state, order) => state.order.selected_order = order,
+        UPDATE_ORDER: (state, { order_index, order }) => {
+            state.orders.items.splice(order_index, 1, order)
+        },
         SET_SELECTED_ORDER_HISTORY: (state, order_history) => state.order_history = order_history,
 
         // Order statuses
@@ -388,6 +409,7 @@ export default {
         checkOrderNotification(context, { index, notification_id }) {
             axios.post(`/api/v1/notificatons/check/orders/${notification_id}`)
                 .then((resp) => {
+                    console.log({ order_index: index, order: resp.data });
                     context.commit('REMOVE_ORDER_NOTIFICATION', index);
                 })
                 .catch((resp) => {
@@ -693,8 +715,8 @@ export default {
         },
 
         // Orders
-        getOrders(context) {
-            axios.get('/api/v1/orders')
+        getOrders(context, page = 1) {
+            axios.get(`/api/v1/orders?page=${page}`)
                 .then((resp) => {
                     context.commit('SET_ALL_ORDERS', resp.data);
                 })
@@ -735,6 +757,12 @@ export default {
                     alert('Ошибка при обновлении заказа');
                     console.log(resp.data);
                 })
+        },
+        getFindedOrders (context) {
+            axios
+                .post('/api/v1/search/orders/', { search_param: context.getters.searchParam })
+                .then(resp => { context.commit('SET_ALL_ORDERS', resp.data) })
+                .catch(error => console.log('Ошибка при поиске', error) )
         },
 
         // Order statuses

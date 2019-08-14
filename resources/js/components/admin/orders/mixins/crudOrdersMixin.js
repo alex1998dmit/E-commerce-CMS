@@ -22,6 +22,11 @@ export const crudOrdersMixin = {
         // logic
         updateOrder(order_id, order) {
             this.$store.dispatch("updateOrder", { order_id, order });
-        }
+        },
+        checkNotification(notification_id) {
+            const notifications = this.$store.getters.orderNotifications;
+            const index = notifications.map((notification) => notification.id).indexOf(notification_id);
+            this.$store.dispatch('checkOrderNotification', { index, notification_id });
+        },
     },
 }

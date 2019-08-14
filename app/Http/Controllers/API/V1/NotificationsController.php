@@ -25,6 +25,10 @@ class NotificationsController extends Controller
         $order = Order::find($id);
         $order->isChecked = true;
         $order->save();
+        $order->product;
+        $order->user;
+        $order->status;
+        $order->orderHistory;
         return $order;
     }
 

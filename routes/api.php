@@ -70,6 +70,18 @@ Route::post('/admin/categories/', function() {
     return [];
 });
 
+Route::group(['prefix' => '/v1/client', 'namespace' => 'API\V1\Client'], function() {
+    Route::get('categories', 'CategoriesController@index');
+    Route::get('categories/{id}', 'CategoriesController@single');
+    Route::get('categories/{id}/products', 'CategoriesController@products');
+    Route::get('finalcategories/{id}', 'CategoriesController@final');
+
+    Route::post('search/products', 'ProductsController@search');
+    Route::get('products', 'ProductsController@index');
+    Route::get('products/{id}', 'ProductsController@single');
+    Route::get('products/{id}/similar', 'ProductsController@similar');
+});
+
 Route::group(['prefix' => '/v1','namespace' => 'API\V1'], function () {
     // requisites
     Route::get('/requisites', 'RequisitesController@index');
@@ -120,6 +132,7 @@ Route::group(['prefix' => '/v1','namespace' => 'API\V1'], function () {
     Route::get('/orders/{id}', 'OrdersController@single');
     Route::put('/orders/{order_id}', 'OrdersController@update');
     Route::get('/orders/{order_id}/history', 'OrderHistoryController@index');
+    Route::post('/search/orders', 'OrdersController@search');
 
     // Order statuses
     Route::get('/orderStatuses', 'OrderStatuses@index');

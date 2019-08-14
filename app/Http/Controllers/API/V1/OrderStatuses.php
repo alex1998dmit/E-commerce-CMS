@@ -11,7 +11,11 @@ class OrderStatuses extends Controller
     //
     public function index()
     {
-        return OrderStatus::all();
+        $statuses = OrderStatus::all();
+        foreach ($statuses as $status) {
+            $status->order;
+        }
+        return $statuses;
     }
 
     public function single($id)

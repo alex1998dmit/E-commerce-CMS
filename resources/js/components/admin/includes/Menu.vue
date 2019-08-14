@@ -52,14 +52,14 @@
                         </li>
                     </ul>
                 </li>
-                <li class="active">
+                <li class="active statuses">
                     <a href="#ordersMenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">Заказы</a>
                     <ul class="collapse list-unstyled" id="ordersMenu">
                         <li>
                              <router-link :to="{ name: 'Orders'}">Все заказы</router-link>
                         </li>
                         <li v-for="status in order_statuses" :key="status.id">
-                             <router-link :to="{ name: 'OrdersWithStatus', params: {statusId: status.id}}">{{ status.name }}</router-link>
+                             <router-link :to="{ name: 'OrdersWithStatus', params: {statusId: status.id}}">{{ status.name }} <span class="orders-num">{{ status.order.length }}</span></router-link>
                         </li>
                     </ul>
                 </li>
@@ -94,4 +94,6 @@ export default {
     #sidebar ul li a {
         color: white;
     }
+
+
 </style>
