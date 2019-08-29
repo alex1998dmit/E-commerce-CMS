@@ -43,7 +43,19 @@ export default {
         },
 
         // products
-        products: [],
+        products: {
+            items: [],
+            filtered_items: {
+                byName: [],
+                byCategoryName: [],
+                byProductId: []
+            },
+            page: 1,
+            pageCount: 0,
+            selected: {
+            }
+        },
+        // products: [],
         product: {
             category: {},
             wish_list: [],
@@ -76,15 +88,25 @@ export default {
                 id: 0,
                 name: null,
                 user_id: 0,
-                product: {
-                    name: "",
-                    category: {},
-                    photos: [],
-                },
-                user: {},
                 status: {
-                    name: "",
-                }
+                    name: null
+                },
+                user: {
+                    name: null,
+                    email: null
+                },
+                order_items: [
+                    {
+                        id: null,
+                        product: {
+                            name: null,
+                            category: {
+                                name: null
+                            }
+                        },
+                        amount: null
+                    }
+                ]
             },
             order_history: []
         },
@@ -97,7 +119,13 @@ export default {
         },
 
         // users
-        users: [],
+        users: {
+            items: [],
+            page: 1,
+            pageCount: 0,
+            selected: {},
+            filtered: []
+        },
         selected_user: {},
     },
 
@@ -160,7 +188,16 @@ export default {
 
         // products
         products(state) {
-            return state.products;
+            return state.products.items
+        },
+        filtered_products (state) {
+            return state.products.filtered_items
+        },
+        currentProductPage(state) {
+            return state.products.page
+        },
+        productsPageCount(state) {
+            return state.products.pageCount
         },
         product(state) {
             return state.product;
@@ -202,10 +239,13 @@ export default {
 
         // users
         users(state) {
-            return state.users;
+            return state.users.items
         },
         selectedUser(state) {
-            return state.selected_user;
+            return state.users.selected_user
+        },
+        findedUsers (state) {
+            return state.users.filtered
         }
     },
     mutations: {
@@ -249,9 +289,9 @@ export default {
         ADD_DISCOUNT: (state, discount) => state.discounts.push(discount),
 
         // products
-        GET_ALL_PRODUCTS(state, products) {
-            state.products = products;
-        },
+        SET_PRODUCTS_ITEMS(state, products) { state.products.items = products },
+        SET_PRODUCTS_PAGER_COUNT (state, pageCount) { state.products.pageCount = pageCount },
+        SET_PRODUCTS_CURRENT_PAGE (state, page) { state.products.page = page },
         SET_PRODUCT: (state, product) => state.product = product,
         SET_PRODUCT_IMAGES: (state, photos) => {
             let images = [];
@@ -260,9 +300,7 @@ export default {
             }
             state.product_images = images;
         },
-        SET_CURRENT_PRODUCT(state, product) {
-            state.opened_product = Object.assign({}, state.opened_product, product);
-        },
+        SET_CURRENT_PRODUCT(state, product) { state.opened_product = Object.assign({}, state.opened_product, product) },
         SET_OPENED_PRODUCT_IMAGES(state) {
             let photos = [];
             for(let index in state.opened_product.photo) {
@@ -270,36 +308,44 @@ export default {
             }
             state.opened_product_images = photos;
         },
-        SET_UPDATING_PRODUCT_PARAMS(state, product) {
-            state.updating_product = product;
+        SET_UPDATING_PRODUCT_PARAMS(state, product) { state.updating_product = product },
+        REMOVE_PHOTOS_FROM_UPDATING_PRODUCT(state, photo_index) { state.updating_product.photo.splice(photo_index, 1) },
+        REMOVE_PRODUCT(state, product_index) { state.products.items.splice(product_index, 1) },
+        UPDATE_PRODUCT: (state, { product, index }) => { state.products.items.splice(index, 1, product) },
+        SET_FILTERED_PRODUCTS_ITEMS: (state, products) => {
+            state.products.filtered_items.byName = products.by_name
+            state.products.filtered_items.byCategoryName = products.by_category_name
+            state.products.filtered_items.by_product_id = products.by_product_id
         },
-        REMOVE_PHOTOS_FROM_UPDATING_PRODUCT(state, photo_index) {
-            state.updating_product.photo.splice(photo_index, 1);
-        },
-        REMOVE_PRODUCT(state, product_index) {
-            state.products.splice(product_index, 1);
-        },
-        UPDATE_PRODUCTS(state, product, index) {
-            state.products[index] = product;
-        },
-        UPDATE_PRODUCT: (state, { product, index }) => {
-            state.products.splice(index, 1, product)
-        },
-
         // Orders
         SET_ALL_ORDERS : (state, orders) => {
             state.orders.items = orders.data
             state.orders.pageCount = orders.last_page
         },
-        SET_SELECTED_ORDER: (state, order) => state.order.selected_order = order,
+        SET_SELECTED_ORDER: (state, order) => {
+            state.orders.selected = order
+        },
         UPDATE_ORDER: (state, { order_index, order }) => {
             state.orders.items.splice(order_index, 1, order)
+            state.orders.selected = order
         },
         SET_SELECTED_ORDER_HISTORY: (state, order_history) => state.order_history = order_history,
+        REMOVE_ORDERS_ITEM: (state, order_index) => { state.orders.items.splice(order_index, 1) },
+        ADD_ORDER: (state, order) => { state.orders.items.push(order) },
 
         // Order statuses
         SET_ORDER_STATUSES: (state, order_statuses) => state.order_statuses = order_statuses,
         SET_SELECTED_ORDER_STATUS: (state, order_status) => state.selected_order_status = order_status,
+
+        // OrderItem
+        // context.commit('UDPATE_ORDER_ITEM', { order_index, item_index, order_item: resp.data })
+        UDPATE_ORDER_ITEM: (state, { order_index, item_index, order_item }) => { state.orders.selected.order_items.splice(item_index, 1, order_item) },
+        ADD_ORDER_ITEM: (state, item) => {
+            console.log('1', state.orders.selected.order_items)
+            state.orders.selected.order_items.push(item)
+            console.log('2', state.orders.selected.order_items)
+        },
+        REMOVE_ORDER_ITEM: (state, orderIndex) => { state.orders.selected.order_items.splice(orderIndex, 1) },
 
         // users
         SET_ALL_USERS: (state, users) => {
@@ -308,6 +354,10 @@ export default {
         },
         SET_SELECTED_USER: (state, user) => state.selected_user = user,
         CLEAR_USERS: (state) => state.users.splice(0, state.users.length),
+        SET_FILTERED_USERS: (state, users) => {
+            console.log('-', users)
+            state.users.filtered = users
+        },
 
         // auth
         SET_USER_TOKEN: (state, token) => state.token = token,
@@ -345,6 +395,7 @@ export default {
                         const token = resp.data.access_token;
                         localStorage.setItem('access_token', token);
                         context.commit('SET_USER_TOKEN', token);
+                        axios.defaults.headers.common["Authorization"] = `Bearer ${token}`
                         resolve(resp);
                     })
                     .catch((resp) => {
@@ -361,6 +412,7 @@ export default {
                     axios.post('api/v1/logout')
                         .then((resp) => {
                             localStorage.removeItem('access_token')
+                            axios.defaults.headers.common["Authorization"] = `Bearer `
                             context.commit('DESTROY_TOKEN')
                             resolve(resp);
                         })
@@ -369,7 +421,8 @@ export default {
                             localStorage.removeItem('user')
                             context.commit('DESTROY_TOKEN')
                             context.commit('REMOVE_USER_PARAMS');
-                            console.log('Ошибка при вызоде');
+                            axios.defaults.headers.common["Authorization"] = `Bearer `
+                            console.log('Ошибка при выходе');
                             console.log(resp);
                             reject(error);
                         })
@@ -407,7 +460,7 @@ export default {
                 });
         },
         checkOrderNotification(context, { index, notification_id }) {
-            axios.post(`/api/v1/notificatons/check/orders/${notification_id}`)
+            axios.post(`/api/v1/notificatons/orders/${notification_id}/check`)
                 .then((resp) => {
                     console.log({ order_index: index, order: resp.data });
                     context.commit('REMOVE_ORDER_NOTIFICATION', index);
@@ -575,8 +628,6 @@ export default {
         createProductRequisite(context, { requisite_id, product_id, requsite_index, product_index }) {
             axios.post(`/api/v1/products/${product_id}/requisite`, { requisite_id })
                 .then(function (resp) {
-                    console.log('---', resp.data.product);
-                    console.log('UPDATE_PRODUCT', { product: resp.data.product, index: product_index });
                     context.commit('UPDATE_REQUISITE', { requisite: resp.data.requisite, index: requsite_index });
                     context.commit('UPDATE_PRODUCT', { product: resp.data.product, index: product_index });
                 })
@@ -633,15 +684,31 @@ export default {
 
 
         // proiucts
-        getProducts(context) {
-            axios.get('/api/v1/products')
+        getProducts(context, page = 1) {
+            axios.get(`/api/v1/products?page=${page}`)
                 .then((resp) => {
-                    context.commit('GET_ALL_PRODUCTS', resp.data);
+                    context.commit('SET_PRODUCTS_ITEMS', resp.data.data)
+                    context.commit('SET_PRODUCTS_PAGER_COUNT', resp.data.last_page)
                 })
                 .catch((resp) => {
                     alert('Ошибка загрузки продуктов');
                     console.log(resp);
                 });
+        },
+        getFilteredProducts (context, search_param) {
+            return new Promise((resolve, reject) => {
+                axios.get(`/api/v1/search/products?param=${search_param}`)
+                    .then((resp) => {
+                        context.commit('SET_FILTERED_PRODUCTS_ITEMS', resp.data)
+                        resolve(resp)
+                    })
+                    .catch((error) => {
+                        alert('Ошибка загрузки продуктов');
+                        console.log(resp);
+                        reject(error)
+                    });
+            })
+
         },
         getProduct(context, id) {
             axios.get('/api/v1/products/' + id)
@@ -699,13 +766,12 @@ export default {
                     console.log(resp);
                 })
         },
-        updateProduct(context, product) {
-            const id = context.getters.updatingProduct.id;
-            const product_index = context.getters.products.map((obj) => obj.id).indexOf(id);
+        updateProduct(context, {id, product, index }) {
             // TODO !!! обновить на пут потом
             axios.post('/api/v1/products/update/' + id, product)
                 .then((resp) => {
-                    context.commit('UPDATE_PRODUCTS', resp.data, product_index);
+                    console.log({ product: resp.data, index })
+                    context.commit('UPDATE_PRODUCT', { product: resp.data, index });
                     // context.commit('REMOVE_PHOTOS_FROM_UPDATING_PRODUCT', photoIndex);
                 })
                 .catch((resp)=> {
@@ -716,18 +782,36 @@ export default {
 
         // Orders
         getOrders(context, page = 1) {
+            axios.defaults.headers.common["Authorization"] = `Bearer ${context.state.token}`
             axios.get(`/api/v1/orders?page=${page}`)
                 .then((resp) => {
                     context.commit('SET_ALL_ORDERS', resp.data);
                 })
                 .catch((resp) => {
                     alert('Ошибка загрузки заказов');
-                    console.log(resp);
+                    console.log(resp)
                 });
         },
+        getOrdersWithStatusId (context, statusId) {
+            return new Promise((resolve, reject) => {
+                axios.defaults.headers.common["Authorization"] = `Bearer ${context.state.token}`
+                axios.get(`/api/v1/orderStatus/${statusId}/orders`)
+                    .then((resp) => {
+                        context.commit('SET_ALL_ORDERS', resp.data)
+                        resolve(resp)
+                    })
+                    .catch((error) => {
+                        alert('Ошибка загрузки заказов со статусом')
+                        console.log(error)
+                        reject(error)
+                    });
+            })
+        },
         getOrder(context, id) {
+            axios.defaults.headers.common["Authorization"] = `Bearer ${context.state.token}`
             axios.get('/api/v1/orders/' + id)
                 .then((resp) => {
+                    console.log(resp.data)
                     context.commit('SET_SELECTED_ORDER', resp.data);
                 })
                 .catch((resp) => {
@@ -736,6 +820,7 @@ export default {
                 });
         },
         getOrderHistory(context, order_id) {
+            axios.defaults.headers.common["Authorization"] = `Bearer ${context.state.token}`
             axios.get(`/api/v1/orders/${order_id}/history/`)
                 .then((resp) => {
                     console.log(resp.data);
@@ -746,12 +831,11 @@ export default {
                     console.log(resp);
                 });
         },
-        updateOrder(context, { order_id, order }) {
-            const order_index = context.getters.orders.map((order) => order.id).indexOf(order_id);
-            console.log('------', order ,order_id);
+        updateOrder(context, { order_id, order, index }) {
+            axios.defaults.headers.common["Authorization"] = `Bearer ${context.state.token}`
             axios.put('/api/v1/orders/' + order_id, order)
                 .then(resp => {
-                    context.commit('UPDATE_ORDER', {  order_index, order:resp.data })
+                    context.commit('UPDATE_ORDER', {  order_index: index, order:resp.data })
                 })
                 .catch((resp) => {
                     alert('Ошибка при обновлении заказа');
@@ -759,14 +843,26 @@ export default {
                 })
         },
         getFindedOrders (context) {
+            axios.defaults.headers.common["Authorization"] = `Bearer ${context.state.token}`
             axios
                 .post('/api/v1/search/orders/', { search_param: context.getters.searchParam })
                 .then(resp => { context.commit('SET_ALL_ORDERS', resp.data) })
                 .catch(error => console.log('Ошибка при поиске', error) )
         },
+        trashOrder (context, { order_id, order_index }) {
+            axios.defaults.headers.common["Authorization"] = `Bearer ${context.state.token}`
+            axios.delete(`/api/v1/orders/${order_id}`)
+                .then(resp => {
+                    context.commit(`REMOVE_ORDERS_ITEM`, order_index)
+                })
+                .catch(error => {
+                    console.log('Ошибка при удалении')
+                })
+        },
 
         // Order statuses
         getOrderStatuses(context) {
+            axios.defaults.headers.common["Authorization"] = `Bearer ${context.state.token}`
             axios.get('/api/v1/orderStatuses')
                 .then((resp) => {
                     context.commit('SET_ORDER_STATUSES', resp.data);
@@ -786,12 +882,57 @@ export default {
                     console.log(resp);
                 });
         },
+        // order Items
+        updateOrderItem (context, { item_id, body, item_index, order_index }) {
+            axios.defaults.headers.common["Authorization"] = `Bearer ${context.state.token}`
+            return new Promise((resolve, reject) => {
+                axios.put('/api/v1/orderItems/' + item_id, body)
+                    .then((resp) => {
+                        context.commit('UDPATE_ORDER_ITEM', { order_index, item_index, order_item: resp.data })
+                        resolve(resp)
+                    })
+                    .catch((error) => {
+                        alert('Ошибка при обновлении заказа')
+                        console.log(error)
+                        reject(error)
+                    });
+            })
+        },
+        createOrderItem (context, order) {
+            axios.defaults.headers.common["Authorization"] = `Bearer ${context.state.token}`
+            return new Promise((resolve, reject) => {
+                axios.post('/api/v1/orderItems', { order_id: order.order_id, product_id: order.product_id, amount: order.amount })
+                    .then((resp) => {
+                        context.commit('ADD_ORDER_ITEM', resp.data)
+                        resolve(resp)
+                    })
+                    .catch((error) => {
+                        alert('Ошибка при обновлении заказа')
+                        console.log(error)
+                        reject(error)
+                    })
+            })
+        },
+        removeOrderItem (context, { orderItemId, itemIndex }) {
+            axios.defaults.headers.common["Authorization"] = `Bearer ${context.state.token}`
+            return new Promise((resolve, reject) => {
+                axios.delete(`/api/v1/orderItems/${orderItemId}`)
+                    .then((resp) => {
+                        context.commit('REMOVE_ORDER_ITEM', itemIndex)
+                        resolve(resp)
+                    })
+                    .catch((error) => {
+                        alert('Ошибка при обновлении заказа')
+                        console.log(error)
+                        reject(error)
+                    })
+            })
+        },
 
         // users
         getUsers(context) {
             axios.get('/api/v1/users/')
             .then((resp) => {
-                console.log(resp);
                 context.commit('SET_ALL_USERS', resp.data);
             })
             .catch((resp) => {
@@ -811,7 +952,6 @@ export default {
                 })
         },
         replaceUsersDiscountId(context, { old_discount_id, new_discount_id }) {
-            console.log('object is ', { new_discount_id });
             axios.put(`/api/v1/users/replaceDiscounts/${old_discount_id}`, { new_discount_id })
                 .then(resp => {
                     context.commit('CLEAR_USERS', resp.data);
@@ -821,6 +961,15 @@ export default {
                     alert('Ошибка при обновлении категорий пользователей');
                     console.log(error);
                 })
+        },
+        findUsers (context, search_param) {
+            axios.defaults.headers.common["Authorization"] = `Bearer ${context.state.token}`
+            axios
+                .post('/api/v1/users/search', { search_param })
+                .then(resp => {
+                    context.commit('SET_FILTERED_USERS', resp.data)
+                })
+                .catch(error => console.log('Ошибка при поиске', error) )
         }
     }
 }

@@ -39,9 +39,9 @@ class Product extends Model
         return $this->hasMany('App\ShoppingCart');
     }
 
-    public function order()
+    public function orderItems()
     {
-        return $this->hasMany('App\Order');
+        return $this->hasMany('App\OrderItem');
     }
 
     public function priceChangings()

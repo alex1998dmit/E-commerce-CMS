@@ -15,10 +15,9 @@ class CreateOrdersTable extends Migration
     {
         Schema::create('orders', function (Blueprint $table) {
             $table->bigIncrements('id');
+            $table->boolean('is_checked')->default(False);
             $table->bigInteger('user_id')->unsigned();
-            $table->bigInteger('product_id')->unsigned();
             $table->bigInteger('status_id')->unsigned()->default(1);
-            $table->integer('amount');
             $table->decimal('sum', 12, 2);
             $table->timestamps();
             $table->softDeletes();
@@ -26,7 +25,6 @@ class CreateOrdersTable extends Migration
 
         Schema::table('orders', function($table) {
             $table->foreign('user_id')->references('id')->on('users');
-            $table->foreign('product_id')->references('id')->on('products');
         });
     }
 

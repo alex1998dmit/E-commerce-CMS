@@ -11,11 +11,15 @@ class NotificationsController extends Controller
     //
     public function orders()
     {
-        $orders = Order::where('isChecked', '=', False)->get();
+        $orders = Order::where('is_checked', '=', False)->get();
         foreach($orders as $order) {
             $order->user;
-            $order->product;
-            $order->product->photo;
+            $items = $order->orderItems;
+            foreach ($items as $item) {
+                $item->product;
+                $item->product->photo;
+                $item->product->category;
+            }
         }
         return $orders;
     }
@@ -23,20 +27,25 @@ class NotificationsController extends Controller
     public function orderCheck($id)
     {
         $order = Order::find($id);
-        $order->isChecked = true;
+        $order->is_checked = true;
         $order->save();
-        $order->product;
         $order->user;
         $order->status;
         $order->orderHistory;
+        $items = $order->orderItems;
+        foreach ($items as $item) {
+            $item->product;
+            $item->product->photo;
+            $item->product->category;
+        }
         return $order;
     }
 
     public function checkAllOrders()
     {
-        $orders = Order::where('isChecked', '=', False)->get();
+        $orders = Order::where('is_checked', '=', False)->get();
         foreach ($orders as $order) {
-            $order->isChecked = true;
+            $order->is_checked = true;
             $order->save();
         }
         return $orders;

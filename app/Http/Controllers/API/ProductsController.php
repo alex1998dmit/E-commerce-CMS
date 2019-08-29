@@ -13,10 +13,12 @@ class ProductsController extends Controller
 {
     public function index()
     {
+        return [];
         $products = Product::paginate(10);
         foreach($products as $product) {
             $product->addPhotosAttribute($product->photo);
         }
+        return $products;
         return new ProductsCollection($products);
     }
 

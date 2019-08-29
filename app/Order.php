@@ -38,4 +38,21 @@ class Order extends Model
         $status_id = OrderStatus::where('name', '=', $status)->first()->id;
         $this->status_id = $status_id;
     }
+
+    public function orderItems()
+    {
+        return $this->hasMany('App\OrderItem');
+    }
+
+    public function calculateSum()
+    {
+        $sum = 0;
+        $user_discount = $this->user->discount->discount;
+        $order_items = $this->orderItems;
+        foreach ($order_items as $item) {
+            $sum = $sum + $item->product->price * $item->amount;
+        }
+        $order_discount = $user_discount * $sum;
+        return $sum - $order_discount;
+    }
 }

@@ -15,23 +15,25 @@
         <tbody>
             <tr v-for="product in products" :key="product.id">
                 <td>{{ product.id }}</td>
-                <td>{{ product.name }}</td>
+                <td>
+                    <a
+                        class="aboutProduct"
+                        @click="$emit('openProduct', product)">
+                        {{ product.name }}
+                    </a>
+                </td>
                 <td>{{ product.category.name }}</td>
                 <td>{{ product.price }}</td>
                 <td>{{ product.wish_list.length }}</td>
-                <td>{{ product.order.length }}</td>
+                <td>{{ product.order_items.length }}</td>
                 <td>
-                    <b-button
-                        id="show-btn"
-                        @click="$parent.openAboutProductModal(product)">
-                            Подробнее
-                    </b-button>
+                    <router-link href="#" class="edit-icon" :to="{ name: 'editProduct', params: { id: product.id }}">
+                        <i class="fa fa-pencil" aria-hidden="true"></i>
+                    </router-link>
                 </td>
                 <td>
-                    <a href="#"
-                        class="btn btn-xs btn-danger"
-                        @click="trashProduct(product.id)">
-                            Удалить
+                    <a href="#" class="trash-icon" @click="$emit('trashProduct', product.id)">
+                        <i class="fa fa-trash" aria-hidden="true"></i>
                     </a>
                 </td>
             </tr>
@@ -46,4 +48,44 @@ export default {
     },
 }
 </script>
+<style scoped>
+    .fa .fa-pencil {
+        color: black;
+    }
+    .edit-icon {
+        color: black;
+    }
+    .trash-icon {
+        color: red;
+    }
+    .add-product-button {
+        border-bottom: 2px solid lightgrey;
+        border-radius: 0px;
+        color: black;
+    }
+    .add-product-button:hover {
+        border-bottom: 2px solid black;
+    }
+    .form-control-feedback {
+        position: absolute;
+        z-index: 2;
+        display: block;
+        width: 2.375rem;
+        height: 2.375rem;
+        line-height: 2.375rem;
+        text-align: center;
+        pointer-events: none;
+        color: #aaa;
+    }
+    .search-field {
+        padding-left: 3%;
+    }
+    .search-input {
+        padding-left: 10%;
+    }
+    .aboutProduct {
+        color: #333;
+        text-decoration: none;
+    }
+</style>
 

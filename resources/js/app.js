@@ -9,6 +9,7 @@ import Vue from 'vue';
 import Vuex from 'vuex';
 import { routes } from './routes';
 import StoreData from './store';
+import VueFlashMessage from 'vue-flash-message';
 // svg-icons
 // import { library } from '@fortawesome/fontawesome-svg-core';
 // import { faCoffee } from '@fortawesome/free-solid-svg-icons'
@@ -31,6 +32,8 @@ import { isAdmin } from './helpers/auth';
 Vue.use(ModalPlugin);
 Vue.use(ButtonPlugin);
 Vue.use(FormCheckboxPlugin)
+
+Vue.use(VueFlashMessage);
 
 Vue.use(VueRouter);
 Vue.use(Vuex)

@@ -16,13 +16,13 @@ class ProductsController extends Controller
 {
     public function index()
     {
-        $products = Product::all();
+        $products = Product::paginate(10);
         foreach ($products as $product) {
             $product->category;
             $product->requisites;
-            $atWhishLists = $product->wishList;
-            $orders = $product->order;
-            $product->addPhotosAttribute($product->photo);
+            $product->photo;
+            $product->wishList;
+            $product->orderItems;
         }
         return $products;
     }
@@ -50,21 +50,29 @@ class ProductsController extends Controller
         return $this->single($product->id);
     }
 
-    public function postProductsRequsites($product_id, Request $request)
+    public function addRequisitesToProduct($product_id, Request $request)
     {
         $product = Product::findOrFail($product_id);
-        $requisite_id = $request->requisite_id;
-        // TODO Поменять на более красивое
-        $requisites = DB::table('product_requisite')->where('requisite_id', '=', $requisite_id)->where('product_id', '=', $product_id)->first();
-
-        if ($requisites) {
-            return response()->json('already exists', 400);
+        $requisites = $request->requisites;
+        foreach ($requisites as $requisite) {
+            $hasRequisite = $product->requisites()->where('requisite_id', '=', $requisite["id"])->exists();
+            if (!$hasRequisite) {
+                $product->requisites()->attach($requisite["id"]);
+            }
         }
+        return $this->single($product->id);
+    }
 
-        $product->requisites()->attach($requisite_id);
-        $requisite = Requisite::find($requisite_id);
-        $requisite->products;
-        return response()->json(['product' => $this->single($product_id), 'requisite' => $requisite], 201);
+    public function deleteRequisitesFromProduct($product_id, Request $request)
+    {
+        $product = Product::findOrFail($product_id);
+        foreach ($request->requisites as $requisite) {
+            $hasRequisite = $product->requisites()->where('requisite_id', '=', $requisite["id"])->exists();
+            if ($hasRequisite) {
+                $product->requisites()->detach($requisite["id"]);
+            }
+        }
+        return $this->single($product->id);
     }
 
     public function single($id)
@@ -72,9 +80,9 @@ class ProductsController extends Controller
         $product = Product::findOrFail($id);
         $product->category;
         $product->wishList;
-        $product->order;
+        $product->orderItems;
         $product->requisites;
-        $product->addPhotosAttribute($product->photo);
+        $product->photo;
         $product->priceChangings;
         return $product;
     }
@@ -133,5 +141,43 @@ class ProductsController extends Controller
             }
         }
         return response()->json('nothing to delete', 400);
+    }
+
+    public function search(Request $request) {
+        $search_param = $request->query('param');
+        $products_by_name = Product::where('name', 'LIKE', '%' . $search_param . '%')->get();
+        $products_by_category_name = [];
+        // $products_by_id = [];
+
+        // $products_by_id = Product::where('id', 'LIKE', '%' . $search_param . '%')->get();
+        $category_names = Category::where('name', 'LIKE', '%' . $search_param . '%')->get();
+        foreach ($category_names as $category) {
+            $products_by_category_name = Product::where('category_id', 'LIKE', '%' . $category->id . '%')->get();
+        }
+
+        return [
+            'by_name' => $this->getAllInfoOfProducts($products_by_name),
+            'by_category_name' => $this->getAllInfoOfProducts($products_by_category_name),
+            // 'by_product_id' => $this->getAllInfoOfProducts($products_by_id)
+        ];
+    }
+
+    public function getAllInfoOfProducts($products)
+    {
+        foreach ($products as $product) {
+            $product->category;
+            $product->requisites;
+            $product->photo;
+            $product->wishList;
+            $product->orderItems;
+        }
+        return $products;
+    }
+
+    public function findByProductName(Request $request)
+    {
+        $search_param = $request->search_param;
+        $products = Product::where('name', 'LIKE', '%' . $search_param . '%')->get();
+        return $this->getAllInfoOfProducts($products);
     }
 }

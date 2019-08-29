@@ -8,7 +8,7 @@
                 </div>
                 <div class="col-md-6 text-right">
                     <router-link :to="{ name: 'products' }">
-                        <b-button variant="primary">Назад</b-button>
+                        <button class="btn navigate-button">Назад</button>
                     </router-link>
                 </div>
             </div>
@@ -86,13 +86,26 @@ export default {
             get() {
                 return this.$store.getters.finalCategories;
             }
+        },
+        product_page () {
+            return this.$store.getters.currentProductPage
+        },
+        products() {
+            return this.$store.getters.products
         }
     },
     mounted() {
-        this.$store.dispatch('getUpdatingProduct', this.$route.params.id);
-        this.$store.dispatch('getFinalCategories');
+        const id = this.$route.params.id
+        this.getUpdatingProduct(id)
+        this.getFinalCategories()
     },
     methods: {
+        getUpdatingProduct (id) {
+            this.$store.dispatch('getUpdatingProduct', id)
+        },
+        getFinalCategories() {
+            this.$store.dispatch('getFinalCategories')
+        },
         addPhoto(path, id) {
             this.photo.push({ path, id });
         },
@@ -100,7 +113,6 @@ export default {
             this.$data.photos = photos.map((photo) => {
                 return { "id": photo.id, "path": photo.path, "product_id": photo.product_id, "checked": true }
             });
-            // console.log(this.photos);
         },
         removePhoto(photo) {
             if (confirm("Вы уверены что хотите удалить фото ?")) {
@@ -108,17 +120,18 @@ export default {
             }
         },
         updateProduct() {
-            let form = new FormData();
-            form.append('name',this.updating_product.name);
-            form.append('category_id',this.updating_product.category_id);
-            form.append('price',this.updating_product.price);
-            form.append('description',this.updating_product.description);
+            const id = this.$route.params.id
+            const index = this.products.map((product) => product.id).indexOf(id)
+            let product = new FormData();
+            product.append('name',this.updating_product.name);
+            product.append('category_id',this.updating_product.category_id);
+            product.append('price',this.updating_product.price);
+            product.append('description',this.updating_product.description);
             for (let i = 0; i < this.photos.length; i++) {
-                form.append('photo[]', this.photos[i])
+                product.append('photo[]', this.photos[i])
             }
-            console.log(this.photos);
-            this.$store.dispatch('updateProduct', form);
-            this.$router.push({ name: 'products' });
+            this.$store.dispatch('updateProduct', { id, product, index });
+            this.$router.push({ name: 'products', query: { page: this.product_page }});
         },
         uploadPhotos(e) {
             this.photos = e.target.files;
@@ -133,13 +146,21 @@ export default {
 </script>
 
 <style>
-  .image {
-    float: left;
-    background-size: cover;
-    background-repeat: no-repeat;
-    background-position: center center;
-    border: 1px solid #ebebeb;
-    margin: 5px;
-  }
+    .image {
+        float: left;
+        background-size: cover;
+        background-repeat: no-repeat;
+        background-position: center center;
+        border: 1px solid #ebebeb;
+        margin: 5px;
+    }
+    .navigate-button {
+        border-radius: 0px;
+        border: 0px;
+        border-bottom: 2px solid lightblue;
+    }
+    .navigate-button:hover {
+        border-color: blue;
+    }
 </style>
 

@@ -8,7 +8,7 @@
                 </div>
                 <div class="col-md-6 text-right">
                     <router-link :to="{ name: 'products' }">
-                        <b-button variant="primary">Назад</b-button>
+                        <button class="btn navigate-button">Назад</button>
                     </router-link>
                     <br>
                 </div>
@@ -99,3 +99,13 @@ export default {
     }
 }
 </script>
+<style scoped>
+    .navigate-button {
+        border-radius: 0px;
+        border: 0px;
+        border-bottom: 2px solid lightblue;
+    }
+    .navigate-button:hover {
+        border-color: blue;
+    }
+</style>

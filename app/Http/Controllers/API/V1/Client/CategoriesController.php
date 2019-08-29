@@ -46,11 +46,21 @@ class CategoriesController extends Controller
         return iter($categories);
     }
 
-    public function products($category_id)
+    public function products(Request $request, $category_id)
     {
-        // $category = Category::findOrFail($category_id);
-        $products = Product::where('category_id', '=', $category_id)->paginate(3);
-        // $products = $category->product;
+        $sortedBy = $request->query('sortedBy') ?? 'created_at';
+        $products = Product::where('category_id', '=', $category_id);
+        switch ($sortedBy) {
+            case 'created_at':
+                $products = $products->orderBy('created_at', 'asc')->paginate(9);
+                break;
+            case 'alphabet':
+                $products = $products->orderBy('name', 'asc')->paginate(9);
+                break;
+            case 'price':
+                $products = $products->orderBy('price', 'asc')->paginate(9);
+                break;
+        }
         foreach ($products as $product) {
             $product->photo;
         }

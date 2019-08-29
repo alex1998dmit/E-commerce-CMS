@@ -2,38 +2,57 @@
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="nav navbar-nav ml-auto">
             <li class="nav-item active">
-                <b-button v-if="orderNotifications.length > 0 && isLoggedIn" variant="warning" @click="openNotificationsForm">Уведомления: {{ orderNotifications.length }}</b-button>
+                <a class="nav-link" v-if="orderNotifications.length > 0 && isLoggedIn" @click="openNotificationsForm">
+                    <i class="fa fa-bell" aria-hidden="true"></i>
+                    <div class="notifications-amount">
+                        {{ orderNotifications.length }}
+                    </div>
+                </a>
             </li>
             <li class="nav-item">
-                <router-link class="nav-link btn btn-light" v-if="!isLoggedIn" :to="{ name: 'login' }">Вход</router-link>
+                <router-link class="nav-link btn btn-light" v-if="!isLoggedIn" :to="{ name: 'login' }">
+                     <i class="fa fa-shopping-cart">
+                        <span class="head-nav-icon-sign">Вход</span>
+                    </i>
+                </router-link>
             </li>
             <li class="nav-item">
-                <router-link class="nav-link btn btn-light" v-if="!isLoggedIn" :to="{ name: 'register' }">Регистрация</router-link>
+                <router-link class="nav-link btn btn-light" v-if="!isLoggedIn" :to="{ name: 'register' }">
+                    <i class="fa fa-shopping-cart">
+                        <span class="head-nav-icon-sign">Регистрация</span>
+                    </i>
+                </router-link>
             </li>
-
             <li class="nav-item active">
-                <router-link class="nav-link" v-if="isLoggedIn" :to="{ name: 'logout' }">{{ currentUser.name }}</router-link>
+                <router-link class="nav-link" v-if="isLoggedIn" :to="{ name: 'logout' }">
+                    <i class="fa fa-user" aria-hidden="true">
+                        <span class="head-nav-icon-sign">{{ currentUser.name }}</span>
+                    </i>
+                </router-link>
             </li>
             <li class="nav-item active">
-                <router-link class="nav-link btn btn-light" v-if="isLoggedIn" :to="{ name: 'logout' }">Выйти</router-link>
+                <router-link class="nav-link" v-if="isLoggedIn" :to="{ name: 'logout' }">
+                    <i class="fa fa-sign-out logout-button" aria-hidden="true">
+                        <span class="head-nav-icon-sign logout-button">Выйти</span>
+                    </i>
+                </router-link>
             </li>
         </ul>
-        <HeadMenu></HeadMenu>
-
+        <Notifications></Notifications>
     </div>
 </template>
 <script>
-import HeadMenu from './Notifications';
+import Notifications from './Notifications';
 
 export default {
     components: {
-        HeadMenu
+        Notifications
     },
     created() {
         Echo.channel('orders')
             .listen('NewOrder', (e) => {
-                console.log(e.order);
-                this.$store.commit('ADD_ORDER_NOTIFICATION', e.order);
+                this.$store.commit('ADD_ORDER_NOTIFICATION', e.order)
+                this.$store.commit('ADD_ORDER', e.order)
             })
     },
     computed: {
@@ -54,3 +73,28 @@ export default {
     }
 }
 </script>
+
+<style scoped>
+ .head-nav-icon-sign {
+    font-size: 13px;
+    padding-left: 5%;
+    font-family: Arial, Helvetica, Verdana, sans-serif;
+ }
+.logout-button {
+    color: red;
+ }
+ .notifications-amount {
+    display: inline-block;
+    font-size: 0.6em;
+    width: 15px;
+    height: 15px;
+    background-color: red;
+    border-radius: 50px;
+    padding-left: 4px;
+    padding-bottom: -2px;
+    color: white;
+    position: relative;
+    left: -10px;
+    top: 2px;
+ }
+</style>

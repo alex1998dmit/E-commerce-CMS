@@ -71,6 +71,8 @@ Route::post('/admin/categories/', function() {
 });
 
 Route::group(['prefix' => '/v1/client', 'namespace' => 'API\V1\Client'], function() {
+    Route::post('/login', 'AuthController@login');
+
     Route::get('categories', 'CategoriesController@index');
     Route::get('categories/{id}', 'CategoriesController@single');
     Route::get('categories/{id}/products', 'CategoriesController@products');
@@ -80,6 +82,24 @@ Route::group(['prefix' => '/v1/client', 'namespace' => 'API\V1\Client'], functio
     Route::get('products', 'ProductsController@index');
     Route::get('products/{id}', 'ProductsController@single');
     Route::get('products/{id}/similar', 'ProductsController@similar');
+
+
+    Route::group(['middleware' => 'auth:api'], function() {
+        Route::get('/cart', 'ShoppingCartController@index');
+        Route::post('/cart', 'ShoppingCartController@store');
+        Route::get('/cart/{id}/remove', 'ShoppingCartController@delete');
+        Route::put('/cart/{id}', 'ShoppingCartController@update');
+        // Route::get('/user', 'AuthController@about');
+
+        Route::get('/wishlist', 'WishListController@index');
+        Route::post('/wishlist', 'WishListController@store');
+        Route::get('/wishlist/{id}/remove', 'WishListController@remove');
+
+        Route::post('/orders', 'OrdersController@store');
+        Route::get('/orders', 'OrdersController@index');
+        Route::put('/orders/{order_id}', 'OrdersController@update');
+
+    });
 });
 
 Route::group(['prefix' => '/v1','namespace' => 'API\V1'], function () {
@@ -100,7 +120,7 @@ Route::group(['prefix' => '/v1','namespace' => 'API\V1'], function () {
     // Route::resource('discounts', 'DiscountsController', ['except' => ['create', 'edit']]);
 
     // users
-    Route::get('users/search', 'UsersController@search');
+    Route::post('users/search', 'UsersController@search');
     Route::put('/users/replaceDiscounts/{old_discount_id}', 'UsersController@replaceDiscountsIds');
     Route::put('/users/{id}', 'UsersController@update');
     Route::resource('users', 'UsersController', ['except' => 'create', 'edit']);
@@ -117,31 +137,48 @@ Route::group(['prefix' => '/v1','namespace' => 'API\V1'], function () {
     Route::delete('categories/{id}', 'CategoriesController@delete');
 
     // TODO !!! почему роуты некорретные ?
+    // Route::get('/products', 'ProductsController@index');
+    Route::get('/products', 'ProductsController@index');
+
     Route::post('/products/store', 'ProductsController@store');
     Route::delete('/products/trash/{id}', 'ProductsController@trash');
-    Route::get('/products', 'ProductsController@index');
     Route::get('/products/{id}', 'ProductsController@single');
     Route::delete('/products/images', 'ProductsController@removeImage');
     // TODO !!! изменить глагол на пут
     Route::post('/products/update/{product}', 'ProductsController@update');
-    Route::post('/products/{id}/requisite', 'ProductsController@postProductsRequsites');
+    Route::post('/products/{id}/requisite', 'ProductsController@addRequisitesToProduct');
+    Route::delete('/products/{id}/requisite', 'ProductsController@deleteRequisitesFromProduct');
+    Route::get('/search/products', 'ProductsController@search');
 
-    // Orders
-    Route::get('/orders', 'OrdersController@index');
-    Route::post('/orders', 'OrdersController@store');
-    Route::get('/orders/{id}', 'OrdersController@single');
-    Route::put('/orders/{order_id}', 'OrdersController@update');
-    Route::get('/orders/{order_id}/history', 'OrderHistoryController@index');
-    Route::post('/search/orders', 'OrdersController@search');
+    Route::group(['middleware' => 'auth:api'], function() {
+        // Orders
+        Route::get('/orders', 'OrdersController@index');
+        Route::post('/orders', 'OrdersController@store');
+        Route::get('/orders/{id}', 'OrdersController@single');
+        Route::put('/orders/{order_id}', 'OrdersController@update');
+        Route::get('/orders/{order_id}/history', 'OrderHistoryController@index');
+        Route::post('/search/orders', 'OrdersController@search');
+        Route::delete('/orders/{order_id}', 'OrdersController@trash');
+
+        // Orders Items
+        Route::get('/orderStatuses/{status_id}', 'OrderStatusesController@single');
+        Route::get('/orderStatuses', 'OrderStatusesController@index');
+
+        // OrderItem
+        Route::put('/orderItems/{item_id}', 'OrderItemsController@update');
+        // Route::delete('/orderItems/{item_id}', 'OrderItemsController@delete');
+        Route::delete('/orderItems/{item_id}', 'OrderItemsController@delete');
+        Route::post('/orderItems', 'OrderItemsController@store');
+    });
+
 
     // Order statuses
-    Route::get('/orderStatuses', 'OrderStatuses@index');
-    Route::get('/orderStatuses/{id}', 'OrderStatuses@single');
+    // Route::get('/orderStatuses/{id}', 'OrderStatuses@single');
 
     // Order notifications
     Route::get('/notifications/orders', 'NotificationsController@orders');
     Route::post('/notificatons/check/orders/', 'NotificationsController@checkAllOrders');
-    Route::post('/notificatons/check/orders/{id}', 'NotificationsController@orderCheck');
+    Route::post('/notificatons/orders/{id}/check', 'NotificationsController@orderCheck');
 
     // AUTH
     Route::post('/login', 'AuthController@login');
@@ -151,7 +188,7 @@ Route::group(['prefix' => '/v1','namespace' => 'API\V1'], function () {
     Route::group(['middleware' => 'auth:api'], function() {
         Route::post('/logout', 'AuthController@logout');
         Route::get('/user', 'AuthController@about');
-      });
+    });
 });
 
 

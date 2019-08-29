@@ -69,7 +69,7 @@ class UsersController extends Controller
 
     public function search(Request $request)
     {
-        $param = $request->param;
+        $param = $request->search_param;
         $results = User::where('id', 'LIKE', '%' . $param . '%')
                         ->orWhere('name', 'LIKE', '%' . $param . '%')
                         ->orWhere('email', 'LIKE', '%' . $param . '%')->get();

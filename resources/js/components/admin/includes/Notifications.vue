@@ -15,29 +15,39 @@
                         <p>Сегодня</p>
                     </div>
                 </div>
-                <div class="notification" v-for="notification in today_notifications" :key="notification.id" v-on:click="aboutOrder($event, notification.id); checkNotification(notification.id); closeModal();">
+                <div class="notification" v-for="notification in today_notifications" :key="notification.id">
                     <div class="row">
                         <div class="col-3">
-                            <img :src="`http://passportapi/upload/products/${notification.product.photo[0].path}`" alt="" width="100px" height="auto">
+                            <img v-for ="item in notification.order_items" :key="item.id" :src="`http://passportapi/upload/products/${item.product.photo[0].path}`" alt="" width="33px" height="auto">
                         </div>
                         <div class="col-6">
                             <div class="row">
                                 <div class="col-12">
-                                    {{ notification.user.email }}
+                                    <div class="order-email">
+                                        {{ notification.user.email }}
+                                    </div>
                                 </div>
                                 <div class="col-12">
-                                    {{ notification.product.name }}
+                                    <div class="order-productname" v-for="item in notification.order_items" :key="item.id">
+                                        {{ item.product.name }}
+                                    </div>
                                 </div>
                                 <div class="col-12">
-                                    {{ notification.amount }}
-                                </div>
-                                <div class="col-12">
-                                    {{ notification.sum }}
+                                    <div class="order-sum">
+                                        {{ notification.sum }}
+                                    </div>
                                 </div>
                             </div>
                         </div>
                         <div class="col-3 button-checked-block">
-                            <b-button size="sm" variant="light" @click="checkNotification(notification.id)">Просмотрено</b-button>
+                            <div class="row">
+                                <div class="col-12">
+                                    <button class="btn-view" @click="aboutOrder(notification.id)">Подробнее</button>
+                                </div>
+                                <div class="col-12">
+                                    <button class="btn-check" @click="checkNotification(notification.id)">Просмотрено</button>
+                                </div>
+                            </div>
                         </div>
                     </div>
                     <hr>
@@ -47,29 +57,39 @@
                         <p>Предыдущий месяц</p>
                     </div>
                 </div>
-                <div class="notification" v-for="notification in last_week_notifications" :key="notification.id" v-on:click="aboutOrder($event, notification.id); checkNotification(notification.id); closeModal();">
+                <div class="notification" v-for="notification in last_week_notifications" :key="notification.id">
                     <div class="row">
                         <div class="col-3">
-                            <img :src="`http://passportapi/upload/products/${notification.product.photo[0].path}`" alt="" width="100px" height="auto">
+                            <img v-for ="item in notification.order_items" :key="item.id" :src="`http://passportapi/upload/products/${item.product.photo[0].path}`" alt="" width="100px" height="auto">
                         </div>
                         <div class="col-6">
                             <div class="row">
                                 <div class="col-12">
-                                    {{ notification.user.email }}
+                                    <div class="order-email">
+                                        {{ notification.user.email }}
+                                    </div>
                                 </div>
                                 <div class="col-12">
-                                    {{ notification.product.name }}
+                                    <div class="order-productname" v-for="item in notification.order_items" :key="item.id">
+                                        {{ item.product.name }}
+                                    </div>
                                 </div>
                                 <div class="col-12">
-                                    {{ notification.amount }}
-                                </div>
-                                <div class="col-12">
-                                    {{ notification.sum }}
+                                    <div class="order-sum">
+                                        {{ notification.sum }}
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                        <div class="col-3 button-checked-block">
-                            <b-button size="sm" variant="light" @click="checkNotification(notification.id)">Просмотрено</b-button>
+                        <div class="col-3 button-checked-block text-center">
+                            <div class="row">
+                                <div class="col-12">
+                                    <button class="btn-view" @click="aboutOrder(notification.id)">Подробнее</button>
+                                </div>
+                                <div class="col-12">
+                                    <button class="btn-check" @click="checkNotification(notification.id)">Просмотрено</button>
+                                </div>
+                            </div>
                         </div>
                     </div>
                     <hr>
@@ -114,22 +134,39 @@ export default {
             this.$store.dispatch('checkOrderNotification', { index, notification_id });
         },
         checkAllNotifications() {
-            this.$store.dispatch('checkAllNotification');
+            this.$store.dispatch('checkAllNotification')
         },
         setSelectedOrder(order) {
-            this.$store.commit("SET_SELECTED_ORDER", order);
+            this.$store.commit("SET_SELECTED_ORDER", order)
         },
-        aboutOrder(event, id) {
-            console.log('aaaa');
-            if (event.target.tagName === 'DIV') {
-                console.log(id);
-                this.$router.push({ name: "OrderAbout", params: { id }});
-            }
+        aboutOrder(id) {
+            this.$router.push({ name: "OrderAbout", params: { id }})
+            this.closeModal()
         }
     },
 }
 </script>
 
-<style>
-
+<style scoped>
+    .order-email, .order-productname, .order-sum {
+        font-size: 0.9em;
+    }
+    .btn-check {
+        border: 0px;
+        border-radius: 0px;
+        border-bottom: 1px solid lightgrey;
+        font-size: 0.8em;
+    }
+    .btn-check:hover {
+        border-color: black;
+    }
+    .btn-view {
+        border: 0px;
+        border-radius: 0px;
+        border-bottom: 1px solid lightblue;
+        font-size: 0.8em;
+    }
+    .btn-view:hover {
+        border-color: blue;
+    }
 </style>

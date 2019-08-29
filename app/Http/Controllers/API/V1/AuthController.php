@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\API\V1;
 
 use Auth;
+use Validator;
 use App\User;
 use App\Role;
 use Illuminate\Http\Request;
@@ -39,11 +40,18 @@ class AuthController extends Controller
 
     public function register(Request $request)
     {
-        $request->validate([
-            'name' => 'required|string|max:255',
+        // $validator = Validator::make($request->all(), [ // <---
+        $validation =  Validator::make($request->all(), [
+            'name' => 'required|string|min:3|max:255',
             'email' => 'required|string|email|max:255|unique:users',
             'password' => 'required|string|min:6',
         ]);
+        if ($validation->fails()) {
+            // return $validation->errors();
+            return response()->json([
+                'messages' => $validation->errors()
+            ], 401);
+        }
 
         $user = User::create([
             'name' => $request->name,
@@ -68,11 +76,15 @@ class AuthController extends Controller
     public function about()
     {
         $user = Auth::user();
+        $user->order;
         return [
             'name' => $user->name,
             'email' => $user->email,
             'created_at' => $user->created_at,
-            'role' => $user->role
+            'role' => $user->role,
+            'orders_count' => $user->order->count(),
+            'products_at_cart_count' => $user->shoppingCart->count(),
+            'wishlist_count' => $user->wishList->count()
         ];
     }
 }
