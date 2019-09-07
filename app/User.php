@@ -101,15 +101,4 @@ class User extends Authenticatable implements MustVerifyEmail
     {
         return null !== $this->role()->where('name', $role)->first();
     }
-
-    public function setWaitingPaymentStatus($status)
-    {
-        $statuses = [
-            'payment' => 'waiting for payment',
-            'sent' => 'waiting to be sent',
-            'issue' => 'waiting to be issued',
-            'receive' => 'product received'
-        ];
-        $this->status = $statuses[$status];
-    }
 }

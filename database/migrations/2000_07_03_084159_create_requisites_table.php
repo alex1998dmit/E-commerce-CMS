@@ -16,8 +16,9 @@ class CreateRequisitesTable extends Migration
         Schema::create('requisites', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->string('title');
-            $table->string('requisite');
+            $table->string('account_num');
             $table->string('description')->nullable();
+            $table->boolean('is_selected')->default(false);
             $table->timestamps();
             $table->softDeletes();
         });

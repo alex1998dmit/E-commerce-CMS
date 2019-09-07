@@ -46,9 +46,6 @@
                                 <th scope="col">Покупок:</th>
                                 <th></th>
                                 <th></th>
-                                <!-- <th scope="col">Редактировать</th>
-                                <th scope="col">Подробнее</th>
-                                <th scope="col">Удалить</th> -->
                             </tr>
                             </thead>
                             <tbody>

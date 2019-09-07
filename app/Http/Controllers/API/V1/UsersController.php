@@ -10,9 +10,24 @@ class UsersController extends Controller
 {
     public function index()
     {
-        $users = User::all();
-        return User::with('role')->get();
-        // return $users;
+        $users = User::orderBy('created_at', 'desc')->paginate(10);
+        foreach ($users as $user) {
+            $user->role;
+            $user->wishList;
+            $user->order;
+            $user->discount;
+        }
+        return $users;
+    }
+
+    public function single($user_id)
+    {
+        $user = User::findOrFail($user_id);
+        $user->role;
+        $user->wishList;
+        $user->order;
+        $user->discount;
+        return $user;
     }
 
     public function show($id)
@@ -35,14 +50,22 @@ class UsersController extends Controller
     }
 
     // Soft delete
-    public function trash()
+    public function trash($user_id)
     {
-
+        $user = User::find($user_id);
+        $user->delete();
+        return response()->json(['message' => 'Succefully deleted'], 201);
     }
 
-    public function edit($id)
+    public function restore($id)
     {
-
+        $user = User::onlyTrashed()->find($id);
+        if (!is_null($user)) {
+            $user->restore();
+            return $this->single($user->id);
+        } else {
+            return abort(500, 'Nothing to restore');
+        }
     }
 
     public function update(Request $request, $id)
@@ -73,6 +96,12 @@ class UsersController extends Controller
         $results = User::where('id', 'LIKE', '%' . $param . '%')
                         ->orWhere('name', 'LIKE', '%' . $param . '%')
                         ->orWhere('email', 'LIKE', '%' . $param . '%')->get();
+        foreach ($results as $user) {
+            $user->role;
+            $user->wishList;
+            $user->order;
+            $user->discount;
+        }
         return $results;
     }
 }

@@ -10,7 +10,7 @@ class Requisite extends Model
     use SoftDeletes;
 
     protected $fillable = [
-        'title', 'requisite', 'description'
+        'title', 'account_num', 'description'
     ];
 
     public function products()

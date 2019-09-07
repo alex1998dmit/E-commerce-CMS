@@ -14,7 +14,7 @@ class CategoriesController extends Controller
 {
     public function index()
     {
-        $categories = Category::all();
+        $categories = Category::orderBy('created_at', 'desc')->get();
         foreach($categories as $category) {
             $childs = $category->childs;
             $products = $category->product;
@@ -27,7 +27,7 @@ class CategoriesController extends Controller
 
     public function finalCategories()
     {
-        $categories = Category::all();
+        $categories = Category::orderBy('created_at', 'desc')->get();
         $final_categories = [];
         foreach($categories as $category) {
             if (count($category->childs) === 0) {

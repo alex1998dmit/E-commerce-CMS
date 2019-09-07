@@ -15,7 +15,7 @@ class DiscountsController extends Controller
      */
     public function index()
     {
-        $dicounts = Discount::all();
+        $dicounts = Discount::orderBy('created_at', 'desc')->get();
         foreach($dicounts as $discount) {
             $discount->users;
         }
@@ -93,9 +93,15 @@ class DiscountsController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function trash($id)
+    public function trash($id, Request $request)
     {
+        $newDiscountId = $request->new_discount_id ?? 1;
         $discount = Discount::findOrFail($id);
+        $users = $discount->users;
+        foreach ($users as $user) {
+            $user->discount_id = $newDiscountId;
+            $user->save();
+        }
         $discount->delete();
         return response()->json(['mesasage' => 'succesfully deleted'], 200);
     }

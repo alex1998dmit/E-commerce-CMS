@@ -10,7 +10,7 @@ class RequisitesController extends Controller
 {
     public function index()
     {
-        $requisites = Requisite::all();
+        $requisites = Requisite::orderBy('created_at', 'desc')->get();
         foreach($requisites as $requisite) {
             $requisite->products;
         }
@@ -21,7 +21,7 @@ class RequisitesController extends Controller
     {
         $requisite = Requisite::create([
             'title' => $request->title,
-            'requisite' => $request->requisite,
+            'account_num' => $request->account_num,
             'description' => $request->description,
         ]);
 
@@ -36,7 +36,11 @@ class RequisitesController extends Controller
     public function update(Request $request, $id)
     {
         $requisite = Requisite::findOrFail($id);
-        $requisite->update($request->all());
+        $requisite->title = $request->title ?? $requisite->title;
+        $requisite->account_num = $request->account_num ?? $requisite->account_num;
+        $requisite->description = $request->description ?? $requisite->description;
+        $requisite->is_selected = $request->is_selected ?? $requisite->is_selected;
+        $requisite->save();
         return $requisite;
     }
 

@@ -22,7 +22,7 @@ export default {
     computed: {
         updating_category: {
             get() {
-                return this.$store.getters.categoryByIndex(this.category_index);
+                return this.$store.getters.selectedCategory;
             },
             set(val){}
         },

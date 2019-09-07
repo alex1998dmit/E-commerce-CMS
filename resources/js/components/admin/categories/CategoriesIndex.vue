@@ -104,7 +104,6 @@ export default {
     },
     mounted() {
         this.$store.dispatch('getCategories');
-        console.log(this.$store.getters.currentUser.role.filter(role => role.name == 'operator').length);
     },
 }
 </script>

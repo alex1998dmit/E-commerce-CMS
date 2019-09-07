@@ -29,21 +29,21 @@ import { FormCheckboxPlugin } from 'bootstrap-vue'
 // Helpers
 import { isAdmin } from './helpers/auth';
 
-Vue.use(ModalPlugin);
-Vue.use(ButtonPlugin);
+Vue.use(ModalPlugin)
+Vue.use(ButtonPlugin)
 Vue.use(FormCheckboxPlugin)
 
-Vue.use(VueFlashMessage);
+Vue.use(VueFlashMessage)
 
-Vue.use(VueRouter);
+Vue.use(VueRouter)
 Vue.use(Vuex)
 
-const store = new Vuex.Store(StoreData);
+const store = new Vuex.Store(StoreData)
 
 const router = new VueRouter({
     mode: 'history',
     routes,
-});
+})
 
 router.beforeEach((to, from, next) => {
     if(to.meta.requiresAuth) {

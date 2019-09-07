@@ -5,8 +5,11 @@ namespace App\Http\Controllers\API\V1\Client;
 use Auth;
 use App\Order;
 use App\OrderItem;
+use App\OrderStatus;
+use App\OrderStatusesChangings;
 use App\Product;
 use App\Events\NewOrder;
+use App\Events\UpdateOrder;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
@@ -15,13 +18,24 @@ class OrdersController extends Controller
     public function update($orderId, Request $request)
     {
         $user = Auth::user();
-        $permittedStatusesIds = [2, 8];
+        $permittedStatusesIds = [2, 7];
         $statusId = $request->status_id;
         if (in_array($statusId, $permittedStatusesIds)) {
             $order = Order::find($orderId);
             if ($order->user->id === $user->id) {
                 $order->status_id = $statusId;
+                $order->is_checked = false;
+
+                if ($request->status_id) {
+                    $orderHistory = OrderStatusesChangings::create([
+                        'order_id' => $orderId,
+                        'prev_status_id' => $order->status_id,
+                        'new_status_id' => $request->status_id
+                    ]);
+                }
+
                 $order->save();
+                event(new UpdateOrder($this->single($order->id)));
                 return $this->single($orderId);
             } else {
                 return response()->json(['message' => 'wrong user'], 401);
@@ -59,10 +73,15 @@ class OrdersController extends Controller
         foreach ($order->orderItems as $item) {
             $item->product->category;
             $item->product->photo;
-            // $item->category;
-            // $item->photo;
         }
         $order->status;
+        $historyItems = $order->orderHistory;
+        foreach ($historyItems as $item) {
+            $preveStatusName = OrderStatus::find($item->prev_status_id)->name;
+            $newStatusName = OrderStatus::find($item->new_status_id)->name;
+            $item->prevStatusName = $preveStatusName;
+            $item->newStatusName = $newStatusName;
+        }
         return $order;
     }
 

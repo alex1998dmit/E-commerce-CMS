@@ -9,7 +9,7 @@
                     </div>
                     <div class="form-group">
                         <label for="">Номер реквизита</label>
-                        <input type="text" class="form-control" v-model="requisite.requisite">
+                        <input type="text" class="form-control" v-model="requisite.account_num">
                     </div>
                     <div class="form-group">
                         <label for="">Комментарий</label>
@@ -30,7 +30,7 @@ export default {
         return {
             requisite: {
                 title: "",
-                requisite: "",
+                account_num: "",
                 description: "",
             }
         }

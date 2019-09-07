@@ -1,11 +1,7 @@
-import Vue from 'vue';
-
 export default {
     state: {
         host: 'http://passportapi',
         product_images_forlder: 'upload/products',
-
-        search_param: null,
 
         // auth
         currentUser: JSON.parse(localStorage.getItem('user')) || { role: [] },
@@ -28,16 +24,19 @@ export default {
         final_categories: [],
 
         // requisites
-        requisites: [],
-        selected_requisite: {
-            name: "",
-            products: []
-        },
         requisite_index: 0,
         trashed_requisites: [],
+        requisites: {
+            items: [],
+            selected: {},
+            trashed: []
+        },
 
         // discount
-        discounts: [],
+        discounts: {
+            items: [],
+            selected: {}
+        },
         selected_discount: {
             users: [],
         },
@@ -55,14 +54,8 @@ export default {
             selected: {
             }
         },
+
         // products: [],
-        product: {
-            category: {},
-            wish_list: [],
-            order: [],
-            photo: [],
-            price_changings: [],
-        },
         product_images: [],
         opened_product: {
             category: {},
@@ -121,19 +114,21 @@ export default {
         // users
         users: {
             items: [],
+            trashed: [],
             page: 1,
             pageCount: 0,
-            selected: {},
+            selected: {
+                discount: {
+                    name: '',
+                },
+                order: [],
+                wish_list: [],
+            },
             filtered: []
-        },
-        selected_user: {},
+        }
     },
 
     getters: {
-        searchParam (state) {
-            return state.search_param
-        },
-
         // auth
         isLoggedIn(state) {
             return state.token !== null;
@@ -157,34 +152,26 @@ export default {
         selectedCategory(state) {
             return state.selected_category;
         },
-        categoryByIndex(state) {
-            return (index) => {
-                return state.categories[index] ? state.categories[index] : { name: "", parent_id: 0 };
-            };
-        },
         trashedCategories(state) {
             return state.trashed_categories;
         },
 
         // discount
         discounts(state) {
-            return state.discounts;
+            return state.discounts.items
         },
         selectedDiscount(state) {
-            return state.selected_discount;
+            return state.discounts.selected
         },
 
         // requisite
         requisites(state) {
-            return state.requisites;
+            return state.requisites.items
         },
         selectedRequisite(state) {
-            return state.selected_requisite;
+            return state.requisites.selected
         },
-        requisiteIndex(state) {
-            return state.requisite_index;
-        },
-        trashedRequisites: (state) => state.trashed_requisites,
+        trashedRequisites: (state) => state.requisites.trashed,
 
         // products
         products(state) {
@@ -198,9 +185,6 @@ export default {
         },
         productsPageCount(state) {
             return state.products.pageCount
-        },
-        product(state) {
-            return state.product;
         },
         selectedProductImages(state) {
             return state.product_images;
@@ -242,10 +226,16 @@ export default {
             return state.users.items
         },
         selectedUser(state) {
-            return state.users.selected_user
+            return state.users.selected
         },
         findedUsers (state) {
             return state.users.filtered
+        },
+        trashedUsers (state) {
+            return state.users.trashed
+        },
+        usersPageCount (state) {
+            return state.users.pageCount
         }
     },
     mutations: {
@@ -260,10 +250,6 @@ export default {
 
         // categories
         ADD_NEW_CATEGORY_TO_CATEGORIES: (state, payload) => { state.categories.push(payload) },
-        removeCategory: (state, categories) => {
-            state.categories.splice(0, state.categories.length);
-            state.categories = categories;
-        },
         SET_CURRENT_CATEGORY: (state, category) =>  state.selected_category = category,
         SET_FINAL_CATEGORIES: (state, final_categories) => state.final_categories = final_categories,
         UPDATE_CATEGORIES: (state, { category_index, updated_category }) => state.categories[category_index] = updated_category,
@@ -272,21 +258,20 @@ export default {
         SET_ALL_CATEGORIES: (state, categories) => state.categories = categories,
 
         // requisites
-        SET_ALL_REQUISITES: (state, requisites) => state.requisites = requisites,
-        SET_SELECTED_REQUISITE: (state, requisite) => state.selected_requisite = requisite,
-        UPDATE_REQUISITE: (state, { index, requisite }) => { state.requisites.splice(index, 1, requisite) },
-        REMOVE_REQUISITE: (state, index) => state.requisites.splice(index, 1),
-        ADD_REQUISITE: (state, requisite) => state.requisites.push(requisite),
-        SET_REQUISITE_INDEX: (state, requisite_index) => state.requisite_index = requisite_index,
-        SET_TRASHED_REQUISITES: (state, requisites) => state.trashed_requisites = requisites,
-        REMOVE_TRASHED_REQUISITES: (state, index) => state.trashed_requisites.splice(index, 1),
+        SET_ALL_REQUISITES: (state, requisites) => state.requisites.items = requisites,
+        SET_SELECTED_REQUISITE: (state, requisite) => state.requisites.selected = requisite,
+        UPDATE_REQUISITE: (state, { index, requisite }) => { state.requisites.items.splice(index, 1, requisite) },
+        REMOVE_REQUISITE: (state, index) => state.requisites.items.splice(index, 1),
+        ADD_REQUISITE: (state, requisite) => state.requisites.items.push(requisite),
+        SET_TRASHED_REQUISITES: (state, requisites) => state.requisites.trashed = requisites,
+        REMOVE_TRASHED_REQUISITES: (state, index) => state.requisites.trashed.splice(index, 1),
 
         // discounts
-        GET_ALL_DISCOUNTS: (state, discounts) => state.discounts = discounts,
-        REMOVE_DISCOUNT: (state, index) => state.discounts.splice(index, 1),
-        SET_SELECTED_DISCOUNT: (state, discount) => state.selected_discount = discount,
-        UPDATE_DISCOUNT: (state, { discount, index }) => state.discounts[index] = discount,
-        ADD_DISCOUNT: (state, discount) => state.discounts.push(discount),
+        SET_ALL_DISCOUNTS: (state, discounts) => state.discounts.items = discounts,
+        REMOVE_DISCOUNT: (state, index) => state.discounts.items.splice(index, 1),
+        SET_SELECTED_DISCOUNT: (state, discount) => state.discounts.selected = discount,
+        UPDATE_DISCOUNT: (state, { discount, index }) => state.discounts.items.splice(index, 1, discount),
+        ADD_DISCOUNT: (state, discount) => state.discounts.items.push(discount),
 
         // products
         SET_PRODUCTS_ITEMS(state, products) { state.products.items = products },
@@ -318,46 +303,39 @@ export default {
             state.products.filtered_items.by_product_id = products.by_product_id
         },
         // Orders
-        SET_ALL_ORDERS : (state, orders) => {
-            state.orders.items = orders.data
-            state.orders.pageCount = orders.last_page
-        },
-        SET_SELECTED_ORDER: (state, order) => {
-            state.orders.selected = order
-        },
+        SET_ALL_ORDERS : (state, orders) => { state.orders.items = orders },
+        ADD_ORDER: (state, order) => { state.orders.items.unshift(order) },
+        SET_ORDERS_PAGE_COUNT (state, pageCount) { state.orders.pageCount = pageCount },
+        SET_ORDERS_CURRENT_PAGE (state, page) { state.orders.page = page },
+        SET_SELECTED_ORDER: (state, order) => { state.orders.selected = order },
         UPDATE_ORDER: (state, { order_index, order }) => {
             state.orders.items.splice(order_index, 1, order)
             state.orders.selected = order
         },
         SET_SELECTED_ORDER_HISTORY: (state, order_history) => state.order_history = order_history,
         REMOVE_ORDERS_ITEM: (state, order_index) => { state.orders.items.splice(order_index, 1) },
-        ADD_ORDER: (state, order) => { state.orders.items.push(order) },
 
         // Order statuses
-        SET_ORDER_STATUSES: (state, order_statuses) => state.order_statuses = order_statuses,
-        SET_SELECTED_ORDER_STATUS: (state, order_status) => state.selected_order_status = order_status,
+        SET_ORDER_STATUSES: (state, order_statuses) => { state.order_statuses = order_statuses },
+        SET_SELECTED_ORDER_STATUS: (state, order_status) => { state.selected_order_status = order_status },
 
         // OrderItem
         // context.commit('UDPATE_ORDER_ITEM', { order_index, item_index, order_item: resp.data })
         UDPATE_ORDER_ITEM: (state, { order_index, item_index, order_item }) => { state.orders.selected.order_items.splice(item_index, 1, order_item) },
         ADD_ORDER_ITEM: (state, item) => {
-            console.log('1', state.orders.selected.order_items)
             state.orders.selected.order_items.push(item)
-            console.log('2', state.orders.selected.order_items)
         },
         REMOVE_ORDER_ITEM: (state, orderIndex) => { state.orders.selected.order_items.splice(orderIndex, 1) },
 
         // users
-        SET_ALL_USERS: (state, users) => {
-            state.users = users;
-            // Vue.set(state, 'users', [...users]);
-        },
-        SET_SELECTED_USER: (state, user) => state.selected_user = user,
+        SET_ALL_USERS: (state, users) => { state.users.items = users },
+        SET_SELECTED_USER: (state, user) => { state.users.selected = user },
+        SET_TRASHED_USERS: (state, users) => { state.users.trashed = users },
         CLEAR_USERS: (state) => state.users.splice(0, state.users.length),
-        SET_FILTERED_USERS: (state, users) => {
-            console.log('-', users)
-            state.users.filtered = users
-        },
+        SET_FILTERED_USERS: (state, users) => { state.users.filtered = users },
+        REMOVE_USER: (state, index) => { state.users.items.splice(index, 1) },
+        REMOVE_FROM_TRASHED_USERS: (state, index) => { state.users.trashed.splice(index, 1) },
+        SET_USERS_PAGE_COUNT: (state, pageCount) => { state.users.pageCount = pageCount },
 
         // auth
         SET_USER_TOKEN: (state, token) => state.token = token,
@@ -450,6 +428,7 @@ export default {
 
         // notifcations
         getOrderNotifications(context) {
+            axios.defaults.headers.common['Authorization']=`Bearer ${context.state.token}`;
             axios.get('/api/v1/notifications/orders')
                 .then((resp) => {
                     context.commit('SET_ORDER_NOTIFICATIONS', resp.data);
@@ -460,9 +439,9 @@ export default {
                 });
         },
         checkOrderNotification(context, { index, notification_id }) {
+            axios.defaults.headers.common['Authorization']=`Bearer ${context.state.token}`;
             axios.post(`/api/v1/notificatons/orders/${notification_id}/check`)
                 .then((resp) => {
-                    console.log({ order_index: index, order: resp.data });
                     context.commit('REMOVE_ORDER_NOTIFICATION', index);
                 })
                 .catch((resp) => {
@@ -471,6 +450,7 @@ export default {
                 });
         },
         checkAllNotification(context) {
+            axios.defaults.headers.common['Authorization']=`Bearer ${context.state.token}`;
             axios.post(`/api/v1/notificatons/check/orders`)
                 .then((resp) => {
                     context.commit('REMOVE_ALL_ORDER_NOTIFICATIONS');
@@ -483,6 +463,7 @@ export default {
 
         // categories
         getCategories(context) {
+            axios.defaults.headers.common['Authorization']=`Bearer ${context.state.token}`;
             axios.get('/api/v1/categories')
                 .then((resp) => {
                     context.commit('SET_ALL_CATEGORIES', resp.data);
@@ -493,6 +474,7 @@ export default {
                 });
         },
         getFinalCategories(context) {
+            axios.defaults.headers.common['Authorization']=`Bearer ${context.state.token}`;
             axios.get('/api/v1/finalCategories')
                 .then((resp) => {
                     context.commit('SET_FINAL_CATEGORIES', resp.data);
@@ -503,6 +485,7 @@ export default {
                 })
         },
         createCategory(context, category) {
+            axios.defaults.headers.common['Authorization']=`Bearer ${context.state.token}`;
             axios.post('/api/v1/categories', category)
                 .then((resp) => {
                     context.commit('ADD_NEW_CATEGORY_TO_CATEGORIES', resp.data);
@@ -513,6 +496,7 @@ export default {
                 })
         },
         trashCategory(context, category) {
+            axios.defaults.headers.common['Authorization']=`Bearer ${context.state.token}`;
             axios.get('/api/v1/categories/trash/' + category.id)
                 .then((resp) => {
                     context.dispatch('getCategories');
@@ -523,6 +507,7 @@ export default {
                 });
         },
         updateCategory(context, { category_id, updating_category }) {
+            axios.defaults.headers.common['Authorization']=`Bearer ${context.state.token}`;
             axios.patch(`/api/v1/categories/${category_id}`, updating_category)
                 .catch((resp) => {
                     console.log('error with update category');
@@ -530,6 +515,7 @@ export default {
                 })
         },
         getTrashedCategories(context) {
+            axios.defaults.headers.common['Authorization']=`Bearer ${context.state.token}`;
             axios.get('/api/v1/trashedCategories')
                 .then((resp) => {
                     context.commit('SET_TRASHED_CATEGORIES', resp.data);
@@ -540,6 +526,7 @@ export default {
                 })
         },
         restoreCategory(context, { category_id, category_index }) {
+            axios.defaults.headers.common['Authorization']=`Bearer ${context.state.token}`;
             axios.get('/api/v1/categories/restore/' + category_id)
                 .then((resp) => {
                     context.commit('ADD_NEW_CATEGORY_TO_CATEGORIES', resp.data);
@@ -551,6 +538,7 @@ export default {
                 })
         },
         deleteCategory(context, { category_id, category_index }) {
+            axios.defaults.headers.common['Authorization']=`Bearer ${context.state.token}`;
             axios.delete('/api/v1/categories/' + category_id)
                 .then((resp) => {
                     context.dispatch('getTrashedCategories');
@@ -563,6 +551,7 @@ export default {
 
         // requisites
         getRequisites(context) {
+            axios.defaults.headers.common['Authorization']=`Bearer ${context.state.token}`;
             axios.get('/api/v1/requisites')
                 .then(function (resp) {
                     context.commit('SET_ALL_REQUISITES', resp.data);
@@ -573,6 +562,7 @@ export default {
                 });
         },
         createRequisite(context, requisite) {
+            axios.defaults.headers.common['Authorization']=`Bearer ${context.state.token}`;
             axios.post('/api/v1/requisites', requisite)
             .then(function (resp) {
                 context.commit('ADD_REQUISITE', resp.data);
@@ -583,17 +573,23 @@ export default {
             });
         },
         updateRequisite(context, { requisite, requisite_id, index }) {
-            console.log({ requisite, requisite_id, index });
-            axios.put(`/api/v1/requisites/${requisite_id}`, requisite)
-                .then((resp) => {
-                    context.commit('UPDATE_REQUISITE', { requisite: resp.data, index });
-                })
-                .catch((resp) => {
-                    alert('Не получилось обновить скидку');
-                    console.log(resp);
-                })
+            return new Promise((resolve, reject) => {
+                axios.defaults.headers.common['Authorization']=`Bearer ${context.state.token}`
+                axios.put(`/api/v1/requisites/${requisite_id}`, requisite)
+                    .then((resp) => {
+                        context.commit('UPDATE_REQUISITE', { requisite: resp.data, index })
+                        resolve(resp)
+                    })
+                    .catch((error) => {
+                        alert('Не получилось обновить скидку')
+                        console.log(error)
+                        reject(error)
+                    })
+            });
+
         },
         trashRequisite(context, { requisite_id, index }) {
+            axios.defaults.headers.common['Authorization']=`Bearer ${context.state.token}`;
             axios.delete(`/api/v1/requisites/${requisite_id}`)
                 .then((resp) => {
                     context.commit('REMOVE_REQUISITE', index);
@@ -604,6 +600,7 @@ export default {
                 })
         },
         getTrashedRequisites(context) {
+            axios.defaults.headers.common['Authorization']=`Bearer ${context.state.token}`;
             axios.get(`/api/v1/trashed/requisites`)
                 .then((resp) => {
                     context.commit('SET_TRASHED_REQUISITES', resp.data);
@@ -614,6 +611,7 @@ export default {
                 })
         },
         restoreTrashedRequisite(context, { requisite_id, index }) {
+            axios.defaults.headers.common['Authorization']=`Bearer ${context.state.token}`;
             axios.get(`/api/v1/requisites/restore/${requisite_id}`)
                 .then((resp) => {
                     context.commit('REMOVE_TRASHED_REQUISITES', index);
@@ -626,6 +624,7 @@ export default {
 
         // requisite-product
         createProductRequisite(context, { requisite_id, product_id, requsite_index, product_index }) {
+            axios.defaults.headers.common['Authorization']=`Bearer ${context.state.token}`;
             axios.post(`/api/v1/products/${product_id}/requisite`, { requisite_id })
                 .then(function (resp) {
                     context.commit('UPDATE_REQUISITE', { requisite: resp.data.requisite, index: requsite_index });
@@ -639,9 +638,10 @@ export default {
 
         // discounts
         getDiscounts(context) {
+            axios.defaults.headers.common['Authorization']=`Bearer ${context.state.token}`;
             axios.get('/api/v1/discounts')
                 .then(function (resp) {
-                    context.commit('GET_ALL_DISCOUNTS', resp.data);
+                    context.commit('SET_ALL_DISCOUNTS', resp.data);
                 })
                 .catch(function (resp) {
                     console.log(resp);
@@ -649,6 +649,7 @@ export default {
                 });
         },
         createDiscount(context, new_discount) {
+            axios.defaults.headers.common['Authorization']=`Bearer ${context.state.token}`;
             axios.post('/api/v1/discounts', new_discount)
             .then(function (resp) {
                 context.commit('ADD_DISCOUNT', resp.data);
@@ -659,8 +660,8 @@ export default {
             });
         },
         // TODO продумать передавать ли сюда в качестве параметра поля изменяего объекта (новые данные)
-        updateDiscount(context, { discount, discount_id }) {
-            const index = context.getters.discounts.map((discount) => discount.id).indexOf(discount_id);
+        updateDiscount(context, { discount, discount_id, index }) {
+            axios.defaults.headers.common['Authorization']=`Bearer ${context.state.token}`
             axios.put(`/api/v1/discounts/${discount_id}`, discount)
                 .then((resp) => {
                     context.commit('UPDATE_DISCOUNT', { discount: resp.data, index });
@@ -670,8 +671,8 @@ export default {
                     console.log(resp);
                 })
         },
-        trashDiscount(context, discount_id) {
-            const index = context.getters.discounts.map((discount) => discount.id).indexOf(discount_id);
+        trashDiscount(context, { discount_id, index }) {
+            axios.defaults.headers.common['Authorization']=`Bearer ${context.state.token}`
             axios.delete(`/api/v1/discounts/${discount_id}`)
                 .then((resp) => {
                     context.commit('REMOVE_DISCOUNT', index);
@@ -682,9 +683,9 @@ export default {
                 })
         },
 
-
-        // proiucts
+        // products
         getProducts(context, page = 1) {
+            axios.defaults.headers.common['Authorization']=`Bearer ${context.state.token}`
             axios.get(`/api/v1/products?page=${page}`)
                 .then((resp) => {
                     context.commit('SET_PRODUCTS_ITEMS', resp.data.data)
@@ -696,6 +697,7 @@ export default {
                 });
         },
         getFilteredProducts (context, search_param) {
+            axios.defaults.headers.common['Authorization']=`Bearer ${context.state.token}`
             return new Promise((resolve, reject) => {
                 axios.get(`/api/v1/search/products?param=${search_param}`)
                     .then((resp) => {
@@ -711,10 +713,10 @@ export default {
 
         },
         getProduct(context, id) {
+            axios.defaults.headers.common['Authorization']=`Bearer ${context.state.token}`
             axios.get('/api/v1/products/' + id)
                 .then((resp) => {
                     context.commit('SET_PRODUCT', resp.data);
-                    console.log()
                     context.commit('SET_PRODUCT_IMAGES', resp.data.photo);
                 })
                 .catch((resp) => {
@@ -723,6 +725,7 @@ export default {
                 });
         },
         getUpdatingProduct(context, id) {
+            axios.defaults.headers.common['Authorization']=`Bearer ${context.state.token}`
             axios.get('/api/v1/products/' + id)
                 .then((resp) => {
                     context.commit('SET_UPDATING_PRODUCT_PARAMS', resp.data);
@@ -733,9 +736,10 @@ export default {
                 })
         },
         removePhotoFromUpdatingProduct(context, image_id) {
-            const product_id = context.getters.updatingProduct.id;
-            const photoAndProductsIds = { product_id, image_id };
-            const photoIndex = context.getters.updatingProduct.photo.map((obj) => obj.id).indexOf(image_id);
+            const product_id = context.getters.updatingProduct.id
+            const photoAndProductsIds = { product_id, image_id }
+            const photoIndex = context.getters.updatingProduct.photo.map((obj) => obj.id).indexOf(image_id)
+            axios.defaults.headers.common['Authorization']=`Bearer ${context.state.token}`
             axios.delete('/api/v1/products/images', { data: photoAndProductsIds })
                 .then((resp) => {
                     context.commit('REMOVE_PHOTOS_FROM_UPDATING_PRODUCT', photoIndex);
@@ -747,6 +751,7 @@ export default {
 
         },
         createProduct(context, product){
+            axios.defaults.headers.common['Authorization']=`Bearer ${context.state.token}`
             axios.post('/api/v1/products/store', product)
                 .then((resp) => {
                 })
@@ -756,7 +761,8 @@ export default {
                 })
         },
         trashProduct(context, product_id) {
-            const product_index = context.getters.products.map((obj) => obj.id).indexOf(product_id);
+            const product_index = context.getters.products.map((obj) => obj.id).indexOf(product_id)
+            axios.defaults.headers.common['Authorization']=`Bearer ${context.state.token}`
             axios.delete('/api/v1/products/trash/' + product_id)
                 .then((resp) => {
                     context.commit('REMOVE_PRODUCT', product_index);
@@ -767,12 +773,10 @@ export default {
                 })
         },
         updateProduct(context, {id, product, index }) {
-            // TODO !!! обновить на пут потом
+            axios.defaults.headers.common['Authorization']=`Bearer ${context.state.token}`
             axios.post('/api/v1/products/update/' + id, product)
                 .then((resp) => {
-                    console.log({ product: resp.data, index })
                     context.commit('UPDATE_PRODUCT', { product: resp.data, index });
-                    // context.commit('REMOVE_PHOTOS_FROM_UPDATING_PRODUCT', photoIndex);
                 })
                 .catch((resp)=> {
                     alert('Возникла ошибка при обновлении продукта');
@@ -785,19 +789,24 @@ export default {
             axios.defaults.headers.common["Authorization"] = `Bearer ${context.state.token}`
             axios.get(`/api/v1/orders?page=${page}`)
                 .then((resp) => {
-                    context.commit('SET_ALL_ORDERS', resp.data);
+                    context.commit('SET_ALL_ORDERS', resp.data.data)
+                    context.commit('SET_ORDERS_PAGE_COUNT', resp.data.last_page)
+                    context.commit('SET_ORDERS_CURRENT_PAGE', resp.data.current_page)
                 })
                 .catch((resp) => {
                     alert('Ошибка загрузки заказов');
                     console.log(resp)
                 });
         },
-        getOrdersWithStatusId (context, statusId) {
+        getOrdersWithStatusId (context, { statusId, page }) {
             return new Promise((resolve, reject) => {
                 axios.defaults.headers.common["Authorization"] = `Bearer ${context.state.token}`
-                axios.get(`/api/v1/orderStatus/${statusId}/orders`)
+                axios.get(`/api/v1/orderStatuses/${statusId}?page=${page}`)
                     .then((resp) => {
-                        context.commit('SET_ALL_ORDERS', resp.data)
+                        context.commit('SET_ALL_ORDERS', resp.data.orders.data)
+                        context.commit('SET_ORDERS_PAGE_COUNT', resp.data.orders.last_page)
+                        context.commit('SET_ORDERS_CURRENT_PAGE', resp.data.orders.current_page)
+                        context.commit('SET_SELECTED_ORDER_STATUS', resp.data.status);
                         resolve(resp)
                     })
                     .catch((error) => {
@@ -811,7 +820,6 @@ export default {
             axios.defaults.headers.common["Authorization"] = `Bearer ${context.state.token}`
             axios.get('/api/v1/orders/' + id)
                 .then((resp) => {
-                    console.log(resp.data)
                     context.commit('SET_SELECTED_ORDER', resp.data);
                 })
                 .catch((resp) => {
@@ -823,8 +831,7 @@ export default {
             axios.defaults.headers.common["Authorization"] = `Bearer ${context.state.token}`
             axios.get(`/api/v1/orders/${order_id}/history/`)
                 .then((resp) => {
-                    console.log(resp.data);
-                    context.commit('SET_SELECTED_ORDER_HISTORY', resp.data);
+                    context.commit('SET_SELECTED_ORDER_HISTORY', resp.data)
                 })
                 .catch((resp) => {
                     alert('Ошибка загрузки заказов');
@@ -858,6 +865,24 @@ export default {
                 .catch(error => {
                     console.log('Ошибка при удалении')
                 })
+        },
+        findOrders (context, search_param) {
+            axios.defaults.headers.common["Authorization"] = `Bearer ${context.state.token}`
+            axios.post(`http://passportapi/api/v1/search/orders`, { search_param })
+                .then(resp => {
+                    context.commit('SET_ALL_ORDERS', resp.data)
+                })
+                .catch(error => { alert('Ошибка при поиске', error) })
+        },
+        filterOrders (context, body) {
+            axios.defaults.headers.common["Authorization"] = `Bearer ${context.state.token}`
+            axios.post(`http://passportapi/api/v1/filter/orders`, body)
+            .then(resp => {
+                console.log('orders', resp.data.data)
+                context.commit('SET_ALL_ORDERS', resp.data.data)
+            })
+            .catch(error => { alert('Ошибка при поиске', error) })
+
         },
 
         // Order statuses
@@ -930,18 +955,40 @@ export default {
         },
 
         // users
-        getUsers(context) {
-            axios.get('/api/v1/users/')
+        getUsers(context, page) {
+            axios.defaults.headers.common["Authorization"] = `Bearer ${context.state.token}`
+            axios.get(`/api/v1/users?page=${page}`)
             .then((resp) => {
-                context.commit('SET_ALL_USERS', resp.data);
+                context.commit('SET_ALL_USERS', resp.data.data)
+                context.commit('SET_USERS_PAGE_COUNT', resp.data.last_page)
             })
             .catch((resp) => {
                 alert('Ошибка при загрузке пользователей');
                 console.log(resp);
             });
         },
+        getTrashedUsers (context) {
+            axios.defaults.headers.common["Authorization"] = `Bearer ${context.state.token}`
+            axios.get('/api/v1/trashedUsers/')
+                .then((resp) => {
+                    context.commit('SET_TRASHED_USERS', resp.data);
+                })
+                .catch((resp) => {
+                    alert('Ошибка при загрузке пользователей');
+                    console.log(resp);
+                });
+        },
+        getUser (context, user_id) {
+            axios.defaults.headers.common["Authorization"] = `Bearer ${context.state.token}`
+            axios.get(`/api/v1/users/${user_id}`)
+                .then((resp) => {
+                    context.commit('SET_SELECTED_USER', resp.data)
+                })
+                .catch(error => alert('Ошибка при получении информации о пользователе'))
+        },
         updateUser(context, { user_id, user}) {
             const index = context.getters.users.map((user) => user.id).indexOf(user_id);
+            axios.defaults.headers.common["Authorization"] = `Bearer ${context.state.token}`
             axios.put(`/api/v1/users/${user_id}`, user)
                 .then(resp => {
                     context.commit('UDPATE_USER', { user: resp.data, index});
@@ -952,10 +999,11 @@ export default {
                 })
         },
         replaceUsersDiscountId(context, { old_discount_id, new_discount_id }) {
+            axios.defaults.headers.common["Authorization"] = `Bearer ${context.state.token}`
             axios.put(`/api/v1/users/replaceDiscounts/${old_discount_id}`, { new_discount_id })
                 .then(resp => {
                     context.commit('CLEAR_USERS', resp.data);
-                    context.commit('SET_ALL_USERS', resp.data);
+                    context.commit('SET_ALL_USERS', resp.data.data);
                 })
                 .catch(error => {
                     alert('Ошибка при обновлении категорий пользователей');
@@ -970,6 +1018,45 @@ export default {
                     context.commit('SET_FILTERED_USERS', resp.data)
                 })
                 .catch(error => console.log('Ошибка при поиске', error) )
+        },
+        trashUser (context, { user_id, index }) {
+            axios.defaults.headers.common["Authorization"] = `Bearer ${context.state.token}`
+            axios
+                .delete(`/api/v1/users/${user_id}`)
+                .then(resp => {
+                    context.commit('REMOVE_USER', index)
+                })
+                .catch(err => {
+                    alert('Ошибка при перемещении пользователя в корзину')
+                })
+        },
+        restoreUser (context, { user_id, index }) {
+            axios.defaults.headers.common["Authorization"] = `Bearer ${context.state.token}`
+            axios
+                .get(`/api/v1/users/${user_id}/restore`)
+                .then(resp => {
+                    context.commit('REMOVE_FROM_TRASHED_USERS', index)
+                })
+                .catch(err => {
+                    alert('Ошибка при восстановлении пользователя')
+                })
+        },
+
+        // search
+        findGlobally (context, { search_param }) {
+            axios.defaults.headers.common["Authorization"] = `Bearer ${context.state.token}`
+            axios
+                .post(`/api/v1/search/globall`, { search_param })
+                .then(resp => {
+                    context.commit('SET_ALL_ORDERS', resp.data.orders)
+                    context.commit('SET_PRODUCTS_ITEMS', resp.data.products)
+                    context.commit('SET_ALL_USERS', resp.data.users)
+                    context.commit('SET_ALL_REQUISITES', resp.data.requisites)
+                    context.commit('SET_ALL_CATEGORIES', resp.data.categories)
+                })
+                .catch(err => {
+                    alert('Ошибка поиска')
+                })
         }
     }
 }

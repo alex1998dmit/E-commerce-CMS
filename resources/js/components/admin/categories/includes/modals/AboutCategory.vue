@@ -14,7 +14,7 @@
                         <th scope="col">Название</th>
                         <th scope="col">Подкатегории</th>
                         <th scope="col">Количество товаров</th>
-                        <th scope="col">Количество заказов</th>
+                        <!-- <th scope="col">Количество заказов</th> -->
                         <th scope="col">Создано</th>
                         <th scope="col">Обновленно</th>
                     </tr>
@@ -29,7 +29,7 @@
                             </tr>
                         </td>
                         <td>{{ selected_category.product.length }}</td>
-                        <td>{{ countOrders(selected_category.product) }}</td>
+                        <!-- <td>{{ countOrders(selected_category.product) }}</td> -->
                         <td>{{ selected_category.created_at }}</td>
                         <td>{{ selected_category.updated_at }}</td>
                     </tr>
@@ -40,13 +40,10 @@
 </template>
 <script>
 export default {
-    mounted() {
-        console.log(this.selected_category);
-    },
     computed: {
         selected_category() {
             return this.$store.getters.selectedCategory;
-        }
+        },
     },
     methods: {
         countOrders(products) {

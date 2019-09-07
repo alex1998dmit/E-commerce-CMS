@@ -32,7 +32,9 @@
             Menu, HeadMenu
         },
         mounted() {
-            this.$store.dispatch('getOrderNotifications');
+            if (this.isLoggedIn) {
+                this.$store.dispatch('getOrderNotifications');
+            }
         },
         computed: {
             isLoggedIn() {

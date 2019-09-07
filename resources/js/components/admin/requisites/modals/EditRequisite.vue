@@ -8,8 +8,8 @@
                         <input type="text" class="form-control" v-model="requisite.title">
                     </div>
                     <div class="form-group">
-                        <label for="">Реквизит</label>
-                        <input type="text" class="form-control" v-model="requisite.requisite">
+                        <label for="">Номер реквизита</label>
+                        <input type="text" class="form-control" v-model="requisite.account_num">
                     </div>
                     <div class="form-group">
                         <label for="">Описание</label>
@@ -29,10 +29,10 @@
 export default {
     computed: {
         requisite() {
-            return this.$store.getters.selectedRequisite;
+            return this.$store.getters.selectedRequisite
         },
-        index() {
-            return this.$store.getters.requisiteIndex;
+        requisites () {
+            return this.$store.getters.requisites
         }
     },
     methods: {
@@ -40,13 +40,13 @@ export default {
             this.$bvModal.hide("edit-requisite-modal");
         },
         updateRequisite() {
+            const index = this.requisites.map((requisite) => requisite.id).indexOf(this.requisite.id)
             const updating_requisite = {
                 title: this.requisite.title,
-                requisite: this.requisite.requisite,
+                account_num: this.requisite.account_num,
                 description: this.requisite.description
             };
-            console.log({ requisite: updating_requisite , requisite_id: this.requisite.id, index: this.index });
-            this.$store.dispatch('updateRequisite', { requisite: updating_requisite, requisite_id: this.requisite.id, index: this.index });
+            this.$store.dispatch('updateRequisite', { requisite: updating_requisite, requisite_id: this.requisite.id, index });
         },
     }
 }

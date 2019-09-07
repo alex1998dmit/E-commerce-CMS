@@ -25,6 +25,7 @@ class CreateOrdersTable extends Migration
 
         Schema::table('orders', function($table) {
             $table->foreign('user_id')->references('id')->on('users');
+            $table->foreign('status_id')->references('id')->on('order_statuses');
         });
     }
 

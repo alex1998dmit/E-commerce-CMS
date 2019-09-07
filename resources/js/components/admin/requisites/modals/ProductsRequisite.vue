@@ -69,8 +69,6 @@ export default {
         products() {
             const requisite_index = this.$store.getters.requisiteIndex;
             if (this.search_param) {
-                console.log(this.search_param);
-                console.log(this.$store.getters.requisites[requisite_index].products);
                 return this.$store.getters.requisites[requisite_index].products.filter((product) => product.name.toLowerCase().includes(this.search_param.toLocaleLowerCase()));
             }
             return this.$store.getters.requisites[requisite_index].products;

@@ -4,21 +4,21 @@
             <div class="col">
                 <div class="row">
                     <div class="col">
-                        <form action="" @submit.prevent="create(); closeModal()">
+                        <form @submit.prevent="create(); closeModal()">
                             <div class="form-group">
                                 <label for="">Название</label>
-                                <input type="text" class="form-control" v-model="discount.name">
+                                <input type="text" class="form-control" v-model="discount.name" required>
                             </div>
                             <div class="form-group">
                                 <label for="">Размер скидки</label>
-                                <input type="text" class="form-control" v-model="discount.discount">
+                                <input type="number" class="form-control" v-model="discount.discount" min="0" max="100" required>
                             </div>
                             <div class="form-group">
                                 <label for="">Описание</label>
-                                <textarea name="" id="" cols="30" rows="10" class="form-control" v-model="discount.description"></textarea>
+                                <textarea name="" id="" cols="30" rows="10" class="form-control" v-model="discount.description" required></textarea>
                             </div>
                             <div class="form-group">
-                                <input type="submit" class="btn btn-success" value="Создать">
+                                <input type="submit" class="btn btn-create" value="Создать">
                             </div>
                         </form>
                     </div>
@@ -50,6 +50,13 @@ export default {
 }
 </script>
 
-<style>
-
+<style scoped>
+    .btn-create {
+        border: 0px;
+        border-radius: 0px;
+        border-bottom: 2px solid lightgreen;
+    }
+    .btn-create:hover {
+        border-color: green;
+    }
 </style>

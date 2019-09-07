@@ -6,16 +6,16 @@
                     <h2>Удаленные реквизиты</h2>
                 </div>
                 <div class="col-6 text-right">
-                    <router-link class="btn btn-primary" :to="{ name: 'dashboard' }">Главная</router-link>
+                    <!-- <router-link class="btn btn-primary" :to="{ name: 'dashboard' }">Главная</router-link> -->
                 </div>
             </div>
             <br>
             <div class="row">
                 <div class="col-6 text-left">
-                    <input type="text" class="form-control" placeholder="Поиск по удаленным реквизитам ..." v-model="search_param">
+                    <!-- <input type="text" class="form-control" placeholder="Поиск по удаленным реквизитам ..." v-model="search_param"> -->
                 </div>
                 <div class="col-6 text-right">
-                    <router-link class="btn btn-primary" :to="{ name: 'requisites' }">Все реквизиты</router-link>
+                    <router-link class="btn btn-requisites" :to="{ name: 'requisites' }">Все реквизиты</router-link>
                 </div>
             </div>
             <br>
@@ -24,23 +24,20 @@
                     <table class="table">
                         <thead>
                             <tr>
-                                <th scope="col">ID</th>
-                                <th scope="col">Название</th>
-                                <th scope="col">Номер реквизита</th>
-                                <th scope="col">Восстановить</th>
+                                <th scope="col" class="text-center">ID</th>
+                                <th scope="col" class="text-center">Название</th>
+                                <th scope="col" class="text-center">Номер реквизита</th>
+                                <th scope="col" class="text-center"></th>
                             </tr>
                         </thead>
                         <tbody>
                             <tr v-for="(requisite, index) in requisites" :key="requisite.id">
-                                <td>{{ requisite.id }}</td>
-                                <td>{{ requisite.title }}</td>
-                                <td>{{ requisite.requisite }}</td>
-                                <td>
-                                    <b-button
-                                        variant="success"
-                                        @click="restoreRequisite(requisite, index)">
-                                            Восстановить
-                                    </b-button>
+                                <td class="text-center">{{ requisite.id }}</td>
+                                <td class="text-center">{{ requisite.title }}</td>
+                                <td class="text-center">{{ requisite.account_num }}</td>
+                                <td class="text-center restore-icon">
+                                    <button class="btn btn-restore" @click="restoreRequisite(requisite, index)">Восстанавить</button>
+                                    <!-- <i class="fa fa-floppy-o" aria-hidden="true"></i> -->
                                 </td>
                             </tr>
                         </tbody>
@@ -79,6 +76,22 @@ export default {
 }
 </script>
 
-<style>
-
+<style scoped>
+.btn-requisites {
+    border: 0px;
+    border-radius: 0px;
+    border-bottom: 2px solid lightblue;
+}
+.btn-requisites:hover {
+    border-color: blue;
+}
+.btn-restore {
+    /* border: 0px; */
+    border-radius: 0px;
+    border: 2px solid lightgreen;
+    font-size: 0.8em;
+}
+.btn-restore:hover {
+    border-color: green;
+}
 </style>

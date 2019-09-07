@@ -1,15 +1,14 @@
 import Dashboard from './components/admin/includes/Dashboard.vue';
 
 import DiscountsIndex from './components/admin/discounts/DiscountsIndex.vue';
-import DiscountsCreate from './components/admin/discounts/DiscountsCreate.vue';
 import DiscountShow from './components/admin/discounts/DiscountShow.vue';
 
 import RequisitesIndex from './components/admin/requisites/RequisitesIndex';
 import TrashedRequisuites from './components/admin/requisites/TrashedRequisuites';
 
-import PersonalAccessTokens from './components/passport/PersonalAccessTokens.vue';
-
-import UsersIndex from './components/admin/users/UsersIndex.vue';
+import UsersIndex from './components/admin/users/UsersIndex.vue'
+import AboutUser from './components/admin/users/AboutUser.vue'
+import TrashedUsers from './components/admin/users/TrashedUsers'
 
 import CategoriesIndex from './components/admin/categories/CategoriesIndex.vue';
 import CategoriesTree from './components/admin/categories/CategoriesTree.vue';
@@ -30,6 +29,8 @@ import RegisterUser from './components/admin/auth/Register';
 import LogoutUser from './components/admin/auth/Logout';
 
 import Error from './components/admin/includes/Error';
+
+import SearchIndex from './components/admin/search/SearchIndex'
 
 export const routes = [
     // main
@@ -130,6 +131,18 @@ export const routes = [
         meta: { requiresAuth: true, adminAuth: true }
 
     },
+    {
+        path: '/trashedUsers',
+        component: TrashedUsers,
+        name: 'trashedUsers',
+        meta: { requiresAuth: true, adminAuth: true }
+    },
+    {
+        path: '/users/:id',
+        component: AboutUser,
+        name: 'user',
+        meta: { requiresAuth: true, adminAuth: true }
+    },
 
     // products
     {
@@ -140,7 +153,7 @@ export const routes = [
 
     },
     {
-        path: '/products/edit/:id',
+        path: '/products/:id/edit',
         component: ProductEdit,
         name: 'editProduct',
         meta: { requiresAuth: true, adminAuth: true }
@@ -180,4 +193,12 @@ export const routes = [
         name: 'Orders',
         meta: { requiresAuth: true, adminAuth: true }
     },
+
+    // search
+    {
+        path: '/search',
+        component: SearchIndex,
+        name: 'search',
+        meta: { requiresAuth: true, adminAuth: true }
+    }
 ];

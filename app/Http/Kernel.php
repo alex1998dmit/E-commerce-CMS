@@ -22,6 +22,7 @@ class Kernel extends HttpKernel
         \Barryvdh\Cors\HandleCors::class,
         \Illuminate\Session\Middleware\StartSession::class,
         \Illuminate\View\Middleware\ShareErrorsFromSession::class,
+        \Barryvdh\Cors\HandleCors::class,
     ];
 
     /**

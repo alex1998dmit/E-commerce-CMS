@@ -35,13 +35,13 @@ export default {
     },
     computed: {
         discounts() {
-            return this.$store.getters.discounts.filter(discount => discount.id !== this.discount.id);
+            return this.$store.getters.discounts
         },
         discount() {
-            return this.$store.getters.selectedDiscount;
+            return this.$store.getters.selectedDiscount
         },
         users() {
-            return this.$store.getters.users.filter(user => user.discount_id === this.discount.id);
+            return this.$store.getters.users.filter(user => user.discount_id === this.discount.id)
         }
     },
     methods: {
@@ -49,11 +49,9 @@ export default {
             this.$bvModal.hide("trash-discount-category");
         },
         trashDiscount() {
+            const index = this.discounts.map((discount) => discount.id).indexOf(this.discount.id)
             if (confirm("Вы уверены что хотите удалить категорию скидок ?")) {
-                const old_discount_id = this.discount.id;
-                const new_discount_id = this.replace_discount_id;
-                this.$store.dispatch('replaceUsersDiscountId', { old_discount_id, new_discount_id });
-                this.$store.dispatch('trashDiscount', this.discount.id);
+                this.$store.dispatch('trashDiscount', { discount_id: this.discount.id, index });
             }
         }
     }

@@ -30,12 +30,12 @@
                     </thead>
                     <tbody>
                         <tr>
-                        <tr v-for="user, index in discount.users">
+                        <tr v-for="(user, index) in discount.users" :key="index" >
                             <td>{{ user.id }}</td>
                             <td>{{ user.name }}</td>
                             <td>{{ user.email }}</td>
                             <td>{{ user.created_at }}</td>
-                            <td><a href="" class="btn btn-info">О пользователе</a></td>
+                            <td><a class="btn btn-info">О пользователе</a></td>
                         </tr>
                     </tbody>
                 </table>
@@ -51,7 +51,6 @@ export default {
         app.disountId = app.$route.params.id;
         axios.get('/api/v1/discounts/' + app.disountId)
             .then((resp) => {
-                console.log(resp);
                 app.discount = resp.data;
             })
             .catch((resp) => {

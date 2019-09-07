@@ -22,10 +22,7 @@
                             <tr>
                                 <th scope="col">ID</th>
                                 <th scope="col">Заказчик (Имя)</th>
-                                <!-- <th scope="col">Категория продукта</th> -->
                                 <th scope="col">Заказчик (Email)</th>
-                                <!-- <th scope="col">Кол-во товара</th> -->
-                                <!-- <th scope="col">Цена за 1 ед</th> -->
                                 <th scope="col">Сумма</th>
                                 <th scope="col">Дата заказа</th>
                                 <th scope="col">Дата изменения</th>
@@ -108,18 +105,16 @@
                         <thead>
                             <tr>
                                 <th scope="col">ID</th>
-                                <th scope="col">ID Заказа</th>
                                 <th scope="col">Предыдущее состояние</th>
                                 <th scope="col">Новое состояние</th>
                                 <th scope="col">Дата</th>
                             </tr>
                         </thead>
                         <tbody>
-                            <tr v-for="record in order_history" :key="record.id">
+                            <tr v-for="record in order.order_history" :key="record.id">
                                 <td>{{ record.id }}</td>
-                                <td>{{ record.order_id }}</td>
-                                <td>{{ record.prev_status.name }}</td>
-                                <td>{{ record.cur_status.name }}</td>
+                                <td>{{ record.prevStatusName }}</td>
+                                <td>{{ record.newStatusName }}</td>
                                 <td>{{ record.created_at }}</td>
                             </tr>
                         </tbody>
@@ -155,9 +150,6 @@ export default {
         },
         order() {
             return this.$store.getters.selectedOrder;
-        },
-        order_history() {
-            return this.$store.getters.orderHistory;
         }
     },
     mounted() {

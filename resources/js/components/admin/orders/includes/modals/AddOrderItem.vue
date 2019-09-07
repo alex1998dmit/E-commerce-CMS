@@ -89,7 +89,6 @@ export default {
         createOrderItem () {
             this.$store.dispatch('createOrderItem', { order_id: this.order.id, product_id: this.product.id, amount: Number(this.product.amount) })
                 .then(resp => {
-                    // this.updateInfoAboutOrder()
                     this.closeModal()
                 })
                 .catch(error => {
@@ -97,7 +96,7 @@ export default {
                 })
         },
         closeModal() {
-            this.$bvModal.show('add-order-item-module')
+            this.$bvModal.hide('add-order-item-module')
         }
     }
 }

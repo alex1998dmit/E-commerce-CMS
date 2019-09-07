@@ -6,17 +6,17 @@
                     <h2>Реквизиты</h2>
                 </div>
                 <div class="col-6 text-right">
-                    <router-link class="btn btn-primary" :to="{ name: 'dashboard' }">Главная</router-link>
+                    <!-- <router-link class="btn btn-back" :to="{ name: 'dashboard' }">Главная</router-link> -->
                 </div>
             </div>
             <br>
             <div class="row">
                 <div class="col-6 text-left">
-                    <input type="text" class="form-control" placeholder="Поиск по названию реквизита ..." v-model="search_param">
+                    <!-- <input type="text" class="form-control" placeholder="Поиск по названию реквизита ..." v-model="search_param"> -->
                 </div>
                 <div class="col-6 text-right">
-                    <b-button class="btn btn-success" @click="openCreateModal()">Добавить реквизит</b-button>
-                    <router-link class="btn btn-warning" :to="{ name: 'trashedRequisuites' }">Удаленные реквизиты</router-link>
+                    <button class="btn btn-add" @click="openCreateModal()">Добавить реквизит</button>
+                    <router-link class="btn btn-trashed" :to="{ name: 'trashedRequisuites' }">Удаленные реквизиты</router-link>
                 </div>
             </div>
             <br>
@@ -25,45 +25,42 @@
                     <table class="table">
                         <thead>
                             <tr>
-                                <th scope="col">ID</th>
-                                <th scope="col">Название</th>
-                                <th scope="col">Номер реквизита</th>
-                                <th scope="col">Подробнее</th>
-                                <th scope="col">Редактировать</th>
-                                <th scope="col">Товары</th>
-                                <th scope="col">Удалить</th>
+                                <th scope="col" class="text-center">ID</th>
+                                <th scope="col" class="text-center">Название</th>
+                                <th scope="col" class="text-center">Реквизит</th>
+                                <th scope="col">Отображать</th>
+                                <th scope="col"></th>
+                                <th scope="col"></th>
+                                <th scope="col"></th>
                             </tr>
                         </thead>
                         <tbody>
                             <tr v-for="(requisite, index) in requisites" :key="requisite.id">
-                                <td>{{ requisite.id }}</td>
-                                <td>{{ requisite.title }}</td>
-                                <td>{{ requisite.requisite }}</td>
-                                <td>
-                                    <b-button variant="info" @click="openAboutModal(requisite, index)">
-                                        Подробнее
-                                    </b-button>
+                                <td class="text-center">{{ requisite.id }}</td>
+                                <td class="text-center">{{ requisite.title }}</td>
+                                <td class="text-center">{{ requisite.account_num }}</td>
+                                <td class="text-center">
+                                    <input type="checkbox" class="form-control" v-model="requisite.is_selected" @change="checkRequisite(requisite.is_selected, requisite.id, index)">
                                 </td>
-                                <td>
-                                    <b-button id="show-btn"
-                                        variant="primary"
-                                        @click="openEditModal(requisite, index)">
-                                            Редактировать
-                                    </b-button>
+
+                                <td class="text-center" colspan="1">
+                                    <a
+                                        class="view-icon"
+                                        @click="openAboutModal(requisite, index)">
+                                            <i class="fa fa-eye" aria-hidden="true"></i>
+                                    </a>
                                 </td>
-                                <td>
-                                    <b-button id="users"
-                                        variant="success"
-                                        @click="openProductsModal(requisite, index)">
-                                            Товары
-                                    </b-button>
+                                <td class="text-center" colspan="1">
+                                    <a class="edit-icon" @click="openEditModal(requisite, index)">
+                                        <i class="fa fa-pencil" aria-hidden="true"></i>
+                                    </a>
                                 </td>
-                                <td>
-                                    <b-button
-                                    variant="danger"
-                                    @click="deleteRequisite(requisite, index)">
-                                        Удалить
-                                    </b-button>
+                                <td class="text-center trash-icon" colspan="1">
+                                    <a
+                                        class="trash-icon"
+                                        @click="deleteRequisite(requisite, index)">
+                                            <i class="fa fa-trash" aria-hidden="true"></i>
+                                    </a>
                                 </td>
                             </tr>
                         </tbody>
@@ -73,7 +70,6 @@
         </div>
     <AboutRequisite v-if="this.requisites.length > 0"></AboutRequisite>
     <EditRequisite></EditRequisite>
-    <ProductsRequisite v-if="this.requisites.length > 0"></ProductsRequisite>
     <CreateRequisite></CreateRequisite>
 </div>
 </template>
@@ -81,7 +77,6 @@
 <script>
 import AboutRequisite from './modals/AboutRequisite';
 import EditRequisite from './modals/EditRequisite';
-import ProductsRequisite from './modals/ProductsRequisite';
 import CreateRequisite from './modals/CreateRequisite';
 
 export default {
@@ -93,7 +88,6 @@ data() {
 components: {
     AboutRequisite,
     EditRequisite,
-    ProductsRequisite,
     CreateRequisite,
 },
 computed: {
@@ -113,7 +107,6 @@ mounted() {
 },
 methods: {
     openProductsModal(requisite, index) {
-        this.$store.commit("SET_REQUISITE_INDEX", index);
         this.$store.commit("SET_SELECTED_REQUISITE", requisite);
         this.$bvModal.show("requisites-products-modal");
     },
@@ -126,19 +119,40 @@ methods: {
         this.$bvModal.show("create-requisite-modal");
     },
     openEditModal(requisite, index) {
-        this.$store.commit("SET_REQUISITE_INDEX", index);
         this.$store.commit("SET_SELECTED_REQUISITE", requisite);
         this.$bvModal.show("edit-requisite-modal");
     },
     openAboutModal(requisite, index) {
-        this.$store.commit("SET_REQUISITE_INDEX", index);
         this.$store.commit("SET_SELECTED_REQUISITE", requisite);
         this.$bvModal.show("about-requisite-modal");
     },
+    checkRequisite (is_selected, requisite_id, index) {
+        this.$store.dispatch('updateRequisite', { requisite: { is_selected }, requisite_id, index })
+    }
 }
 }
 </script>
 
-<style>
-
+<style scoped>
+.trash-icon {
+    color: red;
+}
+.btn-add, .btn-trashed {
+    background-color: transparent;
+    border: 0px;
+    border-radius: 0px;
+    border-bottom: 2px solid lightgrey;
+}
+.btn-add {
+    border-color: lightgreen;
+}
+.btn-trashed {
+    border-color: lightcoral;
+}
+.btn-add:hover {
+    border-color: green;
+}
+.btn-trashed:hover {
+    border-color: red;
+}
 </style>

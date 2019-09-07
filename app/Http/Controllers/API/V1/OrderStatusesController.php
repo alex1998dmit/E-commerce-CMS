@@ -21,7 +21,8 @@ class OrderStatusesController extends Controller
 
     public function single($status_id)
     {
-        $orders = Order::where('status_id', '=', $status_id)->get();
+        $orders = Order::where('status_id', '=', $status_id)->paginate(5);
+        $orderStatus = OrderStatus::find($status_id);
         foreach ($orders as $order) {
             $items = $order->orderItems;
             $order->user;
@@ -30,6 +31,6 @@ class OrderStatusesController extends Controller
                 $item->product->category;
             }
         }
-        return $orders->paginate(10);
+        return ['status' => $orderStatus, 'orders' => $orders];
     }
 }

@@ -5,8 +5,26 @@
                 <h3>Админ панель</h3>
             </div>
             <ul class="list-unstyled components">
+                <li>
+                    <router-link :to="{ name: 'search' }">Поиск</router-link>
+                </li>
+                <li class="active statuses">
+                    <a href="#ordersMenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">Заказы</a>
+                    <ul class="collapse list-unstyled" id="ordersMenu">
+                        <li>
+                             <router-link :to="{ name: 'Orders'}">Все заказы</router-link>
+                        </li>
+                        <li v-for="status in order_statuses" :key="status.id">
+                             <router-link :to="{ name: 'OrdersWithStatus', params: {statusId: status.id}}">{{ status.name }}
+                                 <div class="orders-amount">
+                                    {{ status.order.length }}
+                                 </div>
+                            </router-link>
+                        </li>
+                    </ul>
+                </li>
                 <li class="active">
-                    <a href="#homeSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">Категория скидок</a>
+                    <a href="#homeSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">Категории скидок</a>
                     <ul class="collapse list-unstyled" id="homeSubmenu">
                         <li>
                             <router-link :to="{ name: 'discounts' }">Все скидки</router-link>
@@ -52,19 +70,6 @@
                         </li>
                     </ul>
                 </li>
-                <li class="active statuses">
-                    <a href="#ordersMenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">Заказы</a>
-                    <ul class="collapse list-unstyled" id="ordersMenu">
-                        <li>
-                             <router-link :to="{ name: 'Orders'}">Все заказы</router-link>
-                        </li>
-                        <li v-for="status in order_statuses" :key="status.id">
-                             <router-link :to="{ name: 'OrdersWithStatus', params: {statusId: status.id}}">{{ status.name }} <span class="orders-num">{{ status.order.length }}</span></router-link>
-                        </li>
-                    </ul>
-                </li>
-            </ul>
-            <ul class="list-unstyled CTAs">
             </ul>
         </nav>
     </div>
@@ -80,19 +85,34 @@ export default {
         }
     },
     mounted() {
-        this.$store.dispatch('getOrderStatuses');
+        if (this.isLoggedIn) {
+            this.$store.dispatch('getOrderStatuses');
+        }
     }
 }
 </script>
 
-<style>
+<style scoped>
     #sidebar {
-        color: white;
+        /* color: white; */
         height: 100%;
     }
 
     #sidebar ul li a {
         color: white;
+    }
+    #sidebar ul li a:hover {
+        background-color: lightblue;
+    }
+    .orders-amount {
+        display: inline-block;
+        width: 20px;
+        height: 20px;
+        border-radius: 50px;
+        background-color: red;
+        padding-left: 7px;
+        font-size: 0.8em;
+        padding-top: 1px;
     }
 
 

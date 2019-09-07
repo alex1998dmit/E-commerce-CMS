@@ -42,7 +42,7 @@ class ProductsController extends Controller
     public function search(Request $request)
     {
         $search_param = $request->search_param;
-        $products = Product::where('name', 'LIKE', '%' . $search_param . '%')->paginate(3);
+        $products = Product::where('name', 'LIKE', '%' . $search_param . '%')->paginate(10);
         foreach($products as $product) {
             $product->photo;
             $product->category;

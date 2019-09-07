@@ -91,7 +91,6 @@ export default {
         },
         replaceProduct () {
             const body = { product_id: this.product.id, amount: this.product.amount }
-            // updateOrderItem (context, { item_id, body, item_index }) {
             this.$store.dispatch('updateOrderItem', {
                 item_index: this.item_index,
                 order_index: this.order_index,
@@ -99,7 +98,6 @@ export default {
                 body
             })
             .then(resp => {
-                // this.updateInfoAboutOrder()
                 this.closeModal()
             })
             .catch(error => {
@@ -107,7 +105,7 @@ export default {
             })
         },
         closeModal() {
-            this.$bvModal.show('add-order-item-module')
+            this.$bvModal.hide('change-order-product')
         }
     }
 }

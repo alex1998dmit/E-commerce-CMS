@@ -49,11 +49,13 @@ export default {
         Notifications
     },
     created() {
-        Echo.channel('orders')
-            .listen('NewOrder', (e) => {
-                this.$store.commit('ADD_ORDER_NOTIFICATION', e.order)
-                this.$store.commit('ADD_ORDER', e.order)
-            })
+        if (this.isLoggedIn) {
+            Echo.channel('orders')
+                .listen('NewOrder', (e) => {
+                    this.$store.commit('ADD_ORDER_NOTIFICATION', e.order)
+                    this.$store.commit('ADD_ORDER', e.order)
+                })
+        }
     },
     computed: {
         isLoggedIn() {

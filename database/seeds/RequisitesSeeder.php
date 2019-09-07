@@ -14,12 +14,12 @@ class RequisitesSeeder extends Seeder
         //
         DB::table('requisites')->insert([
             'title' => 'Сбербанк',
-            'requisite' => '4253 5431 1235 3213',
+            'account_num' => '4253 5431 1235 3213',
         ]);
 
         DB::table('requisites')->insert([
             'title' => 'Авангард',
-            'requisite' => '4251 4311 0000 1111',
+            'account_num' => '4251 4311 0000 1111',
             'description' => 'Лучше скидывать после полуночи',
         ]);
     }

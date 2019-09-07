@@ -1,16 +1,33 @@
 <template>
     <div>
         <div class="row">
+            <div class="col-6 text-left">
+                <h2>Пользователи</h2>
+            </div>
+        </div>
+        <br>
+        <div class="row">
             <div class="col-md-6 text-left">
                 <div class="form-group mx-sm-3">
-                    <input class="form-control" v-model="search_param" @change="search()" id="user_param" name="param" type="text" placeholder="Поиск..">
+                    <form action="" @submit.prevent="search(); searchModeOn()">
+                        <span class="fa fa-search form-control-feedback"></span>
+                        <input class="form-control search-input" v-model="search_param" id="user_param" name="param" type="text" placeholder="Введите поиск или имя пользователя ...">
+                    </form>
                 </div>
             </div>
             <div class="col-md-6 text-right">
-                <a href="" class="btn btn-xs btn-warning">Удаленные пользователи</a>
+                <router-link :to="{ name: 'trashedUsers' }" class="btn btn-trashed">Удаленные пользователи</router-link>
             </div>
             </div>
             <br>
+            <div class="row" v-if="search_mode">
+                <div class="col-md-12">
+                    <button class="search-param-button" @click="searchModeOff(); setSearchParamNull()">
+                        <i class="fa fa-times-circle-o" aria-hidden="true"></i>
+                        {{ search_param }}
+                    </button>
+                </div>
+            </div>
             <div class="category-table">
                 <table class="table">
                     <thead>
@@ -21,97 +38,167 @@
                             <th scope="col">Дата регистрации</th>
                             <th scope="col">Дата подтверждения аккаунта</th>
                             <th scope="col">Кол-во заказов</th>
-                            <th scope="col">В сумме потрачено</th>
-                            <th scope="col">Роль</th>
-                            <th scope="col">Подробнее</th>
-                            <th scope="col">Удалить</th>
+                            <th scope="col"></th>
+                            <th scope="col"></th>
                         </tr>
                     </thead>
-                    <tbody class="categories_list" id="categories_list">
-                        <tr v-for="user in users">
+                    <tbody v-if="!search_mode">
+                        <tr v-for="(user, index) in users" :key="index">
                             <td>{{ user.id }}</td>
                             <td>{{ user.name }}</td>
                             <td>{{ user.email }}</td>
                             <td>{{ user.created_at }}</td>
                             <td>{{ user.email_verified_at }}</td>
-                            <!-- <td>{{ user.order }}</td> -->
-                            <td>В разработке</td>
-                            <td>{{ 'В разработке' }}</td>
-                            <td>
-                                <tr v-for="role in user.role">
-                                    {{ role.name }}
-                                </tr>
+                            <td>{{ user.order.length }}</td>
+                            <td class="text-center">
+                                <a class="about-icon" @click="openAboutUser(user.id)">
+                                    <i class="fa fa-eye" aria-hidden="true"></i>
+                                </a>
                             </td>
-                            <td>
-                                <b-button v-b-modal.modal-xl variant="primary" @click="showUserModal(user.id)">Заказы</b-button>
+                            <td class="text-center trash-td">
+                                <a class="trash-icon" @click="trashUser(user.id, index)">
+                                    <i class="fa fa-trash" aria-hidden="true"></i>
+                                </a>
                             </td>
-                            <!-- <td><a href="" class="btn btn-xs btn-info">Подробнее</a></td> -->
-                            <td><a href="" class="btn btn-xs btn-danger">Удалить</a></td>
+                        </tr>
+                    </tbody>
+                    <!-- filtered users -->
+                    <tbody v-if="search_mode">
+                        <tr v-for="(user, index) in filtered_users" :key="index">
+                            <td>{{ user.id }}</td>
+                            <td>{{ user.name }}</td>
+                            <td>{{ user.email }}</td>
+                            <td>{{ user.created_at }}</td>
+                            <td>{{ user.email_verified_at }}</td>
+                            <td>{{ user.order.length }}</td>
+                            <td class="text-center">
+                                <a class="about-icon" @click="openAboutUser(user.id)">
+                                    <i class="fa fa-eye" aria-hidden="true"></i>
+                                </a>
+                            </td>
+                            <td class="text-center trash-td">
+                                <a class="trash-icon" @click="trashUser(user.id, index)">
+                                    <i class="fa fa-trash" aria-hidden="true"></i>
+                                </a>
+                            </td>
                         </tr>
                     </tbody>
                 </table>
+                <div class="row">
+                    <div class="col-md-12 text-center">
+                        <Pager
+                            v-if="!search_mode && users_page > 1"
+                            routerName="users"
+                            :frame=10
+                            :pageCount="users_page"
+                            @updateItems="getUsers">
+                        </Pager>
+                    </div>
+                </div>
             </div>
-            <singleUserModal :user="user"></singleUserModal>
         </div>
-    </div>
 </template>
 <script>
-import singleUserModal from './includes/singleUserModal';
+import Pager from '../helpers/Pager'
 
 export default {
     components: {
-        singleUserModal
+        Pager
     },
-    data: () => {
+    data () {
         return {
-            search_param: "",
-            users: [],
-            user: {
-                name: "",
-                order: []
-            },
+            search_param: null,
+            search_mode: false
+        }
+    },
+    computed: {
+        users () {
+            return this.$store.getters.users
+        },
+        filtered_users () {
+            return this.$store.getters.findedUsers
+        },
+        users_page () {
+            return this.$store.getters.usersPageCount
         }
     },
     mounted() {
-        let app = this;
-        axios.get('/api/v1/users')
-            .then((resp) => {
-                app.users = resp.data;
-            })
-            .catch((resp) => {
-                console.log(resp);
-                alert("Возникла проблемма при загрузке");
-            });
+        this.$store.dispatch('getUsers', 1)
     },
     methods: {
-        showUserModal(id) {
-            let app = this;
-            axios.get('/api/v1/users/' + id)
-            .then((resp) => {
-                app.user = resp.data;
-                console.log(app.user);
-            })
-            .catch((resp) => {
-                console.log(resp);
-                alert("Возникла проблемма при загрузке");
-            });
-        },
         search() {
-            event.preventDefault();
-            let app = this;
-            axios.get('/api/v1/users/search', {
-                params: {
-                    param: app.search_param
-                }
-            })
-            .then((resp) => {
-                app.users = resp.data;
-            })
-            .catch((resp) => {
-                console.log(resp);
-                alert("Возникла проблемма при поиске");
-            });
+            this.$store.dispatch('findUsers', this.search_param)
+        },
+        trashUser (user_id, index) {
+            this.$store.dispatch('trashUser', { user_id, index })
+        },
+        openAboutUser (id) {
+            this.$router.push({ name: 'user', params: { id }})
+        },
+        getUsers (page = 1) {
+            this.$store.dispatch('getUsers', page)
+        },
+        setSearchParamNull () {
+            this.search_param = null
+        },
+        searchModeOn () {
+            this.search_mode = true
+        },
+        searchModeOff () {
+            this.search_mode = false
+        },
+        clearSearchParam () {
+            this.search_param = null
         }
-    }
+    },
+
 }
 </script>
+<style scoped>
+    .trash-icon {
+        color: red;
+    }
+    .btn-trashed {
+        background-color: transparent;
+        border: 0px;
+        border-radius: 0px;
+        border-bottom: 2px solid lightgrey;
+    }
+    .btn-trashed {
+        border-color: orange;
+    }
+    .btn-trashed:hover {
+        border-color: red;
+    }
+    .trash-td {
+        color: red;
+    }
+    .search-param-button {
+        background-color: lightgrey;
+        font-size: 0.9em;
+        padding: 10px 20px 10px 20px;
+        color: #333;
+        border: 0px;
+        /* margin-left: 1.5%; */
+        margin-bottom: 3%;
+    }
+    /* search_param  */
+    .form-control-feedback {
+        position: absolute;
+        z-index: 2;
+        display: block;
+        width: 2.375rem;
+        height: 2.375rem;
+        line-height: 2.375rem;
+        text-align: center;
+        pointer-events: none;
+        color: #aaa;
+    }
+    .search-field {
+        padding-left: 3%;
+        padding-bottom: 5%;
+    }
+    .search-input {
+        padding-left: 10%;
+    }
+</style>

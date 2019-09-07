@@ -16,7 +16,7 @@
                         <textarea class="form-control" cols="30" rows="10" v-model="discount.description"></textarea>
                     </div>
                     <div class="form-group">
-                        <input type="submit" class="btn btn-success" value="Обновить">
+                        <input type="submit" class="btn btn-update" value="Обновить">
                     </div>
                 </form>
             </div>
@@ -50,6 +50,14 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
+.btn-update {
+    border: 0px;
+    border-radius: 0px;
+    border-bottom: 2px solid lightyellow;
+}
+.btn-update:hover {
+    border-color: yellow;
+}
 
 </style>

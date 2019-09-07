@@ -1,25 +1,19 @@
 <template>
     <div>
         <div class="row">
-            <div class="col-md-6">
+            <div class="col-md-6 main-sign">
                 <h2>Управление заказами</h2>
-                <!-- <h5>{{ order_status.name }}</h5> -->
             </div>
             <div class="col-md-6 text-right">
-                <b-button
-                    variant="info">
-                        Все заказы
-                </b-button>
-                <b-button
-                    variant="primary">
-                        Меню
-                </b-button>
+                <button class="btn btn-orders">
+                     Все заказы
+                </button>
             </div>
         </div>
         <br>
         <div class="row">
             <div class="col-md-12">
-                <div>
+                <div class="order-statuses-buttons">
                     Сортировать по статусу:
                     <b-button v-for="status in statuses" :key="status.id"
                         class="menu-order-statuses-buttons"
@@ -32,12 +26,6 @@
             </div>
         </div>
         <br>
-        <div class="row">
-            <div class="col-md-6">
-                <input type="text" class="form-control" placeholder="Поиск по заказам..." v-model="search_param">
-            </div>
-        </div>
-        <br>
         <div class="row" v-if="!search_mode">
             <div class="col-md-12">
                 <table class="table">
@@ -46,7 +34,6 @@
                             <th>ID</th>
                             <th>Товар</th>
                             <th>Покупатель(email)</th>
-                            <!-- <th>Количество</th> -->
                             <th>Cтоиомость</th>
                             <th>Дата заказа</th>
                             <th colspan="5">Изменить статус</th>
@@ -69,7 +56,7 @@
                             <td class="text-center">{{ order.sum }}</td>
                             <td>{{ order.created_at }}</td>
                             <td class="text-center" colspan="5">
-                                <select class="form-control status-select" name="status_id" id="status_id" v-model="order.status_id" @change="changeOrderStatus($event, order.id, order_index)">
+                                <select class="form-control status-select" name="status_id" id="status_id" v-model="order.status_id" @change="changeOrderStatus($event, order.id, order_index); uploadOrders()">
                                     <option v-for="status in statuses" :key="status.id" v-bind:value="status.id">
                                         {{ status.name }}
                                     </option>
@@ -143,24 +130,30 @@
                 </div>
             </div>
         </div> -->
+        <Pager
+            v-if="!search_mode"
+            routerName="OrdersWithStatus"
+            :frame=10
+            :pageCount="orders_page"
+            @updateItems="uploadOrders">
+        </Pager>
     </div>
 </template>
 
 <script>
 import { crudOrdersMixin } from './mixins/crudOrdersMixin';
 import TabSearch from './includes/searchResults/TabSearch';
-
+import Pager from '../helpers/Pager'
 
 export default {
     mixins: [crudOrdersMixin],
+    components: {
+        Pager
+    },
     data() {
         return {
             search_param : null,
             search_mode: false,
-            find_by_id: [],
-            find_by_product_name: [],
-            find_by_category_name: [],
-            find_by_useremail: [],
         }
     },
     computed: {
@@ -172,49 +165,35 @@ export default {
         },
         statuses() {
             return this.$store.getters.orderStatuses
+        },
+        orders_page () {
+            return this.$store.getters.ordersPageCount
         }
     },
     mounted() {
-        const status_id = this.$route.params.statusId;
+        const status_id = this.$route.params.statusId
         this.updateOrderStatus(status_id);
-        this.uploadOrders(status_id);
+        this.uploadOrders();
         this.uploadOrderStatuses();
     },
     methods: {
         // Загрузка выбранного статуса
         updateOrderStatus(status_id) {
-            this.$store.dispatch("getSelectedOrderStatus", status_id);
+            this.$store.dispatch("getOrderStatuses", status_id);
         },
         // Загрузка всех заказов
-        uploadOrders(status_id) {
-            this.$store.dispatch("getOrdersWithStatusId", status_id);
+        uploadOrders(page = 1) {
+            const statusId = this.$route.params.statusId
+            this.$store.dispatch("getOrdersWithStatusId", { statusId, page });
         },
         uploadOrderStatuses() {
             this.$store.dispatch("getOrderStatuses")
-        },
-        setButtonType(status_id) {
-            if (this.order_status.id = status_id) {
-                return "success";
-            }
-            return "danger";
         }
     },
     watch: {
-        '$route'() {
-            this.updateOrderStatus(this.$route.params.statusId);
-            this.uploadOrders();
-        },
-        search_param(search_param) {
-             if (search_param) {
-                this.search_mode = true;
-                this.find_by_id = this.orders.filter((order) => order.id === search_param);
-                this.find_by_product_name = this.orders.filter(order => order.product.name.toLowerCase().includes(this.search_param.toLowerCase()));
-                this.find_by_category_name = this.orders.filter(order => order.product.category.name.toLowerCase().includes(this.search_param.toLowerCase()));
-                this.find_by_username = this.orders.filter(order => order.user.name.toLowerCase().includes(this.search_param.toLowerCase()));
-                this.find_by_useremail = this.orders.filter(order => order.user.email.toLowerCase().includes(this.search_param.toLowerCase()));
-            } else {
-                this.search_mode = false;
-            }
+        '$route.params.statusId'() {
+            this.updateOrderStatus(this.$route.params.statusId)
+            this.uploadOrders()
         }
     }
 }
@@ -227,6 +206,14 @@ export default {
     }
     .unchecked-order {
         background-color: #f8f9fa;
+    }
+    .btn-orders {
+        border: 0px;
+        border-radius: 0px;
+        border-bottom: 2px solid lightgrey;
+    }
+    .btn-orders:hover {
+        border-color: black;
     }
 </style>
 

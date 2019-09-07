@@ -1,8 +1,4 @@
 <?php
-
-use Illuminate\Http\Request;
-    // use Auth;
-
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -14,61 +10,9 @@ use Illuminate\Http\Request;
 |
 */
 
-
 Auth::routes(['verify' => true]);
 
-// Search actions
-// Route::get('/search', 'Api\SearchController@search')->name('api.search');
-
-// User's action
 Route::post("register", 'Auth\RegisterController@register');
-
-//-- React's actions without auth
-
-    //---- Categories
-Route::get('/categories/{id}', 'API\CategoriesController@show');
-Route::get('categories', 'API\CategoriesController@index');
-
-    //---- Products
-Route::get('/products/{product}', 'API\ProductsController@show');
-Route::get('products', 'API\ProductsController@index');
-
-Route::get('user/removefromwishlist/{wishList}', 'API\WishListController@delete')->middleware('auth:api');
-
-//-- Auth's actions
-Route::group(['middleware' => 'auth:api'], function() {
-    //-- User's info
-    Route::group(['prefix' => 'user'], function() {
-
-        // Route::get('show/{id}', 'API\UserController@show');
-        Route::post('logout', 'AuthenticationController@logoutAPI');
-        Route::group(['middleware' => ['web']], function () {
-        });
-
-        //---- WishList
-        Route::get('/wishlist', 'API\WishListController@index');
-        Route::post('/wishlist', 'API\WishListController@store');
-
-        //---- Product Cart
-        Route::get('/cart', 'API\ShoppingCartController@index');
-        Route::get('/removefromcart/{shoppingCart}', 'API\ShoppingCartController@delete');
-        Route::post('/cart', 'API\ShoppingCartController@store');
-        Route::post('/cart', 'API\ShoppingCartController@store');
-        Route::put('/cart/{shoppingCart}', 'API\ShoppingCartController@update');
-
-        //---- Order
-        Route::get('/orders', 'OrdersController@index');
-        Route::post('/orders', 'OrdersController@store');
-        Route::get('/orders/{order}', 'OrdersController@show');
-        Route::get('/orders/waitPayment/{id}', 'OrdersController@paymentWaiting');
-        Route::get('/orders/paymentSent/{id}', 'OrdersController@paymentSent');
-    });
-});
-
-
-Route::post('/admin/categories/', function() {
-    return [];
-});
 
 Route::group(['prefix' => '/v1/client', 'namespace' => 'API\V1\Client'], function() {
     Route::post('/login', 'AuthController@login');
@@ -82,27 +26,29 @@ Route::group(['prefix' => '/v1/client', 'namespace' => 'API\V1\Client'], functio
     Route::get('products', 'ProductsController@index');
     Route::get('products/{id}', 'ProductsController@single');
     Route::get('products/{id}/similar', 'ProductsController@similar');
+});
 
+Route::group(['prefix' => '/v1/client', 'namespace' => 'API\V1\Client', 'middleware' => ['auth:api']], function() {
+    Route::get('/cart', 'ShoppingCartController@index');
+    Route::post('/cart', 'ShoppingCartController@store');
+    Route::get('/cart/{id}/remove', 'ShoppingCartController@delete');
+    Route::put('/cart/{id}', 'ShoppingCartController@update');
 
-    Route::group(['middleware' => 'auth:api'], function() {
-        Route::get('/cart', 'ShoppingCartController@index');
-        Route::post('/cart', 'ShoppingCartController@store');
-        Route::get('/cart/{id}/remove', 'ShoppingCartController@delete');
-        Route::put('/cart/{id}', 'ShoppingCartController@update');
-        // Route::get('/user', 'AuthController@about');
+    Route::get('/wishlist', 'WishListController@index');
+    Route::post('/wishlist', 'WishListController@store');
+    Route::get('/wishlist/{id}/remove', 'WishListController@remove');
 
-        Route::get('/wishlist', 'WishListController@index');
-        Route::post('/wishlist', 'WishListController@store');
-        Route::get('/wishlist/{id}/remove', 'WishListController@remove');
-
-        Route::post('/orders', 'OrdersController@store');
-        Route::get('/orders', 'OrdersController@index');
-        Route::put('/orders/{order_id}', 'OrdersController@update');
-
-    });
+    Route::post('/orders', 'OrdersController@store');
+    Route::get('/orders', 'OrdersController@index');
+    Route::put('/orders/{order_id}', 'OrdersController@update');
 });
 
 Route::group(['prefix' => '/v1','namespace' => 'API\V1'], function () {
+    Route::post('/login', 'AuthController@login');
+    Route::post('/register', 'AuthController@register');
+});
+
+Route::group(['prefix' => '/v1','namespace' => 'API\V1', 'middleware' => ['auth:api']], function () {
     // requisites
     Route::get('/requisites', 'RequisitesController@index');
     Route::get('/requisites/{requisite}', 'RequisitesController@single');
@@ -112,14 +58,19 @@ Route::group(['prefix' => '/v1','namespace' => 'API\V1'], function () {
     Route::post('/requisites', 'RequisitesController@store');
     Route::get('/trashed/requisites', 'RequisitesController@trashed');
 
+    // discounts
     Route::get('/discounts', 'DiscountsController@index');
     Route::get('/discounts/show/{discount}', 'DiscountsController@show');
     Route::put('/discounts/{discount}', 'DiscountsController@update');
     Route::delete('/discounts/{discount}', 'DiscountsController@trash');
     Route::post('/discounts', 'DiscountsController@store');
-    // Route::resource('discounts', 'DiscountsController', ['except' => ['create', 'edit']]);
 
     // users
+    Route::delete('/users/{id}', 'UsersController@trash');
+    Route::get('/users/{id}/restore', 'UsersController@restore');
+    Route::get('/users/{id}', 'UsersController@single');
+    Route::get('/trashedUsers', 'UsersController@trashed');
+    Route::get('/users/{id}/restore', 'UsersController@restore');
     Route::post('users/search', 'UsersController@search');
     Route::put('/users/replaceDiscounts/{old_discount_id}', 'UsersController@replaceDiscountsIds');
     Route::put('/users/{id}', 'UsersController@update');
@@ -136,59 +87,48 @@ Route::group(['prefix' => '/v1','namespace' => 'API\V1'], function () {
     Route::get('categories/trash/{id}', 'CategoriesController@trash');
     Route::delete('categories/{id}', 'CategoriesController@delete');
 
-    // TODO !!! почему роуты некорретные ?
-    // Route::get('/products', 'ProductsController@index');
+    // Products
     Route::get('/products', 'ProductsController@index');
-
     Route::post('/products/store', 'ProductsController@store');
     Route::delete('/products/trash/{id}', 'ProductsController@trash');
     Route::get('/products/{id}', 'ProductsController@single');
     Route::delete('/products/images', 'ProductsController@removeImage');
-    // TODO !!! изменить глагол на пут
     Route::post('/products/update/{product}', 'ProductsController@update');
     Route::post('/products/{id}/requisite', 'ProductsController@addRequisitesToProduct');
     Route::delete('/products/{id}/requisite', 'ProductsController@deleteRequisitesFromProduct');
     Route::get('/search/products', 'ProductsController@search');
 
-    Route::group(['middleware' => 'auth:api'], function() {
-        // Orders
-        Route::get('/orders', 'OrdersController@index');
-        Route::post('/orders', 'OrdersController@store');
-        Route::get('/orders/{id}', 'OrdersController@single');
-        Route::put('/orders/{order_id}', 'OrdersController@update');
-        Route::get('/orders/{order_id}/history', 'OrderHistoryController@index');
-        Route::post('/search/orders', 'OrdersController@search');
-        Route::delete('/orders/{order_id}', 'OrdersController@trash');
+    // Orders
+    Route::post('/filter/orders', 'OrdersController@filter');
+    Route::get('/orders', 'OrdersController@index');
+    Route::post('/orders', 'OrdersController@store');
+    Route::get('/orders/{id}', 'OrdersController@single');
+    Route::put('/orders/{order_id}', 'OrdersController@update');
+    Route::get('/orders/{order_id}/history', 'OrderHistoryController@index');
+    Route::post('/search/orders', 'OrdersController@filter');
+    Route::delete('/orders/{order_id}', 'OrdersController@trash');
 
-        // Orders Items
-        Route::get('/orderStatuses/{status_id}', 'OrderStatusesController@single');
-        Route::get('/orderStatuses', 'OrderStatusesController@index');
+    // Orders Statuses
+    Route::get('/orderStatuses/{status_id}', 'OrderStatusesController@single');
+    Route::get('/orderStatuses', 'OrderStatusesController@index');
 
-        // OrderItem
-        Route::put('/orderItems/{item_id}', 'OrderItemsController@update');
-        // Route::delete('/orderItems/{item_id}', 'OrderItemsController@delete');
-        Route::delete('/orderItems/{item_id}', 'OrderItemsController@delete');
-        Route::post('/orderItems', 'OrderItemsController@store');
-    });
-
-
-    // Order statuses
-    // Route::get('/orderStatuses/{id}', 'OrderStatuses@single');
+    // OrderItem
+    Route::put('/orderItems/{item_id}', 'OrderItemsController@update');
+    Route::delete('/orderItems/{item_id}', 'OrderItemsController@delete');
+    Route::post('/orderItems', 'OrderItemsController@store');
 
     // Order notifications
     Route::get('/notifications/orders', 'NotificationsController@orders');
     Route::post('/notificatons/check/orders/', 'NotificationsController@checkAllOrders');
     Route::post('/notificatons/orders/{id}/check', 'NotificationsController@orderCheck');
 
-    // AUTH
-    Route::post('/login', 'AuthController@login');
-    Route::get('/info', 'AuthController@info');
-    Route::post('/register', 'AuthController@register');
+    // Search
+    Route::post('/search/globall', 'SearchController@index');
 
-    Route::group(['middleware' => 'auth:api'], function() {
-        Route::post('/logout', 'AuthController@logout');
-        Route::get('/user', 'AuthController@about');
-    });
+    // AUTH
+    Route::get('/info', 'AuthController@info');
+    Route::post('/logout', 'AuthController@logout');
+    Route::get('/user', 'AuthController@about');
 });
 
 

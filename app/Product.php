@@ -53,7 +53,7 @@ class Product extends Model
     {
         return $this->hasMany('App\Photo');
     }
-
+    
     // methods
     public function addPhotosAttribute($photos)
     {
