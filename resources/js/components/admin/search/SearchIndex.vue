@@ -4,7 +4,7 @@
             <h3>Поиск</h3>
         </div>
         <div class="col-md-12">
-            <form action="" @submit.prevent="find">
+            <form @submit.prevent="find">
                 <div class="search-field">
                     <span class="fa fa-search form-control-feedback"></span>
                     <input type="text" class="form-control search-input" placeholder="Глобальный поиск" v-model="search_param">
@@ -33,10 +33,10 @@
                         <a class="nav-link" id="users-tab" data-toggle="tab" href="#users" role="tab" aria-controls="contact" aria-selected="false">Пользователи</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" id="categories-tab" data-toggle="tab" href="#categories" role="tab" aria-controls="contact" aria-selected="false">Категория</a>
+                        <a class="nav-link" id="categories-tab" data-toggle="tab" href="#categories" role="tab" aria-controls="categories" aria-selected="false">Категория</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" id="requisites-tab" data-toggle="tab" href="#requisites" role="tab" aria-controls="contact" aria-selected="false">Реквизиты</a>
+                        <a class="nav-link" id="-tab" data-toggle="tab" href="#requisites-block" role="tab" aria-controls="requisites" aria-selected="false">Реквизиты</a>
                     </li>
                 </ul>
                 <!-- Tab body  -->
@@ -50,16 +50,15 @@
                     <div class="tab-pane fade" id="users" role="tabpanel" aria-labelledby="users-tab">
                         <UsersTable :users="users"></UsersTable>
                     </div>
+                    <div class="tab-pane fade" id="requisites-block" role="tabpanel" aria-labelledby="requisites-tab">
+                        <RequisitesTable :requisites="requisites"></RequisitesTable>
+                    </div>
                     <div class="tab-pane fade" id="categories" role="tabpanel" aria-labelledby="categories-tab">
                         <CategoriesTable :categories="categories"></CategoriesTable>
-                    </div>
-                    <div class="tab-pane fade" id="requisites" role="tabpanel" aria-labelledby="requisites-tab">
-                        <RequisitesTable :requisites="requisites"></RequisitesTable>
                     </div>
                 </div>
             </div>
         </div>
-
     </div>
 </template>
 

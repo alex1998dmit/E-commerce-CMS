@@ -5,11 +5,9 @@
                 <th>ID</th>
                 <th>Товар</th>
                 <th>Покупатель(email)</th>
-                <th>Cтоиомость</th>
+                <th>Стоимость</th>
                 <th>Дата заказа</th>
                 <th colspan="5">Изменить статус</th>
-                <th></th>
-                <th></th>
                 <th></th>
             </tr>
         </thead>
@@ -27,35 +25,15 @@
                 <td class="text-center">{{ order.sum }}</td>
                 <td>{{ order.created_at }}</td>
                 <td class="text-center" colspan="5">
-                    <select class="form-control status-select" name="status_id" id="status_id" v-model="order.status_id" @change="changeOrderStatus($event, order.id, order_index)">
+                    <select class="form-control status-select" name="status_id" id="status_id" v-model="order.status_id" @change="changeOrderStatus($event, order.id, order_index)" disabled>
                         <option v-for="status in statuses" :key="status.id" v-bind:value="status.id">
                             {{ status.name }}
                         </option>
                     </select>
                 </td>
                 <td class="text-center">
-                    <a
-                        class="view-icon"
-                        v-if="!order.is_checked"
-                        @click="checkNotification(order.id, order_index)">
-                            <i class="fa fa-eye" aria-hidden="true"></i>
-                    </a>
-                    <a
-                        v-else
-                        class="view-icon"
-                        @click="uncheckedNotification(order.id, order_index)"
-                        >
-                            <i class="fa fa-eye-slash" aria-hidden="true"></i>
-                    </a>
-                </td>
-                <td class="text-center">
                     <a class="trash-icon" @click="openAboutOrder(order.id)">
                         <i class="fa fa-pencil" aria-hidden="true"></i>
-                    </a>
-                </td>
-                <td class="text-center">
-                    <a class="trash-icon" @click="trashOrder(order.id, order_index)">
-                        <i class="fa fa-trash" aria-hidden="true"></i>
                     </a>
                 </td>
             </tr>
@@ -71,6 +49,11 @@ export default {
     computed: {
         statuses() {
             return this.$store.getters.orderStatuses
+        }
+    },
+    methods: {
+        openAboutOrder (order_id) {
+            this.$router.push({ name: 'OrderAbout', params: { id: order_id }})
         }
     }
 }

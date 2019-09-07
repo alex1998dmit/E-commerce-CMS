@@ -35,6 +35,7 @@
                             <th scope="col">id</th>
                             <th scope="col">ФИО</th>
                             <th scope="col">emal</th>
+                            <th scope="col">Категория пользователя</th>
                             <th scope="col">Дата регистрации</th>
                             <th scope="col">Дата подтверждения аккаунта</th>
                             <th scope="col">Кол-во заказов</th>
@@ -47,9 +48,15 @@
                             <td>{{ user.id }}</td>
                             <td>{{ user.name }}</td>
                             <td>{{ user.email }}</td>
+                            <td>{{ user.discount.name }}</td>
                             <td>{{ user.created_at }}</td>
                             <td>{{ user.email_verified_at }}</td>
                             <td>{{ user.order.length }}</td>
+                            <td>
+                                <a class="change-user-status" @click="changeUserDiscount(user)">
+                                    <i class="fa fa-users" aria-hidden="true"></i>
+                                </a>
+                            </td>
                             <td class="text-center">
                                 <a class="about-icon" @click="openAboutUser(user.id)">
                                     <i class="fa fa-eye" aria-hidden="true"></i>
@@ -68,9 +75,15 @@
                             <td>{{ user.id }}</td>
                             <td>{{ user.name }}</td>
                             <td>{{ user.email }}</td>
+                            <td>{{ user.discount.name }}</td>
                             <td>{{ user.created_at }}</td>
                             <td>{{ user.email_verified_at }}</td>
                             <td>{{ user.order.length }}</td>
+                            <td>
+                                <a class="change-user-status" @click="changeUserDiscount(user)">
+                                    <i class="fa fa-users" aria-hidden="true"></i>
+                                </a>
+                            </td>
                             <td class="text-center">
                                 <a class="about-icon" @click="openAboutUser(user.id)">
                                     <i class="fa fa-eye" aria-hidden="true"></i>
@@ -96,14 +109,16 @@
                     </div>
                 </div>
             </div>
+            <ChangeUserDiscount></ChangeUserDiscount>
         </div>
 </template>
 <script>
 import Pager from '../helpers/Pager'
+import ChangeUserDiscount from './includes/modals/ChangeUserDiscount'
 
 export default {
     components: {
-        Pager
+        Pager, ChangeUserDiscount
     },
     data () {
         return {
@@ -124,6 +139,7 @@ export default {
     },
     mounted() {
         this.$store.dispatch('getUsers', 1)
+        this.$store.dispatch('getDiscounts')
     },
     methods: {
         search() {
@@ -149,6 +165,10 @@ export default {
         },
         clearSearchParam () {
             this.search_param = null
+        },
+        changeUserDiscount (user) {
+            this.$store.commit('SET_SELECTED_USER', user)
+            this.$bvModal.show('change-user-discount')
         }
     },
 

@@ -27,6 +27,7 @@
                                 <th class="text-center" scope="col" colspan="1"></th>
                                 <th class="text-center" scope="col" colspan="1"></th>
                                 <th class="text-center" scope="col" colspan="1"></th>
+                                <th class="text-center" scope="col" colspan="1"></th>
                             </tr>
                         </thead>
                         <tbody>
@@ -34,6 +35,13 @@
                                 <td class="text-center">{{ discount.id }}</td>
                                 <td class="text-center">{{ discount.name }}</td>
                                 <td class="text-center">{{ discount.discount }}</td>
+                                <td>
+                                    <a
+                                        class="change-discount"
+                                        @click="changeUserDiscount(discount)">
+                                            <i class="fa fa-users" aria-hidden="true"></i>
+                                    </a>
+                                </td>
                                 <td class="text-center" colspan="1">
                                     <a
                                         class="view-icon"
@@ -58,6 +66,7 @@
                     </table>
                 </div>
             </div>
+            <ChangeUserDiscount></ChangeUserDiscount>
             <ModalCreateDiscount></ModalCreateDiscount>
             <AboutDiscount></AboutDiscount>
             <EditDiscount></EditDiscount>
@@ -76,6 +85,7 @@
     import EditDiscount from './includes/modals/EditDiscount';
     import UsersModal from './includes/modals/UsersModal';
     import DeleteDiscount from './includes/modals/DeleteDiscount';
+    import ChangeUserDiscount from './includes/modals/ChangeUserDiscount'
 
     import { mapGetters } from 'vuex';
 
@@ -86,6 +96,7 @@
             EditDiscount,
             UsersModal,
             DeleteDiscount,
+            ChangeUserDiscount
         },
         mixins: [crudDiscountMixin],
         mounted() {
@@ -120,6 +131,10 @@
                 if (confirm("Вы уверены что хотите удалить категорию скидок ?")) {
                     this.$store.dispatch('trashDiscount', { discount_id, index });
                 }
+            },
+            changeUserDiscount (discount) {
+                this.$store.commit('SET_SELECTED_DISCOUNT', discount)
+                this.$bvModal.show('change-user-discount')
             }
         },
     }

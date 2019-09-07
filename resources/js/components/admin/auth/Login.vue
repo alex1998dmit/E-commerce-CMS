@@ -31,7 +31,7 @@ export default {
     data() {
         return {
             username: "",
-            password: "",
+            password: ""
         }
     },
     methods: {
@@ -43,9 +43,9 @@ export default {
             .then(resp => {
                 this.$store.dispatch("getUserInfo")
                     .then((resp) => {
-                        this.$router.push({ name: "dashboard" });
+                        this.$router.push({ name: "dashboard" })
                     })
-            });
+            })
         }
     }
 }

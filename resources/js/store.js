@@ -320,11 +320,8 @@ export default {
         SET_SELECTED_ORDER_STATUS: (state, order_status) => { state.selected_order_status = order_status },
 
         // OrderItem
-        // context.commit('UDPATE_ORDER_ITEM', { order_index, item_index, order_item: resp.data })
         UDPATE_ORDER_ITEM: (state, { order_index, item_index, order_item }) => { state.orders.selected.order_items.splice(item_index, 1, order_item) },
-        ADD_ORDER_ITEM: (state, item) => {
-            state.orders.selected.order_items.push(item)
-        },
+        ADD_ORDER_ITEM: (state, item) => { state.orders.selected.order_items.push(item) },
         REMOVE_ORDER_ITEM: (state, orderIndex) => { state.orders.selected.order_items.splice(orderIndex, 1) },
 
         // users
@@ -336,13 +333,14 @@ export default {
         REMOVE_USER: (state, index) => { state.users.items.splice(index, 1) },
         REMOVE_FROM_TRASHED_USERS: (state, index) => { state.users.trashed.splice(index, 1) },
         SET_USERS_PAGE_COUNT: (state, pageCount) => { state.users.pageCount = pageCount },
+        // CLEAR_USERS: (state) => {state.users.items = [] },
 
         // auth
         SET_USER_TOKEN: (state, token) => state.token = token,
         DESTROY_TOKEN: (state) => state.token = null,
         REMOVE_USER_PARAMS: (state) => state.currentUser = null,
         SET_CURRENT_USER_PARAMS: (state, user) => state.currentUser = user,
-        UDPATE_USER: (state, { user, index }) => state.users.splice(index, 1, user),
+        UDPATE_USER: (state, { user, index }) => state.users.items.splice(index, 1, user),
     },
     actions: {
         // auth
@@ -987,15 +985,18 @@ export default {
                 .catch(error => alert('Ошибка при получении информации о пользователе'))
         },
         updateUser(context, { user_id, user}) {
-            const index = context.getters.users.map((user) => user.id).indexOf(user_id);
-            axios.defaults.headers.common["Authorization"] = `Bearer ${context.state.token}`
-            axios.put(`/api/v1/users/${user_id}`, user)
-                .then(resp => {
-                    context.commit('UDPATE_USER', { user: resp.data, index});
-                })
-                .catch(error => {
-                    alert('Ошибка при обновлении пользоватля');
-                    console.log(error);
+            return new Promise((resolve, reject) => {
+                const index = context.getters.users.map((user) => user.id).indexOf(user_id);
+                axios.defaults.headers.common["Authorization"] = `Bearer ${context.state.token}`
+                axios.put(`/api/v1/users/${user_id}`, user)
+                    .then(resp => {
+                        context.commit('UDPATE_USER', { user: resp.data, index});
+                        resolve(resp.data)
+                    })
+                    .catch(error => {
+                        alert('Ошибка при обновлении пользоватля');
+                        console.log(error);
+                    })
                 })
         },
         replaceUsersDiscountId(context, { old_discount_id, new_discount_id }) {
@@ -1014,9 +1015,7 @@ export default {
             axios.defaults.headers.common["Authorization"] = `Bearer ${context.state.token}`
             axios
                 .post('/api/v1/users/search', { search_param })
-                .then(resp => {
-                    context.commit('SET_FILTERED_USERS', resp.data)
-                })
+                .then(resp => { context.commit('SET_FILTERED_USERS', resp.data) })
                 .catch(error => console.log('Ошибка при поиске', error) )
         },
         trashUser (context, { user_id, index }) {

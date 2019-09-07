@@ -17,7 +17,7 @@
                         </select>
                     </div>
                     <div class="form-group">
-                        <input type="submit" class="btn btn-success" value="Изменить">
+                        <input type="submit" class="btn-change" value="Изменить">
                     </div>
                 </form>
             </div>
@@ -38,16 +38,23 @@ export default {
         }
     },
     methods: {
-        updateDiscount(){
+        updateDiscount () {
             this.$store.dispatch('updateUser', { user_id: this.user.id, user: { discount_id: this.user.discount_id} });
         },
-        closeModal() {
-            this.$bvModal.hide("change-user-discount");
+        closeModal () {
+            this.$bvModal.hide('change-user-discount')
         }
     }
 }
 </script>
 
 <style>
-
+.btn-change {
+    border: 0px;
+    border-radius: 0px;
+    border-bottom: 2px solid lightgreen;
+}
+.btn-change:hover {
+    border-color: green;
+}
 </style>

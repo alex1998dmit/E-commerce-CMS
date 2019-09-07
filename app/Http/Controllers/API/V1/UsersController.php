@@ -76,7 +76,7 @@ class UsersController extends Controller
             $user->discount_id = $request->discount_id;
             $user->save();
         }
-        return $user;
+        return $this->single($user->id);
     }
 
     public function replaceDiscountsIds(Request $request, $old_discount_id)
