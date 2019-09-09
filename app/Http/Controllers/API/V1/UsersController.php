@@ -8,16 +8,21 @@ use Illuminate\Http\Request;
 
 class UsersController extends Controller
 {
-    public function index()
+    public function getAllInfo($users)
     {
-        $users = User::orderBy('created_at', 'desc')->paginate(10);
-        foreach ($users as $user) {
+        $users->each(function ($user) {
             $user->role;
             $user->wishList;
             $user->order;
             $user->discount;
-        }
+        });
         return $users;
+    }
+
+    public function index()
+    {
+        $users = User::orderBy('created_at', 'desc')->paginate(10);
+        return $this->getAllInfo($users);
     }
 
     public function single($user_id)
@@ -27,19 +32,6 @@ class UsersController extends Controller
         $user->wishList;
         $user->order;
         $user->discount;
-        return $user;
-    }
-
-    public function show($id)
-    {
-        $user = User::find($id);
-        $user->role;
-        $orders = $user->order;
-        foreach ($orders as $order) {
-            $product = $order->product;
-            $status = $order->status;
-            $category = $product->category;
-        }
         return $user;
     }
 
@@ -93,15 +85,9 @@ class UsersController extends Controller
     public function search(Request $request)
     {
         $param = $request->search_param;
-        $results = User::where('id', 'LIKE', '%' . $param . '%')
+        $users = User::where('id', 'LIKE', '%' . $param . '%')
                         ->orWhere('name', 'LIKE', '%' . $param . '%')
                         ->orWhere('email', 'LIKE', '%' . $param . '%')->get();
-        foreach ($results as $user) {
-            $user->role;
-            $user->wishList;
-            $user->order;
-            $user->discount;
-        }
-        return $results;
+        return $this->getAllInfo($users);
     }
 }

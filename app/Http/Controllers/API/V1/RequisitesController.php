@@ -11,9 +11,9 @@ class RequisitesController extends Controller
     public function index()
     {
         $requisites = Requisite::orderBy('created_at', 'desc')->get();
-        foreach($requisites as $requisite) {
+        $requisites->each(function ($requisite) {
             $requisite->products;
-        }
+        });
         return $requisites;
     }
 

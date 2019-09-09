@@ -24,34 +24,33 @@ export default {
         final_categories: [],
 
         // requisites
-        requisite_index: 0,
         trashed_requisites: [],
         requisites: {
             items: [],
             selected: {},
             trashed: []
         },
+        selectedRequisite: {
+            index: 0
+        },
 
         // discount
         discounts: {
             items: [],
-            selected: {}
-        },
-        selected_discount: {
-            users: [],
+            selected: {
+                index: 0,
+                users: []
+            }
         },
 
         // products
         products: {
             items: [],
-            filtered_items: {
-                byName: [],
-                byCategoryName: [],
-                byProductId: []
-            },
+            filtered: [],
             page: 1,
             pageCount: 0,
             selected: {
+                index: 0
             }
         },
 
@@ -92,6 +91,7 @@ export default {
                     {
                         id: null,
                         product: {
+                            id: null,
                             name: null,
                             category: {
                                 name: null
@@ -178,7 +178,7 @@ export default {
             return state.products.items
         },
         filtered_products (state) {
-            return state.products.filtered_items
+            return state.products.filtered
         },
         currentProductPage(state) {
             return state.products.page
@@ -297,11 +297,7 @@ export default {
         REMOVE_PHOTOS_FROM_UPDATING_PRODUCT(state, photo_index) { state.updating_product.photo.splice(photo_index, 1) },
         REMOVE_PRODUCT(state, product_index) { state.products.items.splice(product_index, 1) },
         UPDATE_PRODUCT: (state, { product, index }) => { state.products.items.splice(index, 1, product) },
-        SET_FILTERED_PRODUCTS_ITEMS: (state, products) => {
-            state.products.filtered_items.byName = products.by_name
-            state.products.filtered_items.byCategoryName = products.by_category_name
-            state.products.filtered_items.by_product_id = products.by_product_id
-        },
+        SET_FILTERED_PRODUCTS_ITEMS: (state, products) => { state.products.filtered = products },
         // Orders
         SET_ALL_ORDERS : (state, orders) => { state.orders.items = orders },
         ADD_ORDER: (state, order) => { state.orders.items.unshift(order) },
@@ -912,7 +908,7 @@ export default {
                 axios.put('/api/v1/orderItems/' + item_id, body)
                     .then((resp) => {
                         context.commit('UDPATE_ORDER_ITEM', { order_index, item_index, order_item: resp.data })
-                        resolve(resp)
+                        resolve(resp.data)
                     })
                     .catch((error) => {
                         alert('Ошибка при обновлении заказа')

@@ -87,13 +87,16 @@ class OrdersController extends Controller
 
     public function calculateSum($products, $user)
     {
-        $sum = 0;
         $user_discount = $user->discount->discount;
-        foreach ($products as $product) {
-            $price = Product::findOrFail($product["id"])->price;
-            $sum = $sum + $price * $product["amount"];
+        $products = collect($products);
+        $sum = $products->reduce(function ($acc, $jsonItem) {
+            $product = Product::findOrFail($jsonItem['id']);
+            return $acc + $jsonItem["amount"] * $product->price;
+        });
+        $order_discount = ($user_discount * $sum)/100;
+        if ($sum - $order_discount <= 0) {
+            abort(500, 'Sum are less than 0');
         }
-        $order_discount = $user_discount * $sum;
         return $sum - $order_discount;
     }
 

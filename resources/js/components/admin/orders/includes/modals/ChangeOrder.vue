@@ -41,9 +41,10 @@
                     Выберите пользователя:
                     <ul>
                         <li v-for="user in filtered_users" :key="user.id">
-                            <a class="chose-product-button" @click="selectUser(user.id, user.name, user.email)">
+                            <a class="chose-product-button">
                                 {{ user.name }} - {{ user.email }}
-                                <button class="chose-user-button">Заменить</button>
+                                <i class="fa fa-plus-circle" aria-hidden="true" @click="selectUser(user.id, user.name, user.email)"></i>
+                                <!-- <button class="chose-user-button" >Заменить</button> -->
                                 <!-- <i class="fa fa-plus" aria-hidden="true"></i> -->
                             </a>
                         </li>

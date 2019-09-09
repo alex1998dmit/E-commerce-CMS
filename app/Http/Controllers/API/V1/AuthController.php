@@ -76,12 +76,12 @@ class AuthController extends Controller
     public function about()
     {
         $user = Auth::user();
-        $user->order;
         return [
             'name' => $user->name,
             'email' => $user->email,
             'created_at' => $user->created_at,
             'role' => $user->role,
+            'dicsount' => $user->discount,
             'orders_count' => $user->order->count(),
             'products_at_cart_count' => $user->shoppingCart->count(),
             'wishlist_count' => $user->wishList->count()

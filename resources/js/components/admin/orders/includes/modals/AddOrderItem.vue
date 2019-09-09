@@ -23,7 +23,7 @@
                 <div class="filtered-products" v-if="show_search_results">
                     Выберите продукты:
                     <ul>
-                        <li v-for="product in filtered_products" :key="product.id">
+                        <li v-for="product in filtered_products" :key="product.id" v-if="!checkOrderItemExists(product.id)">
                             <a class="chose-product-button" @click="selectProduct(product.id, product.name)">
                                 {{ product.name }}
                                 <i class="fa fa-plus" aria-hidden="true"></i>
@@ -62,7 +62,7 @@ export default {
     props: ['order_index', 'id', 'item_index'],
     computed: {
         filtered_products() {
-            return this.$store.getters.filtered_products.byName
+            return this.$store.getters.filtered_products
         },
         order () {
             return this.$store.getters.selectedOrder
@@ -86,7 +86,9 @@ export default {
             this.show_search_results = false
             this.show_final_switch = true
         },
+        checkOrderItemExists (product_id) { return this.order.order_items.filter(item => item.order_id === this.order.id && item.product_id === product_id).length > 0 },
         createOrderItem () {
+            console.log({ order_id: this.order.id, product_id: this.product.id, amount: Number(this.product.amount) })
             this.$store.dispatch('createOrderItem', { order_id: this.order.id, product_id: this.product.id, amount: Number(this.product.amount) })
                 .then(resp => {
                     this.closeModal()

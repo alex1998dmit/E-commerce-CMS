@@ -14,17 +14,29 @@ use Illuminate\Http\Request;
 
 class ProductsController extends Controller
 {
-    public function index()
+    public function getAllInfoOfProducts($products)
     {
-        $products = Product::orderBy('created_at', 'desc')->paginate(10);
-        foreach ($products as $product) {
+        $products->each(function ($product) {
             $product->category;
             $product->requisites;
             $product->photo;
             $product->wishList;
             $product->orderItems;
-        }
+        });
         return $products;
+    }
+
+    public function findByProductName(Request $request)
+    {
+        $search_param = $request->search_param;
+        $products = Product::where('name', 'LIKE', '%' . $search_param . '%')->get();
+        return $this->getAllInfoOfProducts($products);
+    }
+
+    public function index()
+    {
+        $products = Product::orderBy('created_at', 'desc')->paginate(10);
+        return $this->getAllInfoOfProducts($products);
     }
 
     public function store(Request $request)
@@ -143,41 +155,14 @@ class ProductsController extends Controller
         return response()->json('nothing to delete', 400);
     }
 
-    public function search(Request $request) {
-        $search_param = $request->query('param');
-        $products_by_name = Product::where('name', 'LIKE', '%' . $search_param . '%')->get();
-        $products_by_category_name = [];
-        // $products_by_id = [];
-
-        // $products_by_id = Product::where('id', 'LIKE', '%' . $search_param . '%')->get();
-        $category_names = Category::where('name', 'LIKE', '%' . $search_param . '%')->get();
-        foreach ($category_names as $category) {
-            $products_by_category_name = Product::where('category_id', 'LIKE', '%' . $category->id . '%')->get();
-        }
-
-        return [
-            'by_name' => $this->getAllInfoOfProducts($products_by_name),
-            'by_category_name' => $this->getAllInfoOfProducts($products_by_category_name),
-            // 'by_product_id' => $this->getAllInfoOfProducts($products_by_id)
-        ];
-    }
-
-    public function getAllInfoOfProducts($products)
+    public function search(Request $request)
     {
-        foreach ($products as $product) {
-            $product->category;
-            $product->requisites;
-            $product->photo;
-            $product->wishList;
-            $product->orderItems;
-        }
-        return $products;
-    }
-
-    public function findByProductName(Request $request)
-    {
-        $search_param = $request->search_param;
-        $products = Product::where('name', 'LIKE', '%' . $search_param . '%')->get();
+        $products = Product::where('name', 'LIKE', '%' . $request->param . '%')->orWhere(function ($query) use ($request) {
+            $query->whereHas('category', function ($query) use ($request) {
+                $query->where('name', 'LIKE', '%' . $request->param . '%');
+            });
+        })->get();
         return $this->getAllInfoOfProducts($products);
     }
+
 }

@@ -8,18 +8,18 @@ use App\Discount;
 
 class DiscountsController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+    public function getAllInfo($discounts)
+    {
+        return $discounts->map(function ($discount) {
+            $discount->users;
+            return $discount;
+        });
+    }
+
     public function index()
     {
         $dicounts = Discount::orderBy('created_at', 'desc')->get();
-        foreach($dicounts as $discount) {
-            $discount->users;
-        }
-        return $dicounts;
+        return $this->getAllInfo($dicounts);
     }
 
     /**

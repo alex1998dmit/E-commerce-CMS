@@ -20,25 +20,27 @@ class OrdersController extends Controller
     {
         $sum = 0;
         $user_discount = $user->discount->discount;
-        foreach ($products as $product) {
+        $products->map(function ($product) use ($sum) {
             $price = Product::find($product["id"])->price;
             $sum = $sum + $price * $product["amount"];
-        }
+        });
         $order_discount = $user_discount * $sum;
         return $sum - $order_discount;
     }
 
     public function getAllInfo($orders)
     {
-        foreach($orders as $order) {
+        $orders->each(function ($order) {
             $order->user;
-            $order->orderItems;
-            foreach ($order->orderItems as $item) {
+            $order->status;
+            $items = $order->orderItems;
+            $items->map(function ($item) {
                 $item->product->category;
                 $item->product->photo;
-            }
-            $order->status;
-        }
+                return $item;
+            });
+            return $order;
+        });
         return $orders;
     }
 
@@ -52,19 +54,23 @@ class OrdersController extends Controller
     {
         $order = Order::findOrFail($id);
         $order->user;
-        $order->orderItems;
-        foreach ($order->orderItems as $item) {
+        $order->status;
+        $items = $order->orderItems;
+        $items->map(function ($item) {
             $item->product->category;
             $item->product->photo;
-        }
-        $order->status;
+            return $item;
+        });
+
         $historyItems = $order->orderHistory;
-        foreach ($historyItems as $item) {
+        $historyItems->map(function ($item) {
             $preveStatusName = OrderStatus::find($item->prev_status_id)->name;
             $newStatusName = OrderStatus::find($item->new_status_id)->name;
             $item->prevStatusName = $preveStatusName;
             $item->newStatusName = $newStatusName;
-        }
+            return $item;
+        });
+
         return $order;
     }
 

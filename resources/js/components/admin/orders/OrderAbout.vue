@@ -73,10 +73,21 @@
                                 <td class="text-center">{{ item.product.id }}</td>
                                 <td class="text-center">{{ item.product.name }}</td>
                                 <td class="text-center">{{ item.product.category.name }}</td>
-                                <td class="text-center">{{ item.amount }}</td>
                                 <td class="text-center">
-                                    <a class="trash-icon" @click="openEditOrderProductsModule(item_index)">
+                                    <input type="number" class="form-control" v-model="item.amount" :disabled="updatingOrderItem.id !== item.id">
+                                </td>
+                                <td class="text-center">
+                                    <!-- <a class="trash-icon" @click="openEditOrderProductsModule(item_index)">
                                         <i class="fa fa-pencil" aria-hidden="true"></i>
+                                    </a> -->
+                                     <a class="trash-icon" @click="editOrderItemAmount(item.id, item_index,item.amount)" v-if="buttons.amounts.edit">
+                                        <i class="fa fa-pencil" aria-hidden="true"></i>
+                                    </a>
+                                    <a class="trash-icon" :disabled="updatingOrderItem.id === item.id" @click="updateOrderItem(item_index, item.id, item.amount)" v-if="buttons.amounts.save">
+                                        <i class="fa fa-floppy-o" aria-hidden="true"></i>
+                                    </a>
+                                    <a class="trash-icon" :disabled="updatingOrderItem.id === item.id" @click="resetAmountInput(item, item_index)" v-if="buttons.amounts.cancel">
+                                       <i class="fa fa-times-circle" aria-hidden="true"></i>
                                     </a>
                                 </td>
                                 <td class="text-center">
@@ -138,7 +149,19 @@ export default {
         return {
             index: null,
             id: null,
-            item_index: 0
+            item_index: 0,
+            updatingOrderItem: {
+                id: 0,
+                old_amount: null,
+                amount: null
+            },
+            buttons: {
+                amounts: {
+                    edit: true,
+                    save: false,
+                    cancel: false,
+                }
+            }
         }
     },
     components: {
@@ -183,6 +206,61 @@ export default {
                         console.log(error)
                     })
             }
+        },
+        enableAmountButton (button) {
+            this.buttons.amounts[button] = true
+        },
+        disableAmoutButton (button) {
+            this.buttons.amounts[button] = false
+        },
+        disableAmountInput () {
+            // enable and disable buttons
+            this.disableAmoutButton('save')
+            this.disableAmoutButton('cancel')
+            this.enableAmountButton('edit')
+        },
+        resetUpdatingOrderItemParams() {
+            this.updatingOrderItem.id = null
+            this.updatingOrderItem.old_price = null
+        },
+        resetAmountInput (item, item_index) {
+            this.disableAmoutButton()
+            // update orderItem with old data
+            this.order.order_items.splice(item_index, 1, {...item, amount: this.updatingOrderItem.old_amount })
+            // reset updating Order params to default
+            this.resetUpdatingOrderItemParams()
+        },
+        editOrderItemAmount (item_id, item_index, amount)
+        {
+            this.updatingOrderItem.old_amount = amount
+            this.updatingOrderItem.id = item_id
+            this.disableAmoutButton('edit')
+            this.enableAmountButton('save')
+            this.enableAmountButton('cancel')
+        },
+        updateOrderItem (item_index, item_id, amount) {
+            const body = { amount: amount }
+            console.log({
+                order_index: this.index,
+                item_index,
+                item_id,
+                body
+            })
+            this.$store.dispatch('updateOrderItem', {
+                order_index: this.index,
+                item_index,
+                item_id,
+                body
+            })
+            .then((item) => {
+                this.disableAmountInput()
+                this.resetUpdatingOrderItemParams()
+                // this.resetAmountInput(item, item_index)
+
+            })
+            .catch(error => {
+                console.log(error)
+            })
         }
     },
     watch: {
@@ -194,6 +272,11 @@ export default {
 }
 </script>
 <style scoped>
+    input {
+        display: block;
+        margin: 0 auto;
+        width: 40%;
+    }
     .add-product-to-order {
         padding: 10px;
         background: lightgrey;

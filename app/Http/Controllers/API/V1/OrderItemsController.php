@@ -13,14 +13,17 @@ class OrderItemsController extends Controller
     public function update($item_id, Request $request)
     {
         $orderItem = OrderItem::findOrFail($item_id);
-        $orderItem->product_id = $request->product_id;
-        $orderItem->amount = $request->amount;
+        $orderItem->product_id = $request->product_id ?? $orderItem->product_id;
+        $orderItem->amount = $request->amount ?? $orderItem->amount;
         $orderItem->save();
+
         $orderItem->product;
         $orderItem->product->category;
+        
         $order = Order::findOrFail($orderItem->order_id);
         $order->sum = $order->calculateSum();
         $order->save();
+
         return $orderItem;
     }
 
@@ -37,14 +40,23 @@ class OrderItemsController extends Controller
     public function store(Request $request)
     {
         $order = Order::findOrFail($request->order_id);
-        $orderItem = OrderItem::create([
-            'order_id' => $request->order_id,
-            'product_id' => $request->product_id,
-            'amount' => $request->amount
-        ]);
+        $orderItem = OrderItem::where([
+            ['order_id', '=', $request->order_id],
+            ['product_id', '=', $request->product_id]
+        ])->first();
+        if ($orderItem) {
+            dd('update new');
+            $orderItem->amount = $request->amount + $orderItem->amount;
+        } else {
+            $orderItem = OrderItem::create([
+                'order_id' => $request->order_id,
+                'product_id' => $request->product_id,
+                'amount' => $request->amount
+            ]);
+        }
+
         $orderItem->product;
         $orderItem->product->category;
-
         $order->sum = $order->calculateSum();
         $order->save();
         return $orderItem;

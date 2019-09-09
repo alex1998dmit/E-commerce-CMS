@@ -13,24 +13,26 @@ class OrderStatusesController extends Controller
     public function index()
     {
         $statuses = OrderStatus::all();
-        foreach ($statuses as $status) {
+        $statuses->each(function ($status) {
             $status->order;
-        }
+            return $status;
+        });
         return $statuses;
     }
 
     public function single($status_id)
     {
-        $orders = Order::where('status_id', '=', $status_id)->paginate(5);
+        $orders = Order::where('status_id', '=', $status_id)->paginate(10);
         $orderStatus = OrderStatus::find($status_id);
-        foreach ($orders as $order) {
-            $items = $order->orderItems;
+        $orders->each(function ($order) {
             $order->user;
-            foreach ($items as $item) {
+            $items = $order->orderItems;
+            $items->map(function ($item) {
                 $item->product;
                 $item->product->category;
-            }
-        }
+            });
+            return $order;
+        });
         return ['status' => $orderStatus, 'orders' => $orders];
     }
 }

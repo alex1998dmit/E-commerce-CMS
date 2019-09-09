@@ -46,6 +46,7 @@ class Order extends Model
 
     public function calculateSum()
     {
+        $old_sum = $this->sum;
         $sum = 0;
         $user_discount = $this->user->discount->discount;
         $order_items = $this->orderItems;
@@ -53,6 +54,11 @@ class Order extends Model
             $sum = $sum + $item->product->price * $item->amount;
         }
         $order_discount = $user_discount * $sum;
-        return $sum - $order_discount;
+        $result = $user_discount * $sum;
+        if ($result < 0) {
+            abort(500, "Result are less than 0");
+            return $old_sum;
+        }
+        return $result > 0 ? $result : $old_sum;
     }
 }

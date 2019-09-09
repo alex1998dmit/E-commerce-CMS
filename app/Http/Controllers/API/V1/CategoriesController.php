@@ -6,36 +6,38 @@ use App\Category;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Http\Request;
-use App\Http\Resources\Category as CategoryResource;
-use App\Http\Resources\CategoryCollection;
 use App\Http\Resources\CategoryWithProducts;
 
 class CategoriesController extends Controller
 {
+    public function getAllInfo($categories)
+    {
+        return $categories->map(function ($category) {
+            $category->childs;
+            $products = $category->product;
+            $products->map(function ($product) {
+                $product->order;
+                return $product;
+            });
+            return $category;
+        });
+    }
+
     public function index()
     {
         $categories = Category::orderBy('created_at', 'desc')->get();
-        foreach($categories as $category) {
-            $childs = $category->childs;
-            $products = $category->product;
-            foreach($products as $product) {
-                $orders = $product->order;
-            }
-        }
-        return $categories;
+        return $this->getAllInfo($categories);
     }
 
     public function finalCategories()
     {
         $categories = Category::orderBy('created_at', 'desc')->get();
-        $final_categories = [];
-        foreach($categories as $category) {
+        $final_categories = $categories->filter(function($category) {
             if (count($category->childs) === 0) {
-                $final_categories[] = $category;
+                return $category;
             }
-        }
+        });
         return $final_categories;
-        // return response()->json(['data' => $final_categories],200) ;
     }
 
     public function trashed()

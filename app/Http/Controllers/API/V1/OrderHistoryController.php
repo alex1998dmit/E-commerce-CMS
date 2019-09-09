@@ -11,14 +11,14 @@ use App\Http\Controllers\Controller;
 class OrderHistoryController extends Controller
 {
     //
+
     public function index($order_id)
     {
         $order = Order::find($order_id);
         $historyRecords = $order->orderHistory;
-        foreach ($historyRecords as $record) {
+        return $historyRecords->map(function ($record) {
             $record->prev_status = OrderStatus::find($record->prev_status_id);
             $record->cur_status = OrderStatus::find($record->new_status_id);
-        }
-        return $historyRecords;
+        });
     }
 }
