@@ -7,7 +7,7 @@
                 <th>Покупатель(email)</th>
                 <th>Стоимость</th>
                 <th>Дата заказа</th>
-                <th colspan="5">Изменить статус</th>
+                <th colspan="5">Статус</th>
                 <th></th>
             </tr>
         </thead>
@@ -55,6 +55,9 @@ export default {
         openAboutOrder (order_id) {
             this.$router.push({ name: 'OrderAbout', params: { id: order_id }})
         }
+    },
+    mounted() {
+        this.$store.dispatch('getOrderStatuses')
     }
 }
 </script>

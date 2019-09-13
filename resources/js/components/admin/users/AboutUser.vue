@@ -6,6 +6,13 @@
                   <h5>О пользователе</h5>
                   <h6>{{ user.email }}</h6>
               </div>
+              <div class="col text-right">
+                <button
+                    class="btn-navigate-back"
+                    @click="$router.go(-1)">
+                        Назад
+                </button>
+            </div>
           </div>
         <div class="user-info">
             <div class="row">

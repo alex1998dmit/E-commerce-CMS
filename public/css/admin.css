@@ -222,3 +222,15 @@ a.article:hover {
     font-size: 0.8em;
     color: #939ca5;
 }
+
+
+/* Navigate-buttons */
+.btn-navigate-back {
+    border: 0px;
+    border-radius: 0px;
+    border-bottom: 2px solid lightgrey;
+}
+.btn-navigate-back:hover {
+    border-color: black;
+    /* border-bottom: 2px solid black; */
+}

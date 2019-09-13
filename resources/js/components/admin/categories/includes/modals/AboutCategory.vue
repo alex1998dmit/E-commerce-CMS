@@ -28,7 +28,7 @@
                                 <td>{{ subcategory.name }}</td>
                             </tr>
                         </td>
-                        <td>{{ selected_category.product.length }}</td>
+                        <!-- <td>{{ selected_category.product.length }}</td> -->
                         <!-- <td>{{ countOrders(selected_category.product) }}</td> -->
                         <td>{{ selected_category.created_at }}</td>
                         <td>{{ selected_category.updated_at }}</td>

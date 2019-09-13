@@ -23,6 +23,13 @@ class CategoriesController extends Controller
         });
     }
 
+    public function single($id)
+    {
+        $category = Category::findOrFail($id);
+        $category->childs;
+        return $category;
+    }
+
     public function index()
     {
         $categories = Category::orderBy('created_at', 'desc')->get();
@@ -59,24 +66,20 @@ class CategoriesController extends Controller
 
     public function store(Request $request)
     {
-        $rules = [
-            'name' => 'required|string',
+        $validation =  Validator::make($request->all(), [
+            'name' => 'required|string|min:0|max:64',
             'parent_id' => 'required|numeric|min:0'
-        ];
-
-        $validator = Validator::make($request->all(), $rules);
-
-        if ($validator->fails()) {
-            $response['data'] = $validator->messages();
-            return $response;
+        ]);
+        if ($validation->fails()) {
+            return response()->json([
+                'messages' => $validation->errors()
+            ], 401);
         }
-
         $category = Category::create($request->all());
 
         if (!$category) {
-            return response()->json("message ", 400);
+            return response()->json("Creating category error ", 400);
         }
-
         return response()->json($category, 201);
     }
 
@@ -118,8 +121,16 @@ class CategoriesController extends Controller
 
     public function update(Request $request, Category $category)
     {
+        $validation =  Validator::make($request->all(), [
+            'name' => 'string|min:0|max:64',
+            'parent_id' => 'numeric|min:0'
+        ]);
+        if ($validation->fails()) {
+            return response()->json([
+                'messages' => $validation->errors()
+            ], 401);
+        }
         $category->update($request->all());
-        $category->childs;
-        return $category;
+        return $this->single($category->id);
     }
 }

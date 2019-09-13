@@ -37,6 +37,9 @@ export default {
             set(val) {
 
             }
+        },
+        discounts() {
+            return this.$store.getters.discounts
         }
     },
     methods: {
@@ -44,7 +47,9 @@ export default {
             this.$bvModal.hide("create-discount");
         },
         updateDiscount(discount_id, discount) {
-            this.$store.dispatch('updateDiscount', { discount, discount_id });
+            const index = this.discounts.map((obj) => obj.id).indexOf(discount_id)
+            // { discount, discount_id, index }
+            this.$store.dispatch('updateDiscount', { discount, discount_id, index });
         },
     }
 }

@@ -172,9 +172,9 @@ export default {
     },
     mounted() {
         const status_id = this.$route.params.statusId
-        this.updateOrderStatus(status_id);
-        this.uploadOrders();
-        this.uploadOrderStatuses();
+        this.updateOrderStatus(status_id)
+        this.uploadOrders()
+        this.uploadOrderStatuses()
     },
     methods: {
         // Загрузка выбранного статуса

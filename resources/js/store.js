@@ -642,6 +642,17 @@ export default {
                     alert("Возникла проблемма при загрузке");
                 });
         },
+        getDiscount (context, { id }) {
+            axios.defaults.headers.common['Authorization']=`Bearer ${context.state.token}`;
+            axios.get(`/api/v1/discounts/${id}`)
+                .then(function (resp) {
+                    context.commit('SET_SELECTED_DISCOUNT', resp.data);
+                })
+                .catch(function (resp) {
+                    console.log(resp);
+                    alert("Возникла проблемма при загрузке категории пользователя");
+                });
+        },
         createDiscount(context, new_discount) {
             axios.defaults.headers.common['Authorization']=`Bearer ${context.state.token}`;
             axios.post('/api/v1/discounts', new_discount)
@@ -872,7 +883,6 @@ export default {
             axios.defaults.headers.common["Authorization"] = `Bearer ${context.state.token}`
             axios.post(`http://passportapi/api/v1/filter/orders`, body)
             .then(resp => {
-                console.log('orders', resp.data.data)
                 context.commit('SET_ALL_ORDERS', resp.data.data)
             })
             .catch(error => { alert('Ошибка при поиске', error) })

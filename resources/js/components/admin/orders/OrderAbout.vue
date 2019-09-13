@@ -77,9 +77,6 @@
                                     <input type="number" class="form-control" v-model="item.amount" :disabled="updatingOrderItem.id !== item.id">
                                 </td>
                                 <td class="text-center">
-                                    <!-- <a class="trash-icon" @click="openEditOrderProductsModule(item_index)">
-                                        <i class="fa fa-pencil" aria-hidden="true"></i>
-                                    </a> -->
                                      <a class="trash-icon" @click="editOrderItemAmount(item.id, item_index,item.amount)" v-if="buttons.amounts.edit">
                                         <i class="fa fa-pencil" aria-hidden="true"></i>
                                     </a>
@@ -240,12 +237,6 @@ export default {
         },
         updateOrderItem (item_index, item_id, amount) {
             const body = { amount: amount }
-            console.log({
-                order_index: this.index,
-                item_index,
-                item_id,
-                body
-            })
             this.$store.dispatch('updateOrderItem', {
                 order_index: this.index,
                 item_index,
@@ -255,8 +246,6 @@ export default {
             .then((item) => {
                 this.disableAmountInput()
                 this.resetUpdatingOrderItemParams()
-                // this.resetAmountInput(item, item_index)
-
             })
             .catch(error => {
                 console.log(error)

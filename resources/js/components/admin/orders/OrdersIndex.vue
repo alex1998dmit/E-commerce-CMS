@@ -157,6 +157,8 @@ export default {
     },
     mounted() {
         this.getOrders()
+        // TODO заменить не на костыльное решение 
+        this.$router.push({ path: 'orders', query: { page: 1 }})
     },
     created() {
         Echo.channel('orders')

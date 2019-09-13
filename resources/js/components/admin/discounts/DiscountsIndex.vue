@@ -43,11 +43,12 @@
                                     </a>
                                 </td>
                                 <td class="text-center" colspan="1">
-                                    <a
+                                    <router-link
                                         class="view-icon"
-                                        @click="openAboutModal(discount, index)">
+                                        :to="{ name: 'discount', params: {id: discount.id }}"
+                                        >
                                             <i class="fa fa-eye" aria-hidden="true"></i>
-                                    </a>
+                                    </router-link>
                                 </td>
                                 <td class="text-center" colspan="1">
                                     <a class="edit-icon" @click="openEditModal(discount)">

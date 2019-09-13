@@ -1,7 +1,7 @@
 import Dashboard from './components/admin/includes/Dashboard.vue';
 
-import DiscountsIndex from './components/admin/discounts/DiscountsIndex.vue';
-import DiscountShow from './components/admin/discounts/DiscountShow.vue';
+import DiscountsIndex from './components/admin/discounts/DiscountsIndex.vue'
+import DiscountAbout from './components/admin/discounts/DiscountAbout'
 
 import RequisitesIndex from './components/admin/requisites/RequisitesIndex';
 import TrashedRequisuites from './components/admin/requisites/TrashedRequisuites';
@@ -57,10 +57,9 @@ export const routes = [
     },
     {
         path: '/discounts/:id',
-        component: DiscountShow,
-        name:'showDiscount',
+        component: DiscountAbout,
+        name:'discount',
         meta: { requiresAuth: true, adminAuth: true }
-
     },
 
     // requisites

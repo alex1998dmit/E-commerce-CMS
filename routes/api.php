@@ -29,6 +29,8 @@ Route::group(['prefix' => '/v1/client', 'namespace' => 'API\V1\Client'], functio
 });
 
 Route::group(['prefix' => '/v1/client', 'namespace' => 'API\V1\Client', 'middleware' => ['auth:api']], function() {
+    Route::get('/requisites', 'RequisitesController@index');
+
     Route::get('/cart', 'ShoppingCartController@index');
     Route::post('/cart', 'ShoppingCartController@store');
     Route::get('/cart/{id}/remove', 'ShoppingCartController@delete');
@@ -60,7 +62,8 @@ Route::group(['prefix' => '/v1','namespace' => 'API\V1', 'middleware' => ['auth:
 
     // discounts
     Route::get('/discounts', 'DiscountsController@index');
-    Route::get('/discounts/show/{discount}', 'DiscountsController@show');
+    Route::get('/discounts/{discount_id}', 'DiscountsController@single');
+    // Route::get('/discounts/show/{discount}', 'DiscountsController@show');
     Route::put('/discounts/{discount}', 'DiscountsController@update');
     Route::delete('/discounts/{discount}', 'DiscountsController@trash');
     Route::post('/discounts', 'DiscountsController@store');

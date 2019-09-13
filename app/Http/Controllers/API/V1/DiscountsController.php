@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\API\V1;
 
+use Validator;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Discount;
@@ -14,6 +15,13 @@ class DiscountsController extends Controller
             $discount->users;
             return $discount;
         });
+    }
+
+    public function single($id)
+    {
+        $discount = Discount::findOrFail($id);
+        $discount->users;
+        return $discount;
     }
 
     public function index()
@@ -36,6 +44,17 @@ class DiscountsController extends Controller
      */
     public function store(Request $request)
     {
+        $validation =  Validator::make($request->all(), [
+            'name' => 'required|string|min:0|max:64',
+            'discount' => 'required|numeric|min:0|max:90',
+            'description' => 'max:1000'
+        ]);
+        if ($validation->fails()) {
+            return response()->json([
+                'messages' => $validation->errors()
+            ], 401);
+        }
+
         $discount = Discount::create([
             'name' => $request->name,
             'discount' => $request->discount,
@@ -54,11 +73,6 @@ class DiscountsController extends Controller
     {
         $users = $discount->users;
         return $discount;
-    }
-
-    public function single($id)
-    {
-        return Discount::findOrFail($id);
     }
 
     /**
@@ -81,6 +95,17 @@ class DiscountsController extends Controller
      */
     public function update(Request $request, $id)
     {
+        $validation =  Validator::make($request->all(), [
+            'name' => 'string|min:0|max:64',
+            'discount' => 'numeric|min:0|max:90',
+            'description' => 'max:1000'
+        ]);
+        if ($validation->fails()) {
+            return response()->json([
+                'messages' => $validation->errors()
+            ], 401);
+        }
+
         $discount = Discount::findOrFail($id);
         $discount->update($request->all());
         $discount->save();

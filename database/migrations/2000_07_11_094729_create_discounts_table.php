@@ -17,7 +17,7 @@ class CreateDiscountsTable extends Migration
             $table->bigIncrements('id');
             $table->string('name');
             $table->float('discount');
-            $table->text('description');
+            $table->text('description')->nullable();
             $table->timestamps();
             $table->softDeletes();
         });

@@ -11,14 +11,14 @@
             </li>
             <li class="nav-item">
                 <router-link class="nav-link btn btn-light" v-if="!isLoggedIn" :to="{ name: 'login' }">
-                     <i class="fa fa-shopping-cart">
+                     <i class="fa fa-sign-in" aria-hidden="true">
                         <span class="head-nav-icon-sign">Вход</span>
                     </i>
                 </router-link>
             </li>
             <li class="nav-item">
                 <router-link class="nav-link btn btn-light" v-if="!isLoggedIn" :to="{ name: 'register' }">
-                    <i class="fa fa-shopping-cart">
+                    <i class="fa fa-user-plus" aria-hidden="true">
                         <span class="head-nav-icon-sign">Регистрация</span>
                     </i>
                 </router-link>

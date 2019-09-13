@@ -15,7 +15,7 @@
                             </div>
                             <div class="form-group">
                                 <label for="">Описание</label>
-                                <textarea name="" id="" cols="30" rows="10" class="form-control" v-model="discount.description" required></textarea>
+                                <textarea name="" id="" cols="30" rows="10" class="form-control" v-model="discount.description"></textarea>
                             </div>
                             <div class="form-group">
                                 <input type="submit" class="btn btn-create" value="Создать">

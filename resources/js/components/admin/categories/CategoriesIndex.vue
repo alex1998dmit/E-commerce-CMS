@@ -24,7 +24,6 @@
                         <th scope="col">ID</th>
                         <th scope="col">Название</th>
                         <th scope="col">Подкатегории</th>
-                        <th scope="col">Подробнее</th>
                         <th scope="col">Удалить</th>
                         <th scope="col">Редактировать</th>
                     </tr>
@@ -37,14 +36,6 @@
                             <tr v-for="subcategory in category.childs" :key="subcategory.id">
                                 <td>{{ subcategory.name }}</td>
                             </tr>
-                        </td>
-                        <td>
-                            <b-button
-                                variant="info"
-                                size="sm"
-                                @click="aboutCategory(category)">
-                                    Подробнее
-                            </b-button>
                         </td>
                         <td>
                             <b-button
