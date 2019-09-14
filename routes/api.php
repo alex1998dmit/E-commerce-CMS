@@ -50,7 +50,7 @@ Route::group(['prefix' => '/v1','namespace' => 'API\V1'], function () {
     Route::post('/register', 'AuthController@register');
 });
 
-Route::group(['prefix' => '/v1','namespace' => 'API\V1', 'middleware' => ['auth:api']], function () {
+Route::group(['prefix' => '/v1','namespace' => 'API\V1', 'middleware' => ['auth:api', 'admin']], function () {
     // requisites
     Route::get('/requisites', 'RequisitesController@index');
     Route::get('/requisites/{requisite}', 'RequisitesController@single');
