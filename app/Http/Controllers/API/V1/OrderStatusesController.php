@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\API\V1;
 
+use Validator;
 use App\Order;
 use App\OrderStatus;
 use Illuminate\Http\Request;

@@ -85,7 +85,10 @@ export default {
                 },
                 user: {
                     name: null,
-                    email: null
+                    email: null,
+                    discount: {
+                        discount: 0,
+                    }
                 },
                 order_items: [
                     {
@@ -615,21 +618,6 @@ export default {
                     console.log(resp);
                 })
         },
-
-        // requisite-product
-        createProductRequisite(context, { requisite_id, product_id, requsite_index, product_index }) {
-            axios.defaults.headers.common['Authorization']=`Bearer ${context.state.token}`;
-            axios.post(`/api/v1/products/${product_id}/requisite`, { requisite_id })
-                .then(function (resp) {
-                    context.commit('UPDATE_REQUISITE', { requisite: resp.data.requisite, index: requsite_index });
-                    context.commit('UPDATE_PRODUCT', { product: resp.data.product, index: product_index });
-                })
-                .catch(function (resp) {
-                    console.log(resp);
-                    alert("Не получилось создать реквизит");
-                });
-        },
-
         // discounts
         getDiscounts(context) {
             axios.defaults.headers.common['Authorization']=`Bearer ${context.state.token}`;

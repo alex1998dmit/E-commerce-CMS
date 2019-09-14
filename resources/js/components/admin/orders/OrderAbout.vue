@@ -63,7 +63,9 @@
                                 <th scope="col" class="text-center">ID товара</th>
                                 <th scope="col" class="text-center">Название товара</th>
                                 <th scope="col" class="text-center">Категория товара</th>
+                                <th scope="col" class="text-center">Стоимость за 1 единицу</th>
                                 <th scope="col" class="text-center">Количество товара</th>
+                                <th scope="col" class="text-center">Общая стоимость</th>
                                 <th></th>
                                 <th></th>
                             </tr>
@@ -73,9 +75,11 @@
                                 <td class="text-center">{{ item.product.id }}</td>
                                 <td class="text-center">{{ item.product.name }}</td>
                                 <td class="text-center">{{ item.product.category.name }}</td>
+                                <td class="text-center">{{ item.product.price }}</td>
                                 <td class="text-center">
                                     <input type="number" class="form-control" v-model="item.amount" :disabled="updatingOrderItem.id !== item.id">
                                 </td>
+                                <td class="text-center">{{ item.product.price * item.amount }}</td>
                                 <td class="text-center">
                                      <a class="trash-icon" @click="editOrderItemAmount(item.id, item_index,item.amount)" v-if="buttons.amounts.edit">
                                         <i class="fa fa-pencil" aria-hidden="true"></i>
@@ -92,6 +96,9 @@
                                         <i class="fa fa-trash" aria-hidden="true"></i>
                                     </a>
                                 </td>
+                            </tr>
+                            <tr>
+                                Итого (с учетом скидки): {{ calculateSum() }}
                             </tr>
                             <tr>
                                 <td colspan="6">
@@ -181,6 +188,11 @@ export default {
         updateInfoAboutOrder () {
             this.$store.dispatch('getOrder', this.id)
             this.$store.dispatch('getOrderHistory', this.id)
+        },
+        calculateSum () {
+            const discount_size = this.order.user.discount.discount
+            const sumWithoutDiscount = this.order.order_items.reduce((acc, item) => acc + item.product.price * item.amount, 0)
+            return sumWithoutDiscount - (sumWithoutDiscount * discount_size)/100
         },
         openEditOrderProductsModule(item_index) {
             this.item_index = item_index

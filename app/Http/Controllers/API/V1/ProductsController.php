@@ -41,6 +41,18 @@ class ProductsController extends Controller
 
     public function store(Request $request)
     {
+        $validation =  Validator::make($request->all(), [
+            'name' => 'required|string|min:1|max:64',
+            'category_id' => 'required|numeric|min:1',
+            'price' => 'required|numeric|min:1',
+            'description' => 'required|string|min:1|max:1000',
+        ]);
+        if ($validation->fails()) {
+            return response()->json([
+                'messages' => $validation->errors()
+            ], 401);
+        }
+
         $photos= $request->file('photo');
 
         $product = Product::create([
@@ -58,31 +70,6 @@ class ProductsController extends Controller
                 'product_id' => $product->id,
                 'path' => $fileName,
             ]);
-        }
-        return $this->single($product->id);
-    }
-
-    public function addRequisitesToProduct($product_id, Request $request)
-    {
-        $product = Product::findOrFail($product_id);
-        $requisites = $request->requisites;
-        foreach ($requisites as $requisite) {
-            $hasRequisite = $product->requisites()->where('requisite_id', '=', $requisite["id"])->exists();
-            if (!$hasRequisite) {
-                $product->requisites()->attach($requisite["id"]);
-            }
-        }
-        return $this->single($product->id);
-    }
-
-    public function deleteRequisitesFromProduct($product_id, Request $request)
-    {
-        $product = Product::findOrFail($product_id);
-        foreach ($request->requisites as $requisite) {
-            $hasRequisite = $product->requisites()->where('requisite_id', '=', $requisite["id"])->exists();
-            if ($hasRequisite) {
-                $product->requisites()->detach($requisite["id"]);
-            }
         }
         return $this->single($product->id);
     }
@@ -108,6 +95,18 @@ class ProductsController extends Controller
 
     public function update(Request $request, $product_id)
     {
+        $validation =  Validator::make($request->all(), [
+            'name' => 'string|min:1|max:64',
+            'category_id' => 'numeric|min:1',
+            'price' => 'numeric|min:1',
+            'description' => 'string|min:1|max:1000',
+        ]);
+        if ($validation->fails()) {
+            return response()->json([
+                'messages' => $validation->errors()
+            ], 401);
+        }
+
         $product = Product::findOrFail($product_id);
         $old_price = $product->price;
         $new_price = $request->price;

@@ -10,8 +10,6 @@ use App\Http\Controllers\Controller;
 
 class OrderHistoryController extends Controller
 {
-    //
-
     public function index($order_id)
     {
         $order = Order::find($order_id);

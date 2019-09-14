@@ -63,7 +63,6 @@ Route::group(['prefix' => '/v1','namespace' => 'API\V1', 'middleware' => ['auth:
     // discounts
     Route::get('/discounts', 'DiscountsController@index');
     Route::get('/discounts/{discount_id}', 'DiscountsController@single');
-    // Route::get('/discounts/show/{discount}', 'DiscountsController@show');
     Route::put('/discounts/{discount}', 'DiscountsController@update');
     Route::delete('/discounts/{discount}', 'DiscountsController@trash');
     Route::post('/discounts', 'DiscountsController@store');
@@ -97,8 +96,6 @@ Route::group(['prefix' => '/v1','namespace' => 'API\V1', 'middleware' => ['auth:
     Route::get('/products/{id}', 'ProductsController@single');
     Route::delete('/products/images', 'ProductsController@removeImage');
     Route::post('/products/update/{product}', 'ProductsController@update');
-    Route::post('/products/{id}/requisite', 'ProductsController@addRequisitesToProduct');
-    Route::delete('/products/{id}/requisite', 'ProductsController@deleteRequisitesFromProduct');
     Route::get('/search/products', 'ProductsController@search');
 
     // Orders

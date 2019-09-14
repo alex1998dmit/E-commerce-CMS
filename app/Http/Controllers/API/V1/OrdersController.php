@@ -2,13 +2,10 @@
 
 namespace App\Http\Controllers\API\V1;
 
+use Validator;
 use Auth;
 use App\Order;
-use App\Category;
 use App\Product;
-use App\User;
-use App\OrderItem;
-use App\Events\NewOrder;
 use App\OrderStatusesChangings;
 use App\OrderStatus;
 use Illuminate\Http\Request;
@@ -25,7 +22,11 @@ class OrdersController extends Controller
             $sum = $sum + $price * $product["amount"];
         });
         $order_discount = $user_discount * $sum;
-        return $sum - $order_discount;
+        $result = $sum - $order_discount;
+        if ($result <= 0) {
+            return response()->json(['message' => 'Sum are equal or less than zero'], 500);
+        }
+        return $result;
     }
 
     public function getAllInfo($orders)
@@ -54,6 +55,7 @@ class OrdersController extends Controller
     {
         $order = Order::findOrFail($id);
         $order->user;
+        $order->user->discount;
         $order->status;
         $items = $order->orderItems;
         $items->map(function ($item) {
@@ -82,6 +84,17 @@ class OrdersController extends Controller
 
     public function update(Request $request, $id)
     {
+        $validation =  Validator::make($request->all(), [
+            'order_id' => 'numeric|min:1',
+            'prev_status_id' => 'numeric|min:1',
+            'new_status_id' => 'numeric|min:1',
+        ]);
+        if ($validation->fails()) {
+            return response()->json([
+                'messages' => $validation->errors()
+            ], 401);
+        }
+
         $order = Order::findOrFail($id);
         $order->user_id = $request->user_id ?? $order->user_id;
         $order->sum = $request->sum ?? $order->sum;
@@ -100,6 +113,17 @@ class OrdersController extends Controller
 
     public function store(Request $request)
     {
+        $validation =  Validator::make($request->all(), [
+            'order_id' => 'required|numeric|min:1',
+            'prev_status_id' => 'required|numeric|min:1',
+            'new_status_id' => 'required|numeric|min:1',
+        ]);
+        if ($validation->fails()) {
+            return response()->json([
+                'messages' => $validation->errors()
+            ], 401);
+        }
+
         $user = Auth::user();
         $order = Order::create([
             'user_id' => $user->id,
@@ -125,6 +149,18 @@ class OrdersController extends Controller
 
     public function filter(Request $request)
     {
+        $validation =  Validator::make($request->all(), [
+            'order_id' => 'numeric|min:1',
+            'search_param' => 'string|min:1',
+            'min_price' => 'numeric|min:1',
+            'max_price' => 'numeric|min:1',
+        ]);
+        if ($validation->fails()) {
+            return response()->json([
+                'messages' => $validation->errors()
+            ], 401);
+        }
+
         if ($request->has('order_id')) {
             return $this->getAllInfo(Order::where('id', '=', $request->order_id)->paginate(1));
         }
