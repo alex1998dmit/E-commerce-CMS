@@ -13,12 +13,6 @@ class Product extends Model
         'category_id', 'name', 'price', 'description',
     ];
 
-    // TODO заменить на что-то более лучшее, по-моему использовать так методы нельзя
-    protected $photos = [];
-
-    // TODO Проверить семантическую верность приема
-    // protected $appends = ['photos'];
-
     public function requisites()
     {
         return $this->belongsToMany('App\Requisite');
@@ -52,23 +46,5 @@ class Product extends Model
     public function photo()
     {
         return $this->hasMany('App\Photo');
-    }
-    
-    // methods
-    public function addPhotosAttribute($photos)
-    {
-        foreach ($photos as $photo) {
-            $this->photos = $photo;
-        }
-    }
-
-    public function getPhotosAttribute()
-    {
-        return $this->photos;
-    }
-
-    public function getTotalWishListAttribute()
-    {
-        return $this->hasMany('App\WishList')->whereProductId($this->id)->count();
     }
 }

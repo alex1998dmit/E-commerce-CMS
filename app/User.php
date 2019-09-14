@@ -39,10 +39,6 @@ class User extends Authenticatable implements MustVerifyEmail
         'email_verified_at' => 'datetime',
     ];
 
-    public function isAdmin() {
-        return $this->role()->where('name', 'admin')->exists();
-     }
-
     // RELATHIONSHIPS
 
     public function wishList()
@@ -71,10 +67,11 @@ class User extends Authenticatable implements MustVerifyEmail
     }
 
     // NOT RELATHIONSHIPS
-
+    // Check User Role
     /**
     * @param string|array $roles
     */
+
     public function authorizeRoles($roles)
     {
         if (is_array($roles)) {
