@@ -216,7 +216,7 @@ export default {
             return state.orders.pageCount;
         },
 
-        // orderstatuses
+        // orders tatuses
         orderStatuses(state) {
             return state.order_statuses;
         },
@@ -307,16 +307,19 @@ export default {
         SET_ORDERS_PAGE_COUNT (state, pageCount) { state.orders.pageCount = pageCount },
         SET_ORDERS_CURRENT_PAGE (state, page) { state.orders.page = page },
         SET_SELECTED_ORDER: (state, order) => { state.orders.selected = order },
-        UPDATE_ORDER: (state, { order_index, order }) => {
-            state.orders.items.splice(order_index, 1, order)
-            state.orders.selected = order
-        },
+        UPDATE_ORDER_ITEMS: (state, { order_index, order }) => { state.orders.items.splice(order_index, 1, order) },
         SET_SELECTED_ORDER_HISTORY: (state, order_history) => state.order_history = order_history,
         REMOVE_ORDERS_ITEM: (state, order_index) => { state.orders.items.splice(order_index, 1) },
 
         // Order statuses
         SET_ORDER_STATUSES: (state, order_statuses) => { state.order_statuses = order_statuses },
         SET_SELECTED_ORDER_STATUS: (state, order_status) => { state.selected_order_status = order_status },
+        ADD_ORDER_TO_ORDER_STATUS: (state, status_index) => {
+            state.order_statuses[status_index].orders_num++
+        },
+        REMOVE_ORDER_FROM_ORDER_STATUS: (state, status_index) => { state.order_statuses[status_index].orders_num-- },
+        REMOVE_UNCHECKED_ORDER_FROM_ORDER_STATUS: (state, status_index) => { state.order_statuses[status_index].unchecked_orders_num-- },
+        ADD_UNCHECKED_ORDER_TO_ORDER_STATUS: (state, status_index) => { state.order_statuses[status_index].unchecked_orders_num ++ },
 
         // OrderItem
         UDPATE_ORDER_ITEM: (state, { order_index, item_index, order_item }) => { state.orders.selected.order_items.splice(item_index, 1, order_item) },
@@ -832,15 +835,37 @@ export default {
                 });
         },
         updateOrder(context, { order_id, order, index }) {
-            axios.defaults.headers.common["Authorization"] = `Bearer ${context.state.token}`
-            axios.put('/api/v1/orders/' + order_id, order)
-                .then(resp => {
-                    context.commit('UPDATE_ORDER', {  order_index: index, order:resp.data })
-                })
-                .catch((resp) => {
-                    alert('Ошибка при обновлении заказа');
-                    console.log(resp.data);
-                })
+            console.log(order)
+            return new Promise((resolve, reject) => {
+                axios.defaults.headers.common["Authorization"] = `Bearer ${context.state.token}`
+                axios.put('/api/v1/orders/' + order_id, order)
+                    .then(resp => {
+                        context.commit('UPDATE_ORDER_ITEMS', {  order_index: index, order:resp.data })
+                        resolve(resp)
+                    })
+                    .catch((error) => {
+                        alert('Ошибка при обновлении заказа');
+                        console.log(resp.data);
+                        reject(error)
+                    })
+            })
+
+        },
+        updateStatusOfOrder (context, { order_id, order, index }) {
+            console.log(1)
+            return new Promise((resolve, reject) => {
+                axios.defaults.headers.common["Authorization"] = `Bearer ${context.state.token}`
+                axios.put('/api/v1/orders/' + order_id, order)
+                    .then(resp => {
+                        context.commit('REMOVE_ORDERS_ITEM', index)
+                            resolve(resp)
+                        })
+                    .catch((error) => {
+                        alert('Ошибка при обновлении заказа');
+                        console.log(resp.data);
+                        reject(error)
+                    })
+            })
         },
         getFindedOrders (context) {
             axios.defaults.headers.common["Authorization"] = `Bearer ${context.state.token}`
@@ -980,7 +1005,7 @@ export default {
         },
         updateUser(context, { user_id, user}) {
             return new Promise((resolve, reject) => {
-                const index = context.getters.users.map((user) => user.id).indexOf(user_id);
+                const index = context.getters.users.map((user) => user.id).indexOf(user_id)
                 axios.defaults.headers.common["Authorization"] = `Bearer ${context.state.token}`
                 axios.put(`/api/v1/users/${user_id}`, user)
                     .then(resp => {

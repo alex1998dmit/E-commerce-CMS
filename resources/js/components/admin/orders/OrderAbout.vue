@@ -97,8 +97,8 @@
                                     </a>
                                 </td>
                             </tr>
-                            <tr>
-                                Итого (с учетом скидки): {{ calculateSum() }}
+                            <tr class="text-right">
+                                <td colspan="8">Промежуточная стоимость *: {{ calculateSum() }}</td>
                             </tr>
                             <tr>
                                 <td colspan="6">

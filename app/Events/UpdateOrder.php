@@ -32,6 +32,5 @@ class UpdateOrder implements ShouldBroadcast
     public function broadcastOn()
     {
         return new Channel('orders');
-        // return new PrivateChannel('channel-name');
     }
 }

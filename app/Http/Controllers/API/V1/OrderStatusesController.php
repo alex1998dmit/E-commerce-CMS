@@ -15,7 +15,11 @@ class OrderStatusesController extends Controller
     {
         $statuses = OrderStatus::all();
         $statuses->each(function ($status) {
-            $status->order;
+            $status->orders_num = $status->order->count();
+            $status->unchecked_orders_num = Order::where([
+                    ['status_id', '=', $status->id],
+                    ['is_checked', '=', '0']
+                ])->get()->count();
             return $status;
         });
         return $statuses;

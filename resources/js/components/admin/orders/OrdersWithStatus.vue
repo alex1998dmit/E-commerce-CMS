@@ -43,7 +43,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr v-for="(order, order_index) in orders" :key="order_index" :class="{ 'unchecked-order': order.is_checked === 0 }">
+                        <tr v-for="(order, order_index) in orders" :key="order.id" :class="{ 'unchecked-order': order.is_checked === 0 }">
                             <td class="text-center">{{ order.id }}</td>
                             <td class="text-left">
                                 <ul class="products-items">
@@ -66,7 +66,7 @@
                                 <a
                                     class="view-icon"
                                     v-if="!order.is_checked"
-                                    @click="checkNotification(order.id, order_index)">
+                                    @click="checkNotification(order, order_index)">
                                         <i class="fa fa-eye" aria-hidden="true"></i>
                                 </a>
                                 <a
@@ -92,44 +92,6 @@
                 </table>
             </div>
         </div>
-        <!-- <div class="row" v-if="search_mode">
-            <div class="col">
-                <ul class="nav nav-tabs" id="myTab" role="tablist">
-                    <li class="nav-item">
-                        <a class="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true">По id</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" id="profile-tab" data-toggle="tab" href="#profile" role="tab" aria-controls="profile" aria-selected="false">По названию продукта</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" id="contact-tab" data-toggle="tab" href="#contact" role="tab" aria-controls="contact" aria-selected="false">По категории продукта</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" id="user-email-tab" data-toggle="tab" href="#useremail" role="tab" aria-controls="useremail" aria-selected="false">По email пользователя</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" id="user-name-tab" data-toggle="tab" href="#username" role="tab" aria-controls="username" aria-selected="false">По имени пользователя</a>
-                    </li>
-                </ul>
-                <div class="tab-content" id="myTabContent">
-                    <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
-                        <TabSearch :orders="find_by_id"></TabSearch>
-                    </div>
-                    <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
-                        <TabSearch :orders="find_by_product_name"></TabSearch>
-                    </div>
-                    <div class="tab-pane fade" id="contact" role="tabpanel" aria-labelledby="contact-tab">
-                        <TabSearch :orders="find_by_category_name"></TabSearch>
-                    </div>
-                    <div class="tab-pane fade"  id="useremail" role="tabpanel" aria-labelledby="user-email-tab">
-                        <TabSearch :orders="find_by_useremail"></TabSearch>
-                    </div>
-                    <div class="tab-pane fade"  id="username" role="tabpanel" aria-labelledby="user-name-tab">
-                        <TabSearch :orders="find_by_username"></TabSearch>
-                    </div>
-                </div>
-            </div>
-        </div> -->
         <Pager
             v-if="!search_mode"
             routerName="OrdersWithStatus"
@@ -188,6 +150,19 @@ export default {
         },
         uploadOrderStatuses() {
             this.$store.dispatch("getOrderStatuses")
+        },
+        changeOrderStatus (event, order_id, order_index) {
+            const status_id = event.target.value
+            this.$store.dispatch('updateOrder', { order_id, index: order_index, order: { status_id }})
+                .then((resp) => {
+                    console.log(status_id)
+                    // костыль
+                    this.$store.commit('ADD_ORDER_TO_ORDER_STATUS', status_id - 1)
+                    if (!resp.data.is_checked) {
+                        this.$store.commit('ADD_UNCHECKED_ORDER_TO_ORDER_STATUS', status_id - 1)
+                    }
+                    this.uploadOrders()
+                })
         }
     },
     watch: {

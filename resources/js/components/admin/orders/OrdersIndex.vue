@@ -83,7 +83,7 @@
                                 <a
                                     class="view-icon"
                                     v-if="!order.is_checked"
-                                    @click="checkNotification(order.id, order_index)">
+                                    @click="checkNotification(order, order_index)">
                                         <i class="fa fa-eye" aria-hidden="true"></i>
                                 </a>
                                 <a
@@ -157,7 +157,7 @@ export default {
     },
     mounted() {
         this.getOrders()
-        // TODO заменить не на костыльное решение 
+        // TODO заменить не на костыльное решение
         this.$router.push({ path: 'orders', query: { page: 1 }})
     },
     created() {

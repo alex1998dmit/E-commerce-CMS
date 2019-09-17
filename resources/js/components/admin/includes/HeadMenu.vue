@@ -52,8 +52,18 @@ export default {
         if (this.isLoggedIn) {
             Echo.channel('orders')
                 .listen('NewOrder', (e) => {
+                    const order_status_index = this.$store.getters.orderStatuses.map(status => status.id).indexOf(e.order.status_id)
                     this.$store.commit('ADD_ORDER_NOTIFICATION', e.order)
                     this.$store.commit('ADD_ORDER', e.order)
+                    this.$store.commit('ADD_ORDER_TO_ORDER_STATUS', order_status_index)
+                    this.$store.commit('ADD_UNCHECKED_ORDER_TO_ORDER_STATUS', order_status_index)
+                })
+                .listen('UpdateOrder', (e) => {
+                    const status_index = this.$store.getters.orderStatuses.map((orderStatus) => orderStatus.id).indexOf(status_id)
+                    const order_id = e.order.id
+                    const status_id = e.order.status_id
+                    // this.$store.commit('ADD_ORDER_TO_ORDER_STATUS', order_status_index)
+                    this.$store.commit('ADD_UNCHECKED_ORDER_TO_ORDER_STATUS', status_index)
                 })
         }
     },

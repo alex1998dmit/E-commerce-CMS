@@ -17,7 +17,10 @@
                         <li v-for="status in order_statuses" :key="status.id">
                              <router-link :to="{ name: 'OrdersWithStatus', params: {statusId: status.id}}">{{ status.name }}
                                  <div class="orders-amount">
-                                    {{ status.order.length }}
+                                    {{ status.orders_num }}
+                                 </div>
+                                 <div class="unchecked-orders-amount" v-if="status.unchecked_orders_num > 0">
+                                    {{ status.unchecked_orders_num }}
                                  </div>
                             </router-link>
                         </li>
@@ -105,6 +108,17 @@ export default {
         background-color: lightblue;
     }
     .orders-amount {
+        display: inline-block;
+        width: 20px;
+        height: 20px;
+        border-radius: 50px;
+        background-color: lightgrey;
+        color: black;
+        padding-left: 7px;
+        font-size: 0.8em;
+        padding-top: 1px;
+    }
+    .unchecked-orders-amount {
         display: inline-block;
         width: 20px;
         height: 20px;
