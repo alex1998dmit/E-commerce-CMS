@@ -4,7 +4,7 @@
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
-        <title>Laravel</title>
+        <title>Ecommerce</title>
 
         <meta name="csrf-token" content="{{ csrf_token() }}">
         <!-- Fonts -->
@@ -18,12 +18,6 @@
             <app></app>
         </div>
         <script src="{{ asset('js/app.js') }}"></script>
-        <script>
-            // Echo.channel('home')
-            //     .listen('NewMessage', (e) => {
-            //         console.log(e.message);
-            //     })
-        </script>
         <script type="text/javascript">
             $(document).ready(function () {
                 $('#sidebarCollapse').on('click', function () {

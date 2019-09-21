@@ -32,17 +32,18 @@ import Error from './components/admin/includes/Error';
 
 import SearchIndex from './components/admin/search/SearchIndex'
 
+
 export const routes = [
     // main
-        // admin
+    // admin
     {
-        path: '/',
+        path: '/admin',
         component: Dashboard,
         name: 'dashboard',
         meta: { requiresAuth: true }
     },
     {
-        path: '/error',
+        path: '/admin/error',
         component: Error,
         name: 'error',
         meta: { requiresAuth: true }
@@ -50,13 +51,13 @@ export const routes = [
 
     // discounts
     {
-        path: '/discounts',
+        path: '/admin/discounts',
         name: 'discounts',
         component: DiscountsIndex,
         meta: { requiresAuth: true, adminAuth: true }
     },
     {
-        path: '/discounts/:id',
+        path: '/admin/discounts/:id',
         component: DiscountAbout,
         name:'discount',
         meta: { requiresAuth: true, adminAuth: true }
@@ -64,13 +65,13 @@ export const routes = [
 
     // requisites
     {
-        path: '/requisites',
+        path: '/admin/requisites',
         component: RequisitesIndex,
         name: 'requisites',
         meta: { requiresAuth: true, adminAuth: true }
     },
     {
-        path: '/trashedRequisuites',
+        path: '/admin/trashedRequisuites',
         component: TrashedRequisuites,
         name: 'trashedRequisuites',
         meta: { requiresAuth: true, adminAuth: true }
@@ -78,21 +79,21 @@ export const routes = [
 
     // categories
     {
-        path: '/categories',
+        path: '/admin/categories',
         component: CategoriesIndex,
         name: 'categories',
         meta: { requiresAuth: true, adminAuth: true }
 
     },
     {
-        path: '/treeCateories',
+        path: '/admin/treeCateories',
         component: CategoriesTree,
         name: 'CategoriesTree',
         meta: { requiresAuth: true, adminAuth: true }
 
     },
     {
-        path: '/trashedCategories',
+        path: '/admin/trashedCategories',
         component: CategoriesTrashed,
         name: 'CategoriesTrashed',
         meta: { requiresAuth: true, adminAuth: true }
@@ -101,7 +102,7 @@ export const routes = [
 
     // auth
     {
-        path: '/login',
+        path: '/admin/login',
         component: LoginUser,
         name:'login',
         meta: {
@@ -109,7 +110,7 @@ export const routes = [
         }
     },
     {
-        path: '/register',
+        path: '/admin/register',
         component: RegisterUser,
         name: 'register',
         meta: {
@@ -117,27 +118,27 @@ export const routes = [
         }
     },
     {
-        path: '/logout',
+        path: '/admin/logout',
         component: LogoutUser,
         name: 'logout',
     },
 
     // users
     {
-        path: '/users',
+        path: '/admin/users',
         component: UsersIndex,
         name: 'users',
         meta: { requiresAuth: true, adminAuth: true }
 
     },
     {
-        path: '/trashedUsers',
+        path: '/admin/trashedUsers',
         component: TrashedUsers,
         name: 'trashedUsers',
         meta: { requiresAuth: true, adminAuth: true }
     },
     {
-        path: '/users/:id',
+        path: '/admin/users/:id',
         component: AboutUser,
         name: 'user',
         meta: { requiresAuth: true, adminAuth: true }
@@ -145,27 +146,27 @@ export const routes = [
 
     // products
     {
-        path: '/products',
+        path: '/admin/products',
         component: ProductsIndex,
         name: 'products',
         meta: { requiresAuth: true, adminAuth: true }
 
     },
     {
-        path: '/products/:id/edit',
+        path: '/admin/products/:id/edit',
         component: ProductEdit,
         name: 'editProduct',
         meta: { requiresAuth: true, adminAuth: true }
 
     },
     {
-        path: '/products/create',
+        path: '/admin/products/create',
         component: ProductCreate,
         name: 'createProduct',
         meta: { requiresAuth: true, adminAuth: true }
     },
     {
-        path: '/products/:id',
+        path: '/admin/products/:id',
         component: AboutProduct,
         name: 'aboutProduct',
         meta: { requiresAuth: true, adminAuth: true }
@@ -173,7 +174,7 @@ export const routes = [
 
     // orderWithStatus
     {
-        path: '/orders/:statusId',
+        path: '/admin/orders/:statusId',
         component: OrdersWithStatus,
         name: 'OrdersWithStatus',
         meta: { requiresAuth: true, adminAuth: true }
@@ -181,13 +182,13 @@ export const routes = [
     },
     // orders
     {
-        path: '/orders/:id/about',
+        path: '/admin/orders/:id/about',
         component: OrderAbout,
         name: 'OrderAbout',
         meta: { requiresAuth: true, adminAuth: true }
     },
     {
-        path: '/orders',
+        path: '/admin/orders',
         component: OrdersIndex,
         name: 'Orders',
         meta: { requiresAuth: true, adminAuth: true }
@@ -195,7 +196,7 @@ export const routes = [
 
     // search
     {
-        path: '/search',
+        path: '/admin/search',
         component: SearchIndex,
         name: 'search',
         meta: { requiresAuth: true, adminAuth: true }

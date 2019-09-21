@@ -1,19 +1,11 @@
 require('./bootstrap');
 
-// const files = require.context('./', true, /\.vue$/i);
-// files.keys().map(key => Vue.component(key.split('/').pop().split('.')[0], files(key).default));
-
-
 import VueRouter from 'vue-router';
 import Vue from 'vue';
 import Vuex from 'vuex';
 import { routes } from './routes';
 import StoreData from './store';
 import VueFlashMessage from 'vue-flash-message';
-// svg-icons
-// import { library } from '@fortawesome/fontawesome-svg-core';
-// import { faCoffee } from '@fortawesome/free-solid-svg-icons'
-// import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 
 import App from './components/admin/App.vue';
 

@@ -33,6 +33,7 @@ class Order extends Model
         return $this->hasMany('App\OrderStatusesChangings');
     }
 
+    
     public function changeStatus($status)
     {
         $status_id = OrderStatus::where('name', '=', $status)->first()->id;
