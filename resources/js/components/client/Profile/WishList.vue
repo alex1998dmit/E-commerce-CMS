@@ -17,7 +17,7 @@
                   <div class="row">
                     <div class="col-4">
                       <div class="img-block">
-                        <img :src="'http://passportapi/upload/products/' + item.product.photo[0].path" alt="">
+                        <img :src="`${host}/upload/products/${item.product.photo[0].path}`" alt="">
                       </div>
                     </div>
                     <div class="col-8">
@@ -60,13 +60,16 @@ import { ProductActions } from '../../../client/mixins/ProductActions'
 
 export default {
   name: 'WishList',
+  mixins: [ProductActions],
   components: {
     ProductCard
   },
-  mixins: [ProductActions],
   computed: {
     products () {
       return this.$store.getters.wishListItems
+    },
+    host () {
+      return this.$store.getters.host
     }
   }
 }

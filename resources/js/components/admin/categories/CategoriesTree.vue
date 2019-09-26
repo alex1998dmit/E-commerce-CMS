@@ -16,13 +16,9 @@
                 <button type="button" class="btn btn-warning btn-sm buttons-crud"  @click="changeCategory(category)">изменить</button>
             <ChildsCategories v-if="category.childs.length > 0" :childs="category.childs"></ChildsCategories>
         </li>
-        <!-- Create New Category -->
         <CreateCategory></CreateCategory>
-        <!-- Изменение категории -->
         <ChangeCategory></ChangeCategory>
-        <!-- Создать продукт с категорией-->
         <CreateProductWithCategory></CreateProductWithCategory>
-        <!-- Список продуктов категории -->
         <ProductsByCategory></ProductsByCategory>
     </div>
 </template>

@@ -35,7 +35,7 @@ class OrdersController extends Controller
                 }
 
                 $order->save();
-                event(new UpdateOrder($this->single($order->id)));
+//                event(new UpdateOrder($this->single($order->id)));
                 return $this->single($orderId);
             } else {
                 return response()->json(['message' => 'wrong user'], 401);
@@ -61,7 +61,7 @@ class OrdersController extends Controller
                 'amount' => $product["amount"],
             ]);
         }
-        event(new NewOrder($this->single($order->id)));
+//        event(new NewOrder($this->single($order->id)));
         return $this->single($order->id);
     }
 

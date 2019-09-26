@@ -1,6 +1,8 @@
+// import axios from 'axios'
+
 export default {
     state: {
-        host: 'http://passportapi',
+        host: 'http://ecommerce',
         product_images_forlder: 'upload/products',
 
         // auth
@@ -8,6 +10,7 @@ export default {
         loading: false,
         auth_error: null,
         token: localStorage.getItem('access_token') || null,
+        secret: 'qAMbHpnBnDdTaslZFKjzfuHZdI6w50FeADAJUf1v',
 
         // notifications
         order_notifications: [],
@@ -132,14 +135,20 @@ export default {
     },
 
     getters: {
+        // about site
+        host (state) {
+            return state.host
+        },
         // auth
         isLoggedIn(state) {
-            return state.token !== null;
+            return state.token !== null
         },
         currentUser(state) {
-            return state.currentUser;
+            return state.currentUser
         },
-
+        authSecretCode (state) {
+            return state.secret
+        },
         // notifications
         orderNotifications(state) {
             return state.order_notifications;
@@ -322,7 +331,7 @@ export default {
         ADD_UNCHECKED_ORDER_TO_ORDER_STATUS: (state, status_index) => { state.order_statuses[status_index].unchecked_orders_num ++ },
 
         // OrderItem
-        UDPATE_ORDER_ITEM: (state, { order_index, item_index, order_item }) => { state.orders.selected.order_items.splice(item_index, 1, order_item) },
+        UPDATE_ORDER_ITEM: (state, { order_index, item_index, order_item }) => { state.orders.selected.order_items.splice(item_index, 1, order_item) },
         ADD_ORDER_ITEM: (state, item) => { state.orders.selected.order_items.push(item) },
         REMOVE_ORDER_ITEM: (state, orderIndex) => { state.orders.selected.order_items.splice(orderIndex, 1) },
 
@@ -348,7 +357,7 @@ export default {
         // auth
         register(context, data) {
             return new Promise((resolve, reject) => {
-                axios.post('api/v1/register', {
+                axios.post(`${context.getters.host}/api/v1/register`, {
                     name: data.name,
                     email: data.email,
                     password: data.password
@@ -356,21 +365,28 @@ export default {
                 .then((resp) => {
                     resolve(resp);
                 })
-                .catch((resp) => {
+                .catch((error) => {
                     console.log('Ошибка при регистрации');
-                    console.log(resp);
+                    console.log(error);
                     reject(error);
                 })
             })
         },
         retrieveToken(context, credentials) {
             return new Promise((resolve, reject) => {
-                axios.post('/api/v1/login', {
+                console.log({
                     username: credentials.username,
                     password: credentials.password,
+                    secret: context.getters.authSecretCode
+                })
+                console.log(`${context.getters.host}/api/v1/login`)
+                axios.post(`${context.getters.host}/api/v1/login`, {
+                    username: credentials.username,
+                    password: credentials.password,
+                    secret: context.getters.authSecretCode
                 })
                     .then((resp) => {
-                        const token = resp.data.access_token;
+                        const token = resp.data.access_token
                         localStorage.setItem('access_token', token);
                         context.commit('SET_USER_TOKEN', token);
                         axios.defaults.headers.common["Authorization"] = `Bearer ${token}`
@@ -387,7 +403,7 @@ export default {
             axios.defaults.headers.common['Authorization']=`Bearer ${context.state.token}`;
             if (context.getters.isLoggedIn) {
                 return new Promise((resolve, reject) => {
-                    axios.post('api/v1/logout')
+                    axios.post(`${context.getters.host}/api/v1/logout`)
                         .then((resp) => {
                             localStorage.removeItem('access_token')
                             axios.defaults.headers.common["Authorization"] = `Bearer `
@@ -411,7 +427,7 @@ export default {
             return new Promise((resolve, reject) => {
                 if (context.state.token) {
                     axios.defaults.headers.common['Authorization']=`Bearer ${context.state.token}`;
-                    axios.get('api/v1/user')
+                    axios.get(`${context.getters.host}/api/v1/user`)
                         .then((resp) => {
                             localStorage.setItem('user', JSON.stringify(resp.data));
                             context.commit('SET_CURRENT_USER_PARAMS', resp.data)
@@ -429,7 +445,7 @@ export default {
         // notifcations
         getOrderNotifications(context) {
             axios.defaults.headers.common['Authorization']=`Bearer ${context.state.token}`;
-            axios.get('/api/v1/notifications/orders')
+            axios.get(`${context.getters.host}/api/v1/notifications/orders`)
                 .then((resp) => {
                     context.commit('SET_ORDER_NOTIFICATIONS', resp.data);
                 })
@@ -440,7 +456,7 @@ export default {
         },
         checkOrderNotification(context, { index, notification_id }) {
             axios.defaults.headers.common['Authorization']=`Bearer ${context.state.token}`;
-            axios.post(`/api/v1/notificatons/orders/${notification_id}/check`)
+            axios.post(`${context.getters.host}/api/v1/notificatons/orders/${notification_id}/check`)
                 .then((resp) => {
                     context.commit('REMOVE_ORDER_NOTIFICATION', index);
                 })
@@ -451,7 +467,7 @@ export default {
         },
         checkAllNotification(context) {
             axios.defaults.headers.common['Authorization']=`Bearer ${context.state.token}`;
-            axios.post(`/api/v1/notificatons/check/orders`)
+            axios.post(`${context.getters.host}/api/v1/notificatons/check/orders`)
                 .then((resp) => {
                     context.commit('REMOVE_ALL_ORDER_NOTIFICATIONS');
                 })
@@ -463,8 +479,9 @@ export default {
 
         // categories
         getCategories(context) {
-            axios.defaults.headers.common['Authorization']=`Bearer ${context.state.token}`;
-            axios.get('/api/v1/categories')
+            axios.defaults.headers.common['Authorization']=`Bearer ${context.state.token}`
+            // console.log(`${context.getters.host}/api/v1/categories`)
+            axios.get(`${context.getters.host}/api/v1/categories`)
                 .then((resp) => {
                     context.commit('SET_ALL_CATEGORIES', resp.data);
                 })
@@ -475,7 +492,7 @@ export default {
         },
         getFinalCategories(context) {
             axios.defaults.headers.common['Authorization']=`Bearer ${context.state.token}`;
-            axios.get('/api/v1/finalCategories')
+            axios.get(`${context.getters.host}/api/v1/finalCategories`)
                 .then((resp) => {
                     context.commit('SET_FINAL_CATEGORIES', resp.data);
                 })
@@ -486,7 +503,7 @@ export default {
         },
         createCategory(context, category) {
             axios.defaults.headers.common['Authorization']=`Bearer ${context.state.token}`;
-            axios.post('/api/v1/categories', category)
+            axios.post(`${context.getters.host}/api/v1/categories`, category)
                 .then((resp) => {
                     context.commit('ADD_NEW_CATEGORY_TO_CATEGORIES', resp.data);
                 })
@@ -497,7 +514,7 @@ export default {
         },
         trashCategory(context, category) {
             axios.defaults.headers.common['Authorization']=`Bearer ${context.state.token}`;
-            axios.get('/api/v1/categories/trash/' + category.id)
+            axios.get(`${context.getters.host}/api/v1/categories/trash/` + category.id)
                 .then((resp) => {
                     context.dispatch('getCategories');
                 })
@@ -508,7 +525,7 @@ export default {
         },
         updateCategory(context, { category_id, updating_category }) {
             axios.defaults.headers.common['Authorization']=`Bearer ${context.state.token}`;
-            axios.patch(`/api/v1/categories/${category_id}`, updating_category)
+            axios.patch(`${context.getters.host}/api/v1/categories/${category_id}`, updating_category)
                 .catch((resp) => {
                     console.log('error with update category');
                     console.log(resp);
@@ -516,7 +533,7 @@ export default {
         },
         getTrashedCategories(context) {
             axios.defaults.headers.common['Authorization']=`Bearer ${context.state.token}`;
-            axios.get('/api/v1/trashedCategories')
+            axios.get(`${context.getters.host}/api/v1/trashedCategories`)
                 .then((resp) => {
                     context.commit('SET_TRASHED_CATEGORIES', resp.data);
                 })
@@ -527,7 +544,7 @@ export default {
         },
         restoreCategory(context, { category_id, category_index }) {
             axios.defaults.headers.common['Authorization']=`Bearer ${context.state.token}`;
-            axios.get('/api/v1/categories/restore/' + category_id)
+            axios.get(`${context.getters.host}/api/v1/categories/restore/` + category_id)
                 .then((resp) => {
                     context.commit('ADD_NEW_CATEGORY_TO_CATEGORIES', resp.data);
                     context.commit('REMOVE_FROM_TRASHED_CATEGORIES', category_index);
@@ -539,7 +556,7 @@ export default {
         },
         deleteCategory(context, { category_id, category_index }) {
             axios.defaults.headers.common['Authorization']=`Bearer ${context.state.token}`;
-            axios.delete('/api/v1/categories/' + category_id)
+            axios.delete(`${context.getters.host}/api/v1/categories/` + category_id)
                 .then((resp) => {
                     context.dispatch('getTrashedCategories');
                 })
@@ -552,7 +569,7 @@ export default {
         // requisites
         getRequisites(context) {
             axios.defaults.headers.common['Authorization']=`Bearer ${context.state.token}`;
-            axios.get('/api/v1/requisites')
+            axios.get(`${context.getters.host}/api/v1/requisites`)
                 .then(function (resp) {
                     context.commit('SET_ALL_REQUISITES', resp.data);
                 })
@@ -563,7 +580,7 @@ export default {
         },
         createRequisite(context, requisite) {
             axios.defaults.headers.common['Authorization']=`Bearer ${context.state.token}`;
-            axios.post('/api/v1/requisites', requisite)
+            axios.post(`${context.getters.host}/api/v1/requisites`, requisite)
             .then(function (resp) {
                 context.commit('ADD_REQUISITE', resp.data);
             })
@@ -575,7 +592,7 @@ export default {
         updateRequisite(context, { requisite, requisite_id, index }) {
             return new Promise((resolve, reject) => {
                 axios.defaults.headers.common['Authorization']=`Bearer ${context.state.token}`
-                axios.put(`/api/v1/requisites/${requisite_id}`, requisite)
+                axios.put(`${context.getters.host}/api/v1/requisites/${requisite_id}`, requisite)
                     .then((resp) => {
                         context.commit('UPDATE_REQUISITE', { requisite: resp.data, index })
                         resolve(resp)
@@ -590,7 +607,7 @@ export default {
         },
         trashRequisite(context, { requisite_id, index }) {
             axios.defaults.headers.common['Authorization']=`Bearer ${context.state.token}`;
-            axios.delete(`/api/v1/requisites/${requisite_id}`)
+            axios.delete(`${context.getters.host}/api/v1/requisites/${requisite_id}`)
                 .then((resp) => {
                     context.commit('REMOVE_REQUISITE', index);
                 })
@@ -601,7 +618,7 @@ export default {
         },
         getTrashedRequisites(context) {
             axios.defaults.headers.common['Authorization']=`Bearer ${context.state.token}`;
-            axios.get(`/api/v1/trashed/requisites`)
+            axios.get(`${context.getters.host}/api/v1/trashed/requisites`)
                 .then((resp) => {
                     context.commit('SET_TRASHED_REQUISITES', resp.data);
                 })
@@ -612,7 +629,7 @@ export default {
         },
         restoreTrashedRequisite(context, { requisite_id, index }) {
             axios.defaults.headers.common['Authorization']=`Bearer ${context.state.token}`;
-            axios.get(`/api/v1/requisites/restore/${requisite_id}`)
+            axios.get(`${context.getters.host}/api/v1/requisites/restore/${requisite_id}`)
                 .then((resp) => {
                     context.commit('REMOVE_TRASHED_REQUISITES', index);
                 })
@@ -624,7 +641,7 @@ export default {
         // discounts
         getDiscounts(context) {
             axios.defaults.headers.common['Authorization']=`Bearer ${context.state.token}`;
-            axios.get('/api/v1/discounts')
+            axios.get(`${context.getters.host}/api/v1/discounts`)
                 .then(function (resp) {
                     context.commit('SET_ALL_DISCOUNTS', resp.data);
                 })
@@ -635,7 +652,7 @@ export default {
         },
         getDiscount (context, { id }) {
             axios.defaults.headers.common['Authorization']=`Bearer ${context.state.token}`;
-            axios.get(`/api/v1/discounts/${id}`)
+            axios.get(`${context.getters.host}/api/v1/discounts/${id}`)
                 .then(function (resp) {
                     context.commit('SET_SELECTED_DISCOUNT', resp.data);
                 })
@@ -646,7 +663,7 @@ export default {
         },
         createDiscount(context, new_discount) {
             axios.defaults.headers.common['Authorization']=`Bearer ${context.state.token}`;
-            axios.post('/api/v1/discounts', new_discount)
+            axios.post(`${context.getters.host}/api/v1/discounts`, new_discount)
             .then(function (resp) {
                 context.commit('ADD_DISCOUNT', resp.data);
             })
@@ -658,7 +675,7 @@ export default {
         // TODO продумать передавать ли сюда в качестве параметра поля изменяего объекта (новые данные)
         updateDiscount(context, { discount, discount_id, index }) {
             axios.defaults.headers.common['Authorization']=`Bearer ${context.state.token}`
-            axios.put(`/api/v1/discounts/${discount_id}`, discount)
+            axios.put(`${context.getters.host}/api/v1/discounts/${discount_id}`, discount)
                 .then((resp) => {
                     context.commit('UPDATE_DISCOUNT', { discount: resp.data, index });
                 })
@@ -669,7 +686,7 @@ export default {
         },
         trashDiscount(context, { discount_id, index }) {
             axios.defaults.headers.common['Authorization']=`Bearer ${context.state.token}`
-            axios.delete(`/api/v1/discounts/${discount_id}`)
+            axios.delete(`${context.getters.host}/api/v1/discounts/${discount_id}`)
                 .then((resp) => {
                     context.commit('REMOVE_DISCOUNT', index);
                 })
@@ -682,7 +699,7 @@ export default {
         // products
         getProducts(context, page = 1) {
             axios.defaults.headers.common['Authorization']=`Bearer ${context.state.token}`
-            axios.get(`/api/v1/products?page=${page}`)
+            axios.get(`${context.getters.host}/api/v1/products?page=${page}`)
                 .then((resp) => {
                     context.commit('SET_PRODUCTS_ITEMS', resp.data.data)
                     context.commit('SET_PRODUCTS_PAGER_COUNT', resp.data.last_page)
@@ -695,7 +712,7 @@ export default {
         getFilteredProducts (context, search_param) {
             axios.defaults.headers.common['Authorization']=`Bearer ${context.state.token}`
             return new Promise((resolve, reject) => {
-                axios.get(`/api/v1/search/products?param=${search_param}`)
+                axios.get(`${context.getters.host}/api/v1/search/products?param=${search_param}`)
                     .then((resp) => {
                         context.commit('SET_FILTERED_PRODUCTS_ITEMS', resp.data)
                         resolve(resp)
@@ -710,7 +727,7 @@ export default {
         },
         getProduct(context, id) {
             axios.defaults.headers.common['Authorization']=`Bearer ${context.state.token}`
-            axios.get('/api/v1/products/' + id)
+            axios.get(`${context.getters.host}/api/v1/products/` + id)
                 .then((resp) => {
                     context.commit('SET_PRODUCT', resp.data);
                     context.commit('SET_PRODUCT_IMAGES', resp.data.photo);
@@ -722,7 +739,7 @@ export default {
         },
         getUpdatingProduct(context, id) {
             axios.defaults.headers.common['Authorization']=`Bearer ${context.state.token}`
-            axios.get('/api/v1/products/' + id)
+            axios.get(`${context.getters.host}/api/v1/products/` + id)
                 .then((resp) => {
                     context.commit('SET_UPDATING_PRODUCT_PARAMS', resp.data);
                 })
@@ -736,7 +753,7 @@ export default {
             const photoAndProductsIds = { product_id, image_id }
             const photoIndex = context.getters.updatingProduct.photo.map((obj) => obj.id).indexOf(image_id)
             axios.defaults.headers.common['Authorization']=`Bearer ${context.state.token}`
-            axios.delete('/api/v1/products/images', { data: photoAndProductsIds })
+            axios.delete(`${context.getters.host}/api/v1/products/images`, { data: photoAndProductsIds })
                 .then((resp) => {
                     context.commit('REMOVE_PHOTOS_FROM_UPDATING_PRODUCT', photoIndex);
                 })
@@ -748,7 +765,7 @@ export default {
         },
         createProduct(context, product){
             axios.defaults.headers.common['Authorization']=`Bearer ${context.state.token}`
-            axios.post('/api/v1/products/store', product)
+            axios.post(`${context.getters.host}/api/v1/products/store`, product)
                 .then((resp) => {
                 })
                 .catch((resp) => {
@@ -759,7 +776,7 @@ export default {
         trashProduct(context, product_id) {
             const product_index = context.getters.products.map((obj) => obj.id).indexOf(product_id)
             axios.defaults.headers.common['Authorization']=`Bearer ${context.state.token}`
-            axios.delete('/api/v1/products/trash/' + product_id)
+            axios.delete(`${context.getters.host}/api/v1/products/trash/` + product_id)
                 .then((resp) => {
                     context.commit('REMOVE_PRODUCT', product_index);
                 })
@@ -770,7 +787,7 @@ export default {
         },
         updateProduct(context, {id, product, index }) {
             axios.defaults.headers.common['Authorization']=`Bearer ${context.state.token}`
-            axios.post('/api/v1/products/update/' + id, product)
+            axios.post(`${context.getters.host}/api/v1/products/update/` + id, product)
                 .then((resp) => {
                     context.commit('UPDATE_PRODUCT', { product: resp.data, index });
                 })
@@ -783,7 +800,7 @@ export default {
         // Orders
         getOrders(context, page = 1) {
             axios.defaults.headers.common["Authorization"] = `Bearer ${context.state.token}`
-            axios.get(`/api/v1/orders?page=${page}`)
+            axios.get(`${context.getters.host}/api/v1/orders?page=${page}`)
                 .then((resp) => {
                     context.commit('SET_ALL_ORDERS', resp.data.data)
                     context.commit('SET_ORDERS_PAGE_COUNT', resp.data.last_page)
@@ -797,7 +814,7 @@ export default {
         getOrdersWithStatusId (context, { statusId, page }) {
             return new Promise((resolve, reject) => {
                 axios.defaults.headers.common["Authorization"] = `Bearer ${context.state.token}`
-                axios.get(`/api/v1/orderStatuses/${statusId}?page=${page}`)
+                axios.get(`${context.getters.host}/api/v1/orderStatuses/${statusId}?page=${page}`)
                     .then((resp) => {
                         context.commit('SET_ALL_ORDERS', resp.data.orders.data)
                         context.commit('SET_ORDERS_PAGE_COUNT', resp.data.orders.last_page)
@@ -814,7 +831,7 @@ export default {
         },
         getOrder(context, id) {
             axios.defaults.headers.common["Authorization"] = `Bearer ${context.state.token}`
-            axios.get('/api/v1/orders/' + id)
+            axios.get(`${context.getters.host}/api/v1/orders/` + id)
                 .then((resp) => {
                     context.commit('SET_SELECTED_ORDER', resp.data);
                 })
@@ -825,7 +842,7 @@ export default {
         },
         getOrderHistory(context, order_id) {
             axios.defaults.headers.common["Authorization"] = `Bearer ${context.state.token}`
-            axios.get(`/api/v1/orders/${order_id}/history/`)
+            axios.get(`${context.getters.host}/api/v1/orders/${order_id}/history/`)
                 .then((resp) => {
                     context.commit('SET_SELECTED_ORDER_HISTORY', resp.data)
                 })
@@ -838,7 +855,7 @@ export default {
             console.log(order)
             return new Promise((resolve, reject) => {
                 axios.defaults.headers.common["Authorization"] = `Bearer ${context.state.token}`
-                axios.put('/api/v1/orders/' + order_id, order)
+                axios.put(`${context.getters.host}/api/v1/orders/` + order_id, order)
                     .then(resp => {
                         context.commit('UPDATE_ORDER_ITEMS', {  order_index: index, order:resp.data })
                         resolve(resp)
@@ -855,7 +872,7 @@ export default {
             console.log(1)
             return new Promise((resolve, reject) => {
                 axios.defaults.headers.common["Authorization"] = `Bearer ${context.state.token}`
-                axios.put('/api/v1/orders/' + order_id, order)
+                axios.put(`${context.getters.host}/api/v1/orders/` + order_id, order)
                     .then(resp => {
                         context.commit('REMOVE_ORDERS_ITEM', index)
                             resolve(resp)
@@ -870,13 +887,13 @@ export default {
         getFindedOrders (context) {
             axios.defaults.headers.common["Authorization"] = `Bearer ${context.state.token}`
             axios
-                .post('/api/v1/search/orders/', { search_param: context.getters.searchParam })
+                .post(`${context.getters.host}/api/v1/search/orders/`, { search_param: context.getters.searchParam })
                 .then(resp => { context.commit('SET_ALL_ORDERS', resp.data) })
                 .catch(error => console.log('Ошибка при поиске', error) )
         },
         trashOrder (context, { order_id, order_index }) {
             axios.defaults.headers.common["Authorization"] = `Bearer ${context.state.token}`
-            axios.delete(`/api/v1/orders/${order_id}`)
+            axios.delete(`${context.getters.host}/api/v1/orders/${order_id}`)
                 .then(resp => {
                     context.commit(`REMOVE_ORDERS_ITEM`, order_index)
                 })
@@ -886,7 +903,7 @@ export default {
         },
         findOrders (context, search_param) {
             axios.defaults.headers.common["Authorization"] = `Bearer ${context.state.token}`
-            axios.post(`http://passportapi/api/v1/search/orders`, { search_param })
+            axios.post(`${context.getters.host}/api/v1/search/orders`, { search_param })
                 .then(resp => {
                     context.commit('SET_ALL_ORDERS', resp.data)
                 })
@@ -894,7 +911,7 @@ export default {
         },
         filterOrders (context, body) {
             axios.defaults.headers.common["Authorization"] = `Bearer ${context.state.token}`
-            axios.post(`http://passportapi/api/v1/filter/orders`, body)
+            axios.post(`${context.getters.host}/api/v1/filter/orders`, body)
             .then(resp => {
                 context.commit('SET_ALL_ORDERS', resp.data.data)
             })
@@ -905,7 +922,7 @@ export default {
         // Order statuses
         getOrderStatuses(context) {
             axios.defaults.headers.common["Authorization"] = `Bearer ${context.state.token}`
-            axios.get('/api/v1/orderStatuses')
+            axios.get(`${context.getters.host}/api/v1/orderStatuses`)
                 .then((resp) => {
                     context.commit('SET_ORDER_STATUSES', resp.data);
                 })
@@ -915,7 +932,7 @@ export default {
                 });
         },
         getSelectedOrderStatus(context, status_id) {
-            axios.get('/api/v1/orderStatuses/' + status_id)
+            axios.get(`${context.getters.host}/api/v1/orderStatuses/` + status_id)
                 .then((resp) => {
                     context.commit('SET_SELECTED_ORDER_STATUS', resp.data);
                 })
@@ -928,9 +945,9 @@ export default {
         updateOrderItem (context, { item_id, body, item_index, order_index }) {
             axios.defaults.headers.common["Authorization"] = `Bearer ${context.state.token}`
             return new Promise((resolve, reject) => {
-                axios.put('/api/v1/orderItems/' + item_id, body)
+                axios.put(`${context.getters.host}/api/v1/orderItems/` + item_id, body)
                     .then((resp) => {
-                        context.commit('UDPATE_ORDER_ITEM', { order_index, item_index, order_item: resp.data })
+                        context.commit('UPDATE_ORDER_ITEM', { order_index, item_index, order_item: resp.data })
                         resolve(resp.data)
                     })
                     .catch((error) => {
@@ -943,7 +960,7 @@ export default {
         createOrderItem (context, order) {
             axios.defaults.headers.common["Authorization"] = `Bearer ${context.state.token}`
             return new Promise((resolve, reject) => {
-                axios.post('/api/v1/orderItems', { order_id: order.order_id, product_id: order.product_id, amount: order.amount })
+                axios.post(`${context.getters.host}/api/v1/orderItems`, { order_id: order.order_id, product_id: order.product_id, amount: order.amount })
                     .then((resp) => {
                         context.commit('ADD_ORDER_ITEM', resp.data)
                         resolve(resp)
@@ -958,7 +975,7 @@ export default {
         removeOrderItem (context, { orderItemId, itemIndex }) {
             axios.defaults.headers.common["Authorization"] = `Bearer ${context.state.token}`
             return new Promise((resolve, reject) => {
-                axios.delete(`/api/v1/orderItems/${orderItemId}`)
+                axios.delete(`${context.getters.host}/api/v1/orderItems/${orderItemId}`)
                     .then((resp) => {
                         context.commit('REMOVE_ORDER_ITEM', itemIndex)
                         resolve(resp)
@@ -974,7 +991,7 @@ export default {
         // users
         getUsers(context, page) {
             axios.defaults.headers.common["Authorization"] = `Bearer ${context.state.token}`
-            axios.get(`/api/v1/users?page=${page}`)
+            axios.get(`${context.getters.host}/api/v1/users?page=${page}`)
             .then((resp) => {
                 context.commit('SET_ALL_USERS', resp.data.data)
                 context.commit('SET_USERS_PAGE_COUNT', resp.data.last_page)
@@ -986,7 +1003,7 @@ export default {
         },
         getTrashedUsers (context) {
             axios.defaults.headers.common["Authorization"] = `Bearer ${context.state.token}`
-            axios.get('/api/v1/trashedUsers/')
+            axios.get(`${context.getters.host}/api/v1/trashedUsers/`)
                 .then((resp) => {
                     context.commit('SET_TRASHED_USERS', resp.data);
                 })
@@ -997,7 +1014,7 @@ export default {
         },
         getUser (context, user_id) {
             axios.defaults.headers.common["Authorization"] = `Bearer ${context.state.token}`
-            axios.get(`/api/v1/users/${user_id}`)
+            axios.get(`${context.getters.host}/api/v1/users/${user_id}`)
                 .then((resp) => {
                     context.commit('SET_SELECTED_USER', resp.data)
                 })
@@ -1007,7 +1024,7 @@ export default {
             return new Promise((resolve, reject) => {
                 const index = context.getters.users.map((user) => user.id).indexOf(user_id)
                 axios.defaults.headers.common["Authorization"] = `Bearer ${context.state.token}`
-                axios.put(`/api/v1/users/${user_id}`, user)
+                axios.put(`${context.getters.host}/api/v1/users/${user_id}`, user)
                     .then(resp => {
                         context.commit('UDPATE_USER', { user: resp.data, index});
                         resolve(resp.data)
@@ -1020,7 +1037,7 @@ export default {
         },
         replaceUsersDiscountId(context, { old_discount_id, new_discount_id }) {
             axios.defaults.headers.common["Authorization"] = `Bearer ${context.state.token}`
-            axios.put(`/api/v1/users/replaceDiscounts/${old_discount_id}`, { new_discount_id })
+            axios.put(`${context.getters.host}/api/v1/users/replaceDiscounts/${old_discount_id}`, { new_discount_id })
                 .then(resp => {
                     context.commit('CLEAR_USERS', resp.data);
                     context.commit('SET_ALL_USERS', resp.data.data);
@@ -1033,14 +1050,14 @@ export default {
         findUsers (context, search_param) {
             axios.defaults.headers.common["Authorization"] = `Bearer ${context.state.token}`
             axios
-                .post('/api/v1/users/search', { search_param })
+                .post(`${context.getters.host}/api/v1/users/search`, { search_param })
                 .then(resp => { context.commit('SET_FILTERED_USERS', resp.data) })
                 .catch(error => console.log('Ошибка при поиске', error) )
         },
         trashUser (context, { user_id, index }) {
             axios.defaults.headers.common["Authorization"] = `Bearer ${context.state.token}`
             axios
-                .delete(`/api/v1/users/${user_id}`)
+                .delete(`${context.getters.host}/api/v1/users/${user_id}`)
                 .then(resp => {
                     context.commit('REMOVE_USER', index)
                 })
@@ -1051,7 +1068,7 @@ export default {
         restoreUser (context, { user_id, index }) {
             axios.defaults.headers.common["Authorization"] = `Bearer ${context.state.token}`
             axios
-                .get(`/api/v1/users/${user_id}/restore`)
+                .get(`${context.getters.host}/api/v1/users/${user_id}/restore`)
                 .then(resp => {
                     context.commit('REMOVE_FROM_TRASHED_USERS', index)
                 })
@@ -1064,7 +1081,7 @@ export default {
         findGlobally (context, { search_param }) {
             axios.defaults.headers.common["Authorization"] = `Bearer ${context.state.token}`
             axios
-                .post(`/api/v1/search/globall`, { search_param })
+                .post(`${context.getters.host}/api/v1/search/globall`, { search_param })
                 .then(resp => {
                     context.commit('SET_ALL_ORDERS', resp.data.orders)
                     context.commit('SET_PRODUCTS_ITEMS', resp.data.products)

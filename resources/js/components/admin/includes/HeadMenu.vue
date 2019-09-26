@@ -2,12 +2,12 @@
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="nav navbar-nav ml-auto">
             <li class="nav-item active">
-                <a class="nav-link" v-if="orderNotifications.length > 0 && isLoggedIn" @click="openNotificationsForm">
-                    <i class="fa fa-bell" aria-hidden="true"></i>
-                    <div class="notifications-amount">
-                        {{ orderNotifications.length }}
-                    </div>
-                </a>
+<!--                <a class="nav-link" v-if="orderNotifications.length > 0 && isLoggedIn" @click="openNotificationsForm">-->
+<!--                    <i class="fa fa-bell" aria-hidden="true"></i>-->
+<!--                    <div class="notifications-amount">-->
+<!--                        {{ orderNotifications.length }}-->
+<!--                    </div>-->
+<!--                </a>-->
             </li>
             <li class="nav-item">
                 <router-link class="nav-link btn btn-light" v-if="!isLoggedIn" :to="{ name: 'login' }">
@@ -38,33 +38,33 @@
                 </router-link>
             </li>
         </ul>
-        <Notifications></Notifications>
+<!--        <Notifications></Notifications>-->
     </div>
 </template>
 <script>
-import Notifications from './Notifications';
+// import Notifications from './Notifications';
 
 export default {
-    components: {
-        Notifications
-    },
+    // components: {
+    //     Notifications
+    // },
     created() {
         if (this.isLoggedIn) {
-            Echo.channel('orders')
-                .listen('NewOrder', (e) => {
-                    const order_status_index = this.$store.getters.orderStatuses.map(status => status.id).indexOf(e.order.status_id)
-                    this.$store.commit('ADD_ORDER_NOTIFICATION', e.order)
-                    this.$store.commit('ADD_ORDER', e.order)
-                    this.$store.commit('ADD_ORDER_TO_ORDER_STATUS', order_status_index)
-                    this.$store.commit('ADD_UNCHECKED_ORDER_TO_ORDER_STATUS', order_status_index)
-                })
-                .listen('UpdateOrder', (e) => {
-                    const status_index = this.$store.getters.orderStatuses.map((orderStatus) => orderStatus.id).indexOf(status_id)
-                    const order_id = e.order.id
-                    const status_id = e.order.status_id
-                    // this.$store.commit('ADD_ORDER_TO_ORDER_STATUS', order_status_index)
-                    this.$store.commit('ADD_UNCHECKED_ORDER_TO_ORDER_STATUS', status_index)
-                })
+            // Echo.channel('orders')
+            //     .listen('NewOrder', (e) => {
+            //         const order_status_index = this.$store.getters.orderStatuses.map(status => status.id).indexOf(e.order.status_id)
+            //         this.$store.commit('ADD_ORDER_NOTIFICATION', e.order)
+            //         this.$store.commit('ADD_ORDER', e.order)
+            //         this.$store.commit('ADD_ORDER_TO_ORDER_STATUS', order_status_index)
+            //         this.$store.commit('ADD_UNCHECKED_ORDER_TO_ORDER_STATUS', order_status_index)
+            //     })
+            //     .listen('UpdateOrder', (e) => {
+            //         const status_index = this.$store.getters.orderStatuses.map((orderStatus) => orderStatus.id).indexOf(status_id)
+            //         const order_id = e.order.id
+            //         const status_id = e.order.status_id
+            //         // this.$store.commit('ADD_ORDER_TO_ORDER_STATUS', order_status_index)
+            //         this.$store.commit('ADD_UNCHECKED_ORDER_TO_ORDER_STATUS', status_index)
+            //     })
         }
     },
     computed: {
@@ -79,9 +79,9 @@ export default {
         },
     },
     methods: {
-        openNotificationsForm() {
-            this.$bvModal.show('orders-notifications');
-        }
+        // openNotificationsForm() {
+        //     this.$bvModal.show('orders-notifications');
+        // }
     }
 }
 </script>

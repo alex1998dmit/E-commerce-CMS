@@ -42,6 +42,7 @@ export default {
     },
     methods: {
         register() {
+            console.log('here is register')
             this.$store.dispatch('register', {
                 name: this.name,
                 email: this.email,

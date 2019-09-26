@@ -1,4 +1,4 @@
-require('./bootstrap');
+require('./bootstrap')
 
 import VueRouter from 'vue-router';
 import Vue from 'vue';

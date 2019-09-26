@@ -5,7 +5,7 @@
 <!--        </div>-->
         <div class="image" @click="openProduct">
 <!--          v-bind:src="'/storage/userimages/' + item.imagefile"-->
-          <img v-bind:src="'http://passportapi/upload/products/' + product.photo[0].path" alt="">
+          <img v-bind:src="`${host}/upload/products/${product.photo[0].path}`" alt="">
         </div>
         <div class="product-info-card">
           <div class="description text-left" @click="openProduct">
@@ -36,6 +36,11 @@ export default {
   mixins: [ProductActions],
   props: {
     product: Object
+  },
+  computed: {
+    host () {
+        return this.$store.getters.host
+    }
   },
   methods: {
     openProduct () {

@@ -30,18 +30,6 @@ class DiscountsController extends Controller
         return $this->getAllInfo($dicounts);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
     public function store(Request $request)
     {
         $validation =  Validator::make($request->all(), [
@@ -63,36 +51,12 @@ class DiscountsController extends Controller
         return $discount;
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function show(Discount $discount)
     {
         $users = $discount->users;
         return $discount;
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function update(Request $request, $id)
     {
         $validation =  Validator::make($request->all(), [
@@ -112,12 +76,6 @@ class DiscountsController extends Controller
         return $discount;
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function trash($id, Request $request)
     {
         $newDiscountId = $request->new_discount_id ?? 1;

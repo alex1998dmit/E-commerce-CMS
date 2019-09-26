@@ -17,12 +17,12 @@ class AuthController extends Controller
     {
         $http = new \GuzzleHttp\Client;
         try {
-            $response = $http->post('http://passportapi/oauth/token', [
+            $response = $http->post('http://ecommerce/oauth/token', [
                 // TODO внести параметры из ENV
                 'form_params' => [
                     'grant_type' => 'password',
                     'client_id' => 2,
-                    'client_secret' => "WhYqHBDCWfGGecC4XcRc6yur09AJxxCvn3FiPJJT",
+                    'client_secret' => "qAMbHpnBnDdTaslZFKjzfuHZdI6w50FeADAJUf1v",
                     'username' => $request->username,
                     'password' => $request->password,
                 ]
@@ -80,7 +80,7 @@ class AuthController extends Controller
             'email' => $user->email,
             'created_at' => $user->created_at,
             'role' => $user->role,
-            'dicsount' => $user->discount,
+            'discount' => $user->discount,
             'orders_count' => $user->order->count(),
             'products_at_cart_count' => $user->shoppingCart->count(),
             'wishlist_count' => $user->wishList->count()

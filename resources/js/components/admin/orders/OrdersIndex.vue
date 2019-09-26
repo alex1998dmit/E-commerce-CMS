@@ -161,10 +161,10 @@ export default {
         this.$router.push({ path: 'orders', query: { page: 1 }})
     },
     created() {
-        Echo.channel('orders')
-            .listen('UpdateOrder', (e) => {
-                this.$store.dispatch('getOrders', 1)
-            })
+        // Echo.channel('orders')
+        //     .listen('UpdateOrder', (e) => {
+        //         this.$store.dispatch('getOrders', 1)
+        //     })
     },
     methods: {
         getOrders (newPage = 1) {

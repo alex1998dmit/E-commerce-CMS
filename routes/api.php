@@ -4,6 +4,8 @@ Auth::routes(['verify' => true]);
 
 Route::post("register", 'Auth\RegisterController@register');
 
+//Route::group(['prefix' => '/v1', 'namespace' => ])
+
 Route::group(['prefix' => '/v1/client', 'namespace' => 'API\V1\Client'], function() {
     Route::post('/login', 'AuthController@login');
 
@@ -38,6 +40,9 @@ Route::group(['prefix' => '/v1/client', 'namespace' => 'API\V1\Client', 'middlew
 Route::group(['prefix' => '/v1','namespace' => 'API\V1'], function () {
     Route::post('/login', 'AuthController@login');
     Route::post('/register', 'AuthController@register');
+    Route::get('/user', 'AuthController@about')->middleware(['auth:api']);
+    Route::post('/logout', 'AuthController@logout')->middleware(['auth:api']);
+
 });
 
 Route::group(['prefix' => '/v1','namespace' => 'API\V1', 'middleware' => ['auth:api', 'admin']], function () {
@@ -117,8 +122,8 @@ Route::group(['prefix' => '/v1','namespace' => 'API\V1', 'middleware' => ['auth:
 
     // AUTH
     Route::get('/info', 'AuthController@info');
-    Route::post('/logout', 'AuthController@logout');
-    Route::get('/user', 'AuthController@about');
+//    Route::get('/user', 'AuthController@about');
 });
+
 
 

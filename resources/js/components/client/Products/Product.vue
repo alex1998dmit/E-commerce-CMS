@@ -2,7 +2,7 @@
 <div class="product-info">
   <div class="row">
     <div class="col-md-6">
-      <img v-bind:src="'http://passportapi/upload/products/' + product.photo[0].path" alt="">
+      <img v-bind:src="`${host}/upload/products/${product.photo[0].path}`" alt="">
     </div>
     <div class="col-md-6">
       <div class="about-product">
@@ -52,7 +52,7 @@
           v-for="(image, imageIndex) in images"
           :key="imageIndex"
           @click="index = imageIndex"
-          :style="{ backgroundImage: 'url(' + image + ')', width: '150px', height: '150px' }"
+          :style="{ backgroundImage: `url(${host}/upload/products/${image})`, width: '300px', height: '200px' }"
         ></div>
       </div>
     </div>
@@ -104,7 +104,7 @@ export default {
       return this.$store.getters.products.selected
     },
     images () {
-      return this.product.photo.map(photo => `http://passportapi/upload/products/${photo.path}`)
+      return this.product.photo.map(photo => photo.path)
     },
     similar_products () {
       return this.$store.getters.products.similar
@@ -114,6 +114,9 @@ export default {
     },
     shoppingCartItems () {
       return this.$store.getters.shoppingCartItems
+    },
+    host () {
+      return this.$store.getters.host
     }
   },
   methods: {

@@ -46,7 +46,7 @@
                                 <div class="photo-delete" v-for="(photo) in updating_product.photo" :key="photo.id">
                                     <div
                                         class="image"
-                                        :style="{ backgroundImage: 'url(http://passportapi/upload/products/' + photo.path + ')', width: '300px', height: '200px' }"
+                                        :style="{ backgroundImage: `url(${host}/upload/products/${photo.path})`, width: '300px', height: '200px' }"
                                     ><b-button size="sm" variant="danger" @click="removePhoto(photo)">x</b-button></div>
                                 </div>
                                 <input type="file" class="form-control" ref="file_input" id="attachments" @change="uploadPhotos" multiple>
@@ -92,6 +92,9 @@ export default {
         },
         products() {
             return this.$store.getters.products
+        },
+        host () {
+            return this.$store.getters.host
         }
     },
     mounted() {

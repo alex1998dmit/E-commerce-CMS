@@ -33,7 +33,7 @@
                 <div class="row">
                   <div class="col-4">
                     <div class="img-block">
-                      <img :src="'http://passportapi/upload/products/' + item.product.photo[0].path" alt="">
+                      <img :src="`${host}/upload/products/${item.product.photo[0].path}`" alt="">
                     </div>
                   </div>
                   <div class="col-8">
@@ -117,7 +117,10 @@ export default {
       }, 0)
     },
     discountCategory () {
-      return this.$store.getters.currentUser.dicsount
+      return this.$store.getters.currentUser.discount
+    },
+    host () {
+      return this.$store.getters.host
     }
   },
   methods: {

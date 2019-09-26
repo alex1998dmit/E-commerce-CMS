@@ -56,6 +56,7 @@
         border-bottom: 2px solid blue;
     }
     .navigate-button:hover {
-        border-color: black;
+        border-color: bla
+        ck;
     }
 </style>

@@ -18,7 +18,7 @@
                 <div class="notification" v-for="notification in today_notifications" :key="notification.id">
                     <div class="row">
                         <div class="col-3">
-                            <img v-for ="item in notification.order_items" :key="item.id" :src="`http://passportapi/upload/products/${item.product.photo[0].path}`" alt="" width="33px" height="auto">
+                            <img v-for ="item in notification.order_items" :key="item.id" :src="`${window.location.hostname}/upload/products/${item.product.photo[0].path}`" alt="" width="33px" height="auto">
                         </div>
                         <div class="col-6">
                             <div class="row">
@@ -60,7 +60,7 @@
                 <div class="notification" v-for="notification in last_week_notifications" :key="notification.id">
                     <div class="row">
                         <div class="col-3">
-                            <img v-for ="item in notification.order_items" :key="item.id" :src="`http://passportapi/upload/products/${item.product.photo[0].path}`" alt="" width="100px" height="auto">
+                            <img v-for ="item in notification.order_items" :key="item.id" :src="`${window.location.hostname}/upload/products/${item.product.photo[0].path}`" alt="" width="100px" height="auto">
                         </div>
                         <div class="col-6">
                             <div class="row">

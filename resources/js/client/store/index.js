@@ -2,10 +2,11 @@ import axios from 'axios'
 
 export default {
   state: {
+    host: 'http://ecommerce',
     auth: {
       currentUser: JSON.parse(localStorage.getItem('user')) || null,
       token: localStorage.getItem('access_token') || null,
-      secret: 'WhYqHBDCWfGGecC4XcRc6yur09AJxxCvn3FiPJJT',
+      secret: 'qAMbHpnBnDdTaslZFKjzfuHZdI6w50FeADAJUf1v',
       loading: false,
       errors: {
         login_error: null,
@@ -13,10 +14,6 @@ export default {
         email: [],
         password: []
       }
-    },
-    aboutSite: {
-      host: 'http://passportapi',
-      prefix: 'api/v1/client'
     },
     search_param: null,
     categories: {
@@ -59,6 +56,7 @@ export default {
     }
   },
   getters: {
+    host: (state) => state.host,
     categories: (state) => state.categories.items,
     selectedCategory: (state) => state.categories.selected,
     products: (state) => state.products,
@@ -119,44 +117,44 @@ export default {
   actions: {
     getCategories: (context) => {
       axios
-        .get('http://passportapi/api/v1/client/categories')
+        .get(`${context.getters.host}/api/v1/client/categories`)
         .then(response => context.commit('SET_CATEGORIES_ITEMS', response.data))
     },
     getCategory: (context, categoryId) => {
       axios
-        .get(`http://passportapi/api/v1/client/categories/${categoryId}`)
+        .get(`${context.getters.host}/api/v1/client/categories/${categoryId}`)
         .then(response => context.commit('SET_SELECTED_CATEGORY', response.data))
     },
     getCategoryWithProduct: (context, { categoryId, page, sortedBy }) => {
       axios
-        .get(`http://passportapi/api/v1/client/categories/${categoryId}/products?page=${page}&sortedBy=${sortedBy}`)
+        .get(`${context.getters.host}/api/v1/client/categories/${categoryId}/products?page=${page}&sortedBy=${sortedBy}`)
         .then(response => context.commit('SET_PRODUCTS_ITEMS', response.data))
     },
     getProducts: (context) => {
       axios
-        .get(` http://passportapi/api/v1/client/products`)
+        .get(`${context.getters.host}/api/v1/client/products`)
         .then(response => context.commit('SET_PRODUCTS_ITEMS', response.data))
     },
     getProduct: (context, productId) => {
       axios
-        .get(`http://passportapi/api/v1/client/products/${productId}`)
+        .get(`${context.getters.host}/api/v1/client/products/${productId}`)
         .then(response => context.commit('SET_SELECTED_PRODUCT', response.data))
     },
     getSimilarProducts: (context, productId) => {
       axios
-        .get(`http://passportapi/api/v1/client/products/${productId}/similar`)
+        .get(`${context.getters.host}/api/v1/client/products/${productId}/similar`)
         .then(response => context.commit('SET_SIMILAR_PRODUCTS', response.data))
     },
     getFindedProducts: (context) => {
       let searchParam = { search_param: context.getters.searchParam }
       axios
-        .post(`http://passportapi/api/v1/client/search/products`, searchParam)
+        .post(`${context.getters.host}/api/v1/client/search/products`, searchParam)
         .then(response => context.commit('SET_PRODUCTS_ITEMS', response.data))
     },
     // auth
     register: (context, data) => {
       return new Promise((resolve, reject) => {
-        axios.post('http://passportapi/api/v1/register', {
+        axios.post(`${context.getters.host}/api/v1/register`, {
           name: data.name,
           email: data.email,
           password: data.password
@@ -173,7 +171,7 @@ export default {
     retrieveToken: (context, credentials) => {
       context.state.auth.loading = true
       return new Promise((resolve, reject) => {
-        axios.post('http://passportapi/api/v1/client/login', {
+        axios.post(`http://ecommerce/api/v1/login`, {
           username: credentials.username,
           password: credentials.password,
           secret: context.state.auth.secret
@@ -196,7 +194,7 @@ export default {
       axios.defaults.headers.common['Authorization'] = `Bearer ${context.state.auth.token}`
       if (context.getters.isLoggedIn) {
         return new Promise((resolve, reject) => {
-          axios.post('http://passportapi/api/v1/logout')
+          axios.post(`${context.getters.host}/api/v1/logout`)
             .then((resp) => {
               localStorage.removeItem('access_token')
               context.commit('DESTROY_TOKEN')
@@ -218,7 +216,7 @@ export default {
       return new Promise((resolve, reject) => {
         if (context.state.auth.token) {
           axios.defaults.headers.common['Authorization'] = `Bearer ${context.state.auth.token}`
-          axios.get('http://passportapi/api/v1/user')
+          axios.get(`${context.getters.host}/api/v1/user`)
             .then((resp) => {
               localStorage.setItem('user', JSON.stringify(resp.data))
               context.commit('SET_CURRENT_USER_PARAMS', resp.data)
@@ -235,7 +233,7 @@ export default {
     getShoppingCart: (context) => {
       return new Promise((resolve, reject) => {
         axios.defaults.headers.common['Authorization'] = `Bearer ${context.state.auth.token}`
-        axios.get('http://passportapi/api/v1/client/cart')
+        axios.get(`${context.getters.host}/api/v1/client/cart`)
           .then((resp) => {
             context.commit('SET_SHOPPING_CART_ITEMS', resp.data)
             resolve(resp)
@@ -249,7 +247,7 @@ export default {
     addToShoppingCart: (context, data) => {
       return new Promise((resolve, reject) => {
         axios.defaults.headers.common['Authorization'] = `Bearer ${context.state.auth.token}`
-        axios.post('http://passportapi/api/v1/client/cart', data)
+        axios.post(`${context.getters.host}/api/v1/client/cart`, data)
           .then((resp) => {
             context.commit('ADD_TO_SHOPPING_CART_ITEMS', resp.data)
             resolve(resp)
@@ -263,7 +261,7 @@ export default {
     removeFromShoppingCart: (context, { cartId, index }) => {
       return new Promise((resolve, reject) => {
         axios.defaults.headers.common['Authorization'] = `Bearer ${context.state.auth.token}`
-        axios.get(`http://passportapi/api/v1/client/cart/${cartId}/remove`)
+        axios.get(`${context.getters.host}/api/v1/client/cart/${cartId}/remove`)
           .then((resp) => {
             context.commit('REMOVE_FROM_SHOPPING_CART', index)
             resolve(resp)
@@ -277,7 +275,7 @@ export default {
     updateCart: (context, { cartId, data, index }) => {
       return new Promise((resolve, reject) => {
         axios.defaults.headers.common['Authorization'] = `Bearer ${context.state.auth.token}`
-        axios.put(`http://passportapi/api/v1/client/cart/${cartId}`, data)
+        axios.put(`${context.getters.host}/api/v1/client/cart/${cartId}`, data)
           .then((resp) => {
             context.commit('UPDATE_SHOPPING_CART_ITEM', { index, item: resp.data })
             resolve(resp)
@@ -292,7 +290,7 @@ export default {
     getWishList: (context) => {
       return new Promise((resolve, reject) => {
         axios.defaults.headers.common['Authorization'] = `Bearer ${context.state.auth.token}`
-        axios.get('http://passportapi/api/v1/client/wishlist')
+        axios.get(`${context.getters.host}/api/v1/client/wishlist`)
           .then((resp) => {
             context.commit('SET_WISH_LIST_ITEMS', resp.data)
             resolve(resp)
@@ -306,7 +304,7 @@ export default {
     addToWishList: (context, data) => {
       return new Promise((resolve, reject) => {
         axios.defaults.headers.common['Authorization'] = `Bearer ${context.state.auth.token}`
-        axios.post('http://passportapi/api/v1/client/wishlist', data)
+        axios.post(`${context.getters.host}/api/v1/client/wishlist`, data)
           .then((resp) => {
             context.commit('ADD_TO_WISH_LIST_ITEMS', resp.data)
             resolve(resp)
@@ -320,7 +318,7 @@ export default {
     removeFromWishList: (context, { wishListId, index }) => {
       return new Promise((resolve, reject) => {
         axios.defaults.headers.common['Authorization'] = `Bearer ${context.state.auth.token}`
-        axios.get(`http://passportapi/api/v1/client/wishlist/${wishListId}/remove`)
+        axios.get(`${context.getters.host}/api/v1/client/wishlist/${wishListId}/remove`)
           .then((resp) => {
             context.commit('REMOVE_FROM_WISH_LIST', index)
             resolve(resp)
@@ -334,7 +332,7 @@ export default {
     updateWishList: (context, { wishListId, data, index }) => {
       return new Promise((resolve, reject) => {
         axios.defaults.headers.common['Authorization'] = `Bearer ${context.state.auth.token}`
-        axios.put(`http://passportapi/api/v1/client/wishlist/${wishListId}`, data)
+        axios.put(`${context.getters.host}/api/v1/client/wishlist/${wishListId}`, data)
           .then((resp) => {
             context.commit('UPDATE_WISH_LIST_ITEM', { index, item: resp.data })
             resolve(resp)
@@ -349,7 +347,7 @@ export default {
     getOrder: (context) => {
       return new Promise((resolve, reject) => {
         axios.defaults.headers.common['Authorization'] = `Bearer ${context.state.auth.token}`
-        axios.get(`http://passportapi/api/v1/client/orders`)
+        axios.get(`${context.getters.host}/api/v1/client/orders`)
           .then((resp) => {
             context.commit('SET_ORDER_ITEMS', resp.data)
             resolve(resp)
@@ -362,8 +360,9 @@ export default {
     },
     createOrder: (context, order) => {
       return new Promise((resolve, reject) => {
+        console.log(order)
         axios.defaults.headers.common['Authorization'] = `Bearer ${context.state.auth.token}`
-        axios.post(`http://passportapi/api/v1/client/orders`, order)
+        axios.post(`${context.getters.host}/api/v1/client/orders`, order)
           .then((resp) => {
             context.commit('ADD_ORDER', resp.data)
             resolve(resp)
@@ -377,7 +376,7 @@ export default {
     changeOrderStatus: (context, { orderId, statusId, index }) => {
       return new Promise((resolve, reject) => {
         axios.defaults.headers.common['Authorization'] = `Bearer ${context.state.auth.token}`
-        axios.put(`http://passportapi/api/v1/client/orders/${orderId}`, { status_id: statusId })
+        axios.put(`${context.getters.host}/api/v1/client/orders/${orderId}`, { status_id: statusId })
           .then((resp) => {
             context.commit('UPDATE_ORDER_ITEM', { order: resp.data, index })
             resolve(resp)
@@ -392,7 +391,7 @@ export default {
     getRequisites: (context) => {
       return new Promise((resolve, reject) => {
         axios.defaults.headers.common['Authorization'] = `Bearer ${context.state.auth.token}`
-        axios.get(`http://passportapi/api/v1/client/requisites`)
+        axios.get(`${context.getters.host}/api/v1/client/requisites`)
           .then((resp) => {
             context.commit('SET_REQUISITES_ITEMS', resp.data)
             resolve(resp)
