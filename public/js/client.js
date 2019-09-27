@@ -71452,7 +71452,7 @@ __webpack_require__.r(__webpack_exports__);
     auth: {
       currentUser: JSON.parse(localStorage.getItem('user')) || null,
       token: localStorage.getItem('access_token') || null,
-      secret: 'qAMbHpnBnDdTaslZFKjzfuHZdI6w50FeADAJUf1v',
+      secret: 'CxNosYys6OTyuBCfrt5rb96aq6xeZN01xhYrxMHK',
       loading: false,
       errors: {
         login_error: null,

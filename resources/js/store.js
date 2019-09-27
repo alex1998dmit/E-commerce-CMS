@@ -10,7 +10,7 @@ export default {
         loading: false,
         auth_error: null,
         token: localStorage.getItem('access_token') || null,
-        secret: 'qAMbHpnBnDdTaslZFKjzfuHZdI6w50FeADAJUf1v',
+        secret: 'CxNosYys6OTyuBCfrt5rb96aq6xeZN01xhYrxMHK',
 
         // notifications
         order_notifications: [],
