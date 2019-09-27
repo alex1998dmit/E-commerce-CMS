@@ -12,7 +12,7 @@ class DicscountsSeeder extends Seeder
     public function run()
     {
         DB::table('discounts')->insert([
-            'name' => `Обычный пользователь`,
+            'name' => 'Обычный пользователь',
             'discount' => 0,
             'description' => 'Базовая категория для новых пользователей',
         ]);
