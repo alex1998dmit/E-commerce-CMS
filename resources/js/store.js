@@ -2,7 +2,7 @@
 
 export default {
     state: {
-        host: 'http://http://157.245.79.96',
+        host: 'http://157.245.79.96',
         product_images_forlder: 'upload/products',
 
         // auth

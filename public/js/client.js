@@ -71448,7 +71448,7 @@ __webpack_require__.r(__webpack_exports__);
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   state: {
-    host: 'http://http://157.245.79.96',
+    host: 'http://157.245.79.96',
     auth: {
       currentUser: JSON.parse(localStorage.getItem('user')) || null,
       token: localStorage.getItem('access_token') || null,
