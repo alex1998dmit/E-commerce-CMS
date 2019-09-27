@@ -13,22 +13,18 @@ class RoleTableSeeder extends Seeder
     {
         DB::table('roles')->insert([
             'name' => 'user',
-            'description' => 'Can see products, add to  wishList/shopingCart',
+            'description' => 'Покупатель',
         ]);
 
-        DB::table('roles')->insert([
-            'name' => 'seller',
-            'description' => 'Inherit users privileages, also can add products and have access for clients admin',
-        ]);
 
         DB::table('roles')->insert([
             'name' => 'operator',
-            'description' => 'Have access to server admin',
+            'description' => 'Оператор',
         ]);
 
         DB::table('roles')->insert([
             'name' => 'admin',
-            'description' => 'GOD',
+            'description' => 'Администратор',
         ]);
     }
 }

@@ -11,13 +11,10 @@ class DicscountsSeeder extends Seeder
      */
     public function run()
     {
-        $discount_diff = 5;
-        for($i = 0; $i < 100;$i = $i + $discount_diff) {
-            DB::table('discounts')->insert([
-                'name' => 'Status with ' . $i . " discount",
-                'discount' => $i,
-                'description' => 'Lorem ipsum',
-            ]);
-        }
+        DB::table('discounts')->insert([
+            'name' => `Обычный пользователь`,
+            'discount' => 0,
+            'description' => 'Базовая категория для новых пользователей',
+        ]);
     }
 }
