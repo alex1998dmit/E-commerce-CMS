@@ -171,7 +171,7 @@ export default {
     retrieveToken: (context, credentials) => {
       context.state.auth.loading = true
       return new Promise((resolve, reject) => {
-        axios.post(`http://ecommerce/api/v1/login`, {
+        axios.post(`${context.getters.host}/api/v1/login`, {
           username: credentials.username,
           password: credentials.password,
           secret: context.state.auth.secret

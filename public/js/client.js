@@ -71702,7 +71702,7 @@ __webpack_require__.r(__webpack_exports__);
     retrieveToken: function retrieveToken(context, credentials) {
       context.state.auth.loading = true;
       return new Promise(function (resolve, reject) {
-        axios__WEBPACK_IMPORTED_MODULE_0___default.a.post("http://ecommerce/api/v1/login", {
+        axios__WEBPACK_IMPORTED_MODULE_0___default.a.post("".concat(context.getters.host, "/api/v1/login"), {
           username: credentials.username,
           password: credentials.password,
           secret: context.state.auth.secret
