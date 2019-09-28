@@ -104,6 +104,9 @@ export default {
     },
     computed: {
         ...mapGetters(['product', 'selectedProductImages', 'host']),
+        full_path_for_product_images() {
+            return this.selectedProductImages(image => `${host}/uploads/products/${image}`)
+        }
     },
     mounted() {
         this.$store.dispatch('getProduct', this.$route.params.id);

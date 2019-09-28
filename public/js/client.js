@@ -2855,6 +2855,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var vue_gallery__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(vue_gallery__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var _ProductCard__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./ProductCard */ "./resources/js/components/client/Products/ProductCard.vue");
 /* harmony import */ var _client_mixins_ProductActions__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../client/mixins/ProductActions */ "./resources/js/client/mixins/ProductActions.js");
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
 //
 //
 //
@@ -2954,13 +2956,23 @@ __webpack_require__.r(__webpack_exports__);
     'gallery': vue_gallery__WEBPACK_IMPORTED_MODULE_0___default.a,
     ProductCard: _ProductCard__WEBPACK_IMPORTED_MODULE_1__["default"]
   },
-  computed: {
+  computed: _defineProperty({
+    host: function host() {
+      return this.$store.getters.host;
+    },
     product: function product() {
       return this.$store.getters.products.selected;
     },
     images: function images() {
       return this.product.photo.map(function (photo) {
         return photo.path;
+      });
+    },
+    images_with_full_path: function images_with_full_path() {
+      var _this = this;
+
+      return this.product.photo.map(function (photo) {
+        return "".concat(_this.host, "/upload/products/").concat(photo.path);
       });
     },
     similar_products: function similar_products() {
@@ -2971,11 +2983,10 @@ __webpack_require__.r(__webpack_exports__);
     },
     shoppingCartItems: function shoppingCartItems() {
       return this.$store.getters.shoppingCartItems;
-    },
-    host: function host() {
-      return this.$store.getters.host;
     }
-  },
+  }, "host", function host() {
+    return this.$store.getters.host;
+  }),
   methods: {
     updateProduct: function updateProduct() {
       var PRODUCT_ID = this.$route.params.id;
@@ -54500,7 +54511,7 @@ var render = function() {
           { staticClass: "photos" },
           [
             _c("gallery", {
-              attrs: { images: _vm.images, index: _vm.index },
+              attrs: { images: _vm.images_with_full_path, index: _vm.index },
               on: {
                 close: function($event) {
                   _vm.index = null

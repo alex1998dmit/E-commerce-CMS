@@ -46,7 +46,7 @@
   <div class="row">
     <div class="col">
       <div class="photos">
-        <gallery :images="images" :index="index" @close="index = null"></gallery>
+        <gallery :images="images_with_full_path" :index="index" @close="index = null"></gallery>
         <div
           class="image"
           v-for="(image, imageIndex) in images"
@@ -100,11 +100,17 @@ export default {
     ProductCard
   },
   computed: {
+    host () {
+      return this.$store.getters.host
+    },
     product () {
       return this.$store.getters.products.selected
     },
     images () {
       return this.product.photo.map(photo => photo.path)
+    },
+    images_with_full_path () {
+      return this.product.photo.map(photo => `${this.host}/upload/products/${photo.path}`)
     },
     similar_products () {
       return this.$store.getters.products.similar
