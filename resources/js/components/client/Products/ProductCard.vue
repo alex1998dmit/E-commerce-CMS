@@ -1,10 +1,7 @@
 <template>
     <div class="col-md-4">
       <div class="product-card">
-<!--        <div class="image" v-bind:style="{ backgroundImage: `url(http://passportapi/upload/products/${product.photo[0].path })` }">-->
-<!--        </div>-->
         <div class="image" @click="openProduct">
-<!--          v-bind:src="'/storage/userimages/' + item.imagefile"-->
           <img v-bind:src="`${host}/upload/products/${product.photo[0].path}`" alt="">
         </div>
         <div class="product-info-card">
@@ -17,11 +14,6 @@
                 </span>
           </div>
           <div class="product-buttons text-left">
-<!--            <button class="add-to-shopping-card-button" @click="addToShoppingCart(product.id)" v-if="!isAddedToCart(product.id)">{{ !isAddedToCart(product.id) ? 'Добавить в корзину' : 'Добавить'}}</button>-->
-<!--            <button class="added-to-shopping-card-button" @click="addToShoppingCart(product.id)" v-else>Добавлено</button>-->
-            <!--                <button class="button button-like">-->
-<!--                  <i class="fa fa-heart"></i>-->
-<!--                </button> -->
           </div>
         </div>
       </div>

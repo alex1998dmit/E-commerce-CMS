@@ -3024,14 +3024,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
-//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: 'ProductCard',
@@ -54618,9 +54610,7 @@ var render = function() {
         _c("div", { staticClass: "price text-left" }, [
           _c("span", { staticClass: "product-menu-price" }, [
             _vm._v(
-              "\n                  " +
-                _vm._s(_vm.product.price) +
-                "₽\n                "
+              "\n              " + _vm._s(_vm.product.price) + "₽\n            "
             )
           ])
         ]),

@@ -54,7 +54,7 @@
                         v-for="(image, imageIndex) in selectedProductImages"
                         :key="imageIndex"
                         @click="index = imageIndex"
-                        :style="{ backgroundImage: 'url(' + image + ')', width: '300px', height: '200px' }"
+                        :style="{ backgroundImage: `url(${host}/uploads/products/${image})`, width: '300px', height: '200px' }"
                     ></div>
                 </div>
             </div>
@@ -103,7 +103,7 @@ export default {
         };
     },
     computed: {
-        ...mapGetters(['product', 'selectedProductImages']),
+        ...mapGetters(['product', 'selectedProductImages', 'host']),
     },
     mounted() {
         this.$store.dispatch('getProduct', this.$route.params.id);
