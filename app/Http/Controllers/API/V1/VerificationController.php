@@ -26,7 +26,9 @@ class VerificationController extends Controller
         $user->email_verified_at = date('Y-m-d g:i:s');
         $user->verification_token = null;
         $user->save();
-        return response()->json('Подтвреждение прошло успешно');
+
+        return view('client');
+//        return response()->json('Подтвреждение прошло успешно');
     }
 
     public function resend(Request $request)

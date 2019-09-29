@@ -1,10 +1,13 @@
 <?php
+use App\User;
 
 Auth::routes(['verify' => true]);
 
 Route::post("register", 'Auth\RegisterController@register');
-// !!!
-Route::get('sendemail', 'Auth\RegisterController@test');
+Route::get('/v1/email/send', function () {
+    $user = User::find(7);
+    $user->sendEmailVerificationNotification();
+});
 Route::get('/v1/confirm', 'API\V1\VerificationController@confirm');
 //Route::group(['prefix' => '/v1', 'namespace' => ])
 

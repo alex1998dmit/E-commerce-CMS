@@ -2,13 +2,7 @@
 
 Auth::routes(['verify' => true]);
 
-Route::get('/email/show', function() {
-    return view('emails.notification');
-});
-
-Route::get('/email/confirm', function () {
-    return 123;
-})->name('email.confirm');
+Route::get('/confirm', 'API\V1\VerificationController@confirm');
 
 Route::get('/admin/{any}', function() {
     return view('welcome');

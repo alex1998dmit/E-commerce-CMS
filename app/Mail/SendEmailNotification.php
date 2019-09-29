@@ -31,7 +31,7 @@ class SendEmailNotification extends Mailable
      */
     public function build()
     {
-        return $this->from('sasha1998dmit@gmail.com')
+        return $this->from('sasha1998dmitalex@gmail.com')
                     ->view('emails.notification');
     }
 }

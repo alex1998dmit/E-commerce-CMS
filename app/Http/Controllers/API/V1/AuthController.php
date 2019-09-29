@@ -59,6 +59,7 @@ class AuthController extends Controller
             'password' => Hash::make($request->password),
         ]);
 
+        $user->sendEmailVerificationNotification();
         $user->role()->attach(Role::where('name', 'user')->first()->id);
         return $user;
     }
