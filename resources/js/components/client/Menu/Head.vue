@@ -12,21 +12,21 @@
       </div>
 
       <ul class="navbar-nav ml-auto logged-user" v-if="isLoggedIn">
-        <li class="nav-item">
+        <li class="nav-item" v-if="user.email_verified_at">
           <router-link class="nav-link" :to="{ name: 'shoppingCart' }">
             <i class="fa fa-shopping-cart">
               <span class="head-nav-icon-sign">({{ shoppingCart.length }})</span>
             </i>
           </router-link>
         </li>
-        <li class="nav-item">
+        <li class="nav-item" v-if="user.email_verified_at">
           <router-link class="nav-link" :to="{ name: 'wishList' }">
             <i class="fa fa-heart">
               <span class="head-nav-icon-sign">({{ wishList.length }})</span>
             </i>
           </router-link>
         </li>
-        <li class="nav-item">
+        <li class="nav-item" v-if="user.email_verified_at">
           <router-link class="nav-link" :to="{ name: 'orders' }">
             <i class="fa fa-user-circle-o">
               <span class="head-nav-icon-sign">Заказы</span>

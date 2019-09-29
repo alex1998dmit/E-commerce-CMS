@@ -374,12 +374,6 @@ export default {
         },
         retrieveToken(context, credentials) {
             return new Promise((resolve, reject) => {
-                console.log({
-                    username: credentials.username,
-                    password: credentials.password,
-                    secret: context.getters.authSecretCode
-                })
-                console.log(`${context.getters.host}/api/v1/login`)
                 axios.post(`${context.getters.host}/api/v1/login`, {
                     username: credentials.username,
                     password: credentials.password,
@@ -426,7 +420,7 @@ export default {
         getUserInfo(context) {
             return new Promise((resolve, reject) => {
                 if (context.state.token) {
-                    axios.defaults.headers.common['Authorization']=`Bearer ${context.state.token}`;
+                    axios.defaults.headers.common['Authorization']=`Bearer ${context.state.token}`
                     axios.get(`${context.getters.host}/api/v1/user`)
                         .then((resp) => {
                             localStorage.setItem('user', JSON.stringify(resp.data));
@@ -434,9 +428,9 @@ export default {
                             resolve(resp.data);
                         })
                         .catch((resp) => {
-                            console.log('Ошибка при получении информации о пользователе');
-                            console.log(resp);
-                            reject(resp);
+                            console.log('Ошибка при получении информации о пользователе')
+                            console.log(resp)
+                            reject(resp)
                         })
                 }
             });

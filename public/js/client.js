@@ -1966,11 +1966,21 @@ __webpack_require__.r(__webpack_exports__);
         _this.$store.commit('CLEAR_AUTH_ERRORS');
 
         _this.$store.dispatch('getUserInfo').then(function (resp) {
-          _this.flash('Вход выполнен', 'success');
+          console.log(resp);
 
-          _this.$router.push({
-            name: 'products'
-          });
+          if (!resp.email_verified_at) {
+            _this.flash('Необходимо подтвердить почту, чтобы делать заказы', 'danger', {
+              important: true
+            });
+
+            _this.$store.dispatch('destroyToken');
+          } else {
+            _this.flash('Вход выполнен', 'success');
+
+            _this.$router.push({
+              name: 'products'
+            });
+          }
         });
 
         _this.$store.dispatch('getShoppingCart');
@@ -53752,71 +53762,91 @@ var render = function() {
           _vm._v(" "),
           _vm.isLoggedIn
             ? _c("ul", { staticClass: "navbar-nav ml-auto logged-user" }, [
-                _c(
-                  "li",
-                  { staticClass: "nav-item" },
-                  [
-                    _c(
-                      "router-link",
-                      {
-                        staticClass: "nav-link",
-                        attrs: { to: { name: "shoppingCart" } }
-                      },
+                _vm.user.email_verified_at
+                  ? _c(
+                      "li",
+                      { staticClass: "nav-item" },
                       [
-                        _c("i", { staticClass: "fa fa-shopping-cart" }, [
-                          _c("span", { staticClass: "head-nav-icon-sign" }, [
-                            _vm._v("(" + _vm._s(_vm.shoppingCart.length) + ")")
-                          ])
-                        ])
-                      ]
+                        _c(
+                          "router-link",
+                          {
+                            staticClass: "nav-link",
+                            attrs: { to: { name: "shoppingCart" } }
+                          },
+                          [
+                            _c("i", { staticClass: "fa fa-shopping-cart" }, [
+                              _c(
+                                "span",
+                                { staticClass: "head-nav-icon-sign" },
+                                [
+                                  _vm._v(
+                                    "(" + _vm._s(_vm.shoppingCart.length) + ")"
+                                  )
+                                ]
+                              )
+                            ])
+                          ]
+                        )
+                      ],
+                      1
                     )
-                  ],
-                  1
-                ),
+                  : _vm._e(),
                 _vm._v(" "),
-                _c(
-                  "li",
-                  { staticClass: "nav-item" },
-                  [
-                    _c(
-                      "router-link",
-                      {
-                        staticClass: "nav-link",
-                        attrs: { to: { name: "wishList" } }
-                      },
+                _vm.user.email_verified_at
+                  ? _c(
+                      "li",
+                      { staticClass: "nav-item" },
                       [
-                        _c("i", { staticClass: "fa fa-heart" }, [
-                          _c("span", { staticClass: "head-nav-icon-sign" }, [
-                            _vm._v("(" + _vm._s(_vm.wishList.length) + ")")
-                          ])
-                        ])
-                      ]
+                        _c(
+                          "router-link",
+                          {
+                            staticClass: "nav-link",
+                            attrs: { to: { name: "wishList" } }
+                          },
+                          [
+                            _c("i", { staticClass: "fa fa-heart" }, [
+                              _c(
+                                "span",
+                                { staticClass: "head-nav-icon-sign" },
+                                [
+                                  _vm._v(
+                                    "(" + _vm._s(_vm.wishList.length) + ")"
+                                  )
+                                ]
+                              )
+                            ])
+                          ]
+                        )
+                      ],
+                      1
                     )
-                  ],
-                  1
-                ),
+                  : _vm._e(),
                 _vm._v(" "),
-                _c(
-                  "li",
-                  { staticClass: "nav-item" },
-                  [
-                    _c(
-                      "router-link",
-                      {
-                        staticClass: "nav-link",
-                        attrs: { to: { name: "orders" } }
-                      },
+                _vm.user.email_verified_at
+                  ? _c(
+                      "li",
+                      { staticClass: "nav-item" },
                       [
-                        _c("i", { staticClass: "fa fa-user-circle-o" }, [
-                          _c("span", { staticClass: "head-nav-icon-sign" }, [
-                            _vm._v("Заказы")
-                          ])
-                        ])
-                      ]
+                        _c(
+                          "router-link",
+                          {
+                            staticClass: "nav-link",
+                            attrs: { to: { name: "orders" } }
+                          },
+                          [
+                            _c("i", { staticClass: "fa fa-user-circle-o" }, [
+                              _c(
+                                "span",
+                                { staticClass: "head-nav-icon-sign" },
+                                [_vm._v("Заказы")]
+                              )
+                            ])
+                          ]
+                        )
+                      ],
+                      1
                     )
-                  ],
-                  1
-                ),
+                  : _vm._e(),
                 _vm._v(" "),
                 _c(
                   "li",

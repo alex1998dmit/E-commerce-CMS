@@ -9,6 +9,7 @@ use App\Role;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Str;
 
 class AuthController extends Controller
 {
@@ -18,7 +19,6 @@ class AuthController extends Controller
         $http = new \GuzzleHttp\Client;
         try {
             $response = $http->post('http://157.245.79.96/oauth/token', [
-                // TODO внести параметры из ENV
                 'form_params' => [
                     'grant_type' => 'password',
                     'client_id' => 2,
@@ -55,6 +55,7 @@ class AuthController extends Controller
         $user = User::create([
             'name' => $request->name,
             'email' => $request->email,
+            'verification_token' => Str::random(32),
             'password' => Hash::make($request->password),
         ]);
 
@@ -75,6 +76,7 @@ class AuthController extends Controller
     public function about()
     {
         $user = Auth::user();
+
         return [
             'name' => $user->name,
             'email' => $user->email,
@@ -83,7 +85,8 @@ class AuthController extends Controller
             'discount' => $user->discount,
             'orders_count' => $user->order->count(),
             'products_at_cart_count' => $user->shoppingCart->count(),
-            'wishlist_count' => $user->wishList->count()
+            'wishlist_count' => $user->wishList->count(),
+            'email_verified_at' => $user->email_verified_at
         ];
     }
 }

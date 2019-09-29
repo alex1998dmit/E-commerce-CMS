@@ -2,6 +2,8 @@
 
 namespace App;
 
+use Mail;
+use App\Mail\SendEmailNotification;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -18,7 +20,7 @@ class User extends Authenticatable implements MustVerifyEmail
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password', 'status'
+        'name', 'email', 'password', 'status', 'verification_token'
     ];
 
     /**
@@ -97,5 +99,11 @@ class User extends Authenticatable implements MustVerifyEmail
     public function hasRole($role)
     {
         return null !== $this->role()->where('name', $role)->first();
+    }
+
+    // verify email
+    public function sendEmailVerificationNotification()
+    {
+        Mail::to($this->email)->send(new SendEmailNotification($this));
     }
 }

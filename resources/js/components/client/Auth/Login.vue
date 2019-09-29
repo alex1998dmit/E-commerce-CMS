@@ -53,8 +53,16 @@ export default {
           this.$store.commit('CLEAR_AUTH_ERRORS')
           this.$store.dispatch('getUserInfo')
             .then((resp) => {
-              this.flash('Вход выполнен', 'success')
-              this.$router.push({ name: 'products' })
+                console.log(resp)
+                if (!resp.email_verified_at) {
+                  this.flash('Необходимо подтвердить почту, чтобы делать заказы', 'danger', {
+                    important: true
+                  })
+                  this.$store.dispatch('destroyToken')
+                } else {
+                  this.flash('Вход выполнен', 'success')
+                  this.$router.push({ name: 'products' })
+                }
             })
           this.$store.dispatch('getShoppingCart')
         })

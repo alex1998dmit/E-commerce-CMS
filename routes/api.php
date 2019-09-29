@@ -3,7 +3,9 @@
 Auth::routes(['verify' => true]);
 
 Route::post("register", 'Auth\RegisterController@register');
-
+// !!!
+Route::get('sendemail', 'Auth\RegisterController@test');
+Route::get('/v1/confirm', 'API\V1\VerificationController@confirm');
 //Route::group(['prefix' => '/v1', 'namespace' => ])
 
 Route::group(['prefix' => '/v1/client', 'namespace' => 'API\V1\Client'], function() {
@@ -32,9 +34,9 @@ Route::group(['prefix' => '/v1/client', 'namespace' => 'API\V1\Client', 'middlew
     Route::post('/wishlist', 'WishListController@store');
     Route::get('/wishlist/{id}/remove', 'WishListController@remove');
 
-    Route::post('/orders', 'OrdersController@store');
-    Route::get('/orders', 'OrdersController@index');
-    Route::put('/orders/{order_id}', 'OrdersController@update');
+    Route::post('/orders', 'OrdersController@store')->middleware('verified');
+    Route::get('/orders', 'OrdersController@index')->middleware('verified');
+    Route::put('/orders/{order_id}', 'OrdersController@update')->middleware('verified');
 });
 
 Route::group(['prefix' => '/v1','namespace' => 'API\V1'], function () {
