@@ -119,7 +119,7 @@
 <script>
 import { mapGetters, mapMutations } from 'vuex';
 import { deleteProduct } from './mixins/deleteProduct.js';
-import AboutProductModule from './includes/aboutProductModule';
+import AboutProductModule from './includes/AboutProductModule';
 import SearchResults from './includes/SearchResults';
 import Pager from '../helpers/Pager'
 

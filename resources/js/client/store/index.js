@@ -2,9 +2,7 @@ import axios from 'axios'
 
 export default {
   state: {
-    // host: 'http://ecommerce',
     host: process.env.MIX_APP_URL,
-      // host: 'http://157.245.79.96',
     auth: {
       currentUser: JSON.parse(localStorage.getItem('user')) || null,
       token: localStorage.getItem('access_token') || null,
