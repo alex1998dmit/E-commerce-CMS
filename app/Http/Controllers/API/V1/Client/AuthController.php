@@ -12,7 +12,7 @@ class AuthController extends Controller
     {
         $http = new \GuzzleHttp\Client;
         try {
-            $response = $http->post('http://ecommerce/oauth/token', [
+            $response = $http->post('http://157.245.79.96/oauth/token', [
                 // TODO внести параметры из ENV
                 'form_params' => [
                     'grant_type' => 'password',
