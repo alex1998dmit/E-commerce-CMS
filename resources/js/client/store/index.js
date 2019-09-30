@@ -2,11 +2,14 @@ import axios from 'axios'
 
 export default {
   state: {
-    host: 'http://157.245.79.96',
+    // host: 'http://ecommerce',
+    host: process.env.MIX_APP_URL,
+      // host: 'http://157.245.79.96',
     auth: {
       currentUser: JSON.parse(localStorage.getItem('user')) || null,
       token: localStorage.getItem('access_token') || null,
-      secret: 'CxNosYys6OTyuBCfrt5rb96aq6xeZN01xhYrxMHK',
+      // secret: 'CxNosYys6OTyuBCfrt5rb96aq6xeZN01xhYrxMHK',
+      secret: process.env.MIX_SECRET_CODE,
       loading: false,
       errors: {
         login_error: null,
@@ -102,11 +105,15 @@ export default {
     ADD_TO_SHOPPING_CART_ITEMS: (state, item) => { state.shoppingCart.items.push(item) },
     REMOVE_FROM_SHOPPING_CART: (state, index) => { state.shoppingCart.items.splice(index, 1) },
     UPDATE_SHOPPING_CART_ITEM: (state, { index, item }) => { state.shoppingCart.items.splice(index, 1, item) },
+    INCREMENT_AT_SHOPPING_CART_AMOUNT: (state) => { state.auth.currentUser.at_cart_count++ },
+    DECREMENT_AT_SHOPPING_CART_AMOUNT: (state) => { state.auth.currentUser.at_cart_count-- },
     // wishList
     SET_WISH_LIST_ITEMS: (state, items) => { state.wishList.items = items },
     ADD_TO_WISH_LIST_ITEMS: (state, item) => { state.wishList.items.push(item) },
     REMOVE_FROM_WISH_LIST: (state, index) => { state.wishList.items.splice(index, 1) },
     UPDATE_WISH_LIST_ITEM: (state, { index, item }) => { state.wishList.items.splice(index, 1, item) },
+    INCREMENT_WISH_LIST_AMOUNT: (state) => { state.auth.currentUser.wishlist_count++ },
+    DECREMENT_AT_WISH_LIST_AMOUNT: (state) => { state.auth.currentUser.wishlist_count-- },
     // orders
     SET_ORDER_ITEMS: (state, orders) => { state.orders.items = orders },
     ADD_ORDER: (state, order) => { state.orders.items.push(order) },
@@ -170,6 +177,11 @@ export default {
     },
     retrieveToken: (context, credentials) => {
       context.state.auth.loading = true
+      console.log({
+          username: credentials.username,
+          password: credentials.password,
+          secret: context.state.auth.secret
+      })
       return new Promise((resolve, reject) => {
         axios.post(`${context.getters.host}/api/v1/login`, {
           username: credentials.username,
@@ -250,6 +262,7 @@ export default {
         axios.post(`${context.getters.host}/api/v1/client/cart`, data)
           .then((resp) => {
             context.commit('ADD_TO_SHOPPING_CART_ITEMS', resp.data)
+            context.commit('INCREMENT_AT_SHOPPING_CART_AMOUNT')
             resolve(resp)
           })
           .catch((error) => {
@@ -264,6 +277,7 @@ export default {
         axios.get(`${context.getters.host}/api/v1/client/cart/${cartId}/remove`)
           .then((resp) => {
             context.commit('REMOVE_FROM_SHOPPING_CART', index)
+            context.commit('DECREMENT_AT_SHOPPING_CART_AMOUNT')
             resolve(resp)
           })
           .catch((error) => {
@@ -307,6 +321,7 @@ export default {
         axios.post(`${context.getters.host}/api/v1/client/wishlist`, data)
           .then((resp) => {
             context.commit('ADD_TO_WISH_LIST_ITEMS', resp.data)
+            context.commit('INCREMENT_WISH_LIST_AMOUNT')
             resolve(resp)
           })
           .catch((error) => {
@@ -321,6 +336,7 @@ export default {
         axios.get(`${context.getters.host}/api/v1/client/wishlist/${wishListId}/remove`)
           .then((resp) => {
             context.commit('REMOVE_FROM_WISH_LIST', index)
+            context.commit('DECREMENT_AT_WISH_LIST_AMOUNT')
             resolve(resp)
           })
           .catch((error) => {

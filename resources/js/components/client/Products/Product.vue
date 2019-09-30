@@ -29,11 +29,6 @@
                 <button class="add-to-favourite-list" @click="addToWishList(product.id)" v-if="!isAddedToWishList(product.id)">В избранное</button>
               </div>
             </div>
-<!--            <div class="col-md-12">-->
-<!--              <div class="block-buy-product">-->
-<!--                <button class="buy-now-product-button" @click="test">Купить сейчас</button>-->
-<!--              </div>-->
-<!--            </div>-->
           </div>
           <div class="col-md-12 unauthorized-product-button" v-else>
             <h5>Необходимо войти чтобы заказать товар</h5>

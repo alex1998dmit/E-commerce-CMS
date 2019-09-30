@@ -18,11 +18,11 @@ class AuthController extends Controller
     {
         $http = new \GuzzleHttp\Client;
         try {
-            $response = $http->post('http://157.245.79.96/oauth/token', [
+            $response = $http->post(env('MIX_APP_URL') . '/oauth/token', [
                 'form_params' => [
                     'grant_type' => 'password',
                     'client_id' => 2,
-                    'client_secret' => "CxNosYys6OTyuBCfrt5rb96aq6xeZN01xhYrxMHK",
+                    'client_secret' => env('MIX_SECRET_CODE'),
                     'username' => $request->username,
                     'password' => $request->password,
                 ]
@@ -85,7 +85,7 @@ class AuthController extends Controller
             'role' => $user->role,
             'discount' => $user->discount,
             'orders_count' => $user->order->count(),
-            'products_at_cart_count' => $user->shoppingCart->count(),
+            'at_cart_count' => $user->shoppingCart->count(),
             'wishlist_count' => $user->wishList->count(),
             'email_verified_at' => $user->email_verified_at
         ];

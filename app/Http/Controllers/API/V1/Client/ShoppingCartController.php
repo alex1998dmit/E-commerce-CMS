@@ -21,11 +21,11 @@ class ShoppingCartController extends Controller
 
     public function index()
     {
-        $user_id = Auth::id();
-        if (!$user_id) {
+        $user = Auth::user();
+        if (!$user) {
             return response()->json(['message' => 'you need to login'], 403);
         }
-        $productsFromCart = ShoppingCart::where('user_id', $user_id)->get();
+        $productsFromCart = $user->shoppingCart;
         foreach ($productsFromCart as $item) {
             $this->getAllInfo($item);
         }
@@ -45,7 +45,7 @@ class ShoppingCartController extends Controller
 
         // TODO remove to construct user_id ?
         $user_id = Auth::id();
-        $productFromCart = ShoppingCart::where('product_id', $request->product_id)->first();
+        $productFromCart = ShoppingCart::where('product_id', $request->product_id)->where('user_id', '=', $user_id)->first();
         if ($productFromCart) {
             $productFromCart->amount++;
             $productFromCart->save();

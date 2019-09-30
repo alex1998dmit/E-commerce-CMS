@@ -2943,11 +2943,6 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 //
-//
-//
-//
-//
-//
 
 
 
@@ -53780,7 +53775,7 @@ var render = function() {
                                 { staticClass: "head-nav-icon-sign" },
                                 [
                                   _vm._v(
-                                    "(" + _vm._s(_vm.shoppingCart.length) + ")"
+                                    "(" + _vm._s(_vm.user.at_cart_count) + ")"
                                   )
                                 ]
                               )
@@ -53810,7 +53805,7 @@ var render = function() {
                                 { staticClass: "head-nav-icon-sign" },
                                 [
                                   _vm._v(
-                                    "(" + _vm._s(_vm.wishList.length) + ")"
+                                    "(" + _vm._s(_vm.user.wishlist_count) + ")"
                                   )
                                 ]
                               )
@@ -71479,11 +71474,14 @@ __webpack_require__.r(__webpack_exports__);
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   state: {
-    host: 'http://157.245.79.96',
+    // host: 'http://ecommerce',
+    host: "http://ecommerce",
+    // host: 'http://157.245.79.96',
     auth: {
       currentUser: JSON.parse(localStorage.getItem('user')) || null,
       token: localStorage.getItem('access_token') || null,
-      secret: 'CxNosYys6OTyuBCfrt5rb96aq6xeZN01xhYrxMHK',
+      // secret: 'CxNosYys6OTyuBCfrt5rb96aq6xeZN01xhYrxMHK',
+      secret: "qAMbHpnBnDdTaslZFKjzfuHZdI6w50FeADAJUf1v",
       loading: false,
       errors: {
         login_error: null,
@@ -71641,6 +71639,12 @@ __webpack_require__.r(__webpack_exports__);
           item = _ref.item;
       state.shoppingCart.items.splice(index, 1, item);
     },
+    INCREMENT_AT_SHOPPING_CART_AMOUNT: function INCREMENT_AT_SHOPPING_CART_AMOUNT(state) {
+      state.auth.currentUser.at_cart_count++;
+    },
+    DECREMENT_AT_SHOPPING_CART_AMOUNT: function DECREMENT_AT_SHOPPING_CART_AMOUNT(state) {
+      state.auth.currentUser.at_cart_count--;
+    },
     // wishList
     SET_WISH_LIST_ITEMS: function SET_WISH_LIST_ITEMS(state, items) {
       state.wishList.items = items;
@@ -71655,6 +71659,12 @@ __webpack_require__.r(__webpack_exports__);
       var index = _ref2.index,
           item = _ref2.item;
       state.wishList.items.splice(index, 1, item);
+    },
+    INCREMENT_WISH_LIST_AMOUNT: function INCREMENT_WISH_LIST_AMOUNT(state) {
+      state.auth.currentUser.wishlist_count++;
+    },
+    DECREMENT_AT_WISH_LIST_AMOUNT: function DECREMENT_AT_WISH_LIST_AMOUNT(state) {
+      state.auth.currentUser.wishlist_count--;
     },
     // orders
     SET_ORDER_ITEMS: function SET_ORDER_ITEMS(state, orders) {
@@ -71732,6 +71742,11 @@ __webpack_require__.r(__webpack_exports__);
     },
     retrieveToken: function retrieveToken(context, credentials) {
       context.state.auth.loading = true;
+      console.log({
+        username: credentials.username,
+        password: credentials.password,
+        secret: context.state.auth.secret
+      });
       return new Promise(function (resolve, reject) {
         axios__WEBPACK_IMPORTED_MODULE_0___default.a.post("".concat(context.getters.host, "/api/v1/login"), {
           username: credentials.username,
@@ -71804,6 +71819,7 @@ __webpack_require__.r(__webpack_exports__);
         axios__WEBPACK_IMPORTED_MODULE_0___default.a.defaults.headers.common['Authorization'] = "Bearer ".concat(context.state.auth.token);
         axios__WEBPACK_IMPORTED_MODULE_0___default.a.post("".concat(context.getters.host, "/api/v1/client/cart"), data).then(function (resp) {
           context.commit('ADD_TO_SHOPPING_CART_ITEMS', resp.data);
+          context.commit('INCREMENT_AT_SHOPPING_CART_AMOUNT');
           resolve(resp);
         })["catch"](function (error) {
           console.log('Ошибка при добавлении товара в коризину');
@@ -71818,6 +71834,7 @@ __webpack_require__.r(__webpack_exports__);
         axios__WEBPACK_IMPORTED_MODULE_0___default.a.defaults.headers.common['Authorization'] = "Bearer ".concat(context.state.auth.token);
         axios__WEBPACK_IMPORTED_MODULE_0___default.a.get("".concat(context.getters.host, "/api/v1/client/cart/").concat(cartId, "/remove")).then(function (resp) {
           context.commit('REMOVE_FROM_SHOPPING_CART', index);
+          context.commit('DECREMENT_AT_SHOPPING_CART_AMOUNT');
           resolve(resp);
         })["catch"](function (error) {
           console.log('Ошибка при удалении товара в корзине');
@@ -71861,6 +71878,7 @@ __webpack_require__.r(__webpack_exports__);
         axios__WEBPACK_IMPORTED_MODULE_0___default.a.defaults.headers.common['Authorization'] = "Bearer ".concat(context.state.auth.token);
         axios__WEBPACK_IMPORTED_MODULE_0___default.a.post("".concat(context.getters.host, "/api/v1/client/wishlist"), data).then(function (resp) {
           context.commit('ADD_TO_WISH_LIST_ITEMS', resp.data);
+          context.commit('INCREMENT_WISH_LIST_AMOUNT');
           resolve(resp);
         })["catch"](function (error) {
           console.log('Ошибка при добавлении товара в списко любимых');
@@ -71875,6 +71893,7 @@ __webpack_require__.r(__webpack_exports__);
         axios__WEBPACK_IMPORTED_MODULE_0___default.a.defaults.headers.common['Authorization'] = "Bearer ".concat(context.state.auth.token);
         axios__WEBPACK_IMPORTED_MODULE_0___default.a.get("".concat(context.getters.host, "/api/v1/client/wishlist/").concat(wishListId, "/remove")).then(function (resp) {
           context.commit('REMOVE_FROM_WISH_LIST', index);
+          context.commit('DECREMENT_AT_WISH_LIST_AMOUNT');
           resolve(resp);
         })["catch"](function (error) {
           console.log('Ошибка при удалении товара из спика избранных');

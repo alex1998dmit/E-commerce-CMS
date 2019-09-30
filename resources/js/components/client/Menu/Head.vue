@@ -15,14 +15,14 @@
         <li class="nav-item" v-if="user.email_verified_at">
           <router-link class="nav-link" :to="{ name: 'shoppingCart' }">
             <i class="fa fa-shopping-cart">
-              <span class="head-nav-icon-sign">({{ shoppingCart.length }})</span>
+              <span class="head-nav-icon-sign">({{ user.at_cart_count }})</span>
             </i>
           </router-link>
         </li>
         <li class="nav-item" v-if="user.email_verified_at">
           <router-link class="nav-link" :to="{ name: 'wishList' }">
             <i class="fa fa-heart">
-              <span class="head-nav-icon-sign">({{ wishList.length }})</span>
+              <span class="head-nav-icon-sign">({{ user.wishlist_count }})</span>
             </i>
           </router-link>
         </li>

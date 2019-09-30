@@ -2,7 +2,9 @@
 
 export default {
     state: {
-        host: 'http://157.245.79.96',
+        // host: 'http://157.245.79.96',
+        host: process.env.MIX_APP_URL,
+        // host: 'http://ecommerce',
         product_images_forlder: 'upload/products',
 
         // auth
@@ -10,7 +12,8 @@ export default {
         loading: false,
         auth_error: null,
         token: localStorage.getItem('access_token') || null,
-        secret: 'CxNosYys6OTyuBCfrt5rb96aq6xeZN01xhYrxMHK',
+        // secret: 'CxNosYys6OTyuBCfrt5rb96aq6xeZN01xhYrxMHK',
+        secret: process.env.MIX_SECRET_CODE,
 
         // notifications
         order_notifications: [],
