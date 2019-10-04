@@ -87,7 +87,9 @@ class AuthController extends Controller
             'orders_count' => $user->order->count(),
             'at_cart_count' => $user->shoppingCart->count(),
             'wishlist_count' => $user->wishList->count(),
-            'email_verified_at' => $user->email_verified_at
+            'email_verified_at' => $user->email_verified_at,
+            'shoppingCartItems' => $user->shoppingCart,
+            'wishListItems' => $user->wishList
         ];
     }
 }

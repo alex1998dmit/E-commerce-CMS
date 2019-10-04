@@ -57,7 +57,7 @@
                 <div class="col">
                     <br>
                     <h5>Товары в заказе</h5>
-                    <table class="table">
+                    <table class="table order-items">
                         <thead>
                             <tr>
                                 <th scope="col" class="text-center">ID товара</th>
@@ -258,6 +258,7 @@ export default {
             .then((item) => {
                 this.disableAmountInput()
                 this.resetUpdatingOrderItemParams()
+                this.updateInfoAboutOrder()
             })
             .catch(error => {
                 console.log(error)
@@ -276,7 +277,7 @@ export default {
     input {
         display: block;
         margin: 0 auto;
-        width: 40%;
+        width: 60%;
     }
     .add-product-to-order {
         padding: 10px;
@@ -289,6 +290,9 @@ export default {
     }
     .btn-navigate:hover {
         border-bottom: 2px solid black;
+    }
+    .order-items {
+
     }
         /* .trash-icon {
             color: red;

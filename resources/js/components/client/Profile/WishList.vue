@@ -71,6 +71,9 @@ export default {
     host () {
       return this.$store.getters.host
     }
+  },
+  mounted() {
+    this.$store.dispatch('getWishList')
   }
 }
 </script>

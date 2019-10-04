@@ -3,14 +3,9 @@ use App\User;
 
 Auth::routes(['verify' => true]);
 
-Route::post("register", 'Auth\RegisterController@register');
-Route::get('/v1/email/send', function () {
-    $user = User::find(7);
-    $user->sendEmailVerificationNotification();
-});
 Route::get('/v1/confirm', 'API\V1\VerificationController@confirm');
-//Route::group(['prefix' => '/v1', 'namespace' => ])
 
+// Open shop api
 Route::group(['prefix' => '/v1/client', 'namespace' => 'API\V1\Client'], function() {
     Route::post('/login', 'AuthController@login');
 
@@ -25,7 +20,8 @@ Route::group(['prefix' => '/v1/client', 'namespace' => 'API\V1\Client'], functio
     Route::get('products/{id}/similar', 'ProductsController@similar');
 });
 
-Route::group(['prefix' => '/v1/client', 'namespace' => 'API\V1\Client', 'middleware' => ['auth:api']], function() {
+// User api
+Route::group(['prefix' => '/v1/client', 'namespace' => 'API\V1\Client', 'middleware' => ['auth:api', 'verified']], function() {
     Route::get('/requisites', 'RequisitesController@index');
 
     Route::get('/cart', 'ShoppingCartController@index');
@@ -42,6 +38,7 @@ Route::group(['prefix' => '/v1/client', 'namespace' => 'API\V1\Client', 'middlew
     Route::put('/orders/{order_id}', 'OrdersController@update')->middleware('verified');
 });
 
+// register and login api
 Route::group(['prefix' => '/v1','namespace' => 'API\V1'], function () {
     Route::post('/login', 'AuthController@login');
     Route::post('/register', 'AuthController@register');
@@ -50,6 +47,7 @@ Route::group(['prefix' => '/v1','namespace' => 'API\V1'], function () {
 
 });
 
+// admin api
 Route::group(['prefix' => '/v1','namespace' => 'API\V1', 'middleware' => ['auth:api', 'admin']], function () {
     // requisites
     Route::get('/requisites', 'RequisitesController@index');
@@ -127,7 +125,6 @@ Route::group(['prefix' => '/v1','namespace' => 'API\V1', 'middleware' => ['auth:
 
     // AUTH
     Route::get('/info', 'AuthController@info');
-//    Route::get('/user', 'AuthController@about');
 });
 
 

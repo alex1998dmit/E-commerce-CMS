@@ -16,6 +16,7 @@ import Logout from '../../components/client/Auth/Logout'
 import WishList from '../../components/client/Profile/WishList'
 import AllOrders from '../../components/client/Orders/AllOrders'
 import Order from '../../components/client/Orders/Order'
+import Dashboard from "../../components/admin/includes/Dashboard";
 
 Vue.use(Router)
 

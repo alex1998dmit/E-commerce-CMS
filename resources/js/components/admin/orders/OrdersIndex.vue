@@ -95,7 +95,7 @@
                                 </a>
                             </td>
                             <td class="text-center">
-                                <a class="trash-icon" @click="openAboutOrder(order.id)">
+                                <a class="trash-icon" @click="openAboutOrder(order)">
                                     <i class="fa fa-pencil" aria-hidden="true"></i>
                                 </a>
                             </td>

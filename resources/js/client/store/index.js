@@ -259,8 +259,11 @@ export default {
         axios.defaults.headers.common['Authorization'] = `Bearer ${context.state.auth.token}`
         axios.post(`${context.getters.host}/api/v1/client/cart`, data)
           .then((resp) => {
-            context.commit('ADD_TO_SHOPPING_CART_ITEMS', resp.data)
-            context.commit('INCREMENT_AT_SHOPPING_CART_AMOUNT')
+            const product_id = resp.data.product_id
+            if (context.getters.shoppingCartItems.filter(item => item.product_id !== product_id).length === 0) {
+                context.commit('ADD_TO_SHOPPING_CART_ITEMS', resp.data)
+                context.commit('INCREMENT_AT_SHOPPING_CART_AMOUNT')
+            }
             resolve(resp)
           })
           .catch((error) => {

@@ -21,7 +21,7 @@
           <div class="col-md-12 buttons" v-if="isLoggedIn">
             <div class="col-md-12">
               <div class="button-add-to-cart">
-                <button class="add-to-card-button" @click="addToShoppingCart(product.id)" v-if="!isAddedToCart(product.id)">В корзину</button>
+                <button class="add-to-card-button" @click="addToShoppingCart(product.id)">В корзину</button>
               </div>
             </div>
             <div class="col-md-12">
@@ -60,7 +60,7 @@
     </div>
   </div>
   <hr>
-  <div class="row">
+  <div class="row" v-if="similar_products.length > 0">
     <div class="col-md-12">
       <div class="similar-products-block">
         <h5 class="similar-products-sign">Вам также могут понравиться:</h5>

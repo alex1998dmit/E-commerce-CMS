@@ -143,10 +143,16 @@ export default {
       if (confirm('Вы подтверждаете, что оплатили товар ?')) {
         this.$store.dispatch('changeOrderStatus', {orderId, statusId, index})
           .then(resp => {
-            this.flash('Заявка принята, идет проверка', 'success')
+            this.flash('Заявка принята, идет проверка', 'success', {
+                timeout: 2000,
+                important: true
+            })
           })
           .catch(error => {
-            this.flash('Что-то пошло не так, попробуйте позже или позвоните в поддержку', 'danger')
+            this.flash('Что-то пошло не так, попробуйте позже или позвоните в поддержку', 'danger', {
+                timeout: 2000,
+                important: true
+            })
             console.log('error', error)
           })
       }

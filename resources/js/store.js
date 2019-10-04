@@ -82,7 +82,7 @@ export default {
             items: [],
             page: 1,
             pageCount: 0,
-            selected: {
+            current: {
                 id: 0,
                 name: null,
                 user_id: 0,
@@ -219,7 +219,7 @@ export default {
             return state.orders.items;
         },
         selectedOrder(state) {
-            return state.orders.selected;
+            return state.orders.current;
         },
         orderHistory(state) {
             return state.orders.order_history;
@@ -318,7 +318,7 @@ export default {
         ADD_ORDER: (state, order) => { state.orders.items.unshift(order) },
         SET_ORDERS_PAGE_COUNT (state, pageCount) { state.orders.pageCount = pageCount },
         SET_ORDERS_CURRENT_PAGE (state, page) { state.orders.page = page },
-        SET_SELECTED_ORDER: (state, order) => { state.orders.selected = order },
+        SET_SELECTED_ORDER: (state, order) => { state.orders.current = order },
         UPDATE_ORDER_ITEMS: (state, { order_index, order }) => { state.orders.items.splice(order_index, 1, order) },
         SET_SELECTED_ORDER_HISTORY: (state, order_history) => state.order_history = order_history,
         REMOVE_ORDERS_ITEM: (state, order_index) => { state.orders.items.splice(order_index, 1) },
@@ -334,9 +334,9 @@ export default {
         ADD_UNCHECKED_ORDER_TO_ORDER_STATUS: (state, status_index) => { state.order_statuses[status_index].unchecked_orders_num ++ },
 
         // OrderItem
-        UPDATE_ORDER_ITEM: (state, { order_index, item_index, order_item }) => { state.orders.selected.order_items.splice(item_index, 1, order_item) },
-        ADD_ORDER_ITEM: (state, item) => { state.orders.selected.order_items.push(item) },
-        REMOVE_ORDER_ITEM: (state, orderIndex) => { state.orders.selected.order_items.splice(orderIndex, 1) },
+        UPDATE_ORDER_ITEM: (state, { order_index, item_index, order_item }) => { state.orders.current.order_items.splice(item_index, 1, order_item) },
+        ADD_ORDER_ITEM: (state, item) => { state.orders.current.order_items.push(item) },
+        REMOVE_ORDER_ITEM: (state, orderIndex) => { state.orders.current.order_items.splice(orderIndex, 1) },
 
         // users
         SET_ALL_USERS: (state, users) => { state.users.items = users },
@@ -849,12 +849,12 @@ export default {
                 });
         },
         updateOrder(context, { order_id, order, index }) {
-            console.log(order)
             return new Promise((resolve, reject) => {
                 axios.defaults.headers.common["Authorization"] = `Bearer ${context.state.token}`
-                axios.put(`${context.getters.host}/api/v1/orders/` + order_id, order)
+                axios.put(`${context.getters.host}/api/v1/orders/${order_id}`, order)
                     .then(resp => {
                         context.commit('UPDATE_ORDER_ITEMS', {  order_index: index, order:resp.data })
+                        context.commit('SET_SELECTED_ORDER', resp.data)
                         resolve(resp)
                     })
                     .catch((error) => {
@@ -864,22 +864,6 @@ export default {
                     })
             })
 
-        },
-        updateStatusOfOrder (context, { order_id, order, index }) {
-            console.log(1)
-            return new Promise((resolve, reject) => {
-                axios.defaults.headers.common["Authorization"] = `Bearer ${context.state.token}`
-                axios.put(`${context.getters.host}/api/v1/orders/` + order_id, order)
-                    .then(resp => {
-                        context.commit('REMOVE_ORDERS_ITEM', index)
-                            resolve(resp)
-                        })
-                    .catch((error) => {
-                        alert('Ошибка при обновлении заказа');
-                        console.log(resp.data);
-                        reject(error)
-                    })
-            })
         },
         getFindedOrders (context) {
             axios.defaults.headers.common["Authorization"] = `Bearer ${context.state.token}`
@@ -944,6 +928,7 @@ export default {
             return new Promise((resolve, reject) => {
                 axios.put(`${context.getters.host}/api/v1/orderItems/` + item_id, body)
                     .then((resp) => {
+                        console.log(resp.data)
                         context.commit('UPDATE_ORDER_ITEM', { order_index, item_index, order_item: resp.data })
                         resolve(resp.data)
                     })

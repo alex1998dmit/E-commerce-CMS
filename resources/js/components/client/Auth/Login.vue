@@ -60,7 +60,10 @@ export default {
                   })
                   this.$store.dispatch('destroyToken')
                 } else {
-                  this.flash('Вход выполнен', 'success')
+                  this.flash('Вход выполнен', 'success', {
+                      timeout: 2000,
+                      important: true
+                  })
                   this.$router.push({ name: 'products' })
                 }
             })

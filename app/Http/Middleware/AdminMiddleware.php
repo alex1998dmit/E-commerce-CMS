@@ -15,7 +15,7 @@ class AdminMiddleware
      */
     public function handle($request, Closure $next)
     {
-        if ($request->user() && $request->user()->authorizeRoles(['opertor', 'admin']))
+        if ($request->user() && $request->user()->authorizeRoles(['operator', 'admin']))
         {
             return $next($request);
         }

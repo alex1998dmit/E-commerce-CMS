@@ -58,7 +58,7 @@
               </div>
               <div class="col-2">
                 <div class="product-quantity">
-                  <input type="number" class="quanity-selector" min="1" v-model="item.amount" @change="updateCart(item.id, index, { amount: item.amount })">
+                  <input type="number" class="quanity-selector" min="1" max="1000000" v-model="item.amount" @change="updateCart(item.id, index, { amount: item.amount })">
                 </div>
               </div>
               <div class="col-2">
@@ -123,8 +123,12 @@ export default {
       return this.$store.getters.host
     }
   },
+  mounted() {
+    this.$store.dispatch('getShoppingCart')
+  },
   methods: {
     updateCart (cartId, index, data) {
+      data.amount = data.amount > 0 ? data.amount : 1
       this.$store.dispatch('updateCart', { cartId, index, data })
     },
     makeOrder () {
@@ -133,11 +137,17 @@ export default {
       }, [])
       this.$store.dispatch('createOrder', { products })
         .then(resp => {
-          this.flash('Заказ оформлен', 'success')
+          this.flash('Заказ оформлен', 'success', {
+              timeout: 2000,
+              important: true
+          })
           this.$router.push('orders')
         })
         .catch(error => {
-          this.flash('Произошла ошибка при оформлении заказа, попробуйте позже', 'danger')
+          this.flash('Произошла ошибка при оформлении заказа, попробуйте позже', 'danger', {
+              timeout: 2000,
+              important: true
+          })
           console.log(error)
         })
     }

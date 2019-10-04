@@ -3,6 +3,7 @@
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
+
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
       <div class="search">
         <form class="form-inline my-2 my-lg-0" @submit.prevent="findProducts()">
@@ -10,28 +11,36 @@
           <input class="form-control mr-sm-2" type="search" placeholder="Поиск продуктов ..." aria-label="Search" v-model="search_param">
         </form>
       </div>
-
       <ul class="navbar-nav ml-auto logged-user" v-if="isLoggedIn">
-        <li class="nav-item" v-if="user.email_verified_at">
+        <li class="nav-item">
           <router-link class="nav-link" :to="{ name: 'shoppingCart' }">
             <i class="fa fa-shopping-cart">
-              <span class="head-nav-icon-sign">({{ user.at_cart_count }})</span>
+                <span class="head-nav-icon-sign">Корзина</span>
+<!--              <span class="head-nav-icon-sign">({{ user.at_cart_count }})</span>-->
             </i>
           </router-link>
         </li>
-        <li class="nav-item" v-if="user.email_verified_at">
+        <li class="nav-item">
           <router-link class="nav-link" :to="{ name: 'wishList' }">
             <i class="fa fa-heart">
-              <span class="head-nav-icon-sign">({{ user.wishlist_count }})</span>
+                <span class="head-nav-icon-sign">Избранное</span>
+<!--              <span class="head-nav-icon-sign">({{ user.wishlist_count }})</span>-->
             </i>
           </router-link>
         </li>
-        <li class="nav-item" v-if="user.email_verified_at">
+        <li class="nav-item">
           <router-link class="nav-link" :to="{ name: 'orders' }">
             <i class="fa fa-user-circle-o">
               <span class="head-nav-icon-sign">Заказы</span>
             </i>
           </router-link>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" v-if="isAdmin" @click="redirectToAdminPage">
+              <i class="fa fa-lock">
+                <span class="head-nav-icon-sign">Панель</span>
+              </i>
+          </a>
         </li>
         <li class="nav-item">
           <router-link class="nav-link" :to="{ name: 'logout' }">
@@ -81,6 +90,9 @@ export default {
       if (this.isLoggedIn) {
         return this.$store.getters.wishListItems
       }
+    },
+    isAdmin () {
+        return this.user.role.filter(role => role.name === 'admin').length > 0
     }
   },
   methods: {
@@ -88,7 +100,10 @@ export default {
       this.$store.commit('SET_SEARCH_PARAM', this.search_param)
       this.$store.dispatch('getFindedProducts', { search_param: this.search_param })
       this.$router.push({name: 'searchProduct'})
-    }
+    },
+      redirectToAdminPage () {
+        window.location.href = `${process.env.MIX_APP_URL}/admin/orders`
+      }
   }
 }
 </script>

@@ -105,6 +105,7 @@ export default {
     mounted() {
         this.update_order_params.user_id = this.order.user_id
         this.update_order_params.sum = this.order.sum
+        this.$store.dispatch('getOrder', this.$route.params.id)
     },
     methods: {
         showUsersSearchForm () {

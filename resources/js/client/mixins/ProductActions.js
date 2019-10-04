@@ -9,7 +9,10 @@ export const ProductActions = {
             })
           })
           .catch((error) => {
-            this.flash('Что-то пошло не так, попробуйте перезагрузить страницу или обратитесь в поддержку', 'danger')
+            this.flash('Что-то пошло не так, попробуйте перезагрузить страницу или обратитесь в поддержку', 'danger', {
+                timeout: 2000,
+                important: true
+            })
             console.log(error)
           })
       },
@@ -22,7 +25,10 @@ export const ProductActions = {
             })
           })
           .catch((error) => {
-            this.flash('Что-то пошло не так, попробуйте перезагрузить страницу или обратитесь в поддержку', 'danger')
+            this.flash('Что-то пошло не так, попробуйте перезагрузить страницу или обратитесь в поддержку', 'danger', {
+                timeout: 2000,
+                important: true
+            })
             console.log(error)
           })
       },

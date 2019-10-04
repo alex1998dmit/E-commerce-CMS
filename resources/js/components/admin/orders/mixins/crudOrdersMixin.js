@@ -1,10 +1,6 @@
 export const crudOrdersMixin = {
     methods: {
         // openModal
-        openAboutOrder(order) {
-            this.$store.commit("SET_SELECTED_ORDER", order);
-            this.$bvModal.show("about-order-modal");
-        },
         openChangeOrder(order) {
             this.$store.commit("SET_SELECTED_ORDER", order);
             this.$bvModal.show("change-order-modal");
@@ -16,8 +12,8 @@ export const crudOrdersMixin = {
             this.$bvModal.show("update-user-at-order");
         },
         // logic
-        openAboutOrder (order_id) {
-            this.$router.push({ name: 'OrderAbout', params: { id: order_id }})
+        openAboutOrder (order) {
+            this.$router.push({ name: 'OrderAbout', params: { id: order.id }})
         },
         changeOrderStatus (event, order_id, order_index) {
             const status_id = event.target.value
