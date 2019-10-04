@@ -49,6 +49,7 @@ class ProductsController extends Controller
         ]);
         if ($validation->fails()) {
             return response()->json([
+                'type' => 'validate_error',
                 'messages' => $validation->errors()
             ], 401);
         }

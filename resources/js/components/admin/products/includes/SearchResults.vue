@@ -44,7 +44,7 @@
 <script>
 export default {
     props: {
-        products: null,
+        products: Array,
     },
 }
 </script>

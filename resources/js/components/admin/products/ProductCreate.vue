@@ -90,8 +90,8 @@ export default {
             for (let i = 0; i < this.product.photos.length; i++) {
                 form.append('photo[]', this.product.photos[i])
             }
-            this.$store.dispatch('createProduct', form);
-            this.$router.push({ name: "products" });
+            this.$store.dispatch('createProduct', form)
+            this.$router.push({ name: "products" })
         },
         uploadFiles(e) {
             this.product.photos = e.target.files;

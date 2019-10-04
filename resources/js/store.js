@@ -290,6 +290,7 @@ export default {
 
         // products
         SET_PRODUCTS_ITEMS(state, products) { state.products.items = products },
+        ADD_PRODUCT: (state, product) => { state.products.items.push(product) },
         SET_PRODUCTS_PAGER_COUNT (state, pageCount) { state.products.pageCount = pageCount },
         SET_PRODUCTS_CURRENT_PAGE (state, page) { state.products.page = page },
         SET_PRODUCT: (state, product) => state.product = product,
@@ -761,13 +762,14 @@ export default {
 
         },
         createProduct(context, product){
-            axios.defaults.headers.common['Authorization']=`Bearer ${context.state.token}`
+            axios.defaults.headers.common['Authorization']=`Bearer ${context.state.token}`;
             axios.post(`${context.getters.host}/api/v1/products/store`, product)
                 .then((resp) => {
+                    context.commit('ADD_PRODUCT', resp.data)
                 })
-                .catch((resp) => {
-                    alert('Ошибка при создании продукта');
-                    console.log(resp);
+                .catch((error) => {
+                    alert('Ошибка при создании продукта из хранилища');
+                    console.log(error);
                 })
         },
         trashProduct(context, product_id) {

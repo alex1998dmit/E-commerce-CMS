@@ -80,22 +80,22 @@
                         <div class="col-md-12">
                             <ul class="nav nav-tabs" id="myTab" role="tablist">
                                 <li class="nav-item">
-                                    <a class="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true">По имени</a>
+                                    <a class="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true">По названию продукта</a>
                                 </li>
-                                <li class="nav-item">
-                                    <a class="nav-link" id="profile-tab" data-toggle="tab" href="#profile" role="tab" aria-controls="profile" aria-selected="false">По названию категории</a>
-                                </li>
+<!--                                <li class="nav-item">-->
+<!--                                    <a class="nav-link" id="profile-tab" data-toggle="tab" href="#profile" role="tab" aria-controls="profile" aria-selected="false">По названию категории</a>-->
+<!--                                </li>-->
                                 <!-- <li class="nav-item">
                                     <a class="nav-link" id="contact-tab" data-toggle="tab" href="#contact" role="tab" aria-controls="contact" aria-selected="false">По id продукт</a>
                                 </li> -->
                             </ul>
                             <div class="tab-content" id="myTabContent">
                                 <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
-                                    <SearchResults :products="filteredItems.byName" @trashProduct="trashProduct" @openProduct="openAboutProductModal"></SearchResults>
+                                    <SearchResults :products="finded_products" @trashProduct="trashProduct" @openProduct="openAboutProductModal"></SearchResults>
                                 </div>
-                                <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
-                                    <SearchResults :products="filteredItems.byCategoryName" @trashProduct="trashProduct" @openProduct="openAboutProductModal"></SearchResults>
-                                </div>
+<!--                                <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">-->
+<!--                                    <SearchResults :products="finded_products.byCategoryName" @trashProduct="trashProduct" @openProduct="openAboutProductModal"></SearchResults>-->
+<!--                                </div>-->
                                 <!-- <div class="tab-pane fade" id="contact" role="tabpanel" aria-labelledby="contact-tab">
                                     <SearchResults :products="filteredItems.byProductId"></SearchResults>
                                 </div> -->
@@ -129,6 +129,7 @@
             return {
                 search_param: null,
                 show_search_result: false,
+                finded_products: []
             }
         },
         components: {
@@ -165,6 +166,8 @@
             findProducts () {
                 this.$store.dispatch('getFilteredProducts', this.search_param)
                     .then(resp => {
+                        console.log(resp.data)
+                        this.finded_products = resp.data
                         this.show_search_result = true
                     })
                     .catch(error => {
