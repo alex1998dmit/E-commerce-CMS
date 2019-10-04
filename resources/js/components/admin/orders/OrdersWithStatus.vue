@@ -157,10 +157,7 @@ export default {
                 .then((resp) => {
                     console.log(status_id)
                     // костыль
-                    this.$store.commit('ADD_ORDER_TO_ORDER_STATUS', status_id - 1)
-                    if (!resp.data.is_checked) {
-                        this.$store.commit('ADD_UNCHECKED_ORDER_TO_ORDER_STATUS', status_id - 1)
-                    }
+                    this.$store.dispatch('getOrderStatuses')
                     this.uploadOrders()
                 })
         }

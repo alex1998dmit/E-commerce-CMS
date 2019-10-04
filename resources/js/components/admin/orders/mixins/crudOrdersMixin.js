@@ -19,7 +19,8 @@ export const crudOrdersMixin = {
             const status_id = event.target.value
             this.$store.dispatch('updateOrder', { order_id, index: order_index, order: { status_id }})
                 .then(resp => {
-                    this.$store.commit('ADD_UNCHECKED_ORDER_TO_ORDER_STATUS', status_id)
+                    this.$store.dispatch('getOrderStatuses')
+                    // this.$store.commit('ADD_UNCHECKED_ORDER_TO_ORDER_STATUS', status_id)
                 })
         },
         checkNotification (order, order_index) {
