@@ -49,59 +49,59 @@
                             </tr>
                             </thead>
                             <tbody>
-                                <tr v-for="product in products" :key="product.id">
-                                    <td>{{ product.id }}</td>
-                                    <td>
-                                        <a
-                                            class="aboutProduct"
-                                            @click="openAboutProductModal(product)">
-                                            {{ product.name }}
-                                        </a>
-                                    </td>
-                                    <td>{{ product.category.name }}</td>
-                                    <td>{{ product.price }}</td>
-                                    <td>{{ product.wish_list.length }}</td>
-                                    <td>{{ product.order_items.length }}</td>
-                                    <td>
-                                        <router-link href="#" class="edit-icon" :to="{ name: 'editProduct', params: { id: product.id }}">
-                                            <i class="fa fa-pencil" aria-hidden="true"></i>
-                                        </router-link>
-                                    </td>
-                                    <td>
-                                        <a href="#" class="trash-icon" @click="trashProduct(product.id)">
-                                            <i class="fa fa-trash" aria-hidden="true"></i>
-                                        </a>
-                                    </td>
-                                </tr>
+                            <tr v-for="product in products" :key="product.id">
+                                <td>{{ product.id }}</td>
+                                <td>
+                                    <a
+                                        class="aboutProduct"
+                                        @click="openAboutProductModal(product)">
+                                        {{ product.name }}
+                                    </a>
+                                </td>
+                                <td>{{ product.category.name }}</td>
+                                <td>{{ product.price }}</td>
+                                <td>{{ product.wish_list.length }}</td>
+                                <td>{{ product.order_items.length }}</td>
+                                <td>
+                                    <router-link href="#" class="edit-icon" :to="{ name: 'editProduct', params: { id: product.id }}">
+                                        <i class="fa fa-pencil" aria-hidden="true"></i>
+                                    </router-link>
+                                </td>
+                                <td>
+                                    <a href="#" class="trash-icon" @click="trashProduct(product.id)">
+                                        <i class="fa fa-trash" aria-hidden="true"></i>
+                                    </a>
+                                </td>
+                            </tr>
                             </tbody>
                         </table>
                     </div>
-                <div class="row" v-if="show_search_result">
-                    <div class="col-md-12">
-                        <ul class="nav nav-tabs" id="myTab" role="tablist">
-                            <li class="nav-item">
-                                <a class="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true">По имени</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" id="profile-tab" data-toggle="tab" href="#profile" role="tab" aria-controls="profile" aria-selected="false">По названию категории</a>
-                            </li>
-                            <!-- <li class="nav-item">
-                                <a class="nav-link" id="contact-tab" data-toggle="tab" href="#contact" role="tab" aria-controls="contact" aria-selected="false">По id продукт</a>
-                            </li> -->
-                        </ul>
-                        <div class="tab-content" id="myTabContent">
-                            <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
-                                <SearchResults :products="filteredItems.byName" @trashProduct="trashProduct" @openProduct="openAboutProductModal"></SearchResults>
+                    <div class="row" v-if="show_search_result">
+                        <div class="col-md-12">
+                            <ul class="nav nav-tabs" id="myTab" role="tablist">
+                                <li class="nav-item">
+                                    <a class="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true">По имени</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" id="profile-tab" data-toggle="tab" href="#profile" role="tab" aria-controls="profile" aria-selected="false">По названию категории</a>
+                                </li>
+                                <!-- <li class="nav-item">
+                                    <a class="nav-link" id="contact-tab" data-toggle="tab" href="#contact" role="tab" aria-controls="contact" aria-selected="false">По id продукт</a>
+                                </li> -->
+                            </ul>
+                            <div class="tab-content" id="myTabContent">
+                                <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
+                                    <SearchResults :products="filteredItems.byName" @trashProduct="trashProduct" @openProduct="openAboutProductModal"></SearchResults>
+                                </div>
+                                <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
+                                    <SearchResults :products="filteredItems.byCategoryName" @trashProduct="trashProduct" @openProduct="openAboutProductModal"></SearchResults>
+                                </div>
+                                <!-- <div class="tab-pane fade" id="contact" role="tabpanel" aria-labelledby="contact-tab">
+                                    <SearchResults :products="filteredItems.byProductId"></SearchResults>
+                                </div> -->
                             </div>
-                            <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
-                                <SearchResults :products="filteredItems.byCategoryName" @trashProduct="trashProduct" @openProduct="openAboutProductModal"></SearchResults>
-                            </div>
-                            <!-- <div class="tab-pane fade" id="contact" role="tabpanel" aria-labelledby="contact-tab">
-                                <SearchResults :products="filteredItems.byProductId"></SearchResults>
-                            </div> -->
                         </div>
                     </div>
-                </div>
                 </div>
             </div>
             <AboutProductModule></AboutProductModule>
@@ -117,74 +117,74 @@
 </template>
 
 <script>
-import { mapGetters, mapMutations } from 'vuex';
-import { deleteProduct } from './mixins/deleteProduct.js';
-import AboutProductModule from './includes/AboutProductModule';
-import SearchResults from './includes/SearchResults';
-import Pager from '../helpers/Pager'
+    import { mapGetters, mapMutations } from 'vuex';
+    import { deleteProduct } from './mixins/deleteProduct.js';
+    import AboutProductModule from './includes/AboutProductModule';
+    import SearchResults from './includes/SearchResults';
+    import Pager from '../helpers/Pager'
 
-export default {
-    mixins: ["deleteProduct"],
-    data: () => {
-        return {
-            search_param: null,
-            show_search_result: false,
-        }
-    },
-    components: {
-        AboutProductModule, SearchResults, Pager
-    },
-    mounted() {
-        const page = this.$route.query.page
-        this.getProducts(page)
-    },
-    computed: {
-        ...mapGetters(['products']),
-        page_count() {
-            return this.$store.getters.productsPageCount
-        },
-        filteredItems() {
-            return this.$store.getters.filtered_products
-        }
-    },
-    methods: {
-        openAboutProductModal(product) {
-            this.$store.commit('SET_CURRENT_PRODUCT', product);
-            this.$store.commit('SET_OPENED_PRODUCT_IMAGES', product.photo);
-            this.$bvModal.show('bv-modal-about-product');
-        },
-        trashProduct(id) {
-            if (confirm("Вы уверены что хотите удалить продукт ?")) {
-                this.$store.dispatch('trashProduct', id);
+    export default {
+        mixins: ["deleteProduct"],
+        data: () => {
+            return {
+                search_param: null,
+                show_search_result: false,
             }
         },
-        getProducts (page) {
-            this.$store.commit('SET_PRODUCTS_CURRENT_PAGE', page)
-            this.$store.dispatch('getProducts', page);
+        components: {
+            AboutProductModule, SearchResults, Pager
         },
-        findProducts () {
-            this.$store.dispatch('getFilteredProducts', this.search_param)
-                .then(resp => {
-                    this.show_search_result = true
-                })
-                .catch(error => {
-                    this.show_search_result = false
-                    console.log(error)
-                })
+        mounted() {
+            const page = this.$route.query.page
+            this.getProducts(page)
         },
-        showAllProducts () {
-            this.show_search_result = false
+        computed: {
+            ...mapGetters(['products']),
+            page_count() {
+                return this.$store.getters.productsPageCount
+            },
+            filteredItems() {
+                return this.$store.getters.filtered_products
+            }
         },
-        clearSearchParam () {
-            this.search_param = null
-        }
-    },
-    watch: {
-        '$route.query.page'(newPage) {
-            this.getProducts(newPage)
+        methods: {
+            openAboutProductModal(product) {
+                this.$store.commit('SET_CURRENT_PRODUCT', product);
+                this.$store.commit('SET_OPENED_PRODUCT_IMAGES', product.photo);
+                this.$bvModal.show('bv-modal-about-product');
+            },
+            trashProduct(id) {
+                if (confirm("Вы уверены что хотите удалить продукт ?")) {
+                    this.$store.dispatch('trashProduct', id);
+                }
+            },
+            getProducts (page) {
+                this.$store.commit('SET_PRODUCTS_CURRENT_PAGE', page)
+                this.$store.dispatch('getProducts', page);
+            },
+            findProducts () {
+                this.$store.dispatch('getFilteredProducts', this.search_param)
+                    .then(resp => {
+                        this.show_search_result = true
+                    })
+                    .catch(error => {
+                        this.show_search_result = false
+                        console.log(error)
+                    })
+            },
+            showAllProducts () {
+                this.show_search_result = false
+            },
+            clearSearchParam () {
+                this.search_param = null
+            }
+        },
+        watch: {
+            '$route.query.page'(newPage) {
+                this.getProducts(newPage)
+            }
         }
     }
-}
 </script>
 <style scoped>
     .fa .fa-pencil {
