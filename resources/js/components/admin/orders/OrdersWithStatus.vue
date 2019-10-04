@@ -155,7 +155,6 @@ export default {
             const status_id = event.target.value
             this.$store.dispatch('updateOrder', { order_id, index: order_index, order: { status_id }})
                 .then((resp) => {
-                    console.log(status_id)
                     // костыль
                     this.$store.dispatch('getOrderStatuses')
                     this.uploadOrders()

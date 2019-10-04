@@ -59,7 +59,6 @@ export default {
   },
   methods: {
     register () {
-        console.log({ name: this.name, email: this.email, password: this.password })
       this.$store.dispatch('register', { name: this.name, email: this.email, password: this.password })
         .then(resp => {
           this.$store.commit('CLEAR_AUTH_ERRORS')

@@ -175,11 +175,6 @@ export default {
     },
     retrieveToken: (context, credentials) => {
       context.state.auth.loading = true
-      console.log({
-          username: credentials.username,
-          password: credentials.password,
-          secret: context.state.auth.secret
-      })
       return new Promise((resolve, reject) => {
         axios.post(`${context.getters.host}/api/v1/login`, {
           username: credentials.username,
@@ -377,7 +372,6 @@ export default {
     },
     createOrder: (context, order) => {
       return new Promise((resolve, reject) => {
-        console.log(order)
         axios.defaults.headers.common['Authorization'] = `Bearer ${context.state.auth.token}`
         axios.post(`${context.getters.host}/api/v1/client/orders`, order)
           .then((resp) => {

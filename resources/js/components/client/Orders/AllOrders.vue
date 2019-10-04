@@ -139,7 +139,6 @@ export default {
       this.$router.push({name: 'order', params: { id: orderId }})
     },
     changeOrderStatus (orderId, statusId, index) {
-      console.log(orderId, index)
       if (confirm('Вы подтверждаете, что оплатили товар ?')) {
         this.$store.dispatch('changeOrderStatus', {orderId, statusId, index})
           .then(resp => {

@@ -53,7 +53,6 @@ export default {
           this.$store.commit('CLEAR_AUTH_ERRORS')
           this.$store.dispatch('getUserInfo')
             .then((resp) => {
-                console.log(resp)
                 if (!resp.email_verified_at) {
                   this.flash('Необходимо подтвердить почту, чтобы делать заказы', 'danger', {
                     important: true

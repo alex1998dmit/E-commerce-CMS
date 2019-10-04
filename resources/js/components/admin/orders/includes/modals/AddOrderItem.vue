@@ -88,7 +88,6 @@ export default {
         },
         checkOrderItemExists (product_id) { return this.order.order_items.filter(item => item.order_id === this.order.id && item.product_id === product_id).length > 0 },
         createOrderItem () {
-            console.log({ order_id: this.order.id, product_id: this.product.id, amount: Number(this.product.amount) })
             this.$store.dispatch('createOrderItem', { order_id: this.order.id, product_id: this.product.id, amount: Number(this.product.amount) })
                 .then(resp => {
                     this.closeModal()

@@ -10,6 +10,13 @@
 <!--                </a>-->
             </li>
             <li class="nav-item">
+                <a class="nav-link btn btn-light" @click="redirectToAClientPage">
+                    <i class="fa fa-shopping-basket" aria-hidden="true">
+                        <span class="head-nav-icon-sign">Магазин</span>
+                    </i>
+                </a>
+            </li>
+            <li class="nav-item">
                 <router-link class="nav-link btn btn-light" v-if="!isLoggedIn" :to="{ name: 'login' }">
                      <i class="fa fa-sign-in" aria-hidden="true">
                         <span class="head-nav-icon-sign">Вход</span>
@@ -79,6 +86,9 @@ export default {
         },
     },
     methods: {
+        redirectToAClientPage () {
+            window.location.href = `${process.env.MIX_APP_URL}`
+        },
         // openNotificationsForm() {
         //     this.$bvModal.show('orders-notifications');
         // }

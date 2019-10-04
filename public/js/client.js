@@ -2001,8 +2001,6 @@ __webpack_require__.r(__webpack_exports__);
         _this.$store.commit('CLEAR_AUTH_ERRORS');
 
         _this.$store.dispatch('getUserInfo').then(function (resp) {
-          console.log(resp);
-
           if (!resp.email_verified_at) {
             _this.flash('Необходимо подтвердить почту, чтобы делать заказы', 'danger', {
               important: true
@@ -2131,11 +2129,6 @@ __webpack_require__.r(__webpack_exports__);
     register: function register() {
       var _this = this;
 
-      console.log({
-        name: this.name,
-        email: this.email,
-        password: this.password
-      });
       this.$store.dispatch('register', {
         name: this.name,
         email: this.email,
@@ -2866,8 +2859,6 @@ __webpack_require__.r(__webpack_exports__);
     },
     changeOrderStatus: function changeOrderStatus(orderId, statusId, index) {
       var _this = this;
-
-      console.log(orderId, index);
 
       if (confirm('Вы подтверждаете, что оплатили товар ?')) {
         this.$store.dispatch('changeOrderStatus', {
@@ -71900,11 +71891,6 @@ __webpack_require__.r(__webpack_exports__);
     },
     retrieveToken: function retrieveToken(context, credentials) {
       context.state.auth.loading = true;
-      console.log({
-        username: credentials.username,
-        password: credentials.password,
-        secret: context.state.auth.secret
-      });
       return new Promise(function (resolve, reject) {
         axios__WEBPACK_IMPORTED_MODULE_0___default.a.post("".concat(context.getters.host, "/api/v1/login"), {
           username: credentials.username,
@@ -72099,7 +72085,6 @@ __webpack_require__.r(__webpack_exports__);
     },
     createOrder: function createOrder(context, order) {
       return new Promise(function (resolve, reject) {
-        console.log(order);
         axios__WEBPACK_IMPORTED_MODULE_0___default.a.defaults.headers.common['Authorization'] = "Bearer ".concat(context.state.auth.token);
         axios__WEBPACK_IMPORTED_MODULE_0___default.a.post("".concat(context.getters.host, "/api/v1/client/orders"), order).then(function (resp) {
           context.commit('ADD_ORDER', resp.data);

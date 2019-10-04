@@ -101,9 +101,9 @@ export default {
       this.$store.dispatch('getFindedProducts', { search_param: this.search_param })
       this.$router.push({name: 'searchProduct'})
     },
-      redirectToAdminPage () {
+    redirectToAdminPage () {
         window.location.href = `${process.env.MIX_APP_URL}/admin/orders`
-      }
+    }
   }
 }
 </script>
