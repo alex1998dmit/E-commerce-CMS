@@ -3,7 +3,7 @@
 <br>
 <b>Чтобы подтвердить свой аккаунт  перейдите по ссылке: </b>
 <br>
-<a href="http://nadya.shop/api/v1/confirm?username={{ $user->email }}&token={{ $user->verification_token }}">Подтвердить почту</a>
+<a href="http://nady.shop/api/v1/confirm?username={{ $user->email }}&token={{ $user->verification_token }}">Подтвердить почту</a>
 <br>
 С уважением,
 <br/>
