@@ -26,7 +26,7 @@ class VerificationController extends Controller
         }
         $user->email_verified_at = date('Y-m-d g:i:s');
         $user->save();
-        return Redirect::to(env('MIX_APP_URL'));
+        return Redirect::to(env('APP_HOST_NAME'));
     }
 
     public function resend(Request $request)

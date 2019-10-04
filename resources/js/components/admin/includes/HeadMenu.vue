@@ -87,7 +87,7 @@ export default {
     },
     methods: {
         redirectToAClientPage () {
-            window.location.href = `${process.env.MIX_APP_URL}`
+            window.location.href = `${process.env.MIX_APP_HOST_NAME}`
         },
         // openNotificationsForm() {
         //     this.$bvModal.show('orders-notifications');

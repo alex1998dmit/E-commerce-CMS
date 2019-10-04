@@ -2657,7 +2657,7 @@ __webpack_require__.r(__webpack_exports__);
       });
     },
     redirectToAdminPage: function redirectToAdminPage() {
-      window.location.href = "".concat("http://ecommerce", "/admin/orders");
+      window.location.href = "".concat("http://www.ecommerce", "/admin/orders");
     }
   }
 });

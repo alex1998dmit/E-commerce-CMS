@@ -102,7 +102,7 @@ export default {
       this.$router.push({name: 'searchProduct'})
     },
     redirectToAdminPage () {
-        window.location.href = `${process.env.MIX_APP_URL}/admin/orders`
+        window.location.href = `${process.env.MIX_APP_HOST_NAME}/admin/orders`
     }
   }
 }
