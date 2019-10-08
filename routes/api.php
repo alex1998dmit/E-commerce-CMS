@@ -4,6 +4,13 @@ use App\User;
 Auth::routes(['verify' => true]);
 
 Route::get('/v1/confirm', 'API\V1\VerificationController@confirm');
+//Route::get()
+Route::group(['namespace' => 'Auth', 'middleware' => 'api', 'prefix' => 'password'], function() {
+    Route::post('create', 'PasswordResetController@create');
+    Route::get('find/{token}', 'PasswordResetController@find');
+    Route::post('reset', 'PasswordResetController@reset');
+});
+
 
 // Open shop api
 Route::group(['prefix' => '/v1/client', 'namespace' => 'API\V1\Client'], function() {

@@ -14,7 +14,7 @@ class AddVerificationTokenToUsers extends Migration
     public function up()
     {
         Schema::table('users', function (Blueprint $table) {
-            $table->string('verification_token');
+//            $table->string('verification_token');
         });
     }
 
@@ -26,7 +26,7 @@ class AddVerificationTokenToUsers extends Migration
     public function down()
     {
         Schema::table('users', function (Blueprint $table) {
-            $table->dropColumn('verification_token');
+//            $table->dropColumn('verification_token');
         });
     }
 }

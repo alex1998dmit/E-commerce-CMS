@@ -17,6 +17,8 @@ import WishList from '../../components/client/Profile/WishList'
 import AllOrders from '../../components/client/Orders/AllOrders'
 import Order from '../../components/client/Orders/Order'
 import Dashboard from "../../components/admin/includes/Dashboard";
+import ResetPassword from "../../components/client/Auth/ResetPassword";
+import SendResetPasswordMail from "../../components/client/Auth/SendResetPasswordMail";
 
 Vue.use(Router)
 
@@ -100,6 +102,17 @@ let router = new Router({
       path: '/logout',
       component: Logout,
       name: 'logout'
+    },
+    // password reset
+    {
+      path: '/password/change/:token',
+      name: 'passwordReset',
+      component: ResetPassword
+    },
+    {
+      path: '/password/send',
+      name: 'sendResetPasswordMail',
+      component: SendResetPasswordMail
     }
   ]
 })

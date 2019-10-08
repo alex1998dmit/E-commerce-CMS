@@ -1060,6 +1060,18 @@ export default {
                     alert('Ошибка при восстановлении пользователя')
                 })
         },
+        // password reset
+        getUserInfoByPasswordResetToken (context, token) {
+            return new Promise((resolve, reject) => {
+                axios.post(`${context.getters.host}/api/password/find/${token}`)
+                    .then(resp => resolve(resp.data))
+                    .catch((error) => {
+                        console.log('Ошибка при сбросе пароля');
+                        console.log(error);
+                        reject(error);
+                    })
+            })
+        },
 
         // search
         findGlobally (context, { search_param }) {

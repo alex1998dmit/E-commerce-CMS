@@ -234,6 +234,40 @@ export default {
         }
       })
     },
+    // password reset
+      getUserInfoByPasswordResetToken (context, token) {
+          return new Promise((resolve, reject) => {
+              axios.get(`${context.getters.host}/api/password/find/${token}`)
+                  .then(resp => resolve(resp.data))
+                  .catch((error) => {
+                      console.log('Ошибка при сбросе пароля');
+                      console.log(error);
+                      reject(error);
+                  })
+          })
+      },
+      resetPassword (context, data) {
+        return new Promise((resolve, reject) => {
+          axios.post(`${context.getters.host}/api/password/reset`, data)
+              .then(resp => resolve(resp.data))
+              .catch(error => {
+                  console.log('Ошибка при сбросе пароля')
+                  // console.log.log(error)
+                  reject(error)
+              })
+        })
+      },
+      sendResetPasswordMail (context, data) {
+        return new Promise((resolve, reject) => {
+            axios.post(`${context.getters.host}/api/password/create`, data)
+                .then(resp => resolve(resp.data))
+                .catch(error => {
+                    console.log('Ошибка при сбросе пароля')
+                    // console.log.log(error)
+                    reject(error)
+                })
+        })
+    },
     // shoppingCart
     getShoppingCart: (context) => {
       return new Promise((resolve, reject) => {

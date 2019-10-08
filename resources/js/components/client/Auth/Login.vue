@@ -21,6 +21,7 @@
               <input type="password" v-model="password" class="form-control login-credentials" id="password" placeholder="Введите пароль" required>
             </div>
             <button type="submit" class="btn login-button">Войти</button>
+            <router-link :to="{ name: 'sendResetPasswordMail' }" class="register-link">Забыли пароль ?</router-link>
             <router-link :to="{ name: 'register' }" class="register-link">Зарегистироваться</router-link>
           </form>
         </div>

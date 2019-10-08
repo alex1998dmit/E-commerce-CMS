@@ -11,5 +11,3 @@ Route::get('/admin/{any}', function() {
 Route::get('{any}', function () {
     return view('client');
 })->where('any', '.*');
-
-Route::get('/home', 'HomeController@index')->name('home');
