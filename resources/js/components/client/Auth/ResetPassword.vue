@@ -1,20 +1,22 @@
 <template>
     <div class="row">
-        <div class="col-md-12">
-            {{ authErrors.messages }}
+        <div class="col-md-12 text-center">
+            <h6 v-for="error in errors" class="error-message">
+                {{ error.message }}
+            </h6>
         </div>
-        <div class="col-md-12 text-center" v-if="isCorrectUser">
+        <div class="col-md-6 offset-md-3 text-center" v-if="isCorrectUser">
             <form action="" @submit.prevent.default="resetPassword">
                 <div class="form-group">
                     <label for="">Новый пароль</label>
-                    <input type="text" v-model="password" class="form-control">
+                    <input type="password" v-model="password" class="form-control input-password" v-bind:class="{ 'is-invalid': errors.length > 0 }">
                 </div>
                 <div class="form-group">
                     <label for="">Подтвердите новый пароль</label>
-                    <input type="text" v-model="password_confirmation" class="form-control">
+                    <input type="password" v-model="password_confirmation" class="form-control input-password" v-bind:class="{ 'is-invalid': errors.length > 0 }">
                 </div>
                 <div class="form-group">
-                    <input type="submit" class="btn btn-success">
+                    <input type="submit" class="btn btn-reset-password">
                 </div>
             </form>
         </div>
@@ -36,6 +38,7 @@
                 password: null,
                 password_confirmation: null,
                 token: null,
+                errors: [],
                 authErrors: {
                     messages: null
                 }
@@ -59,13 +62,15 @@
                     password_confirmation: this.password_confirmation,
                     token: this.token
                 }
+                this.errors = []
+                this.validate()
                 this.$store.dispatch('resetPassword', data)
                     .then(() => {
-                        this.$router.push('login')
                         this.flash('Пароль изменен', 'success', {
                             timeout: 2000,
                             important: true
                         })
+                        this.$router.push({ name: 'login' })
                     })
                     .catch(error => {
                         this.flash('Ошибка при сбросе пароля', 'danger', {
@@ -74,11 +79,42 @@
                         })
                         this.authErrors = error.response.data.messages
                     })
+            },
+            validate () {
+                if (this.password !== this.password_confirmation) {
+                    this.errors.push({
+                        message: 'Парооли не совпадают'
+                    })
+                }
+                if (this.password.length < 5) {
+                    this.errors.push({
+                        message: 'Короткий пароль'
+                    })
+                }
             }
         }
     }
 </script>
 
 <style scoped>
-
+    .btn-reset-password {
+        border-radius: 0;
+        background-color: #f4f4f4;
+        border: 0;
+        font-size: 15px;
+        font-style: normal;
+        font-weight: 400;
+        color: #333;
+        line-height: 1.6;
+    }
+    .btn-reset-password:hover {
+        background-color: #333;
+        color: white;
+    }
+    .input-password {
+        border-radius: 0px;
+    }
+    .error-message {
+        color: red;
+    }
 </style>

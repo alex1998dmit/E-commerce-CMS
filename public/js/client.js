@@ -2185,6 +2185,8 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: "ResetPassword",
   data: function data() {
@@ -2196,6 +2198,7 @@ __webpack_require__.r(__webpack_exports__);
       password: null,
       password_confirmation: null,
       token: null,
+      errors: [],
       authErrors: {
         messages: null
       }
@@ -2224,12 +2227,16 @@ __webpack_require__.r(__webpack_exports__);
         password_confirmation: this.password_confirmation,
         token: this.token
       };
+      this.errors = [];
+      this.validate();
       this.$store.dispatch('resetPassword', data).then(function () {
-        _this2.$router.push('login');
-
         _this2.flash('Пароль изменен', 'success', {
           timeout: 2000,
           important: true
+        });
+
+        _this2.$router.push({
+          name: 'login'
         });
       })["catch"](function (error) {
         _this2.flash('Ошибка при сбросе пароля', 'danger', {
@@ -2239,6 +2246,19 @@ __webpack_require__.r(__webpack_exports__);
 
         _this2.authErrors = error.response.data.messages;
       });
+    },
+    validate: function validate() {
+      if (this.password !== this.password_confirmation) {
+        this.errors.push({
+          message: 'Парооли не совпадают'
+        });
+      }
+
+      if (this.password.length < 5) {
+        this.errors.push({
+          message: 'Короткий пароль'
+        });
+      }
     }
   }
 });
@@ -2289,6 +2309,11 @@ __webpack_require__.r(__webpack_exports__);
         });
 
         _this.flash('Письмо с изменением пароля отправлено на почту', 'success', {
+          timeout: 2000,
+          important: true
+        });
+      })["catch"](function (error) {
+        _this.flash('Письмо не отправлено, проверьте правильность ввода email или попробуйте позже', {
           timeout: 2000,
           important: true
         });
@@ -10525,6 +10550,44 @@ exports = module.exports = __webpack_require__(/*! ../../../../../node_modules/c
 
 // module
 exports.push([module.i, "\n.register-credentials[data-v-297e05b1] {\n  border-radius: 0px;\n  font-size: 0.8em;\n}\n.register-label[data-v-297e05b1] {\n  font-size: 0.8em;\n}\n.register-button[data-v-297e05b1] {\n  font-size: 0.9em;\n  background: lightgrey;\n  color: #333;\n  border-radius: 0;\n}\n.register-button[data-v-297e05b1]:hover {\n  background-color: #333;\n  color:white;\n}\n.login-link[data-v-297e05b1] {\n  text-decoration: none;\n  color: #333;\n  font-size: 0.8em;\n  padding-left: 5%;\n}\n", ""]);
+
+// exports
+
+
+/***/ }),
+
+/***/ "./node_modules/css-loader/index.js?!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/client/Auth/ResetPassword.vue?vue&type=style&index=0&id=314bb66c&scoped=true&lang=css&":
+/*!*******************************************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/css-loader??ref--6-1!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src??ref--6-2!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/client/Auth/ResetPassword.vue?vue&type=style&index=0&id=314bb66c&scoped=true&lang=css& ***!
+  \*******************************************************************************************************************************************************************************************************************************************************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__(/*! ../../../../../node_modules/css-loader/lib/css-base.js */ "./node_modules/css-loader/lib/css-base.js")(false);
+// imports
+
+
+// module
+exports.push([module.i, "\n.btn-reset-password[data-v-314bb66c] {\n    border-radius: 0;\n    background-color: #f4f4f4;\n    border: 0;\n    font-size: 15px;\n    font-style: normal;\n    font-weight: 400;\n    color: #333;\n    line-height: 1.6;\n}\n.btn-reset-password[data-v-314bb66c]:hover {\n    background-color: #333;\n    color: white;\n}\n.input-password[data-v-314bb66c] {\n    border-radius: 0px;\n}\n.error-message[data-v-314bb66c] {\n    color: red;\n}\n", ""]);
+
+// exports
+
+
+/***/ }),
+
+/***/ "./node_modules/css-loader/index.js?!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/client/Auth/SendResetPasswordMail.vue?vue&type=style&index=0&id=152cf31b&scoped=true&lang=css&":
+/*!***************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/css-loader??ref--6-1!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src??ref--6-2!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/client/Auth/SendResetPasswordMail.vue?vue&type=style&index=0&id=152cf31b&scoped=true&lang=css& ***!
+  \***************************************************************************************************************************************************************************************************************************************************************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__(/*! ../../../../../node_modules/css-loader/lib/css-base.js */ "./node_modules/css-loader/lib/css-base.js")(false);
+// imports
+
+
+// module
+exports.push([module.i, "\n.btn-send-email[data-v-152cf31b] {\n    border-radius: 0;\n    background-color: #f4f4f4;\n    border: 0;\n    font-size: 15px;\n    font-style: normal;\n    font-weight: 400;\n    color: #333;\n    line-height: 1.6;\n}\n.btn-send-email[data-v-152cf31b]:hover {\n    background-color: #333;\n    color: white;\n}\n.input-email[data-v-152cf31b] {\n    border-radius: 0px;\n}\n\n", ""]);
 
 // exports
 
@@ -51795,6 +51858,66 @@ if(false) {}
 
 /***/ }),
 
+/***/ "./node_modules/style-loader/index.js!./node_modules/css-loader/index.js?!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/client/Auth/ResetPassword.vue?vue&type=style&index=0&id=314bb66c&scoped=true&lang=css&":
+/*!***********************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/style-loader!./node_modules/css-loader??ref--6-1!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src??ref--6-2!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/client/Auth/ResetPassword.vue?vue&type=style&index=0&id=314bb66c&scoped=true&lang=css& ***!
+  \***********************************************************************************************************************************************************************************************************************************************************************************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+
+var content = __webpack_require__(/*! !../../../../../node_modules/css-loader??ref--6-1!../../../../../node_modules/vue-loader/lib/loaders/stylePostLoader.js!../../../../../node_modules/postcss-loader/src??ref--6-2!../../../../../node_modules/vue-loader/lib??vue-loader-options!./ResetPassword.vue?vue&type=style&index=0&id=314bb66c&scoped=true&lang=css& */ "./node_modules/css-loader/index.js?!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/client/Auth/ResetPassword.vue?vue&type=style&index=0&id=314bb66c&scoped=true&lang=css&");
+
+if(typeof content === 'string') content = [[module.i, content, '']];
+
+var transform;
+var insertInto;
+
+
+
+var options = {"hmr":true}
+
+options.transform = transform
+options.insertInto = undefined;
+
+var update = __webpack_require__(/*! ../../../../../node_modules/style-loader/lib/addStyles.js */ "./node_modules/style-loader/lib/addStyles.js")(content, options);
+
+if(content.locals) module.exports = content.locals;
+
+if(false) {}
+
+/***/ }),
+
+/***/ "./node_modules/style-loader/index.js!./node_modules/css-loader/index.js?!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/client/Auth/SendResetPasswordMail.vue?vue&type=style&index=0&id=152cf31b&scoped=true&lang=css&":
+/*!*******************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/style-loader!./node_modules/css-loader??ref--6-1!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src??ref--6-2!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/client/Auth/SendResetPasswordMail.vue?vue&type=style&index=0&id=152cf31b&scoped=true&lang=css& ***!
+  \*******************************************************************************************************************************************************************************************************************************************************************************************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+
+var content = __webpack_require__(/*! !../../../../../node_modules/css-loader??ref--6-1!../../../../../node_modules/vue-loader/lib/loaders/stylePostLoader.js!../../../../../node_modules/postcss-loader/src??ref--6-2!../../../../../node_modules/vue-loader/lib??vue-loader-options!./SendResetPasswordMail.vue?vue&type=style&index=0&id=152cf31b&scoped=true&lang=css& */ "./node_modules/css-loader/index.js?!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/client/Auth/SendResetPasswordMail.vue?vue&type=style&index=0&id=152cf31b&scoped=true&lang=css&");
+
+if(typeof content === 'string') content = [[module.i, content, '']];
+
+var transform;
+var insertInto;
+
+
+
+var options = {"hmr":true}
+
+options.transform = transform
+options.insertInto = undefined;
+
+var update = __webpack_require__(/*! ../../../../../node_modules/style-loader/lib/addStyles.js */ "./node_modules/style-loader/lib/addStyles.js")(content, options);
+
+if(content.locals) module.exports = content.locals;
+
+if(false) {}
+
+/***/ }),
+
 /***/ "./node_modules/style-loader/index.js!./node_modules/css-loader/index.js?!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/client/Categories/Category.vue?vue&type=style&index=0&id=b82c6950&scoped=true&lang=css&":
 /*!************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
   !*** ./node_modules/style-loader!./node_modules/css-loader??ref--6-1!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src??ref--6-2!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/client/Categories/Category.vue?vue&type=style&index=0&id=b82c6950&scoped=true&lang=css& ***!
@@ -53543,12 +53666,19 @@ var render = function() {
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
   return _c("div", { staticClass: "row" }, [
-    _c("div", { staticClass: "col-md-12" }, [
-      _vm._v("\n        " + _vm._s(_vm.authErrors.messages) + "\n    ")
-    ]),
+    _c(
+      "div",
+      { staticClass: "col-md-12 text-center" },
+      _vm._l(_vm.errors, function(error) {
+        return _c("h6", { staticClass: "error-message" }, [
+          _vm._v("\n            " + _vm._s(error.message) + "\n        ")
+        ])
+      }),
+      0
+    ),
     _vm._v(" "),
     _vm.isCorrectUser
-      ? _c("div", { staticClass: "col-md-12 text-center" }, [
+      ? _c("div", { staticClass: "col-md-6 offset-md-3 text-center" }, [
           _c(
             "form",
             {
@@ -53585,8 +53715,9 @@ var render = function() {
                       expression: "password"
                     }
                   ],
-                  staticClass: "form-control",
-                  attrs: { type: "text" },
+                  staticClass: "form-control input-password",
+                  class: { "is-invalid": _vm.errors.length > 0 },
+                  attrs: { type: "password" },
                   domProps: { value: _vm.password },
                   on: {
                     input: function($event) {
@@ -53613,8 +53744,9 @@ var render = function() {
                       expression: "password_confirmation"
                     }
                   ],
-                  staticClass: "form-control",
-                  attrs: { type: "text" },
+                  staticClass: "form-control input-password",
+                  class: { "is-invalid": _vm.errors.length > 0 },
+                  attrs: { type: "password" },
                   domProps: { value: _vm.password_confirmation },
                   on: {
                     input: function($event) {
@@ -53642,7 +53774,10 @@ var staticRenderFns = [
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
     return _c("div", { staticClass: "form-group" }, [
-      _c("input", { staticClass: "btn btn-success", attrs: { type: "submit" } })
+      _c("input", {
+        staticClass: "btn btn-reset-password",
+        attrs: { type: "submit" }
+      })
     ])
   }
 ]
@@ -53668,7 +53803,7 @@ var render = function() {
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
   return _c("div", { staticClass: "row" }, [
-    _c("div", { staticClass: "col-md-12 text-center" }, [
+    _c("div", { staticClass: "col-md-6 offset-md-3 text-center" }, [
       _c(
         "form",
         {
@@ -53703,7 +53838,7 @@ var render = function() {
                   expression: "email"
                 }
               ],
-              staticClass: "form-control",
+              staticClass: "form-control input-email",
               attrs: { type: "email", placeholder: "Введите почту" },
               domProps: { value: _vm.email },
               on: {
@@ -53729,7 +53864,10 @@ var staticRenderFns = [
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
     return _c("div", { staticClass: "form-group" }, [
-      _c("input", { staticClass: "btn btn-success", attrs: { type: "submit" } })
+      _c("input", {
+        staticClass: "btn btn-send-email",
+        attrs: { type: "submit" }
+      })
     ])
   }
 ]
@@ -72874,7 +73012,9 @@ __webpack_require__.r(__webpack_exports__);
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _ResetPassword_vue_vue_type_template_id_314bb66c_scoped_true___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./ResetPassword.vue?vue&type=template&id=314bb66c&scoped=true& */ "./resources/js/components/client/Auth/ResetPassword.vue?vue&type=template&id=314bb66c&scoped=true&");
 /* harmony import */ var _ResetPassword_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./ResetPassword.vue?vue&type=script&lang=js& */ "./resources/js/components/client/Auth/ResetPassword.vue?vue&type=script&lang=js&");
-/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+/* empty/unused harmony star reexport *//* harmony import */ var _ResetPassword_vue_vue_type_style_index_0_id_314bb66c_scoped_true_lang_css___WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./ResetPassword.vue?vue&type=style&index=0&id=314bb66c&scoped=true&lang=css& */ "./resources/js/components/client/Auth/ResetPassword.vue?vue&type=style&index=0&id=314bb66c&scoped=true&lang=css&");
+/* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
 
 
 
@@ -72882,7 +73022,7 @@ __webpack_require__.r(__webpack_exports__);
 
 /* normalize component */
 
-var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_3__["default"])(
   _ResetPassword_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
   _ResetPassword_vue_vue_type_template_id_314bb66c_scoped_true___WEBPACK_IMPORTED_MODULE_0__["render"],
   _ResetPassword_vue_vue_type_template_id_314bb66c_scoped_true___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
@@ -72911,6 +73051,22 @@ component.options.__file = "resources/js/components/client/Auth/ResetPassword.vu
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_ResetPassword_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../node_modules/babel-loader/lib??ref--4-0!../../../../../node_modules/vue-loader/lib??vue-loader-options!./ResetPassword.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/client/Auth/ResetPassword.vue?vue&type=script&lang=js&");
 /* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_ResetPassword_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./resources/js/components/client/Auth/ResetPassword.vue?vue&type=style&index=0&id=314bb66c&scoped=true&lang=css&":
+/*!************************************************************************************************************************!*\
+  !*** ./resources/js/components/client/Auth/ResetPassword.vue?vue&type=style&index=0&id=314bb66c&scoped=true&lang=css& ***!
+  \************************************************************************************************************************/
+/*! no static exports found */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_style_loader_index_js_node_modules_css_loader_index_js_ref_6_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_6_2_node_modules_vue_loader_lib_index_js_vue_loader_options_ResetPassword_vue_vue_type_style_index_0_id_314bb66c_scoped_true_lang_css___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../node_modules/style-loader!../../../../../node_modules/css-loader??ref--6-1!../../../../../node_modules/vue-loader/lib/loaders/stylePostLoader.js!../../../../../node_modules/postcss-loader/src??ref--6-2!../../../../../node_modules/vue-loader/lib??vue-loader-options!./ResetPassword.vue?vue&type=style&index=0&id=314bb66c&scoped=true&lang=css& */ "./node_modules/style-loader/index.js!./node_modules/css-loader/index.js?!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/client/Auth/ResetPassword.vue?vue&type=style&index=0&id=314bb66c&scoped=true&lang=css&");
+/* harmony import */ var _node_modules_style_loader_index_js_node_modules_css_loader_index_js_ref_6_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_6_2_node_modules_vue_loader_lib_index_js_vue_loader_options_ResetPassword_vue_vue_type_style_index_0_id_314bb66c_scoped_true_lang_css___WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_node_modules_style_loader_index_js_node_modules_css_loader_index_js_ref_6_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_6_2_node_modules_vue_loader_lib_index_js_vue_loader_options_ResetPassword_vue_vue_type_style_index_0_id_314bb66c_scoped_true_lang_css___WEBPACK_IMPORTED_MODULE_0__);
+/* harmony reexport (unknown) */ for(var __WEBPACK_IMPORT_KEY__ in _node_modules_style_loader_index_js_node_modules_css_loader_index_js_ref_6_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_6_2_node_modules_vue_loader_lib_index_js_vue_loader_options_ResetPassword_vue_vue_type_style_index_0_id_314bb66c_scoped_true_lang_css___WEBPACK_IMPORTED_MODULE_0__) if(__WEBPACK_IMPORT_KEY__ !== 'default') (function(key) { __webpack_require__.d(__webpack_exports__, key, function() { return _node_modules_style_loader_index_js_node_modules_css_loader_index_js_ref_6_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_6_2_node_modules_vue_loader_lib_index_js_vue_loader_options_ResetPassword_vue_vue_type_style_index_0_id_314bb66c_scoped_true_lang_css___WEBPACK_IMPORTED_MODULE_0__[key]; }) }(__WEBPACK_IMPORT_KEY__));
+ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_style_loader_index_js_node_modules_css_loader_index_js_ref_6_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_6_2_node_modules_vue_loader_lib_index_js_vue_loader_options_ResetPassword_vue_vue_type_style_index_0_id_314bb66c_scoped_true_lang_css___WEBPACK_IMPORTED_MODULE_0___default.a); 
 
 /***/ }),
 
@@ -72943,7 +73099,9 @@ __webpack_require__.r(__webpack_exports__);
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _SendResetPasswordMail_vue_vue_type_template_id_152cf31b_scoped_true___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./SendResetPasswordMail.vue?vue&type=template&id=152cf31b&scoped=true& */ "./resources/js/components/client/Auth/SendResetPasswordMail.vue?vue&type=template&id=152cf31b&scoped=true&");
 /* harmony import */ var _SendResetPasswordMail_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./SendResetPasswordMail.vue?vue&type=script&lang=js& */ "./resources/js/components/client/Auth/SendResetPasswordMail.vue?vue&type=script&lang=js&");
-/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+/* empty/unused harmony star reexport *//* harmony import */ var _SendResetPasswordMail_vue_vue_type_style_index_0_id_152cf31b_scoped_true_lang_css___WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./SendResetPasswordMail.vue?vue&type=style&index=0&id=152cf31b&scoped=true&lang=css& */ "./resources/js/components/client/Auth/SendResetPasswordMail.vue?vue&type=style&index=0&id=152cf31b&scoped=true&lang=css&");
+/* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
 
 
 
@@ -72951,7 +73109,7 @@ __webpack_require__.r(__webpack_exports__);
 
 /* normalize component */
 
-var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_3__["default"])(
   _SendResetPasswordMail_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
   _SendResetPasswordMail_vue_vue_type_template_id_152cf31b_scoped_true___WEBPACK_IMPORTED_MODULE_0__["render"],
   _SendResetPasswordMail_vue_vue_type_template_id_152cf31b_scoped_true___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
@@ -72980,6 +73138,22 @@ component.options.__file = "resources/js/components/client/Auth/SendResetPasswor
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_SendResetPasswordMail_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../node_modules/babel-loader/lib??ref--4-0!../../../../../node_modules/vue-loader/lib??vue-loader-options!./SendResetPasswordMail.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/client/Auth/SendResetPasswordMail.vue?vue&type=script&lang=js&");
 /* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_SendResetPasswordMail_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./resources/js/components/client/Auth/SendResetPasswordMail.vue?vue&type=style&index=0&id=152cf31b&scoped=true&lang=css&":
+/*!********************************************************************************************************************************!*\
+  !*** ./resources/js/components/client/Auth/SendResetPasswordMail.vue?vue&type=style&index=0&id=152cf31b&scoped=true&lang=css& ***!
+  \********************************************************************************************************************************/
+/*! no static exports found */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_style_loader_index_js_node_modules_css_loader_index_js_ref_6_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_6_2_node_modules_vue_loader_lib_index_js_vue_loader_options_SendResetPasswordMail_vue_vue_type_style_index_0_id_152cf31b_scoped_true_lang_css___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../node_modules/style-loader!../../../../../node_modules/css-loader??ref--6-1!../../../../../node_modules/vue-loader/lib/loaders/stylePostLoader.js!../../../../../node_modules/postcss-loader/src??ref--6-2!../../../../../node_modules/vue-loader/lib??vue-loader-options!./SendResetPasswordMail.vue?vue&type=style&index=0&id=152cf31b&scoped=true&lang=css& */ "./node_modules/style-loader/index.js!./node_modules/css-loader/index.js?!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/client/Auth/SendResetPasswordMail.vue?vue&type=style&index=0&id=152cf31b&scoped=true&lang=css&");
+/* harmony import */ var _node_modules_style_loader_index_js_node_modules_css_loader_index_js_ref_6_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_6_2_node_modules_vue_loader_lib_index_js_vue_loader_options_SendResetPasswordMail_vue_vue_type_style_index_0_id_152cf31b_scoped_true_lang_css___WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_node_modules_style_loader_index_js_node_modules_css_loader_index_js_ref_6_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_6_2_node_modules_vue_loader_lib_index_js_vue_loader_options_SendResetPasswordMail_vue_vue_type_style_index_0_id_152cf31b_scoped_true_lang_css___WEBPACK_IMPORTED_MODULE_0__);
+/* harmony reexport (unknown) */ for(var __WEBPACK_IMPORT_KEY__ in _node_modules_style_loader_index_js_node_modules_css_loader_index_js_ref_6_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_6_2_node_modules_vue_loader_lib_index_js_vue_loader_options_SendResetPasswordMail_vue_vue_type_style_index_0_id_152cf31b_scoped_true_lang_css___WEBPACK_IMPORTED_MODULE_0__) if(__WEBPACK_IMPORT_KEY__ !== 'default') (function(key) { __webpack_require__.d(__webpack_exports__, key, function() { return _node_modules_style_loader_index_js_node_modules_css_loader_index_js_ref_6_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_6_2_node_modules_vue_loader_lib_index_js_vue_loader_options_SendResetPasswordMail_vue_vue_type_style_index_0_id_152cf31b_scoped_true_lang_css___WEBPACK_IMPORTED_MODULE_0__[key]; }) }(__WEBPACK_IMPORT_KEY__));
+ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_style_loader_index_js_node_modules_css_loader_index_js_ref_6_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_6_2_node_modules_vue_loader_lib_index_js_vue_loader_options_SendResetPasswordMail_vue_vue_type_style_index_0_id_152cf31b_scoped_true_lang_css___WEBPACK_IMPORTED_MODULE_0___default.a); 
 
 /***/ }),
 
