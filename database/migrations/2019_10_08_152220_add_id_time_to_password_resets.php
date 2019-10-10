@@ -16,7 +16,7 @@ class AddIdTimeToPasswordResets extends Migration
         Schema::table('password_resets', function (Blueprint $table) {
             //
             $table->increments('id');
-            $table->date('updated_at');
+            $table->timestamp('updated_at');
         });
     }
 
