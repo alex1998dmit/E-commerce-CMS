@@ -2,6 +2,7 @@
 
 namespace App;
 
+use App\Notifications\EmailVerifyRequest;
 use Mail;
 use App\Mail\SendEmailNotification;
 use Illuminate\Notifications\Notifiable;
@@ -104,6 +105,8 @@ class User extends Authenticatable implements MustVerifyEmail
     // verify email
     public function sendEmailVerificationNotification()
     {
-        Mail::to($this->email)->send(new SendEmailNotification($this));
+        $this->notify(
+            new EmailVerifyRequest($this->email, $this->verification_token)
+        );
     }
 }

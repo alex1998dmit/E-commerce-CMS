@@ -42,9 +42,12 @@ class PasswordResetRequest extends Notification
     {
         $url = env('APP_HOST_NAME') . '/password/change/' . $this->token;
         return (new MailMessage)
-            ->line('You are receiving this email because received a password reset request for your account.')
-            ->action('Reset Password', url($url))
-            ->line('If you did not request a password reset, no further action is required.');
+            ->subject('Сброс пароля nady.shop')
+            ->greeting('Здравствуйте!')
+            ->line('Вы получили это письмо, потому что решили поменять пароль своей учетной записи. Чтобы сбросить пароль нажмите на кнопку ниже:')
+            ->action('Сбросить пароль', url($url))
+            ->line('Не предпринимайте никаких действий, если это не вы запросили смену пароля')
+            ->salutation('С уважением, nady.shop');
     }
 
     /**
