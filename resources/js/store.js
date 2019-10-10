@@ -5,7 +5,7 @@ export default {
         // host: 'http://157.245.79.96',
         host: process.env.MIX_APP_URL,
         // host: 'http://ecommerce',
-        product_images_forlder: 'upload/products',
+        product_images_folder: 'upload/products',
 
         // auth
         currentUser: JSON.parse(localStorage.getItem('user')) || { role: [] },
@@ -297,7 +297,7 @@ export default {
         SET_PRODUCT_IMAGES: (state, photos) => {
             let images = [];
             for(let index in photos) {
-                images.push(`${state.host}/${state.product_images_forlder}/${photos[index].path}`);
+                images.push(`${state.host}/${state.product_images_folder}/${photos[index].path}`);
             }
             state.product_images = images;
         },
@@ -305,7 +305,7 @@ export default {
         SET_OPENED_PRODUCT_IMAGES(state) {
             let photos = [];
             for(let index in state.opened_product.photo) {
-               photos.push(`${state.host}/${state.product_images_forlder}/${state.opened_product.photo[index].path}`);
+               photos.push(`${state.host}/${state.product_images_folder}/${state.opened_product.photo[index].path}`);
             }
             state.opened_product_images = photos;
         },
@@ -355,7 +355,7 @@ export default {
         DESTROY_TOKEN: (state) => state.token = null,
         REMOVE_USER_PARAMS: (state) => state.currentUser = null,
         SET_CURRENT_USER_PARAMS: (state, user) => state.currentUser = user,
-        UDPATE_USER: (state, { user, index }) => state.users.items.splice(index, 1, user),
+        UPDATE_USER: (state, { user, index }) => state.users.items.splice(index, 1, user),
     },
     actions: {
         // auth
@@ -1010,7 +1010,7 @@ export default {
                 axios.defaults.headers.common["Authorization"] = `Bearer ${context.state.token}`
                 axios.put(`${context.getters.host}/api/v1/users/${user_id}`, user)
                     .then(resp => {
-                        context.commit('UDPATE_USER', { user: resp.data, index});
+                        context.commit('UPDATE_USER', { user: resp.data, index});
                         resolve(resp.data)
                     })
                     .catch(error => {
