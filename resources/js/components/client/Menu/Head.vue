@@ -53,12 +53,20 @@
       <!-- UnLogged In     -->
       <ul class="navbar-nav ml-auto logged-user" v-else>
         <li class="nav-item">
-          <router-link class="nav-link" href="#" :to="{ name: 'login' }">
+          <router-link class="nav-link" :to="{ name: 'login' }">
             <i class="fa fa-sign-in" aria-hidden="true">
               <span class="head-nav-icon-sign">Войти</span>
             </i>
           </router-link>
         </li>
+        <li class="nav-item">
+          <router-link class="nav-link" :to="{ name: 'register' }">
+              <i class="fa fa-user-plus" aria-hidden="true">
+                <span class="head-nav-icon-sign">Регистрация</span>
+              </i>
+          </router-link>
+        </li>
+
       </ul>
     </div>
   </nav>
