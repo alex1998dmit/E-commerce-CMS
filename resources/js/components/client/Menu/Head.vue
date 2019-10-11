@@ -15,7 +15,7 @@
         <li class="nav-item">
           <router-link class="nav-link" :to="{ name: 'shoppingCart' }">
             <i class="fa fa-shopping-cart">
-                <div class="items-amount">
+                <div class="items-amount" v-if="shoppingCartAmount > 0">
                     {{ shoppingCartAmount }}
                 </div>
 <!--                <span class="head-nav-icon-sign">Корзина {{  }}</span>-->
@@ -25,7 +25,7 @@
         <li class="nav-item">
           <router-link class="nav-link" :to="{ name: 'wishList' }">
             <i class="fa fa-heart">
-                <div class="items-amount">
+                <div class="items-amount" v-if="wishListAmount > 0">
                     {{ wishListAmount }}
                 </div>
             </i>

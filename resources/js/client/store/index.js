@@ -101,11 +101,9 @@ export default {
     // shoppingCart
     SET_SHOPPING_CART_ITEMS: (state, items) => { state.shoppingCart.items = items },
     ADD_TO_SHOPPING_CART_ITEMS: (state, item) => {
-        console.log('here')
         if (state.shoppingCart.items.filter(cartItem => cartItem.product_id === item.product_id).length === 0) {
           state.shoppingCart.items.push(item)
         }
-        console.log(state.shoppingCart.items)
     },
     REMOVE_FROM_SHOPPING_CART: (state, index) => { state.shoppingCart.items.splice(index, 1) },
     UPDATE_SHOPPING_CART_ITEM: (state, { index, item }) => { state.shoppingCart.items.splice(index, 1, item) },
@@ -347,7 +345,6 @@ export default {
         axios.defaults.headers.common['Authorization'] = `Bearer ${context.state.auth.token}`
         axios.post(`${context.getters.host}/api/v1/client/wishlist`, data)
           .then((resp) => {
-            console.log(resp.data)
             context.commit('ADD_TO_WISH_LIST_ITEMS', resp.data)
             resolve(resp)
           })
