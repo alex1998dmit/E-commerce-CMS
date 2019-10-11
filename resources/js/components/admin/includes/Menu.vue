@@ -9,7 +9,12 @@
                     <router-link :to="{ name: 'search' }">Поиск</router-link>
                 </li>
                 <li class="active statuses">
-                    <a href="#ordersMenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">Заказы</a>
+                    <a href="#ordersMenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
+                        Заказы
+                        <div class="unchecked-orders-amount" v-if="unchecked_orders_amount > 0">
+                            {{ unchecked_orders_amount }}
+                        </div>
+                    </a>
                     <ul class="collapse list-unstyled" id="ordersMenu">
                         <li>
                              <router-link :to="{ name: 'Orders'}">Все заказы</router-link>
@@ -85,6 +90,12 @@ export default {
         },
         isLoggedIn() {
             return this.$store.getters.isLoggedIn;
+        },
+        unchecked_orders_amount () {
+            return this.order_statuses.reduce((unchecked_orders_amount, order_status) => {
+                unchecked_orders_amount = unchecked_orders_amount + order_status.unchecked_orders_num
+                return unchecked_orders_amount
+            }, 0)
         }
     },
     mounted() {
