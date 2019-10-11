@@ -13,9 +13,9 @@ class Order extends Model
         'product_id', 'user_id', 'amount', 'sum', 'isChecked'
     ];
 
-    public function user()
+    public function user($permission = 'client')
     {
-        return $this->belongsTo('App\User');
+        return $this->belongsTo('App\User')->withTrashed();
     }
 
     public function product()
@@ -33,7 +33,7 @@ class Order extends Model
         return $this->hasMany('App\OrderStatusesChangings');
     }
 
-    
+
     public function changeStatus($status)
     {
         $status_id = OrderStatus::where('name', '=', $status)->first()->id;

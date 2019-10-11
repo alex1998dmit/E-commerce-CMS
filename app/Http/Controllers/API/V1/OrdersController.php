@@ -6,6 +6,7 @@ use Validator;
 use Auth;
 use App\Order;
 use App\Product;
+use App\User;
 use App\OrderStatusesChangings;
 use App\OrderStatus;
 use Illuminate\Http\Request;

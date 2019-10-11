@@ -69,7 +69,7 @@
                                     </li>
                                 </ul>
                             </td>
-                            <td class="text-center">{{ order.user.name }}</td>
+                            <td class="text-center">{{ order.user.name ?? 'Пользователь удален' }}</td>
                             <td class="text-center">{{ order.sum }}</td>
                             <td>{{ order.created_at }}</td>
                             <td class="text-center" colspan="5">
