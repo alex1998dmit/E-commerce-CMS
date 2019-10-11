@@ -100,18 +100,20 @@ export default {
     CLEAR_AUTH_ERRORS: (state) => { state.auth.errors = { name: [], email: [], password: [], login_error: null } },
     // shoppingCart
     SET_SHOPPING_CART_ITEMS: (state, items) => { state.shoppingCart.items = items },
-    ADD_TO_SHOPPING_CART_ITEMS: (state, item) => { state.shoppingCart.items.push(item) },
+    ADD_TO_SHOPPING_CART_ITEMS: (state, item) => {
+        console.log('here')
+        if (state.shoppingCart.items.filter(cartItem => cartItem.product_id === item.product_id).length === 0) {
+          state.shoppingCart.items.push(item)
+        }
+        console.log(state.shoppingCart.items)
+    },
     REMOVE_FROM_SHOPPING_CART: (state, index) => { state.shoppingCart.items.splice(index, 1) },
     UPDATE_SHOPPING_CART_ITEM: (state, { index, item }) => { state.shoppingCart.items.splice(index, 1, item) },
-    INCREMENT_AT_SHOPPING_CART_AMOUNT: (state) => { state.auth.currentUser.at_cart_count++ },
-    DECREMENT_AT_SHOPPING_CART_AMOUNT: (state) => { state.auth.currentUser.at_cart_count-- },
     // wishList
     SET_WISH_LIST_ITEMS: (state, items) => { state.wishList.items = items },
     ADD_TO_WISH_LIST_ITEMS: (state, item) => { state.wishList.items.push(item) },
     REMOVE_FROM_WISH_LIST: (state, index) => { state.wishList.items.splice(index, 1) },
     UPDATE_WISH_LIST_ITEM: (state, { index, item }) => { state.wishList.items.splice(index, 1, item) },
-    INCREMENT_WISH_LIST_AMOUNT: (state) => { state.auth.currentUser.wishlist_count++ },
-    DECREMENT_AT_WISH_LIST_AMOUNT: (state) => { state.auth.currentUser.wishlist_count-- },
     // orders
     SET_ORDER_ITEMS: (state, orders) => { state.orders.items = orders },
     ADD_ORDER: (state, order) => { state.orders.items.push(order) },
@@ -288,11 +290,7 @@ export default {
         axios.defaults.headers.common['Authorization'] = `Bearer ${context.state.auth.token}`
         axios.post(`${context.getters.host}/api/v1/client/cart`, data)
           .then((resp) => {
-            const product_id = resp.data.product_id
-            if (context.getters.shoppingCartItems.filter(item => item.product_id !== product_id).length === 0) {
-                context.commit('ADD_TO_SHOPPING_CART_ITEMS', resp.data)
-                context.commit('INCREMENT_AT_SHOPPING_CART_AMOUNT')
-            }
+            context.commit('ADD_TO_SHOPPING_CART_ITEMS', resp.data)
             resolve(resp)
           })
           .catch((error) => {
@@ -307,7 +305,6 @@ export default {
         axios.get(`${context.getters.host}/api/v1/client/cart/${cartId}/remove`)
           .then((resp) => {
             context.commit('REMOVE_FROM_SHOPPING_CART', index)
-            context.commit('DECREMENT_AT_SHOPPING_CART_AMOUNT')
             resolve(resp)
           })
           .catch((error) => {
@@ -350,8 +347,8 @@ export default {
         axios.defaults.headers.common['Authorization'] = `Bearer ${context.state.auth.token}`
         axios.post(`${context.getters.host}/api/v1/client/wishlist`, data)
           .then((resp) => {
+            console.log(resp.data)
             context.commit('ADD_TO_WISH_LIST_ITEMS', resp.data)
-            context.commit('INCREMENT_WISH_LIST_AMOUNT')
             resolve(resp)
           })
           .catch((error) => {
@@ -366,7 +363,6 @@ export default {
         axios.get(`${context.getters.host}/api/v1/client/wishlist/${wishListId}/remove`)
           .then((resp) => {
             context.commit('REMOVE_FROM_WISH_LIST', index)
-            context.commit('DECREMENT_AT_WISH_LIST_AMOUNT')
             resolve(resp)
           })
           .catch((error) => {

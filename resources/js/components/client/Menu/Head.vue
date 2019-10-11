@@ -15,7 +15,7 @@
         <li class="nav-item">
           <router-link class="nav-link" :to="{ name: 'shoppingCart' }">
             <i class="fa fa-shopping-cart">
-                <span class="head-nav-icon-sign">Корзина</span>
+                <span class="head-nav-icon-sign">Корзина {{ shoppingCartAmount }}</span>
 <!--              <span class="head-nav-icon-sign">({{ user.at_cart_count }})</span>-->
             </i>
           </router-link>
@@ -23,7 +23,7 @@
         <li class="nav-item">
           <router-link class="nav-link" :to="{ name: 'wishList' }">
             <i class="fa fa-heart">
-                <span class="head-nav-icon-sign">Избранное</span>
+                <span class="head-nav-icon-sign">Избранное {{ wishListAmount }}</span>
 <!--              <span class="head-nav-icon-sign">({{ user.wishlist_count }})</span>-->
             </i>
           </router-link>
@@ -84,23 +84,25 @@ export default {
     isLoggedIn () {
       return this.$store.getters.isLoggedIn
     },
-    shoppingCart () {
-      if (this.isLoggedIn) {
-        return this.$store.getters.shoppingCartItems
-      }
+    shoppingCartAmount () {
+      return this.$store.getters.shoppingCartItems.length
     },
     user () {
       if (this.isLoggedIn) {
         return this.$store.getters.currentUser
       }
     },
-    wishList () {
-      if (this.isLoggedIn) {
-        return this.$store.getters.wishListItems
-      }
+    wishListAmount () {
+      return this.$store.getters.wishListItems.length
     },
     isAdmin () {
-        return this.user.role.filter(role => role.name === 'admin').length > 0
+      return this.user.role.filter(role => role.name === 'admin').length > 0
+    }
+  },
+  mounted() {
+    if (this.isLoggedIn) {
+      this.$store.dispatch('getShoppingCart')
+      this.$store.dispatch('getWishList')
     }
   },
   methods: {

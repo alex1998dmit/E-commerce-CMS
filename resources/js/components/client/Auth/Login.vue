@@ -47,28 +47,23 @@ export default {
   },
   methods: {
     login () {
-      this.$store.dispatch('retrieveToken', {
-        username: this.username,
-        password: this.password
-      })
+      const authCredentials = { username: this.username,  password: this.password }
+      this.$store.dispatch('retrieveToken', authCredentials)
         .then(resp => {
           this.$store.commit('CLEAR_AUTH_ERRORS')
           this.$store.dispatch('getUserInfo')
             .then((resp) => {
                 if (!resp.email_verified_at) {
-                  this.flash('Необходимо подтвердить почту, чтобы делать заказы', 'danger', {
-                    important: true
-                  })
+                  this.flash('Необходимо подтвердить почту, чтобы делать заказы', 'danger', { important: true })
                   this.$store.dispatch('destroyToken')
                 } else {
                   this.flash('Вход выполнен', 'success', {
                       timeout: 2000,
                       important: true
                   })
-                  this.$router.push({ name: 'products' })
+                    this.$router.push({ name: 'products' })
                 }
             })
-          this.$store.dispatch('getShoppingCart')
         })
         .catch((error) => {
           this.$store.commit('LOGIN_FAILED', { error })
