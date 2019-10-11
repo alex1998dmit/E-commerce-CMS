@@ -15,16 +15,19 @@
         <li class="nav-item">
           <router-link class="nav-link" :to="{ name: 'shoppingCart' }">
             <i class="fa fa-shopping-cart">
-                <span class="head-nav-icon-sign">Корзина {{ shoppingCartAmount }}</span>
-<!--              <span class="head-nav-icon-sign">({{ user.at_cart_count }})</span>-->
+                <div class="items-amount">
+                    {{ shoppingCartAmount }}
+                </div>
+<!--                <span class="head-nav-icon-sign">Корзина {{  }}</span>-->
             </i>
           </router-link>
         </li>
         <li class="nav-item">
           <router-link class="nav-link" :to="{ name: 'wishList' }">
             <i class="fa fa-heart">
-                <span class="head-nav-icon-sign">Избранное {{ wishListAmount }}</span>
-<!--              <span class="head-nav-icon-sign">({{ user.wishlist_count }})</span>-->
+                <div class="items-amount">
+                    {{ wishListAmount }}
+                </div>
             </i>
           </router-link>
         </li>
@@ -119,5 +122,21 @@ export default {
 </script>
 
 <style scoped>
-
+.items-amount {
+    display: inline-block;
+    font-weight: 900;
+    font-family: sans-serif;
+    font-size: 0.6em;
+    width: 15px;
+    height: 15px;
+    background-color: red;
+    border-radius: 50px;
+    padding-left: 5px;
+    padding-top: 3px;
+    padding-bottom: -2px;
+    color: white;
+    position: relative;
+    left: -6px;
+    top: -12px;
+}
 </style>
