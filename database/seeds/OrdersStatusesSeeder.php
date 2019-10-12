@@ -45,5 +45,10 @@ class OrdersStatusesSeeder extends Seeder
             'name' => 'Заказ получен',
             'description' => 'Тестовое описание',
         ]);
+
+        DB::table('order_statuses')->insert([
+           'name' => 'Заказ отменен',
+           'description' => 'Пользователь отменил заказ'
+        ]);
     }
 }
