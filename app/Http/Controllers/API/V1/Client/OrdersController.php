@@ -18,7 +18,7 @@ class OrdersController extends Controller
     public function update($orderId, Request $request)
     {
         $user = Auth::user();
-        $permittedStatusesIds = [2, 7];
+        $permittedStatusesIds = [2, 7, 8];
         $statusId = $request->status_id;
         if (in_array($statusId, $permittedStatusesIds)) {
             $order = Order::find($orderId);

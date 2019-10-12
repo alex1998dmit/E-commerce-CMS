@@ -42,7 +42,7 @@
         </div>
       </div>
       <div class="table-body">
-        <div class="row" v-for="(order, index) in orders" :key="index">
+        <div class="row" v-for="(order, index) in orders" :key="index" v-bind:class="{ orderCanceled: order.status.name === 'Заказ отменен' }">
           <div class="col-1 text-center">
             <div class="order-id">
               {{ order.id }}
@@ -52,9 +52,14 @@
             <div class="order-products">
               <ul>
                 <li v-for="(item, index) in order.order_items" :key="index">
-                  {{ item.product.name }}
-                  <span><div class="amount-items">{{ item.amount }}</div></span>
+                  <span>
+                      {{ item.product.name }}
+                      <div class="amount-items">{{ item.amount }}</div>
+                  </span>
                 </li>
+                <span v-if="order.status.name !== 'Заказ отменен'">
+                  <button class="cancel-order-btn" @click="cancelOrder(order, index)">Отменить</button>
+                </span>
               </ul>
             </div>
           </div>
@@ -73,7 +78,8 @@
             <div class="order-buttons">
               <button class="btn btn-table-control" @click="changeOrderStatus(order.id, 2, index)" v-if="order.status_id === 1">Оплачено</button>
               <button class="btn btn-table-control" @click="changeOrderStatus(order.id, 7, index)" v-if="order.status_id === 6">Заказ получен</button>
-              <div class="progress" v-if="order.status_id !== 1 && order.status_id !== 6">
+              <div class="progress" v-if="order.status_id !== 1 && order.status_id !== 6 && order.status_id !== 8">
+                <h5 class="order-cancel" v-if="order.status_id === 8">Заказ отменен</h5>
                 <div class="progress-bar bg-info" role="progressbar" v-bind:style="{width: (100/7) * order.status_id + '%'}"></div>
               </div>
             </div>
@@ -84,10 +90,10 @@
     </div>
     <!-- modal window -->
     <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-                <div class="modal-dialog modal-dialog-centered" role="document">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="exampleModalLongTitle">Реквизиты для оплаты</h5>
+      <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLongTitle">Реквизиты для оплаты</h5>
                             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                             </button>
@@ -155,6 +161,23 @@ export default {
             console.log('error', error)
           })
       }
+    },
+    cancelOrder (order, order_index) {
+      if (confirm("Вы уверены что хотите отменить заказ ?")) {
+        const orderId = order.id
+        const index = order_index
+        const statusId = 8
+        this.$store.dispatch('changeOrderStatus', { orderId, index, statusId })
+            .then((resp) => {
+                this.flash('Заказ отменен', 'success', {
+                    timeout: 2000,
+                    important: true
+                })
+            })
+            .catch(error => {
+
+            })
+      }
     }
   }
 }
@@ -219,5 +242,16 @@ export default {
     background-color: #333;
     color: white;
     border-color: white;
+  }
+  .cancel-order-btn {
+      margin-top: 10%;
+      font-size: 0.8em;
+      border-radius: 0px;
+      border: 1px solid lightblue;
+      background: lightgrey;
+      color: #333;
+  }
+  .orderCanceled {
+    opacity: 0.5;
   }
 </style>
