@@ -16,9 +16,9 @@ class AuthController extends Controller
     //
     public function login(Request $request)
     {
-        $http = new \GuzzleHttp\Client;
+        $https = new \GuzzleHttp\Client;
         try {
-            $response = $http->post(env('MIX_APP_URL') . '/oauth/token', [
+            $response = $https->post(env('MIX_APP_HOST_NAME') . '/oauth/token', [
                 'form_params' => [
                     'grant_type' => 'password',
                     'client_id' => 2,
