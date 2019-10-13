@@ -146,7 +146,9 @@ export default {
             this.$store.dispatch('findUsers', this.search_param)
         },
         trashUser (user_id, index) {
-            this.$store.dispatch('trashUser', { user_id, index })
+            if (confirm("Вы действительно хотите заблокировать пользователя ?")) {
+              this.$store.dispatch('trashUser', { user_id, index })
+            }
         },
         openAboutUser (id) {
             this.$router.push({ name: 'user', params: { id }})

@@ -2,11 +2,10 @@ import axios from 'axios'
 
 export default {
   state: {
-    host: process.env.MIX_APP_URL,
+    host: process.env.MIX_APP_HOST_NAME,
     auth: {
       currentUser: JSON.parse(localStorage.getItem('user')) || null,
       token: localStorage.getItem('access_token') || null,
-      // secret: 'CxNosYys6OTyuBCfrt5rb96aq6xeZN01xhYrxMHK',
       secret: process.env.MIX_SECRET_CODE,
       loading: false,
       errors: {

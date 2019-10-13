@@ -33,34 +33,38 @@ export const ProductActions = {
           })
       },
       removeFromWishList (wishListId, index) {
-        this.$store.dispatch('removeFromWishList', { wishListId, index })
-          .then((resp) => {
-            this.flash('Убрано с избранных', 'warning', {
-              timeout: 2000,
-              important: true
-            })
-          })
-          .catch(error => {
-            this.flash('Что-то пошло не так, попробуйте перезагрузить страницу или обратитесь в поддержку\'', 'danger', {
-              important: true
-            })
-            console.log(error)
-          })
+        if (confirm("Вы действительно хотите убрать продукт из избранного ?")) {
+            this.$store.dispatch('removeFromWishList', {wishListId, index})
+                .then((resp) => {
+                    this.flash('Убрано с избранных', 'warning', {
+                        timeout: 2000,
+                        important: true
+                    })
+                })
+                .catch(error => {
+                    this.flash('Что-то пошло не так, попробуйте перезагрузить страницу или обратитесь в поддержку\'', 'danger', {
+                        important: true
+                    })
+                    console.log(error)
+                })
+        }
       },
       removeFromShoppingCart (cartId, index) {
-        this.$store.dispatch('removeFromShoppingCart', { cartId, index })
-          .then((resp) => {
-            this.flash('Убрано с корзины', 'warning', {
+        if (confirm("Вы действительно хотите убрать продукт из корзины ?")) {
+          this.$store.dispatch('removeFromShoppingCart', { cartId, index })
+            .then((resp) => {
+              this.flash('Убрано с корзины', 'warning', {
               timeout: 2000,
               important: true
+              })
             })
-          })
-          .catch(error => {
-            this.flash('Что-то пошло не так, попробуйте перезагрузить страницу или обратитесь в поддержку\'', 'danger', {
-              important: true
+            .catch(error => {
+              this.flash('Что-то пошло не так, попробуйте перезагрузить страницу или обратитесь в поддержку\'', 'danger', {
+                important: true
+               })
+             console.log(error)
             })
-            console.log(error)
-          })
+        }
       },
       isAddedToCart (productId) {
         let productsAtCart = this.$store.getters.shoppingCartItems.map(item => item.product_id)
