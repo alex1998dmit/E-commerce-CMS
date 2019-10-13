@@ -3,7 +3,7 @@
 export default {
     state: {
         // host: 'http://157.245.79.96',
-        host: process.env.MIX_APP_URL,
+        host: process.env.MIX_APP_HOST_NAME,
         // host: 'http://ecommerce',
         product_images_folder: 'upload/products',
 
