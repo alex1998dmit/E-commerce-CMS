@@ -412,7 +412,6 @@ export default {
     },
     changeOrderStatus: (context, { orderId, statusId, index }) => {
       return new Promise((resolve, reject) => {
-        console.log({ status_id: statusId })
         axios.defaults.headers.common['Authorization'] = `Bearer ${context.state.auth.token}`
         axios.put(`${context.getters.host}/api/v1/client/orders/${orderId}`, { status_id: statusId })
           .then((resp) => {

@@ -478,7 +478,6 @@ export default {
         // categories
         getCategories(context) {
             axios.defaults.headers.common['Authorization']=`Bearer ${context.state.token}`
-            // console.log(`${context.getters.host}/api/v1/categories`)
             axios.get(`${context.getters.host}/api/v1/categories`)
                 .then((resp) => {
                     context.commit('SET_ALL_CATEGORIES', resp.data);
