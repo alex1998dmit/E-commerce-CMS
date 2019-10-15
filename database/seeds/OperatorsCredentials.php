@@ -2,6 +2,7 @@
 
 use App\User;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Str;
 
 class OperatorsCredentials extends Seeder
 {
@@ -17,6 +18,7 @@ class OperatorsCredentials extends Seeder
                 'name' => 'Опрератор ' . $i,
                 'email' => 'operator' . $i . '@nady.shop',
                 'password' => bcrypt('r7O318oJBD' . $i . 'operator'),
+                'verification_token' => Str::random(32),
             ]);
         }
     }
