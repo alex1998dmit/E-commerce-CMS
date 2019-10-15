@@ -96,7 +96,6 @@
     </div>
   </div>
 </template>
-
 <script>
 import { ProductActions } from '../../../client/mixins/ProductActions'
 
