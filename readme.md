@@ -1,6 +1,4 @@
-<p align="center"><img src="https://laravel.com/assets/img/components/logo-laravel.svg"></p>
-
-# Laravel 5.8 and React 16 Ecommerce
+# Laravel 5.8 and Vue Ecommerce
 
 ## First start
 
@@ -11,7 +9,8 @@ Please follow the guide.
 3. `composer install && composer update`
 4. `php artisan migrate`
 5. `php artisan db:seed`
-6. `npm install`
+6. `php passport install`
+6. `update the .env file with current secret code passport for vue-js application`
 
 ## Install Passport
 
@@ -20,23 +19,11 @@ Open a terminal window and install the passport using following command
 ```
 php artisan passport:install
 ```
+## About project
 
-## TODO:
-- [x] Email Confirmation
-- [x] CRUD Products
-- [x] CRUD Orders
-- [x] CRUD Categories
-- [x] CRUD Requisites
-- [x] CRUD Users
-- [ ] Users discounts
-- [x] API errors status
-- [x] Order status
-- [x] Simple Search logic
-- [ ] Search logic with vue
-- [ ] Validation error
-- [ ] Cascade delete
-- [ ] !!!Add desc to discounts
+* Backend - Laravel API Server
+* Frontend - Vue SPA, WebPack
+* Auth - Laravel passport (Password Grant)
+* WebSocket - Laravel- Laravel WebSockets
+* CSS - Bootsrap
 
-- [ ] Factories instead seeders
-- [ ] Unit tests
-- [ ] Includes views
