@@ -22,8 +22,13 @@ php artisan passport:install
 ## About project
 
 * Backend - Laravel API Server
-* Frontend - Vue SPA, WebPack
+* Frontend - Vue SPA (vue-router, vuex), WebPack
 * Auth - Laravel passport (Password Grant)
-* WebSocket - Laravel- Laravel WebSockets
+* WebSocket - Laravel WebSockets
 * CSS - Bootsrap
 
+## Example work
+### Client
+![](https://media.giphy.com/media/THfd56bi0jJoTsUQGW/giphy.gif)
+### Admin
+![](https://media.giphy.com/media/d9CicqlOMxvVbPYi3d/giphy.gif)
